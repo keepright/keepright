@@ -1,0 +1,118 @@
+<?php
+
+
+if ($argc<>2) {
+	echo "Usage: \">php prepare_helpertables.php AT\"\n";
+	echo "will create helper tables used by checks on the database for Austria.\n";
+	echo "database credentials are configured in config file\n";
+	exit;
+}
+
+require('config.inc.php');
+require('helpers.inc.php');
+require('BufferedInserter.php');
+
+
+echo "Creating helper tables for $db_postfix \n";
+
+$db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
+$db2 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
+
+$starttime=microtime(true);
+
+//--------------------------------------------------
+create_postgres_functions($db1);
+/*
+query("DELETE FROM way_tags WHERE v IS NULL", $db1);
+query("DELETE FROM node_tags WHERE v IS NULL", $db1);
+
+
+echo "expand way_nodes with node data\n";
+
+// find node counts and update table ways
+$result = query("SELECT ways.id AS id, COUNT(*) AS cnt
+	FROM ways INNER JOIN way_nodes ON (ways.id=way_nodes.way_id)
+	WHERE ways.node_count IS NULL
+	GROUP BY ways.id
+", $db1);
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+	query("UPDATE ways
+		SET node_count={$row['cnt']}
+		WHERE id={$row['id']}
+	", $db1, false);
+}
+pg_free_result($result);
+
+
+// Add a postgis bounding box column used for indexing the location of the way.
+// This will contain a bounding box surrounding the extremities of the way.
+query("SELECT AddGeometryColumn('ways', 'bbox', 4326, 'GEOMETRY', 2)", $db1);
+query("SELECT AddGeometryColumn('ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
+
+
+query("UPDATE ways
+	SET geom=GeomFromText( 'LINESTRING(' || array_to_string(array(
+		SELECT wn.x || ' ' || wn.y
+		FROM way_nodes wn
+		WHERE ways.id=wn.way_id
+		ORDER BY wn.sequence_id), ',')
+	|| ')',4326)
+	WHERE geom IS NULL AND node_count>1
+", $db1);
+
+//Update the bbox column of the way table 
+//so that is a little bit larger than the linestring	
+query("UPDATE ways SET bbox = Expand(geom, 10) WHERE bbox IS NULL", $db1);
+*/
+//Index the way bounding box column.
+query("CREATE INDEX idx_ways_bbox ON ways USING gist (bbox)", $db1);
+
+// calculate x/y coordinates for nodes
+query("UPDATE nodes
+	SET x=merc_x(nodes.lon), y=merc_y(nodes.lat)
+	WHERE x IS NULL
+", $db1);
+
+// build point geometry for nodes
+query("UPDATE nodes
+	SET geom=GeomFromText('POINT(' || x || ' ' || y || ')', 4326)
+	WHERE geom IS NULL
+", $db1);
+
+// copy lat/lon and x/y coordinates from nodes into way_nodes, where missing
+query("UPDATE way_nodes
+	SET lat=nodes.lat, lon=nodes.lon, x=merc_x(nodes.lon), y=merc_y(nodes.lat)
+	FROM nodes
+	WHERE way_nodes.lat IS NULL AND nodes.id=way_nodes.node_id
+", $db1);
+
+// copy lat/lon and x/y coordinates from first nodes into ways, where missing
+query("UPDATE ways
+	SET first_node_id=wn.node_id, first_node_lat=wn.lat, first_node_lon=wn.lon, first_node_x=wn.x, first_node_y=wn.y
+	FROM way_nodes wn
+	WHERE ways.first_node_id IS NULL AND wn.way_id=ways.id AND wn.sequence_id=0
+", $db1);
+
+
+// copy lat/lon and x/y coordinates from first nodes into ways, where missing
+query("UPDATE ways
+	SET last_node_id=wn.node_id, last_node_lat=wn.lat, last_node_lon=wn.lon, last_node_x=wn.x, last_node_y=wn.y
+	FROM way_nodes wn
+	WHERE ways.last_node_id IS NULL AND wn.way_id=ways.id AND wn.sequence_id=(
+		SELECT MAX(tmp.sequence_id)
+		FROM way_nodes tmp
+		WHERE tmp.way_id=ways.id
+	)
+", $db1);
+
+
+//Perform database maintenance due to large database changes.
+query("VACUUM ANALYZE", $db1);
+
+//--------------------------------------------------
+drop_postgres_functions($db1);
+
+pg_close($db1);
+pg_close($db2);
+
+?>

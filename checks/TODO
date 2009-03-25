@@ -1,0 +1,48 @@
+ToDo:
+
+
+* check for ways that contain some segments more than once. eg. way #26458524
+  has nodes 289957357, 289957358, 289957359, 289957360, 289957361,
+  289957357, 289957361
+  http://openstreetmap.org/edit?lat=48.23257100588562&lon=16.314874335681896&zoom=18
+
+* check for ways where at least 2 nodes in the way are tagged the same way (eg. way #26825583)
+this way should be split up into a paved and an unpaved way-part
+
+* comment found in run-checks.php just before error_view is created:
+// * for relations I don't yet have an idea how to locate them in the map...
+	locate them using its members.
+
+
+* Check 50a:
+find short zipferl of ways: unconnected last segments of ways, whose length is minimal.
+Many junctions between ways show zipferl that are not connected and almost invisible.
+eg. way #4985478 and #4985479
+http://www.openstreetmap.org/edit?lat=48.341073&lon=16.824228&zoom=18
+
+way not connected at the first node but on the second (third?) node
+and first segment is very short
+
+
+
+
+* multipolygon relations with unclosed ways
+* multipolygon relations with no or more than one way of role=outer
+* Dont complain about unnamed way on highway=* junction=roundabout
+* node inside of area of the same type. For example node with amenity=parking inside of area with amenity=parking. Fix is by either removing the node or by using Relations/Proposed/Label
+* Shops, Car Parks which are not connected by a highway 
+
+
+* objects containing duplicated tags 
+http://www.openstreetmap.org/api/0.5/way/23950375
+contains name = Haarholzer Straße, name = Haarholzer Straße
+
+* misspelled tags
+	tags that have levenshtein-distance == 1 to one of well-known tags
+	well-known tags:
+		exist for keys, where max(count(v)) >> 1
+		top 10 keys that suffice for 90% of all records
+
+
+* crossings of highway=motorway with other than highway=motorway-trunk or highway=motorway
+especially with highway=residential

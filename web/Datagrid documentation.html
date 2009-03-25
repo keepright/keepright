@@ -1,0 +1,215 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Datagrid documentation</title>
+    
+    <style type="text/css">
+    <!--
+        body,
+        h1,
+        h4 {
+            Font-family: Arial;
+        }
+    // -->
+    </style>
+</head><body>
+
+    <h1>Datagrid documentation</h1>
+
+    <h4>Introduction</h4>
+    
+    <p>
+        The Datagrid class is an easy way to display your MySQL result sets. Simply pass it your connection details and an
+        SQL query and it will display the results. And if you keep your CSS in a single file for it, you can keep all of
+        your datagrids looking the same.
+    </p>
+    
+    <h4>Structure</h4>
+    
+    <p>
+        The structure of the datagrid looks like this:
+    </p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;table class="datagrid"&gt;<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;thead&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Header one&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Header two&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Header
+three&lt;/th&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/thead&gt;<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table data&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table data&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table data&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table data&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table data&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table data&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tfoot&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table
+footer&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table
+footer&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Table
+footer&lt;/td&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tfoot&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br>
+
+    <p>
+        This makes for easy CSS selectors:
+    </p>
+    
+    <pre>.datagrid thead th {
+    color: red
+}</pre>
+    
+    <h4>Paging</h4>
+    
+    <p>
+        Paging is done automatically for you and the footer has CSS classes of <b>paging_results</b> and <b>paging</b>. Using these
+        you can style them and even hide them if you so wish.
+    </p>
+
+    <h4>Public properties</h4>
+
+    <ul>
+        <li>
+            <b>allowSorting</b>
+            Turns sorting on or off completely. <i>Default: true</i>
+        </li>
+        <li>
+            <b>showHeaders</b>
+            Turns the column headers on or off. <i>Default: true</i>
+        </li>
+        <li>
+            <b>headerHTML</b>
+            The header/banner HTML that gets output verbatim. <i>Default: none</i>
+        </li>
+        <li>
+            <b>cellpadding</b>
+            The tables cellpadding. <i>Default: 0</i>
+        </li>
+        <li>
+            <b>cellspacing</b>
+            The tables cellspacing. <i>Default: 0</i>
+        </li>
+    </ul>
+
+    <h4>Methods</h4>
+    
+    <p>
+        Methods wise for the datagrid class/object, there are the following:
+    </p>
+    
+    <p>
+        <i>Create(array $params, string $sql)</i><br>
+Creates a Datagrid object and returns it. First arg is an array as
+below, second is the SQL query that gets you your results. <i>If you don't specify an order by like this: <b>ORDER BY colname ASC</b>, ordering will be disabled</i>.
+</p><pre>$grid = Datagrid::Create(
+                         array(
+                               'hostname' =&gt; 'localhost',
+                               'username' =&gt; 'root',
+                               'password' =&gt; '',
+                               'database' =&gt; 'bob'
+                              ),
+                         'SELECT * FROM mysql.user'
+                        );</pre>
+    <p></p>
+    
+    <p>
+        <i>SetDisplayNames(array $columns)</i><br>
+        Sets the display names to use in place of the raw MySQL column names. These friendly names are <b>only</b> used for display purposes.
+</p><pre>$grid-&gt;SetDisplayNames(
+                       array(
+                             'col_1' =&gt; 'Column one',
+                             'col_2' =&gt; 'Column two'
+                             )
+                           );</pre>
+    <p></p>
+    
+    <p>
+        <i>HideColumn(string $column ...)</i><br>
+        Hides the specified column names. You can specify one or more column names here.
+</p><pre>$grid-&gt;HideColumn('col_1', 'col_2');</pre>
+    <p></p>
+    
+    <p>
+        <i>NoSpecialChars(string $column ...)</i><br>
+        Stipulates the the specified columns should not have htmlspecialchars() should not be applied to their data.
+        You might want to use this if, for example, you have a column which should show an image and not the image tag itself.
+</p><pre>$grid-&gt;NoSpecialChars('col_1', 'col_2');</pre>
+    <p></p>
+    
+    <p>
+        <i>NoSort(string $column)</i><br>
+        Disbables sorting by the given colmn. Pretty self explanatory really.
+    </p>
+    
+    <p>
+        <i>GetPageCount()</i><br>
+        Returns how many pages are to be shown to accommodate the result set.
+    </p>
+    
+    <p>
+        <i>GetRowCount()</i><br>
+        Returns how many rows are in the result set.
+    </p>
+    
+    <p>
+        <i>GetResultSet()</i><br>
+        Returns the MySQL result set.
+    </p>
+    
+    <p>
+        <i>GetConnection()</i><br>
+        Returns the MySQL connection.
+    </p>
+    
+    <p>
+        <i>SetHeaderHTML(string $html)</i><br>
+        Sets the header HTML which is shown directly above the datagrid. Purely used for styling only.
+    </p>
+    
+    <p>
+        <i>SetConnection(resource $connection)</i><br>
+        Sets the MySQL connection.
+    </p>
+    
+    <p>
+        <i>SetPerPage(int $perPage)</i><br>
+        Sets the number of rows which shown per page in the result set. Default is 20.
+    </p>
+    
+    <p>
+        <i>SetResultset(resouce resultset)</i><br>
+        Sets the MySQL result set to be used.
+    </p>
+    
+    <p>
+        <i>AddCallback(string $function)</i><br>
+        Sets the specified function name as a callback function. Callback functions are called just before each row is shown,
+        so you can use them to do any post processing on a row. The row data is given by reference (so any changes you make
+        will be reflected in the resulting datagrid) as an associative array, keyed by column name. It looks a little
+        something like this:
+    </p>
+    
+    <p>
+        </p><pre>$row = array(
+             'col_1' =&gt; 'data',
+             'col_2' =&gt; 'data',
+             'col_2' =&gt; 'data'
+            )</pre>
+        
+        The example files all use callbacks so you will be able to see them in action.
+    <p></p>
+</body></html>

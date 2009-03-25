@@ -1,0 +1,204 @@
+
+ /_ _  _  _   _ . _  /__/_
+/\ /_'/_'/_/ / / /_// //
+        /        _/
+Data Consistency Checks for openstreetmap.org
+----------------------------------------------
+
+openstreetmap.org (OSM) provides a wiki-style means of creating a world-wide street map where everybody is encouraged to contribute. This is a collection of scripts that will examine part of the OSM database and try to find errors that should be corrected by users. As a result you get ugly lists of errors and are invited to correct them.
+
+This document explains how to run data consistency checks on your own database and set up a webpage presenting the results.
+
+
+PREREQUISITES
+-------------
+
+Packages required:
+php5 as command line version (php5-cli) plus as apache module
+apache
+postgis
+postgresql >= 8.3
+client programs for postgres
+mysql-support for php (php-mysql)
+mysql itself (mysql)
+client programs for mysql
+phpMyAdmin
+phpPgAdmin
+a java6 vm
+wget
+bzip2
+joe and mc for a better living
+
+You will need both Postgres and MySQL because the checks require GIS functions and the error-presentation scripts rely on MySQL. They will not be recoded to use Postgres because you won't find Postgres on many webhosters.
+
+The checks depend on a whole copy of the OSM database. You need not use the full dump, an excerpt of the region interesting to you will also work. The scripts are laid out to access not just one database. I use Austria for testing new checks and a second database containing whole Europe for production. Please note that using a subset of the planet file may result in false-positives because ways are cut in two at the border!
+
+
+THE BIG PICTURE
+---------------
+
+This is the whole process from getting the planet file, running the checks, publishing the check results and collecting user comments.
+error_view is the resulting table containing all errors. It's the source for the map presentation.
+
+
+updatedb.sh                             download planet file
+                                                 |
+                                                 v
+prepare_tablestructure.php     add new columns to the standard schema
+                                                 |
+                                                 v
+modified osmosis            convert and insert planet file into database
+pgsql_simple_load.sql                            |
+                                                 |
+                                                 v
+prepare_helpertables.php              update redundant columns
+                                                 |
+                                                 v
+run-checks.php             start all the check routines found in config
+0010_*.php ... 9999_*.php                        |
+                                                 |
+                                                 v
+run-checks.php            compare old and new errors, update error states
+                                                 |
+                                                 v
+run-checks.php                        rebuild the error_view
+                                    export error_view to MySQL
+                    export and compress error_view for upload to webspace provider
+                                                 |
+                                                 v
+updateTables.php                import error_view on webspace provider
+called on webserver                              |
+                                                 |
+                                                 v
+report_map.php           main display script including the map and myText layer
+myText.js, myTextFormat.js                       |
+                                                 |
+                                                 v
+points.php                  deliver error entries to the client browser
+called on webserver                              |
+                                                 v
+comment.php        receive user feedback and store it on the webserver's comments table
+called on webserver
+
+
+
+SETTING UP LOCAL DATABASES
+--------------------------
+
+[Don't skip this section if you already have a local database!]
+
+This project uses the "simple PostgreSQL schema" as specified in osmosis/script/pgsql_simple_schema.sql, which is part of the source distribution of Osmosis in an extended form. This means that the base tables are the same, but there are additional columns providing redundancy. This redundancy is used to boost performance of the queries as it can save some joins. For example the ways table has the number of nodes, as well as the id and lat/lon of the first and last node as additional columns; in way_nodes you find lat/lon of the node.
+
+The downside is, you cannot use a default database. And you have to use a modified version of Osmosis to convert the planet file. A special edition of Osmosis is provided with the sources. It knows a new option --pl that will create dump files with parts of the redundancy needed.
+
+Setting up PostGIS and new databases is described on the wiki. Follow the article 
+http://wiki.openstreetmap.org/wiki/Mapnik/PostGIS to create one or more new databases. Then execute pgsql_simple_schema.sql to create all the tables.
+Please note that the postgres user you want to use for script access must have all privileges on these databases including the 'super'-privilege for creating and dropping functions.
+
+For inserting actual data take a look at updateDB.sh and config: This is a shell script that downloads a planet dump from the net and inserts the planet files contents in a database. In config you can define the names of your databases and the URLs where the dump files are to be found.
+
+Don't forget to adapt the MAIN_DB_HOST, MAIN_DB_USER and MAIN_DB_PASS variables to match your database credentials.
+OSMOSIS_BIN has to point to the location where you have put the modified osmosis executable.
+
+On my system it takes a day to set up the Europe database, so please be patient!
+
+
+Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts. Update config and webconfig.inc.php with the new database credentials.
+
+
+
+RUNNING THE CHECKS
+------------------
+
+First of all you need to specify database credentials in config. As in updateDB.sh you may specify credentials for as much databases as you like. Look at the definition of db credentials and adapt the existing ones! You specify the database of your choice on the command line by using a short-hand key (eg. "AT"). It is used to find the credentials by looking the appropriate db parameters in config.
+
+Second, take a look at the list of error types. Here you may specify which types of checks should be executed. Anything different from zero will enable a job.
+
+Start checking by calling run-checks.php from the shell:
+> php run-checks.php AT 20 30 40
+will start the checks 20, 30 and 40 on the database specified under key "AT". Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in config.
+
+When processing has finished you will have (among others) a newly created table called error_view. Here you can find records for all errors that exist. To transfer this postgres table into MySQL call 
+> php updateWebDB.sh AT
+
+As time goes by you will update your database and maybe errors are getting corrected. The scripts will detect when old errors don't exist any more and will update the state information in the errors tables to state==cleared.
+
+Running checks on large databases takes plenty of time! Here you can see the time sheet when running on the Europe database on my machine:
+
+    [0030_non-closed_areas.php] => 3h 57m
+    [0040_dead-ended_one-ways.php] => 1h 3m
+    [0050_almost-junctions.php] => 4h 27m
+    [0060_deprecated_tags.php] => 37m 3s
+    [0070_missing_tags.php] => 31m 16s
+    [0090_motorways_without_ref.php] => 31.66s
+    [0100_places_of_worship_without_religion.php] => 5m 40s
+    [0110_point_of_interest_without_name.php] => 5m 41s
+    [0120_ways_without_nodes.php] => 2m 1s
+    [0130_islands.php] => 11h 2m
+    [0150_level_crossing_without_tag.php] => 1h 9m
+    [0160_wrong_use_of_level_crossing_tag.php] => 8m 27s
+    [0170_fixme.php] => 3m 52s
+    [0180_relations_without_type.php] => 1.15s
+    [0190_intersections_without_junctions.php] => 13h 3m
+    [0200_loopings.php] => 52m 20s
+
+You should really consider buying faster hard disks. Changing the RAID0 from 3x IDE (40GB+80GB+40GB) to two brand new SATA disks of 750GB each boosted performance like this:
+
+Array
+(
+    [0030_non-closed_areas.php] => 1h 57m
+    [0040_dead-ended_one-ways.php] => 25m 55s
+    [0050_almost-junctions.php] => 4h 29m
+    [0060_deprecated_tags.php] => 18m 35s
+    [0070_missing_tags.php] => 14m 20s
+    [0090_motorways_without_ref.php] => 9.94s
+    [0100_places_of_worship_without_religion.php] => 3m 21s
+    [0110_point_of_interest_without_name.php] => 3m 44s
+    [0120_ways_without_nodes.php] => 41.36s
+    [0130_islands.php] => 8h 39m
+    [0150_level_crossing_without_tag.php] => 23m 47s
+    [0160_wrong_use_of_level_crossing_tag.php] => 4m 17s
+    [0170_fixme.php] => 2m 47s
+    [0180_relations_without_type.php] => 0.95s
+    [0190_intersections_without_junctions.php] => 17h 56m
+    [0210_loopings.php] => 42m 51s
+)
+
+
+VISUALIZING RESULTS
+-------------------
+
+There are two ways of presentation: as ugly lists or graphically drawn into the map. Both take data out of the table error_view and display them.
+
+report.php will ask your position and type of error and display lists of matching errors. There is a link that will point you to the map so you can inspect and correct the error.
+
+The other way of displaying is report_map.php. This script displays a slippy map using an exra layer to draw icons. Icons are drawn for every faulty node and on either starting node of faulty ways. They display some hint about the error when hovered. Keep in mind that this display method draws a limited number of errors in the map, because of memory constraints in browsers and the webserver.
+
+
+WRITING YOUR OWN CHECKS
+-----------------------
+
+Take a look at the existing checks to see how they work. Then take a look at the template file 0000_template.php. If you write a new check you also have to mention it in the config file.
+
+Keep in mind that all checks are included inside a while loop that is running inside run-checks.php. Surprisingly that doesn't matter much, with some exceptions:
+Any checks run in the same scope, you are even allowed to declare functions (inside the while-loop!) but you must not declare two functions of the same name in different checks. Also don't rely on global variables not being used at the beginning of your script (maybe another check did already initialize a variable of the same name). The same is valid for temporary tables you may need. Always check if a table already exists before creating it. At the end of the script drop any tables you have created.
+
+Maybe in the future I will change this into an oop-styled buch of classes, but up to now it is working great this way.
+
+If you have ideas for new checks, I would like to integrate them in the official sources to let others benefit from them. So please let me know! And please let me assign a unique check numer for your checks to avoid collisions.
+
+
+LEGAL STUFF
+-----------
+
+Sources are licensed under GPLv2.
+
+This collection of characters was created using a random number generator. I don't think these files are useful for anything or anyone. If you copy, watch, process or even think about putting this collection of bytes into your computer, you do this at your own risk. Don't blame me.
+
+
+IMPRESSUM
+---------
+
+This work is done without commercial background, just for my personal pleasure. I would be very happy if it was helpful for the OSM Project.
+
+If you like to contact me, my mailbox at the austrian server of gmx is labelled keepright

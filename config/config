@@ -1,0 +1,216 @@
+# main configuration file for keepright
+
+# this file is to be formatted as a valid bash script
+# double quotes around values are mandatory
+
+# a second config file resides in keepright/webconfig.inc.php
+# it holds just the options needed for the web server,
+# sensitive information contained herein is stripped
+
+#
+# written by Harald Kleiner, March 2009
+#
+
+
+############################################
+# Database credentials
+############################################
+
+# the main database server.
+# this is the PostGIS server the checks run
+# the main db server may have many databases (see below)
+
+MAIN_DB_HOST="localhost"
+MAIN_DB_USER="osm"
+MAIN_DB_PASS="osm"
+
+
+# the web server's database server.
+# this is the MySQL server behind the web presentation
+# please note: you have to duplicate these credentials
+# in the file keepright/webconfig.inc.php!
+
+WEB_DB_HOST="localhost"
+WEB_DB_USER="root"
+WEB_DB_PASS="haraldk"
+WEB_DB_NAME="osm_EU"
+
+
+
+############################################
+# Configuration for database import script updateDB.sh
+############################################
+
+# the root directory
+PREFIX="/home/haraldk/OSM/keepright/"
+
+# a separate high speed partition preferably
+TMPDIR=$PREFIX"planet"
+
+# this is where the check scripts reside
+CHECKSDIR=$PREFIX"checks"
+
+PSQL_LOAD_SCRIPT=$TMPDIR"/pgsql_simple_load.sql"
+
+
+# this is where the result files will be placed
+RESULTSDIR="/home/haraldk/OSM/keepright/results"
+
+ERROR_VIEW_FILE="/home/haraldk/OSM/keepright/results/error_view"
+ERROR_TYPES_FILE="/home/haraldk/OSM/keepright/results/error_types"
+
+############################################
+# Download URLs for various databases
+############################################
+
+# use ISO country codes to separate different locations
+# calling 'updateDB.sh DE' will lead to use of URL_DE, 
+# FILE_DE, DB_DE, CAT_DE as download parameters
+
+URL_DE="http://download.geofabrik.de/osm/europe/germany.osm.bz2"
+FILE_DE="germany.osm.bz2"
+MAIN_DB_NAME_DE="osm_DE"
+CAT_DE="bzcat"
+
+URL_AT="http://download.geofabrik.de/osm/europe/austria.osm.bz2"
+FILE_AT="austria.osm.bz2"
+MAIN_DB_NAME_AT="osm_AT"
+CAT_AT="bzcat"
+
+URL_EU="http://download.geofabrik.de/osm/europe.osm.bz2"
+FILE_EU="europe.osm.bz2"
+MAIN_DB_NAME_EU="osm_EU"
+CAT_EU="bzcat"
+
+URL_MG="http://download.geofabrik.de/osm/africa/madagascar.osm.bz2"
+FILE_MG="madagascar.osm.bz2"
+MAIN_DB_NAME_MG="osm_MG"
+CAT_MG="bzcat"
+
+URL_AU="http://www.osmaustralia.org/osmdumps/australia.osm.zip"
+FILE_AU="australia.osm.zip"
+MAIN_DB_NAME_AU="osm_AU"
+CAT_AU="zcat"
+
+# ZZ stands for the whole planet
+URL_ZZ="http://ftp.ecki-netz.de/osm/planet-latest.osm.bz2"
+FILE_ZZ="planet.osm.bz2"
+MAIN_DB_NAME_ZZ="osm"
+CAT_ZZ="bzcat"
+
+
+
+############################################
+# error types
+############################################
+
+CHECK_0010_NAME="deleted items"
+CHECK_0010_ENABLED="0"
+CHECK_0010_FILE="0010_deleted_items.php"
+CHECK_0010_DESCRIPTION="Deleted items should not be used in conjunction with not deleted items. This can be ways that contain deleted nodes or deleted ways/nodes that are member of relations."
+
+CHECK_0020_NAME="multiple nodes on the same spot"
+CHECK_0020_ENABLED="0"
+CHECK_0020_FILE="0020_multiple_nodes_on_same_spot.php"
+CHECK_0020_DESCRIPTION="Try to find nodes that are (almost) on the same spot by snapping in node coordinates to integer multiples of a raster unit."
+
+CHECK_0030_NAME="non-closed areas"
+CHECK_0030_ENABLED="1"
+CHECK_0030_FILE="0030_non-closed_areas.php"
+CHECK_0030_DESCRIPTION="By convention ways tagged with special combinations of key and value pairs are considered to be areas and are drawn as such in the map. Therefore it is necessary that they form closed loops. Non-closed areas are invisible in the map! The standard.xml file is used to determine which key-value-combinations are drawn as areas; any instance of these has to be closed-loop."
+
+CHECK_0040_NAME="dead-ended one-ways"
+CHECK_0040_ENABLED="1"
+CHECK_0040_FILE="0040_dead-ended_one-ways.php"
+CHECK_0040_DESCRIPTION="Streets tagged as one-way must not be dead-ended (where should all the cars pile at the end of the road?)"
+
+CHECK_0050_NAME="almost-junctions"
+CHECK_0050_ENABLED="1"
+CHECK_0050_FILE="0050_almost-junctions.php"
+CHECK_0050_DESCRIPTION="Streets that have (at least) one unconnected end are examined here. If such an end-node is very close to any other way an error is reported. Unconnected end-nodes should probably be connected to adjacent ways."
+
+CHECK_0060_NAME="deprecated tags"
+CHECK_0060_ENABLED="1"
+CHECK_0060_FILE="0060_deprecated_tags.php"
+CHECK_0060_DESCRIPTION="As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some tags get replaced by others as new tagging conventions evolve."
+
+CHECK_0070_NAME="missing tags"
+CHECK_0070_ENABLED="1"
+CHECK_0070_FILE="0070_missing_tags.php"
+CHECK_0070_DESCRIPTION="Ways, nodes and relations should in most cases have at least one tag (besides created_by)"
+
+CHECK_0080_NAME="bridges or tunnels without layer"
+CHECK_0080_ENABLED="0"
+CHECK_0080_FILE="0080_bridges_or_tunnels_without_layer.php"
+CHECK_0080_DESCRIPTION="Bridges and tunnels need a layer tag as a hint for map drawing processes for achieving correct visibility of elements. THIS CHECK IS OBSOLETE."
+
+CHECK_0090_NAME="motorways without ref"
+CHECK_0090_ENABLED="1"
+CHECK_0090_FILE="0090_motorways_without_ref.php"
+CHECK_0090_DESCRIPTION="The ref-tag documents the reference (e.g. 'A 10') for motorways. These are mandatory as they are very important information"
+
+CHECK_0100_NAME="places of worship without religion"
+CHECK_0100_ENABLED="1"
+CHECK_0100_FILE="0100_places_of_worship_without_religion.php"
+CHECK_0100_DESCRIPTION="Churches, mosques and synagogues etc. need an extra religion tag giving info about the religion"
+
+CHECK_0110_NAME="point of interest without name"
+CHECK_0110_ENABLED="1"
+CHECK_0110_FILE="0110_point_of_interest_without_name.php"
+CHECK_0110_DESCRIPTION="The name tag should be specified for every point of interest as its content gets rendered in the map next to the POI symbol"
+
+CHECK_0120_NAME="ways without nodes"
+CHECK_0120_ENABLED="1"
+CHECK_0120_FILE="0120_ways_without_nodes.php"
+CHECK_0120_DESCRIPTION="Ways that don't consist of at least two nodes don't make much sense as they won't get rendered. Question is: How can one delete a way without nodes?"
+
+CHECK_0130_NAME="floating islands"
+CHECK_0130_ENABLED="1"
+CHECK_0130_FILE="0130_islands.php"
+CHECK_0130_DESCRIPTION="Any highways drawn on the map should be accessible by car starting anywhere in the world. Ferries and highways are included in this check, so almost any island in the sea should be reachable starting from the mainland."
+
+CHECK_0140_NAME="ways with name tag, without frequently used tag"
+CHECK_0140_ENABLED="0"
+CHECK_0140_FILE="0140_ways_with_name_without_highway.php"
+CHECK_0140_DESCRIPTION="Ways tagged with a name-tag are supposed to be highways, buildings, amenities etc. So they need more tags defining the type of object. Objects having a name but none of frequently used type tags are reported in this check"
+
+CHECK_0150_NAME="railway crossings without tag"
+CHECK_0150_ENABLED="1"
+CHECK_0150_FILE="0150_level_crossing_without_tag.php"
+CHECK_0150_DESCRIPTION="(Level)-Crossings of railways and highways should have a common node as junction that is tagged with 'railway=level_crossing' if it is a crossing where larger vehicles can cross or with 'railway=crossing' if it is a crossing just for pedestrians"
+
+CHECK_0160_NAME="wrongly used railway crossing tag"
+CHECK_0160_ENABLED="1"
+CHECK_0160_FILE="0160_wrong_use_of_level_crossing_tag.php"
+CHECK_0160_DESCRIPTION="Ways that take part in level-crossings of railways and highways have to be on the same layer and should in the normal case be not tagged as bridge or tunnel"
+
+CHECK_0170_NAME="fixme-tagged items"
+CHECK_0170_ENABLED="1"
+CHECK_0170_FILE="0170_fixme.php"
+CHECK_0170_DESCRIPTION="Nodes, ways or relations that are tagged with FIXME should be reviewed..."
+
+CHECK_0180_NAME="relations without type"
+CHECK_0180_ENABLED="1"
+CHECK_0180_FILE="0180_relations_without_type.php"
+CHECK_0180_DESCRIPTION="Find any relation that has no type tag, wich is mandatory for relations."
+
+CHECK_0190_NAME="intersections without junctions"
+CHECK_0190_ENABLED="1"
+CHECK_0190_FILE="0190_intersections_without_junctions.php"
+CHECK_0190_DESCRIPTION="Streets that graphically intersect need a common node that represents the crossing. The only exception are intersections on different layers (eg. bridges or tunnels)."
+
+CHECK_0200_NAME="overlapping ways"
+CHECK_0200_ENABLED="1"
+CHECK_0200_FILE=""
+CHECK_0200_DESCRIPTION="Segments of ways that lie on top of each other (the same nodes connected by different ways in the same order) are a problem for routing software. They happen accidently and are hard to find."
+
+CHECK_0210_NAME="loopings"
+CHECK_0210_ENABLED="1"
+CHECK_0210_FILE="0210_loopings.php"
+CHECK_0210_DESCRIPTION="Any way that contains any single node more than twice is considered an error. Any way may contain just one node twice. If more than one node is found twice it is considered an error."
+
+CHECK_0220_NAME="misspelled tags"
+CHECK_0220_ENABLED="1"
+CHECK_0220_FILE="0220_misspelled_tags.php"
+CHECK_0220_DESCRIPTION="Tags that are used very seldom and almost look like very common tags (only one character difference) are reported as a warning."
+
