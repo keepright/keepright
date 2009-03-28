@@ -124,6 +124,13 @@ Add this line:
 local   all         all                               trust
 This is a security risk. You will not need a password when using the command line psql shell. Most probably you'll use phppgadmin and won't need this.
 
+>>> Alternatively to turning off local password prompting you may create a .pgpass file
+joe ~/.pgpass
+add a line of this form: hostname:port:database:username:password
+127.0.0.1:*:*:keepright:yourpasswordhere
+chmod 0600 ~/.pgpass
+
+
 >>>Create the new user
 su - postgres
 createuser keepright
