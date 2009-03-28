@@ -3,9 +3,9 @@
 
 /*
 thesis: the majority is always right.
-look for keys(or values) that are used very seldom (eg. less than 1/100000 of the whole number of tags)
-and that are very similar to a well-known key(or value)
-a well-known key(or value) is used more than 1/100000 of the whole number of tags times
+look for keys (and values) that are used very seldom (eg. less than 1/100000 of the whole number of tags)
+and that are very similar to a well-known key (and value)
+a well-known key (and value) is used more than 1/100000 of the whole number of tags times
 
 in case of values this does make sense for tags with a limited number of different values only,
 especially not for the name tag. This is handeled automatically: For the name tag no regular values
@@ -13,7 +13,7 @@ will be found so any name value will be ok
 */
 
 // * uppercase keys are bad
-// * characters used as fake-namespace separator: |>
+// * characters used as fake namespace separator: |>
 // * colons (:) at the end of a key are bad
 
 
@@ -51,6 +51,7 @@ check_tags("way");
 check_tags("relation");
 
 
+
 function check_tags($item) {
 global $error_type, $false_positives, $db1, $db2;
 	query("DROP TABLE IF EXISTS _tmp_tags", $db1, false);
@@ -65,7 +66,7 @@ global $error_type, $false_positives, $db1, $db2;
 	", $db1, false);
 
 	// split key names by each colon into an array and append the value as if it belonged to the key
-	// replace any numeric value with zero. Searching for differences on numbers makes no sense.
+	// replace any numeric value with dots to make them equal. Searching for differences on numbers makes no sense.
 	query("
 		INSERT INTO _tmp_tags(k, keylist, v, tag_count)
 		SELECT k, regexp_split_to_array(k, ':') || ARRAY['=', CASE WHEN v ~ '^[0-9]{1,9}$' THEN '...' ELSE v END, ''], CASE WHEN v ~ '^[0-9]{1,9}$' THEN '...' ELSE v END, COUNT(${item}_id) as tag_count
@@ -91,7 +92,7 @@ global $error_type, $false_positives, $db1, $db2;
 		query("TRUNCATE TABLE _tmp_keys", $db1, false);
 
 		// select the prefix (the first $keylen parts of the key name
-		// if that part has at least 4 and at max. 50 chars of length
+		// if that last part has at least 4 and at max. 50 chars of length
 		query("
 			INSERT INTO _tmp_keys (prefix, k, tag_count)
 			SELECT array_to_string(keylist[1:$keylen-1], ':') as prefix, keylist[$keylen] as postfix, SUM(tag_count)
@@ -146,7 +147,7 @@ function find_offending_keys($db1) {
 	//find regular tags (i.e. tags that are used very frequently, currently at least 1/100000 of the whole number of tags)
 	$tag_count_limit = query_firstval('SELECT SUM(tag_count) FROM _tmp_keys', $db1, false) / 100000;
 	if ($tag_count_limit<10) $tag_count_limit=10;
-	//echo "tag count limit is $tag_count_limit\n";
+	echo "tag count limit is $tag_count_limit\n";
 
 	$result=query("
 		SELECT prefix, k, tag_count

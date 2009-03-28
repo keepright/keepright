@@ -34,8 +34,18 @@ for i do	# loop all given parameter values
 		echo "processing file $FILE"
 		echo "--------------------"
 
-		echo "`date` * downloading osm file"
-#		wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
+                if [ ! -n "KEEP_OSM" ]; then
+                    echo "`date` * downloading osm file"
+                    wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
+                else
+                    echo "Using previous downloaded $TMPDIR/$FILE"
+                    echo "--------------------"
+                fi
+
+                if [ ! -f "$TMPDIR/$FILE" ]; then
+                    echo "The download file $TMPDIR/$FILE is not present"
+                    exit 1
+                fi
 
 		echo "`date` * truncating database"
 		cd "$TMPDIR"
@@ -69,6 +79,7 @@ for i do	# loop all given parameter values
 		rm pgimport/ways_sorted.txt
 
 		echo "`date` * loading database dumps"
+		PGPASSWORD="$MAIN_DB_PASSWORD"
 		psql -f "$PSQL_LOAD_SCRIPT" "$MAIN_DB_NAME" "$MAIN_DB_USER"
 
 		cd "$CHECKSDIR"
