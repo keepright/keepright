@@ -34,7 +34,7 @@ for i do	# loop all given parameter values
 		echo "processing file $FILE"
 		echo "--------------------"
 
-                if [ ! -n "KEEP_OSM" ]; then
+                if [ "$KEEP_OSM" = "0" ]; then
                     echo "`date` * downloading osm file"
                     wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
                 else
