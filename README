@@ -14,20 +14,26 @@ PREREQUISITES
 -------------
 
 Packages required:
-php5 as command line version (php5-cli) plus as apache module
+php5
+php5-cli
 apache
 postgis
+postgresql-8.3-postgis
 postgresql >= 8.3
-client programs for postgres
-mysql-support for php (php-mysql)
-mysql itself (mysql)
-client programs for mysql
+postgres-client
+php5-mysql
+mysql-server
+mysql-client
 phpMyAdmin
 phpPgAdmin
 a java6 vm
 wget
 bzip2
-joe and mc for a better living
+
+Optional:
+joe
+mc
+
 
 You will need both Postgres and MySQL because the checks require GIS functions and the error-presentation scripts rely on MySQL. They will not be recoded to use Postgres because you won't find Postgres on many webhosters.
 
@@ -91,9 +97,51 @@ This project uses the "simple PostgreSQL schema" as specified in osmosis/script/
 
 The downside is, you cannot use a default database. And you have to use a modified version of Osmosis to convert the planet file. A special edition of Osmosis is provided with the sources. It knows a new option --pl that will create dump files with parts of the redundancy needed.
 
-Setting up PostGIS and new databases is described on the wiki. Follow the article 
-http://wiki.openstreetmap.org/wiki/Mapnik/PostGIS to create one or more new databases. Then execute pgsql_simple_schema.sql to create all the tables.
-Please note that the postgres user you want to use for script access must have all privileges on these databases including the 'super'-privilege for creating and dropping functions.
+The database name defined in the config is called osm_<ISO CODE> so the database created must match them or edit the config file to suit. This is the short form of an article on the wiki
+http://wiki.openstreetmap.org/wiki/Mapnik/PostGIS 
+
+>>>Tune database parameters
+edit /etc/postgresql/8.3/main/postgresql.conf and add/modify these parameters:
+shared_buffers = 128MB
+checkpoint_segments = 20
+maintenance_work_mem = 256MB
+autovacuum = off
+
+>>>assert the auto-vacuum daemon being shut down
+joe /etc/crontab
+comment out any auto-vacuum-daemon entry
+
+>>>Tune shmmax kernel parameter
+joe /etc/sysctl.conf
+edit/add the parameter
+kernel.shmmax=300000000
+after that reboot the machine or simply execute
+sysctl -w kernel.shmmax=300000000 && /etc/init.d/postgresql-8.3 restart
+
+>>>Optionally turn off postgres user authentication for local access
+joe /etc/postgresql/8.3/main/pg_hba.conf
+Add this line:
+local   all         all                               trust
+This is a security risk. You will not need a password when using the command line psql shell. Most probably you'll use phppgadmin and won't need this.
+
+>>>Create the new user
+su - postgres
+createuser keepright
+Shall the new role be a superuser? (y/n) y
+
+>>>Create the database
+createdb -E UTF8 -O keepright osm_EU
+createlang plpgsql osm_EU
+
+>>>Activate GIS
+psql -d osm_EU -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql
+echo "ALTER TABLE geometry_columns OWNER TO keepright; ALTER TABLE spatial_ref_sys OWNER TO keepright;" |psql -d osm_EU
+
+cd to keepright/planet and run:
+psql -h 127.0.0.1 -d osm_EU -U keepright -W -f pgsql_simple_schema.sql
+
+Wondering why the auto-vac-daemon ist shut off?
+The daemon will start analyzing and vacuuming tables every few hours to keep index performance up on a high level. But this consumes large amounts of IO bandwidth and disturbes normal operation. Vacuuming is done by hand throughout the scripts. Basically it is done once after the update and then implicitly by adding indexes after inserting the data.
 
 For inserting actual data take a look at updateDB.sh and config: This is a shell script that downloads a planet dump from the net and inserts the planet files contents in a database. In config you can define the names of your databases and the URLs where the dump files are to be found.
 
