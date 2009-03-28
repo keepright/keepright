@@ -47,6 +47,10 @@ PREFIX="/home/haraldk/OSM/keepright/"
 # a separate high speed partition preferably
 TMPDIR=$PREFIX"planet"
 
+# to turn off downloading the planet file and use
+# the old one set this parameter to zero
+KEEP_OSM="0"
+
 # this is where the check scripts reside
 CHECKSDIR=$PREFIX"checks"
 
@@ -54,6 +58,9 @@ PSQL_LOAD_SCRIPT=$TMPDIR"/pgsql_simple_load.sql"
 
 
 # this is where the result files will be placed
+# you HAVE TO specify the full path names here,
+# e.g. inserting $RESULTSDIR into ERROR_VIEW_FILE will
+# not work because these paremeters are read by a php script
 RESULTSDIR="/home/haraldk/OSM/keepright/results"
 
 ERROR_VIEW_FILE="/home/haraldk/OSM/keepright/results/error_view"
