@@ -31,8 +31,8 @@ WHERE TRUE ';
 //if ($db<>'*') $sql .=' AND db_name="' . addslashes($db) . '"';
 if ($ch<>'0') $sql .=' AND 10*floor(error_type/10) IN (' . addslashes($ch) . ')';
 
-//$sql .=' AND lat >= ' . ($lat-1e7) . ' AND lat <= ' . ($lat+1e7);	// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
-//$sql .=' AND lon >= ' . ($lon-1e7) . ' AND lon <= ' . ($lon+1e7);
+$sql .=' AND lat >= ' . ($lat-1e6) . ' AND lat <= ' . ($lat+1e6);	// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
+$sql .=' AND lon >= ' . ($lon-1e6) . ' AND lon <= ' . ($lon+1e6);
 
 switch ($st) {
 	case 'open': $sql.=' AND e.state IN ("new", "reopened")'; break;
