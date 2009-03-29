@@ -173,7 +173,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 
 echo '<form name="myform" method="get" action="' . $_SERVER['PHP_SELF'] . '">' . "\n";
 
-echo '<div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:-1;">
+echo '<div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
 
 <a href="/"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br><br>';
 
@@ -215,7 +215,7 @@ echo "
 <a name='editierlink' id='editierlink' target='_blank' href='http://openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
 
 <div style='overflow:auto; width:20%'>
-You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. Planet file downloaded at " . trim(file_get_contents('updated.inc')) . "
+You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Planet file downloaded at <b>" . trim(file_get_contents('updated.inc')) . "</b>
 </div>
 
 </div></form>
