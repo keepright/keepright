@@ -9,11 +9,45 @@
 # this script will download a dump file, insert it into the database, assemble some
 # helper tables used for error checks and finally run the error checks on the database
 #
+# start this script out of the checks directory
+# a copy of the config file will be created in your home directory
+# to save it from svn updates
+#
 # written by Harald Kleiner, May 2008
 #
 
+USERCONFIG=$HOME/keepright.config
+###########################
+# Copy the default config to the users home directory
+# which should be edited to match enviornment
+###########################
+if [ ! -f "$USERCONFIG" ]; then
+    if [ ! -f ../config/config ]; then
+        echo ""
+        echo "The default config file is not in current directory"
+        echo "Was updateDB.sh started from checks directory?"
+        echo ""
+        exit 1
+    fi
+    cp ../config/config $USERCONFIG
+    echo ""
+    echo "This is the first time you have run updateDB.sh"
+    echo "Edit the file $USERCONFIG as required then run this again"
+    echo ""
+    exit 1
+fi
+
 # import config file
-. config
+. $USERCONFIG
+###########################
+# Check config settings match the system
+###########################
+if [ ! -f "$CHECKSDIR/updateDB.sh" ]; then
+    echo ""
+    echo "Cannot find file $CHECKSDIR/updateDB.sh - is PREFIX in config correct"
+    echo ""
+    exit 1
+fi
 
 FILE="0"
 SORTOPTIONS="--temporary-directory=$TMPDIR"
@@ -79,8 +113,15 @@ for i do	# loop all given parameter values
 		rm pgimport/ways_sorted.txt
 
 		echo "`date` * loading database dumps"
-		PGPASSWORD="$MAIN_DB_PASSWORD"
-		psql -f "$PSQL_LOAD_SCRIPT" "$MAIN_DB_NAME" "$MAIN_DB_USER"
+                PGPASSWORD="$MAIN_DB_PASS"
+                export PGPASSWORD
+
+                psql -f "$PSQL_LOAD_SCRIPT" -h 127.0.0.1 -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER"
+                cd "$CHECKSDIR"
+
+                PGPASSWORD="shhh!"
+                export PGPASSWORD
+
 
 		cd "$CHECKSDIR"
 		echo "`date` * preparing helper tables and columns"
@@ -104,4 +145,3 @@ if [ "$FILE" = "0" ]; then
 	echo "you have to configure new country codes in the config file "
 	echo "if you want to add new ones except the existing codes AT, DE, EU "
 fi
-

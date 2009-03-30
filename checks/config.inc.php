@@ -1,6 +1,6 @@
 <?php
 
-$configfile=file('../config/config');
+$configfile=file($_ENV["HOME"] . '/keepright.config');
 $db_postfix=$argv[1];		// AT, DE, EU etc
 $error_types=array();
 
