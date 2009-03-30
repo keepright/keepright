@@ -22,9 +22,20 @@ $starttime=microtime(true);
 
 //--------------------------------------------------
 create_postgres_functions($db1);
-/*
+
+echo "add indexes to tags\n";
 query("DELETE FROM way_tags WHERE v IS NULL", $db1);
 query("DELETE FROM node_tags WHERE v IS NULL", $db1);
+
+//Index for keys and values
+query("CREATE INDEX idx_node_tags_k ON node_tags (k)", $db1);
+query("CREATE INDEX idx_node_tags_v ON node_tags (v)", $db1);
+
+query("CREATE INDEX idx_way_tags_k ON way_tags (k)", $db1);
+query("CREATE INDEX idx_way_tags_v ON way_tags (v)", $db1);
+
+query("CREATE INDEX idx_relation_tags_k ON relation_tags (k)", $db1);
+query("CREATE INDEX idx_relation_tags_v ON relation_tags (v)", $db1);
 
 
 echo "expand way_nodes with node data\n";
@@ -63,7 +74,7 @@ query("UPDATE ways
 //Update the bbox column of the way table 
 //so that is a little bit larger than the linestring	
 query("UPDATE ways SET bbox = Expand(geom, 10) WHERE bbox IS NULL", $db1);
-*/
+
 //Index the way bounding box column.
 query("CREATE INDEX idx_ways_bbox ON ways USING gist (bbox)", $db1);
 
