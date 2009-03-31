@@ -7,7 +7,8 @@
 #
 
 # import config file
-. config
+USERCONFIG=$HOME/keepright.config
+. $USERCONFIG
 
 FILE="0"
 CREATE_DUMPFILES="0"
