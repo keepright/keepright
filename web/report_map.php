@@ -36,10 +36,11 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 <html><head><title>keep right!</title>
 
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<!-- <script type="text/javascript" src="<?php echo $path; ?>OpenLayers.js"></script> -->
 
+<script type="text/javascript" src="<?php echo $path; ?>myPermalink.js"></script>
 <script type="text/javascript" src="<?php echo $path; ?>myTextFormat.js"></script>
 <script type="text/javascript" src="<?php echo $path; ?>myText.js"></script>
+
 <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 
 <script type="text/javascript">
@@ -48,6 +49,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 	var zoom=<?php echo $zoom; ?>;
 	var pois=null;
 	var map=null;
+	var plnk=null;
 
 	//Initialise the 'map' object
 	function init() {
@@ -85,7 +87,11 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
 		map.setCenter(lonLat, zoom);
 
-		map.addControl(new OpenLayers.Control.Permalink());
+
+		plnk = new OpenLayers.Control.myPermalink();
+		plnk.displayClass="olControlPermalink";
+		map.addControl(plnk);
+
 
 		// register event that records new lon/lat coordinates in form fields after panning
 		map.events.register("moveend", map, function() {
@@ -154,6 +160,12 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 				el.checked=new_value;
 			}
 		}
+		plnk.updateLink();
+	}
+
+	function checkbox_click() {
+		pois.loadText();
+		plnk.updateLink();
 	}
 
 
@@ -189,7 +201,7 @@ $result=mysqli_query($db1, "
 while ($row = mysqli_fetch_array($result)) {
 	echo '<img border=0 height=12 src="img/zap' . $row['error_type'] . '.png" alt="error marker ' . $row['error_type'] . '">';
 
-	echo '<input type="checkbox" id="ch' . $row['error_type'] . '" name="ch' . $row['error_type'] . '" value="' . $row['error_type'] . '" onclick="pois.loadText();"';
+	echo '<input type="checkbox" id="ch' . $row['error_type'] . '" name="ch' . $row['error_type'] . '" value="' . $row['error_type'] . '" onclick="javascript:checkbox_click();"';
 
 	if ($ch==='0' || $_GET['ch' . $row['error_type']]) echo ' checked="checked"';
 

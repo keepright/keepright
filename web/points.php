@@ -29,7 +29,7 @@ FROM ' . $error_view_name . ' e LEFT JOIN ' . $comments_name . ' c ON (e.error_i
 WHERE TRUE ';
 
 //if ($db<>'*') $sql .=' AND db_name="' . addslashes($db) . '"';
-if ($ch<>'0') $sql .=' AND 10*floor(error_type/10) IN (' . addslashes($ch) . ')';
+/*if ($ch<>'0')*/ $sql .=' AND 10*floor(error_type/10) IN (' . addslashes($ch) . ')';
 
 $sql .=' AND lat >= ' . ($lat-1e6) . ' AND lat <= ' . ($lat+1e6);	// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
 $sql .=' AND lon >= ' . ($lon-1e6) . ' AND lon <= ' . ($lon+1e6);
