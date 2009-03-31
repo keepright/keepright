@@ -116,7 +116,7 @@ for i do	# loop all given parameter values
                 PGPASSWORD="$MAIN_DB_PASS"
                 export PGPASSWORD
 
-                psql -f "$PSQL_LOAD_SCRIPT" -h 127.0.0.1 -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER"
+                psql -f "$PSQL_LOAD_SCRIPT" -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER"
                 cd "$CHECKSDIR"
 
                 PGPASSWORD="shhh!"
