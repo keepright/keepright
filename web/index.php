@@ -38,7 +38,7 @@ require('helpers.inc.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
-$result=query("SELECT error_type, error_name, error_description FROM error_types ORDER BY error_type", $db1, false);
+$result=query("SELECT error_type, error_name, error_description FROM $error_types_name ORDER BY error_type", $db1, false);
 while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
 	echo '<p><b>' . $row['error_name'] . '</b><br>' . $row['error_description'] . '</p>';
 }
