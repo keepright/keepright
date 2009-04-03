@@ -130,7 +130,7 @@ for i do	# loop all given parameter values
 		echo "`date` * running the checks"
 		php run-checks.php "$i"
 
-		./updateWebDB.sh "${i}"
+		./updateWebDB.sh "$i"
 
 		cd "$CHECKSDIR"
 		echo "`date` * ready."
