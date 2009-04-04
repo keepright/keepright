@@ -202,7 +202,7 @@ query("
 // at this point following these rules:
 // * for object_type==node lat/lon of the given node_id are retrieved
 // * for object_type==way lat/lon of the _first_ node of given way are inserted
-// * for relations I don't yet have an idea how to locate them in the map...
+// * for relations all ways and nodes included in the relation are retrieved and their center of gravity is inserted
 
 // only in special cases (e.g. a check wants to point to the _last_ node of a way,
 // a check may specify values for lat/lon
@@ -237,16 +237,6 @@ query("
 	FROM errors e INNER JOIN nodes n ON (e.object_id = n.id)
 	WHERE e.object_type='node' AND (e.lat IS NULL OR e.lon IS NULL)
 ", $db1);
-// then insert errors on nodes that do have lat/lon
-query("
-	INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
-		state, description, first_occurrence, last_checked, lat, lon)
-	SELECT e.error_id, '$MAIN_DB_NAME' as db_name, e.error_type, e.object_type, e.object_id,
-		e.state, e.description, e.first_occurrence, e.last_checked,
-		e.lat, e.lon
-	FROM errors e
-	WHERE e.object_type='node' AND NOT(e.lat IS NULL OR e.lon IS NULL)
-", $db1);
 
 // second insert errors on ways that don't have lat/lon
 query("
@@ -262,18 +252,42 @@ query("
 		1e7*w.first_node_lat, 1e7*w.first_node_lon
 ", $db1);
 
-// then insert errors on ways that do have lat/lon
+// now find location for relations
+$result=query("
+	SELECT DISTINCT e.error_id, e.error_type, e.object_id, e.state, e.description,
+		e.first_occurrence, e.last_checked
+	FROM errors e
+	WHERE e.object_type='relation' AND (e.lat IS NULL OR e.lon IS NULL)
+", $db1, false);
+
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+	$latlong = locate_relation($row['object_id'], $db3);
+	query("
+		INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
+			state, description, first_occurrence, last_checked, lat, lon)
+		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '${row['error_type']}',
+			'relation', ${row['object_id']}, '${row['state']}',
+			'${row['description']}', '${row['first_occurrence']}',
+			'${row['last_checked']}', ${latlong['lat']}, ${latlong['lon']})
+	", $db2, false);
+}
+pg_free_result($result);
+
+
+
+// finally insert errors on ways/nodes/relations that do have lat/lon values
 query("
 	INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
 		state, description, first_occurrence, last_checked, lat, lon)
-	SELECT e.error_id, '$MAIN_DB_NAME' as db_name, e.error_type, e.object_type, e.object_id,
-		e.state, e.description, e.first_occurrence, e.last_checked,
-		e.lat, e.lon
-	FROM errors e
-	WHERE e.object_type='way' AND NOT(e.lat IS NULL OR e.lon IS NULL)
-	GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state, e.description,
+	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME' as db_name, e.error_type,
+		e.object_type, e.object_id, e.state, e.description,
 		e.first_occurrence, e.last_checked, e.lat, e.lon
+	FROM errors e
+	WHERE NOT(e.lat IS NULL OR e.lon IS NULL)
 ", $db1);
+
+
+
 
 // finally add the error names
 query("
@@ -323,6 +337,15 @@ select error_type, state, last_checked>'2009-03-09' as recently, count(error_id)
 from error_view
 group by error_type, state, last_checked>'2009-03-09'
 order by last_checked>'2009-03-09', state, error_type
+*/
+
+
+/*
+update comments_osm_EU inner join error_view_osm_EU using (error_id) 
+SET comments_osm_EU.state=null
+WHERE comments_osm_EU.state='ignore_temporarily' AND 
+error_view_osm_EU.state<>'cleared' AND 
+comments_osm_EU.timestamp<"2009-03-31"
 */
 
 

@@ -355,6 +355,59 @@ function drop_postgres_functions($db) {
 }
 
 
+// finds the spot of a relation in the map by retrieving all objects
+// referenced by the relation and its members (which may be relations too)
+// and calculating the center of gravity of all nodes
+// return value is an array like this: return array('lat'=>17, 'lon'=>3);
+function locate_relation($id, $db1) {
+	// temp. table for storing members of the relation
+	query("DROP TABLE IF EXISTS _tmp_m", $db1, false);
+	query("
+		CREATE TABLE _tmp_m (
+			member_type smallint NOT NULL,
+			id bigint NOT NULL,
+			PRIMARY KEY(member_type, id)
+		)
+	", $db1, false);
+	add_insert_ignore_rule('_tmp_m', array('member_type', 'id'), $db1);
+
+	// add starting relation
+	query("INSERT INTO _tmp_m (member_type, id) VALUES(3, $id)", $db1, false);
+
+	// recursively find sub-relations and their members referenced by the relation
+	do {
+		$result=query("
+			INSERT INTO _tmp_m (member_type, id)
+			SELECT DISTINCT m.member_type, m.member_id
+			FROM relation_members m INNER JOIN _tmp_m tm ON m.relation_id=tm.id
+			WHERE tm.member_type=3
+		", $db1, false);
+	} while (pg_affected_rows($result)>0);
+
+	// for any way find the nodes it contains
+	$result=query("
+		INSERT INTO _tmp_m (member_type, id)
+		SELECT DISTINCT 1, wn.node_id
+		FROM way_nodes wn INNER JOIN _tmp_m tm ON wn.way_id=tm.id
+		WHERE tm.member_type=2
+	", $db1, false);
+
+	// now we've got a list of nodes. Let's calculate teir coordinates' average
+	$result=query("
+		SELECT SUM(n.lat) AS la, SUM(n.lon) AS lo, COUNT(tm.id) AS cnt
+		FROM _tmp_m tm INNER JOIN nodes n ON n.id=tm.id
+		WHERE tm.member_type=1
+	", $db1, false);
+	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
+
+	if ($row && $row['cnt']<>0)
+		return array('lat' => $row['la']/$row['cnt'], 'lon' => $row['lo']/$row['cnt']);
+	else
+		return array('lat' => 0, 'lon' => 0);
+}
+
+
+
 // gets a time value in seconds and writes it in s, min, h
 // according to its amount
 function format_time($t) {
