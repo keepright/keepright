@@ -136,6 +136,7 @@ find crossings of highways that are not represented by a common node
 	pg_free_result($result);
 
 
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 
 
 

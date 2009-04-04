@@ -139,5 +139,7 @@ query("DROP TABLE IF EXISTS _tmp_nodes", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_island_members", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_ways2", $db1, false);
 
 ?>

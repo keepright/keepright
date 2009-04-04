@@ -401,9 +401,13 @@ function locate_relation($id, $db1) {
 	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
 
 	if ($row && $row['cnt']<>0)
-		return array('lat' => $row['la']/$row['cnt'], 'lon' => $row['lo']/$row['cnt']);
+		$r = array('lat' => $row['la']/$row['cnt'], 'lon' => $row['lo']/$row['cnt']);
 	else
-		return array('lat' => 0, 'lon' => 0);
+		$r = array('lat' => 0, 'lon' => 0);
+
+	pg_free_result($result);
+	query("DROP TABLE IF EXISTS _tmp_m", $db1, false);
+	return $r;
 }
 
 

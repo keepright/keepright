@@ -62,5 +62,5 @@ query("
 	HAVING COUNT(c.node_id)>1
 ", $db1);
 
-//query("DROP TABLE IF EXISTS _tmp_node_count", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_node_count", $db1, false);
 ?>

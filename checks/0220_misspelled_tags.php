@@ -255,7 +255,7 @@ global $never_complain_about;
 }
 
 
-//query("DROP TABLE IF EXISTS _tmp_tags", $db1, false);
-//query("DROP TABLE IF EXISTS _tmp_keys", $db1, false);
-//query("DROP TABLE IF EXISTS _tmp_bad_tags", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_tags", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_keys", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_bad_tags", $db1, false);
 ?>
