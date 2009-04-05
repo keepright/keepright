@@ -22,12 +22,12 @@ a way tagged as oneway must always be connected to other ways on both end-nodes
 		PRIMARY KEY (way_id)
 		)
 	", $db1);
-	
+
 	query("
 		INSERT INTO _tmp_one_ways (way_id)
 		SELECT way_id
-		FROM way_tags 
-		WHERE k='oneway' AND v='yes'
+		FROM way_tags
+		WHERE k='oneway' AND v IN ('yes', 'true', '1')
 		GROUP BY way_id
 	", $db1);
 
@@ -37,10 +37,10 @@ a way tagged as oneway must always be connected to other ways on both end-nodes
 
 	// maybe disable this check on segments of motorways?
 //	query("
-//		DELETE FROM _tmp_one_ways 
+//		DELETE FROM _tmp_one_ways
 //		WHERE EXISTS(
-//			SELECT * 
-//			FROM way_tags 
+//			SELECT *
+//			FROM way_tags
 //			WHERE k='highway' AND v='motorway' AND way_id=_tmp_one_ways.way_id
 //		)
 //	", $db1);
@@ -62,11 +62,11 @@ a way tagged as oneway must always be connected to other ways on both end-nodes
 	query("
 		INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked) 
 		SELECT $error_type, 'way', o.way_id, 'The first node (id ' || o.first_node_id || ') of this one-way is not connected to any other way.', NOW()
-		FROM _tmp_one_ways o 
+		FROM _tmp_one_ways o
 		WHERE o.first_node_id<>o.last_node_id AND
 		NOT EXISTS(
-			SELECT way_id 
-			FROM way_nodes wn1 
+			SELECT way_id
+			FROM way_nodes wn1
 			WHERE o.first_node_id=wn1.node_id AND wn1.way_id<>o.way_id
 		)
 	", $db1);
@@ -80,8 +80,8 @@ a way tagged as oneway must always be connected to other ways on both end-nodes
 		FROM _tmp_one_ways o
 		WHERE o.first_node_id<>o.last_node_id AND
 		NOT EXISTS(
-			SELECT way_id 
-			FROM way_nodes wn2 
+			SELECT way_id
+			FROM way_nodes wn2
 			WHERE o.last_node_id=wn2.node_id AND wn2.way_id<>o.way_id
 		)
 	", $db1);

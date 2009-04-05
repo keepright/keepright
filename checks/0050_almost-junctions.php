@@ -97,7 +97,7 @@ note ways that come closer than min_distance to the endpoint
 		WHERE EXISTS (
 			SELECT node_id
 			FROM node_tags AS t
-			WHERE t.node_id=en.node_id AND t.k='noexit' and t.v='yes'
+			WHERE t.node_id=en.node_id AND t.k='noexit' and t.v IN ('yes', 'true', '1')
 		)
 	", $db1);
 
