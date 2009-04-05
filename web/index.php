@@ -20,6 +20,9 @@ By default you will be put into the center of Vienna.<br>
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-04-05</h4>
+Just added an updated version of "misspelled tags" errors. Because of user feedback I removed some false positives.
+
 <h4>2009-04-04</h4>
 An updated errors-table went online today! Planet dump was updated as of march 31th 2009.<br><br>
 Please welcome a new check called "misspelled tags". This one tries to find typos in keys and values. Keys and values are split up into two groups: common (frequently used) and uncommon (infrequently used) ones. This check will complain about uncommon keys or values that differ by just one character from a common key or value. It doesn't make sense to look for differences on numbers in this way, so any combination of numbers is replaced by 0. Don't get confused by zeroes in error messages, they are just placeholders!<br><br>
