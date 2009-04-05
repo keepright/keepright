@@ -20,8 +20,9 @@ will be found so any name value will be ok
 // please keep values in ascending order!
 $false_positives = array(
 	array('AND_a', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_w'),
+	array('block', 'lock'),
 	array('county', 'country'),
-	array('detail', 'retail'),
+	array('derail', 'detail', 'retail'),
 	array('door', 'moor'),
 	array('email', 'e-mail', 'mail'),
 	array('food', 'foot', 'wood'),
@@ -29,7 +30,7 @@ $false_positives = array(
 	array('hall', 'mall', 'wall'),
 	array('height', 'weight'),
 	array('hires', 'wires'),
-	array('hotel', 'motel'),
+	array('hotel', 'hostel', 'motel'),
 	array('lanes', 'lines'),
 	array('icn_ref', 'lcn_ref', 'lwn_ref', 'loc_ref', 'ncn_ref', 'nwn_ref', 'rcn_ref', 'rwn_ref'),
 	array('left', 'lift'),
@@ -43,6 +44,7 @@ $false_positives = array(
 	array('number', 'numbers'),
 	array('power', 'tower'),
 	array('salb', 'sale', 'salt'),
+	array('service', 'services'),
 	array('short', 'sport'),
 	array('ship', 'show', 'shop', 'stop'),
 	array('tell', 'toll'),
