@@ -16,15 +16,15 @@ ALTER TABLE nodes DROP CONSTRAINT pk_nodes;
 ALTER TABLE ways DROP CONSTRAINT pk_ways;
 ALTER TABLE way_nodes DROP CONSTRAINT pk_way_nodes;
 ALTER TABLE relations DROP CONSTRAINT pk_relations;
-DROP INDEX idx_node_tags_node_id;
-DROP INDEX idx_nodes_geom;
-DROP INDEX idx_way_tags_way_id;
-DROP INDEX idx_way_nodes_node_id;
-DROP INDEX idx_relation_tags_relation_id;
-DROP INDEX idx_ways_bbox;
-DROP INDEX idx_relations_member_id;
-DROP INDEX idx_relations_member_role;
-DROP INDEX idx_relations_member_type;
+DROP INDEX IF EXISTS idx_node_tags_node_id;
+DROP INDEX IF EXISTS idx_nodes_geom;
+DROP INDEX IF EXISTS idx_way_tags_way_id;
+DROP INDEX IF EXISTS idx_way_nodes_node_id;
+DROP INDEX IF EXISTS idx_relation_tags_relation_id;
+DROP INDEX IF EXISTS idx_ways_bbox;
+DROP INDEX IF EXISTS idx_relations_member_id;
+DROP INDEX IF EXISTS idx_relations_member_role;
+DROP INDEX IF EXISTS idx_relations_member_type;
 
 SELECT DropGeometryColumn('ways', 'bbox');
 SELECT DropGeometryColumn('ways', 'geom');
@@ -52,30 +52,3 @@ CREATE INDEX idx_relation_tags_relation_id ON relation_tags USING btree (relatio
 CREATE INDEX idx_relations_member_id ON relation_members USING btree (member_id);
 CREATE INDEX idx_relations_member_role ON relation_members USING btree (member_role);
 CREATE INDEX idx_relations_member_type ON relation_members USING btree (member_type);
-
--- Add a postgis bounding box column used for indexing the location of the way.
--- This will contain a bounding box surrounding the extremities of the way.
-
---SELECT AddGeometryColumn('ways', 'bbox', 4326, 'GEOMETRY', 2);
---SELECT AddGeometryColumn('ways', 'geom', 4326, 'LINESTRING', 2);
-
---UPDATE ways
---SET geom=GeomFromText( 'LINESTRING(' || array_to_string(array(
---	SELECT wn.x || ' ' || wn.y
---	FROM way_nodes wn
---	WHERE ways.way_id=wn.way_id
---	ORDER BY wn.sequence_id), ',')
---|| ')',4326);
-
--- Update the bbox column of the way table 
--- so that is a little bit larger than the linestring
---UPDATE ways SET bbox = Expand(geom, 10);
-
-
-
--- Index the way bounding box column.
---CREATE INDEX idx_ways_bbox ON ways USING gist (bbox);
-
--- Perform database maintenance due to large database changes.
---VACUUM ANALYZE;
-
