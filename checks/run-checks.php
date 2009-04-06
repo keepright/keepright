@@ -92,12 +92,14 @@ query("
 	)
 ", $db1, false);
 
-// insert any error-type that is defined in $error_types in config.inc
+// insert any error-type that is defined and enabled in $error_types in config.inc
 foreach ($error_types as $error_type=>$error) {
-	query("
-		INSERT INTO error_types(error_type, error_name, error_description) 
-		VALUES(" . addslashes($error_type) . ",'" . addslashes($error['NAME']) . "','" . addslashes($error['DESCRIPTION']) . "')
-	", $db1, false);
+	if ($error['ENABLED'] != '0' ) {
+		query("
+			INSERT INTO error_types(error_type, error_name, error_description) 
+			VALUES(" . addslashes($error_type) . ",'" . addslashes($error['NAME']) . "','" . addslashes($error['DESCRIPTION']) . "')
+		", $db1, false);
+	}
 }
 
 
@@ -126,7 +128,7 @@ foreach ($error_types as $error_type=>$error) {
 
 	// two options here: a) no checks are called on commandline -> execute all enabled checks
 	// b) the check is found in the command line arguments -> execute it, no matter what $enabled says
-	if (($error['ENABLED'] && $argc<3) || $called) {
+	if (($error['ENABLED']!='0' && $argc<3) || $called) {
 		echo "-------------------------------------------------------------------\n";
 		$starttime=microtime(true);
 		echo strftime('%D %T') . ": starting check " . $error['FILE'] . "...\n";
