@@ -48,7 +48,7 @@ PREFIX="/home/haraldk/OSM/keepright/"
 TMPDIR=$PREFIX"planet"
 
 # to turn off downloading the planet file and use
-# the old one set this parameter to zero
+# the old one set this parameter to one
 KEEP_OSM="0"
 
 # this is where the check scripts reside
