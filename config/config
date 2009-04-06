@@ -129,7 +129,7 @@ CHECK_0030_DESCRIPTION="By convention ways tagged with special combinations of k
 CHECK_0040_NAME="dead-ended one-ways"
 CHECK_0040_ENABLED="1"
 CHECK_0040_FILE="0040_dead-ended_one-ways.php"
-CHECK_0040_DESCRIPTION="Streets tagged as one-way must not be dead-ended (where should all the cars pile at the end of the road?)"
+CHECK_0040_DESCRIPTION="Streets tagged as one-way must not be dead-ended (where should all the cars pile at the end of the road?). Nodes where just one-way streets begin (or end) cannot be reached (escaped from). Please note that motorways and motorway_links are considered one-way implicitly, so this check applies."
 
 CHECK_0050_NAME="almost-junctions"
 CHECK_0050_ENABLED="1"
@@ -139,7 +139,7 @@ CHECK_0050_DESCRIPTION="Streets that have (at least) one unconnected end are exa
 CHECK_0060_NAME="deprecated tags"
 CHECK_0060_ENABLED="1"
 CHECK_0060_FILE="0060_deprecated_tags.php"
-CHECK_0060_DESCRIPTION="As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some tags get replaced by others as new tagging conventions evolve."
+CHECK_0060_DESCRIPTION="As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some tags get replaced by others as new tagging conventions evolve. Consider this as a notice, not as an error. The term 'deprecated' is deprecated; you're free to tag anything the way you like. This is just a hint for new tagging conventions that have evolved in the meantime."
 
 CHECK_0070_NAME="missing tags"
 CHECK_0070_ENABLED="1"
@@ -169,12 +169,12 @@ CHECK_0110_DESCRIPTION="The name tag should be specified for every point of inte
 CHECK_0120_NAME="ways without nodes"
 CHECK_0120_ENABLED="1"
 CHECK_0120_FILE="0120_ways_without_nodes.php"
-CHECK_0120_DESCRIPTION="Ways that don't consist of at least two nodes don't make much sense as they won't get rendered. Question is: How can one delete a way without nodes?"
+CHECK_0120_DESCRIPTION="Ways that don't consist of at least two nodes don't make much sense as they won't get rendered."
 
 CHECK_0130_NAME="floating islands"
 CHECK_0130_ENABLED="1"
 CHECK_0130_FILE="0130_islands.php"
-CHECK_0130_DESCRIPTION="Any highways drawn on the map should be accessible by car starting anywhere in the world. Ferries and highways are included in this check, so almost any island in the sea should be reachable starting from the mainland."
+CHECK_0130_DESCRIPTION="Any highways drawn on the map should be accessible by car starting anywhere in the world. Ferries and highways (even railway platforms) are included in this check, so almost any island in the sea should be reachable starting from the mainland."
 
 CHECK_0140_NAME="ways with name tag, without frequently used tag"
 CHECK_0140_ENABLED="0"
