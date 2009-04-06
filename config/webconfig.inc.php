@@ -7,12 +7,16 @@ $db_user="root";
 $db_pass="haraldk";
 $db_name="osm_EU";
 
+// $db_name is the name of the physical database on the MySQL server for connecting
+
+// $db is a value used for selection rows out of error_view.db_name
+// this allows to have different countries inside one table and select them via URL
 
 if (!isset($db)) {
 	if (isset($_GET['db'])) {
 		$db=addslashes($_GET['db']);
 	} else {
-		$db='osm_EU';
+		$db=$db_name;
 	}
 }
 $error_view_name="error_view_" . $db;
