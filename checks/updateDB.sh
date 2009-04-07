@@ -69,17 +69,22 @@ for i do	# loop all given parameter values
 		echo "--------------------"
 
                 if [ "$KEEP_OSM" = "0" ]; then
-                    echo "`date` * downloading osm file"
-                    wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
+			echo "`date` * downloading osm file"
+			wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
                 else
-                    echo "Using previous downloaded $TMPDIR/$FILE"
-                    echo "--------------------"
+			echo "Using previous downloaded $TMPDIR/$FILE"
+			echo "--------------------"
                 fi
 
                 if [ ! -f "$TMPDIR/$FILE" ]; then
-                    echo "The download file $TMPDIR/$FILE is not present"
-                    exit 1
+			echo "The download file $TMPDIR/$FILE is not present"
+			exit 1
                 fi
+		# Verify the size of file > 0 bytes
+		if [ ! -s "$TMPDIR/$FILE" ]; then
+			echo "The download file $TMPDIR/$FILE is zero bytes"
+			exit 1
+		fi
 
 		# check if the planet file has changed.
 		# if not, we can exit at this point
