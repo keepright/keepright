@@ -87,7 +87,7 @@ for i do	# loop all given parameter values
                 # If the sum file does not exist then first time
                 # and then can be processed
                 if [ ! -f "$TMPDIR/sum-last_${i}" ]; then
-			cksum "$TMPDIR/$FILE" > "$TMPDIR/sum-last_${i}"
+			echo "XXXX" > "$TMPDIR/sum-last_${i}"
                 fi
 
                 # sum the current file
