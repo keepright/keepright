@@ -270,7 +270,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '${row['error_type']}',
 			'relation', ${row['object_id']}, '${row['state']}',
 			'${row['description']}', '${row['first_occurrence']}',
-			'${row['last_checked']}', ${latlong['lat']}, ${latlong['lon']})
+			'${row['last_checked']}', 1e7*${latlong['lat']}, 1e7*${latlong['lon']})
 	", $db2, false);
 }
 pg_free_result($result);
