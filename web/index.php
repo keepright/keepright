@@ -20,6 +20,9 @@ By default you will be put into the center of Vienna.<br>
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-04-10</h4>
+An updated errors-table went online today! Planet dump was updated as of april 7th 2009.<br><br>
+
 <h4>2009-04-06</h4>
 Just added an updated version of "dead-ended one-ways" errors. The check now includes motorways and motorway_links, which are regarded as one-way streets implicitly. Second there is a new part that searches for colliding one-way streets (one-ways pointing to a single node that cannot be left or from a single node that cannot be reached). Thank you, Ossi, for that hint!
 
