@@ -127,7 +127,7 @@ find crossings of highways that are not represented by a common node
 		$point = $points[0];
 		query("
 			INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lon, lat) 
-			VALUES($error_type+1, CAST('way' AS type_object_type), {$row['way_id1']},
+			VALUES($error_type+10, CAST('way' AS type_object_type), {$row['way_id1']},
 			'This way overlaps way #' || {$row['way_id2']} || '.', NOW()," .
 			1e7*merc_lon($point[0]) . ',' . 1e7*merc_lat($point[1]) . ')'
 		, $db2, false);
