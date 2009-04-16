@@ -16,15 +16,24 @@ ALTER TABLE nodes DROP CONSTRAINT pk_nodes;
 ALTER TABLE ways DROP CONSTRAINT pk_ways;
 ALTER TABLE way_nodes DROP CONSTRAINT pk_way_nodes;
 ALTER TABLE relations DROP CONSTRAINT pk_relations;
+
 DROP INDEX IF EXISTS idx_node_tags_node_id;
 DROP INDEX IF EXISTS idx_nodes_geom;
 DROP INDEX IF EXISTS idx_way_tags_way_id;
 DROP INDEX IF EXISTS idx_way_nodes_node_id;
 DROP INDEX IF EXISTS idx_relation_tags_relation_id;
 DROP INDEX IF EXISTS idx_ways_bbox;
+
 DROP INDEX IF EXISTS idx_relations_member_id;
 DROP INDEX IF EXISTS idx_relations_member_role;
 DROP INDEX IF EXISTS idx_relations_member_type;
+
+DROP INDEX IF EXISTS idx_node_tags_k;
+DROP INDEX IF EXISTS idx_node_tags_v;
+DROP INDEX IF EXISTS idx_way_tags_k;
+DROP INDEX IF EXISTS idx_way_tags_v;
+DROP INDEX IF EXISTS idx_relation_tags_k;
+DROP INDEX IF EXISTS idx_relation_tags_v;
 
 SELECT DropGeometryColumn('ways', 'bbox');
 SELECT DropGeometryColumn('ways', 'geom');
