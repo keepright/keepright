@@ -41,7 +41,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 <script type="text/javascript" src="<?php echo $path; ?>myTextFormat.js"></script>
 <script type="text/javascript" src="<?php echo $path; ?>myText.js"></script>
 
-<script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 
 <script type="text/javascript">
 	var lat=<?php echo $lat/1e7; ?>;
@@ -102,7 +102,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 			document.myform.zoom.value=this.getZoom();
 
 			var editierlink = document.getElementById('editierlink');
-			editierlink.href="http://openstreetmap.org/edit?lat=" + lonlat.lat + "&lon=" + lonlat.lon + "&zoom=" + this.getZoom();
+			editierlink.href="http://www.openstreetmap.org/edit?lat=" + lonlat.lat + "&lon=" + lonlat.lon + "&zoom=" + this.getZoom();
 
 			pois.loadText();		//reload markers after panning
 		});
@@ -224,7 +224,7 @@ echo "
 <input type='button' value='none' onClick='javascript:set_checkboxes(false); pois.loadText();'><br>
 
 
-<a name='editierlink' id='editierlink' target='_blank' href='http://openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
+<a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
 
 <div style='overflow:auto; width:20%'>
 You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Planet file downloaded at <b>" . trim(file_get_contents('updated.inc')) . "</b>

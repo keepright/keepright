@@ -243,7 +243,7 @@ parseData: function(ajaxRequest) {
 
 			'<p class="p2">edit in <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.01) + '&right=' + (lon-(-0.01)) + '&top=' + (lat-(-0.01)) + '&bottom=' + (lat-0.01) + '&select=' + object_type + object_id + '" target="hiddenIframe">JOSM</a> ' +
 
-			'<a href="http://openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">Potlatch</a></p>' +
+			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">Potlatch</a></p>' +
 
 			''+
 			'<form class="p3" name="errfrm_'+error_id+'" target="hiddenIframe" method="get" action="comment.php">' +
