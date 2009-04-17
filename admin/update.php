@@ -3,10 +3,9 @@
 
 <h3>update source code</h3>
 <?php
-
 	if (isset($_POST['svn_up'])) {
 		echo '<pre>';
-		passthru('ls -l');
+		system('/usr/bin/svn up 2>&1 | tee -a log');
 		echo '</pre>';
 	}
 ?>

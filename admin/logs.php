@@ -4,7 +4,10 @@
 <pre>
 	<?php
 
-	echo file_get_contents('log');
+	if (file_exists('log'))
+		echo file_get_contents('log');
+	else
+		echo "no log file present";
 
 	?>
 </pre>
