@@ -9,6 +9,22 @@ data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
 
+
+
+<h4>2009-04-05</h4>
+Just added an updated version of "misspelled tags" errors. Because of user feedback I removed some false positives.
+
+<h4>2009-04-04</h4>
+An updated errors-table went online today! Planet dump was updated as of march 31th 2009.<br><br>
+Please welcome a new check called "misspelled tags". This one tries to find typos in keys and values. Keys and values are split up into two groups: common (frequently used) and uncommon (infrequently used) ones. This check will complain about uncommon keys or values that differ by just one character from a common key or value. It doesn't make sense to look for differences on numbers in this way, so any combination of numbers is replaced by 0. Don't get confused by zeroes in error messages, they are just placeholders!<br><br>
+Did you ever wonder why errors on relations were seen so rarely? Well, up to now not a single error on relations was shown on the map because I had no idea where to put the marker. To solve this I put the markers on the center of gravity of all nodes referenced by the relation. Although this may not be ideal for circular routes as the marker is placed in the center, it is better than nothing... Thank you, Michel, for remining me of that issue!
+
+<h4>2009-03-29</h4>
+An updated errors-table went online today! Planet dump was updated as of march 25th 2009. Because of my fault this is only a partial update. Checks floating islands, intersections without junctions and overlapping ways are still in the state of last week.<br><br>
+
+<h4>2009-03-21</h4>
+An updated errors-table went online today! Planet dump was updated as of march 17th 2009.<br><br>
+
 <h4>2009-03-14</h4>
 An updated errors-table went online today! Planet dump was updated as of march 10th 2009.<br><br>
 
