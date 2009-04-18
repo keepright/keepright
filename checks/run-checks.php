@@ -343,11 +343,12 @@ order by last_checked>'2009-03-09', state, error_type
 
 
 /*
-update comments_osm_EU inner join error_view_osm_EU using (error_id) 
-SET comments_osm_EU.state=null
+UPDATE comments_osm_EU inner join error_view_osm_EU using (error_id) 
+SET comments_osm_EU.state=null, 
+comments_osm_EU.comment=CONCAT("[error still open, 2009-04-14]", comments_osm_EU.comment)
 WHERE comments_osm_EU.state='ignore_temporarily' AND 
 error_view_osm_EU.state<>'cleared' AND 
-comments_osm_EU.timestamp<"2009-03-31"
+comments_osm_EU.timestamp<"2009-04-01"
 */
 
 
