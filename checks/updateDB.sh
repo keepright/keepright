@@ -60,6 +60,7 @@ for i do	# loop all given parameter values
 	eval 'FILE=${FILE_'"${i}"'}'
 	eval 'MAIN_DB_NAME=${MAIN_DB_NAME_'"${i}"'}'
 	eval 'CAT=${CAT_'"${i}"'}'
+	eval 'MIN_SIZE=${MIN_SIZE_'"${i}"'}'
 
 
 	if [ "$FILE" != "0" ]; then
@@ -80,11 +81,12 @@ for i do	# loop all given parameter values
 			echo "The download file $TMPDIR/$FILE is not present"
 			exit 1
                 fi
-		# Verify the size of file > 0 bytes
-		if [ ! -s "$TMPDIR/$FILE" ]; then
-			echo "The download file $TMPDIR/$FILE is zero bytes"
-			exit 1
-		fi
+		# Verify the size of file > MIN_SIZE kilobytes
+                SIZE=`ls -alk $TMPDIR/$FILE | awk '{print $5}'`
+                if [  $SIZE -lt $MIN_SIZE ]; then
+                    echo "The download file $TMPDIR/$FILE is too small (filesize $SIZE less than $MIN_SIZE)"
+                    exit 1
+                fi
 
 		# check if the planet file has changed.
 		# if not, we can exit at this point
