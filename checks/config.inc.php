@@ -1,35 +1,45 @@
 <?php
 
-$configfile=file($_ENV["HOME"] . '/keepright.config');
 $db_postfix=$argv[1];		// AT, DE, EU etc
 $error_types=array();
 
+// first read default config file shipped with keepright
+// then read the user-defined config file to overwrite custom settings
+parse_config_vars('config');
+parse_config_vars($_ENV["HOME"] . '/keepright.config');
 
-$conf_vars = array('MAIN_DB_HOST', 'MAIN_DB_USER', 'MAIN_DB_PASS', 'WEB_DB_HOST', 'WEB_DB_USER', 'WEB_DB_PASS', 'WEB_DB_NAME', "ERROR_VIEW_FILE", "ERROR_TYPES_FILE", "RESULTSDIR");
+function parse_config_vars($filename) {
+	global $error_types, $db_postfix;
+	$configfile=file($filename);	// read config file into variable
 
-$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
+	$conf_vars = array('MAIN_DB_HOST', 'MAIN_DB_USER', 'MAIN_DB_PASS',
+		'WEB_DB_HOST', 'WEB_DB_USER', 'WEB_DB_PASS', 'WEB_DB_NAME',
+		"ERROR_VIEW_FILE", "ERROR_TYPES_FILE", "RESULTSDIR");
 
-foreach ($configfile as $line) {
+	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
 
-	if (preg_match('/^\s*#/', $line) === 0) {	// ignore comments (lines starting with #)
+	foreach ($configfile as $line) {
 
-		// find database name
-		if (preg_match('/^\s*MAIN_DB_NAME_' .$db_postfix. '\s*=\s*"(.*)\"/', $line, $matches))
-			$MAIN_DB_NAME=$matches[1];
+		if (preg_match('/^\s*#/', $line) === 0) {	// ignore comments (lines starting with #)
 
-		// find all the other db credentials
-		foreach ($conf_vars as $var) {
-			if (preg_match('/^\s*' . $var . '\s*=\s*"(.*)\"/', $line, $matches))
-				$$var=$matches[1];
+			// find database name
+			if (preg_match('/^\s*MAIN_DB_NAME_' .$db_postfix. '\s*=\s*"(.*)\"/', $line, $matches))
+				$GLOBALS['MAIN_DB_NAME']=$matches[1];
+
+			// find all the other db credentials
+			foreach ($conf_vars as $var) {
+				if (preg_match('/^\s*' . $var . '\s*=\s*"(.*)\"/', $line, $matches))
+					$GLOBALS[$var]=$matches[1];
+			}
+
+
+			// find check parameters
+			foreach ($check_parts as $var) {
+				if (preg_match('/^\s*CHECK_([0-9]{4})_' . $var . '\s*=\s*"(.*)\"/', $line, $matches))
+					$error_types[1*$matches[1]][$var] = $matches[2];
+			}
+
 		}
-
-
-		// find check parameters
-		foreach ($check_parts as $var) {
-			if (preg_match('/^\s*CHECK_([0-9]{4})_' . $var . '\s*=\s*"(.*)\"/', $line, $matches))
-				$error_types[1*$matches[1]][$var] = $matches[2];
-		}
-
 	}
 }
 //print_r($error_types);
@@ -54,7 +64,6 @@ Array
         )
 )
 */
-
 
 
 if (strlen(trim($MAIN_DB_NAME))==0) {
