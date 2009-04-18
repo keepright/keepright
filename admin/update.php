@@ -20,7 +20,7 @@
 
 	if (isset($_POST['updateDB']) && isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 		echo '<pre>';
-		passthru('ls');
+		system('updateDB.sh ' . $_POST['isocode'] . ' 2>&1 | tee -a log');
 		echo '</pre>update started. Please view the logs for results.';
 	}
 ?>
