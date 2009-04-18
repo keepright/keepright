@@ -9,12 +9,15 @@
 
 This pages show checks that are run on a local excerpt database filled with OSM data. Checks are run on a database containing just the Europe part of the planet file for performance and memory reasons.
 <br><br>
-I'm proud to offer you two ways of accessing check results
+
+<div style="border:thin solid #800000; background-color:#80FF80;">Please welcome the first Keepright partner site providing error checks for <a href="http://keepright.x10hosting.com" target="_blank">Australia</a><br><br>Want to become a partner too? Want to have a look into the sources behind keepright? Have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access, a mailing list and a trac ticket request system</div>
+
 <ul>
 	<li><a href="report.php">Europe Data Checks as ugly list</a></li>
 	<li><a href="report_map.php">Europe Data Checks painted on the map</a></li>
+	<li><a href="http://keepright.x10hosting.com" target="_blank">Australian Keepright partner site</a></li>
 </ul>
-By default you will be put into the center of Vienna.<br>
+By default you will be put into the center of Vienna for the European version.<br>
 
 <h4>a few words on the new comment feature</h4>
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
@@ -22,6 +25,7 @@ Please give a comment that helps me improve the check routines if you find a fal
 <h3>logfile</h3>
 <h4>2009-04-18</h4>
 An updated errors-table went online today! Planet dump was updated as of april 14th 2009.<br><br>
+The first keepright partner site is now online! Please visit <a href="http://keepright.x10hosting.com" target="_blank">keepright Australia</a>
 
 <h4>2009-04-10</h4>
 An updated errors-table went online today! Planet dump was updated as of april 7th 2009.<br><br>
