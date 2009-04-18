@@ -71,39 +71,90 @@ ERROR_TYPES_FILE="/home/haraldk/OSM/keepright/results/error_types"
 ############################################
 
 # use ISO country codes to separate different locations
-# calling 'updateDB.sh DE' will lead to use of URL_DE, 
-# FILE_DE, DB_DE, CAT_DE as download parameters
+# calling 'updateDB.sh DE' will lead to use of URL_DE,
+# FILE_DE, DB_DE, CAT_DE as download parameters.
+# Use MIN_SIZE parameter to automatically check if the downloaded
+# planet file is complete. Give a file size in KB.
 
 URL_DE="http://download.geofabrik.de/osm/europe/germany.osm.bz2"
 FILE_DE="germany.osm.bz2"
 MAIN_DB_NAME_DE="osm_DE"
 CAT_DE="bzcat"
+MIN_SIZE_DE="350000"
 
 URL_AT="http://download.geofabrik.de/osm/europe/austria.osm.bz2"
 FILE_AT="austria.osm.bz2"
 MAIN_DB_NAME_AT="osm_AT"
 CAT_AT="bzcat"
+MIN_SIZE_AT="75000"
 
 URL_EU="http://download.geofabrik.de/osm/europe.osm.bz2"
 FILE_EU="europe.osm.bz2"
 MAIN_DB_NAME_EU="osm_EU"
 CAT_EU="bzcat"
+MIN_SIZE_EU="1200000"
+
+URL_XA="http://download.geofabrik.de/osm/africa.osm.bz2"
+FILE_XA="africa.osm.bz2"
+MAIN_DB_NAME_XA="osm_XA"
+CAT_XA="bzcat"
+MIN_SIZE_XA="80000"
 
 URL_MG="http://download.geofabrik.de/osm/africa/madagascar.osm.bz2"
 FILE_MG="madagascar.osm.bz2"
 MAIN_DB_NAME_MG="osm_MG"
 CAT_MG="bzcat"
+MIN_SIZE_MG="2500"
 
 URL_AU="http://www.osmaustralia.org/osmdumps/australia.osm.zip"
 FILE_AU="australia.osm.zip"
 MAIN_DB_NAME_AU="osm_AU"
 CAT_AU="zcat"
+MIN_SIZE_AU="90000"
+
+# file not yet present on server
+URL_XB="http://download.geofabrik.de/osm/north-america.osm.bz2"
+FILE_XB="north-america.osm.bz2"
+MAIN_DB_NAME_XB="osm_XB"
+CAT_XB="bzcat"
+MIN_SIZE_XB="70000"
+
+URL_XC="http://download.geofabrik.de/osm/south-america.osm.bz2"
+FILE_XC="south-america.osm.bz2"
+MAIN_DB_NAME_XC="osm_XC"
+CAT_XC="bzcat"
+MIN_SIZE_XC="70000"
+
+URL_XD="http://download.geofabrik.de/osm/asia.osm.bz2"
+FILE_XD="asia.osm.bz2"
+MAIN_DB_NAME_XD="osm_XD"
+CAT_XD="bzcat"
+MIN_SIZE_XD="220000"
 
 # ZZ stands for the whole planet
 URL_ZZ="http://ftp.ecki-netz.de/osm/planet-latest.osm.bz2"
 FILE_ZZ="planet.osm.bz2"
 MAIN_DB_NAME_ZZ="osm"
 CAT_ZZ="bzcat"
+MIN_SIZE_ZZ="4000000"
+
+
+
+############################################
+# web space ftp account
+############################################
+
+FTP_HOST="ftp.yourprovider.com"
+FTP_USER="yourname"
+FTP_PASS="shh!"
+FTP_PATH="/path/to/website/"
+
+# the error_view export file will be split into chunks.
+# configure the size of each chunk small enough so that
+# the updateTables.php script will succeccfully import
+# each chunk before the max_execution_time limit
+# configured by your web hoster kills it
+MAX_LINES_PER_FILE="200000"
 
 
 
@@ -221,3 +272,7 @@ CHECK_0220_ENABLED="1"
 CHECK_0220_FILE="0220_misspelled_tags.php"
 CHECK_0220_DESCRIPTION="Tags that are used very seldom and almost look like very common tags (only one character difference) are reported as a warning."
 
+CHECK_0230_NAME="layer conflicts"
+CHECK_0230_ENABLED="0"
+CHECK_0230_FILE="0230_layer_conflicts.php"
+CHECK_0230_DESCRIPTION="Connected ways should be on the same layer. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly"
