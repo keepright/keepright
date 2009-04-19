@@ -355,22 +355,36 @@ comments_osm_EU.timestamp<"2009-04-01"
 echo "Exporting result tables into dump files\n";
 $f = fopen($ERROR_VIEW_FILE . '_'. $MAIN_DB_NAME . '.txt', 'w');
 
-$result = query("SELECT * FROM error_view WHERE description NOT LIKE '%kms:%'", $db1, false);
-while ($row=pg_fetch_assoc($result)) {
-	fwrite($f, $row['error_id'] .",'". $row['db_name'] ."',". $row['error_type'] .",'". $row['error_name'] ."','". $row['object_type'] ."',". $row['object_id'] .",'". $row['state'] ."','". strtr($row['description'], array("'"=>"\'")) ."','". $row['first_occurrence'] ."','". $row['last_checked'] ."',".  $row['lat'] . ",". $row['lon'] . "\n");
+if ($f) {
 
+	$result = query("SELECT * FROM error_view WHERE description NOT LIKE '%kms:%'", $db1, false);
+	while ($row=pg_fetch_assoc($result)) {
+		fwrite($f, $row['error_id'] .",'". $row['db_name'] ."',". $row['error_type'] .",'". $row['error_name'] ."','". $row['object_type'] ."',". $row['object_id'] .",'". $row['state'] ."','". strtr($row['description'], array("'"=>"\'")) ."','". $row['first_occurrence'] ."','". $row['last_checked'] ."',".  $row['lat'] . ",". $row['lon'] . "\n");
+	}
+	pg_free_result($result);
+	fclose($f);
+
+} else {
+	echo "Cannot open error_view file ($filename) for writing";
 }
-pg_free_result($result);
-fclose($f);
+                          
 
 $f = fopen($ERROR_TYPES_FILE . '_'. $MAIN_DB_NAME . '.txt', 'w');
-$result = query('SELECT * FROM error_types', $db1, false);
-while ($row=pg_fetch_assoc($result)) {
-	fwrite($f, $row['error_type'] .",'". $row['error_name'] ."','". strtr($row['error_description'], array("'"=>"\'")) ."'\n");
 
+if ($f) {
+
+	$result = query('SELECT * FROM error_types', $db1, false);
+	while ($row=pg_fetch_assoc($result)) {
+		fwrite($f, $row['error_type'] .",'". $row['error_name'] ."','". strtr($row['error_description'], array("'"=>"\'")) ."'\n");
+	}
+	pg_free_result($result);
+	fclose($f);
+	
+} else {
+        echo "Cannot open error-types file ($filename) for writing";
 }
-pg_free_result($result);
-fclose($f);
+           
+	
 
 // clean up...
 drop_postgres_functions($db1);
