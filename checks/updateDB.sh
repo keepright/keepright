@@ -65,9 +65,33 @@ for i do	# loop all given parameter values
 
 	if [ "$FILE" != "0" ]; then
 
+
 		echo "--------------------"
 		echo "processing file $FILE"
 		echo "--------------------"
+
+		PGPASSWORD="$MAIN_DB_PASS"
+		export PGPASSWORD
+
+		# check if connect to database is possible
+		psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "SELECT 1+1" > /dev/null 2>&1
+                if [ $? != 0 ]; then
+
+			echo "`date` * creating the database $MAIN_DB_NAME"
+			# create fresh database and activate PL/PGSQL
+			createdb -E UTF8 -O "$MAIN_DB_USER" "$MAIN_DB_NAME"
+			createlang plpgsql "$MAIN_DB_NAME"
+
+			# Activate GIS
+			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql > /dev/null 2>&1
+			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "ALTER TABLE geometry_columns OWNER TO $MAIN_DB_USER; ALTER TABLE spatial_ref_sys OWNER TO $MAIN_DB_USER;"
+
+			# create tables
+			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f /home/osm/keepright/planet/pgsql_simple_schema.sql
+			
+		fi
+
+
 
                 if [ "$KEEP_OSM" = "0" ]; then
 			echo "`date` * downloading osm file"
@@ -140,9 +164,6 @@ for i do	# loop all given parameter values
 			rm pgimport/ways_sorted.txt
 
 			echo "`date` * loading database dumps"
-			PGPASSWORD="$MAIN_DB_PASS"
-			export PGPASSWORD
-
 			psql -f "$PSQL_LOAD_SCRIPT" -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER"
 			cd "$CHECKSDIR"
 
