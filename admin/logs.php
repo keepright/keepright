@@ -1,4 +1,10 @@
-<html><body>
+<html>
+<!-- 
+<head>
+	<meta http-equiv="refresh" content="5; URL=logs.php">
+</head>
+-->
+<body>
 <?php include('navigate.php'); ?>
 
 <pre>
