@@ -13,6 +13,9 @@
 # a copy of the config file will be created in your home directory
 # to save it from svn updates
 #
+# exit status is 0 for success, 1 on error or when there is nothing to do
+# the script will exit on the first database where there is nothing to do
+#
 # written by Harald Kleiner, May 2008
 #
 
@@ -76,19 +79,21 @@ for i do	# loop all given parameter values
 		# check if connect to database is possible
 		psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "SELECT 1+1" > /dev/null 2>&1
                 if [ $? != 0 ]; then
+			# there was an error, so create the db
 
 			echo "`date` * creating the database $MAIN_DB_NAME"
 			# create fresh database and activate PL/PGSQL
-			createdb -E UTF8 -O "$MAIN_DB_USER" "$MAIN_DB_NAME"
-			createlang plpgsql "$MAIN_DB_NAME"
+			createdb -E UTF8 -U "$MAIN_DB_USER" -O "$MAIN_DB_USER" "$MAIN_DB_NAME"
+			createlang plpgsql -U "$MAIN_DB_USER" "$MAIN_DB_NAME"
 
 			# Activate GIS
 			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql > /dev/null 2>&1
+
 			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "ALTER TABLE geometry_columns OWNER TO $MAIN_DB_USER; ALTER TABLE spatial_ref_sys OWNER TO $MAIN_DB_USER;"
 
 			# create tables
-			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f /home/osm/keepright/planet/pgsql_simple_schema.sql
-			
+			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f $PREFIX/planet/pgsql_simple_schema.sql
+
 		fi
 
 
@@ -185,6 +190,7 @@ for i do	# loop all given parameter values
 
 		else
 			echo "File $TMPDIR/$FILE unchanged, nothing to do."
+			exit 1
 		fi
 	fi
 
@@ -196,4 +202,8 @@ if [ "$FILE" = "0" ]; then
 	echo "will download and install Austrian and German planet dump "
 	echo "you have to configure new country codes in the config file "
 	echo "if you want to add new ones except the existing codes AT, DE, EU "
+	exit 1
 fi
+
+exit 0
+
