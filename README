@@ -87,13 +87,15 @@ comment.php        receive user feedback and store it on the webserver's comment
 called on webserver
 
 
+Everything needed for the webserver is also done locally. This way you always have a local copy of the site running for testing.
+
 
 SETTING UP LOCAL DATABASES
 --------------------------
 
 [Don't skip this section if you already have a local database!]
 
-This project uses the "simple PostgreSQL schema" as specified in osmosis/script/pgsql_simple_schema.sql, which is part of the source distribution of Osmosis in an extended form. This means that the base tables are the same, but there are additional columns providing redundancy. This redundancy is used to boost performance of the queries as it can save some joins. For example the ways table has the number of nodes, as well as the id and lat/lon of the first and last node as additional columns; in way_nodes you find lat/lon of the node.
+This project uses the "simple PostgreSQL schema" as specified in osmosis/script/pgsql_simple_schema.sql, which is part of the source distribution of Osmosis in an extended form. This means that the base tables are the same, but there are additional columns providing redundancy. This redundancy is used to boost performance of the queries as it can save some joins. For example the ways table has the number of nodes, as well as the id and lat/lon of the first and last node as additional columns; in way_nodes you find lat/lon of the nodes.
 
 The downside is, you cannot use a default database. And you have to use a modified version of Osmosis to convert the planet file. A special edition of Osmosis is provided with the sources. It knows a new option --pl that will create dump files with parts of the redundancy needed.
 
@@ -136,16 +138,8 @@ su - postgres
 createuser keepright
 Shall the new role be a superuser? (y/n) y
 
->>>Create the database
-createdb -E UTF8 -O keepright osm_EU
-createlang plpgsql osm_EU
+You needn't create the postgres database, as the updateDB script will do that automatically.
 
->>>Activate GIS
-psql -d osm_EU -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql
-echo "ALTER TABLE geometry_columns OWNER TO keepright; ALTER TABLE spatial_ref_sys OWNER TO keepright;" |psql -d osm_EU
-
-cd to keepright/planet and run:
-psql -h 127.0.0.1 -d osm_EU -U keepright -W -f pgsql_simple_schema.sql
 
 Wondering why the auto-vac-daemon ist shut off?
 The daemon will start analyzing and vacuuming tables every few hours to keep index performance up on a high level. But this consumes large amounts of IO bandwidth and disturbes normal operation. Vacuuming is done by hand throughout the scripts. Basically it is done once after the update and then implicitly by adding indexes after inserting the data.
@@ -155,49 +149,29 @@ For inserting actual data take a look at updateDB.sh and config: This is a shell
 Don't forget to adapt the MAIN_DB_HOST, MAIN_DB_USER and MAIN_DB_PASS variables to match your database credentials.
 OSMOSIS_BIN has to point to the location where you have put the modified osmosis executable.
 
-On my system it takes a day to set up the Europe database, so please be patient!
+Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new error types. You will want to make settings differ from the standard settings. Therefore you can change the file ~/keepright.config which is a copy of config/config initially (this file will be created upon the first run of updateDB.sh). ~/keepright.config will be read after the built in config file so any settings made here will overwrite the default.
 
 
-Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts. Update config and webconfig.inc.php with the new database credentials.
+Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts. Update ~/keepright.config and webconfig.inc.php with the new database credentials.
 
 
 
 RUNNING THE CHECKS
 ------------------
 
-First of all you need to specify database credentials in config. As in updateDB.sh you may specify credentials for as much databases as you like. Look at the definition of db credentials and adapt the existing ones! You specify the database of your choice on the command line by using a short-hand key (eg. "AT"). It is used to find the credentials by looking the appropriate db parameters in config.
+First of all you need to specify database credentials in ~/keepright.config. You may specify credentials for as much databases as you like. Look at the definition of db credentials and adapt the existing ones! You specify the database of your choice on the command line by using a short-hand key (eg. "AT"). It is used to find the credentials by looking the appropriate db parameters in ~/keepright.config.
 
 Second, take a look at the list of error types. Here you may specify which types of checks should be executed. Anything different from zero will enable a job.
 
 Start checking by calling run-checks.php from the shell:
 > php run-checks.php AT 20 30 40
-will start the checks 20, 30 and 40 on the database specified under key "AT". Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in config.
+will start the checks 20, 30 and 40 on the database specified under key "AT". Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in ~/keepright.config.
 
-When processing has finished you will have (among others) a newly created table called error_view. Here you can find records for all errors that exist. To transfer this postgres table into MySQL call 
-> php updateWebDB.sh AT
+When processing has finished you will have (among others) a newly created table called error_view. Here you can find records for all errors that exist. This postgres table will get transferred into MySQL by updateDB.sh (it will call updateWebDB.sh).
 
 As time goes by you will update your database and maybe errors are getting corrected. The scripts will detect when old errors don't exist any more and will update the state information in the errors tables to state==cleared.
 
 Running checks on large databases takes plenty of time! Here you can see the time sheet when running on the Europe database on my machine:
-
-    [0030_non-closed_areas.php] => 3h 57m
-    [0040_dead-ended_one-ways.php] => 1h 3m
-    [0050_almost-junctions.php] => 4h 27m
-    [0060_deprecated_tags.php] => 37m 3s
-    [0070_missing_tags.php] => 31m 16s
-    [0090_motorways_without_ref.php] => 31.66s
-    [0100_places_of_worship_without_religion.php] => 5m 40s
-    [0110_point_of_interest_without_name.php] => 5m 41s
-    [0120_ways_without_nodes.php] => 2m 1s
-    [0130_islands.php] => 11h 2m
-    [0150_level_crossing_without_tag.php] => 1h 9m
-    [0160_wrong_use_of_level_crossing_tag.php] => 8m 27s
-    [0170_fixme.php] => 3m 52s
-    [0180_relations_without_type.php] => 1.15s
-    [0190_intersections_without_junctions.php] => 13h 3m
-    [0200_loopings.php] => 52m 20s
-
-You should really consider buying faster hard disks. Changing the RAID0 from 3x IDE (40GB+80GB+40GB) to two brand new SATA disks of 750GB each boosted performance like this:
 
 Array
 (
