@@ -85,8 +85,8 @@ square size:<input size=6 type='text' name='sq' value='" . $sq/1e7 . "'>&deg;
 
 
 $select='SELECT state, object_id, description, first_occurrence, last_checked, 
-	CONCAT("<a target=\'_blank\' href=\'http://www.openstreetmap.org/?lat=", lat/1e7, "&lon=", lon/1e7, "&zoom=15\'>map</a>") AS lnk, 
-	CONCAT("<a target=\'_blank\' href=\'http://www.openstreetmap.org/api/0.5/", object_type, "/", object_id, "\'>api</a>") AS api';
+	CONCAT("<a target=\'_blank\' href=\'report_map.php?lat=", lat/1e7, "&lon=", lon/1e7, "&zoom=15\'>map</a>") AS lnk, 
+	CONCAT("<a target=\'_blank\' href=\'http://www.openstreetmap.org/api/0.6/", object_type, "/", object_id, "\'>api</a>") AS api';
 $from ="FROM $error_view_name 
 WHERE TRUE ";
 
