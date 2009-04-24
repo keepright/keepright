@@ -36,7 +36,7 @@ $sql .=' AND lon >= ' . ($lon-1e6) . ' AND lon <= ' . ($lon+1e6);
 
 switch ($st) {
 	case 'open': $sql.=' AND e.state IN ("new", "reopened")'; break;
-	case 'cleared': $sql.=' AND state = "cleared"'; break;
+	case 'cleared': $sql.=' AND e.state = "cleared"'; break;
 }
 
 $sql .= " ORDER BY POWER(lat-$lat,2)+POWER(lon-$lon,2)";
