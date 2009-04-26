@@ -44,7 +44,7 @@ for i do	# loop all given parameter values
 				echo "error_id,db_name,error_type,error_name,object_type,object_id,state,description,first_occurrence,last_checked,lat,lon" | cat - "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt | bzip2 --stdout > "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".bz2
 			fi
 
-			echo "`date` * updating error_view table"
+			echo "`date` * creating/swapping error_view table"
 			# ensure all tables exist and empty old error_view
 			echo "
 				CREATE TABLE IF NOT EXISTS comments_""$MAIN_DB_NAME"" (
@@ -123,6 +123,7 @@ for i do	# loop all given parameter values
 
 			# load new error view
 			cd ../web
+			echo "`date` * loading error_view data"
 			php updateTables.php "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt "$MAIN_DB_NAME"
 
 			# toggle tables and empty error_types
@@ -154,4 +155,3 @@ if [ "$FILE" = "0" ]; then
 	echo "a splitted and compressed version of error_view for upload "
 	echo "to your web space provider."
 fi
-
