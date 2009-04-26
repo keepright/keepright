@@ -82,6 +82,12 @@ MAIN_DB_NAME_DE="osm_DE"
 CAT_DE="bzcat"
 MIN_SIZE_DE="350000"
 
+URL_NL="http://download.geofabrik.de/osm/europe/netherlands.osm.bz2"
+FILE_NL="netherlands.osm.bz2"
+MAIN_DB_NAME_NL="osm_NL"
+CAT_NL="bzcat"
+MIN_SIZE_NL="60000"
+
 URL_AT="http://download.geofabrik.de/osm/europe/austria.osm.bz2"
 FILE_AT="austria.osm.bz2"
 MAIN_DB_NAME_AT="osm_AT"
