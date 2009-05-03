@@ -10,6 +10,11 @@ data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 <h2>historic logs</h2>
 
 
+<h4>2009-04-10</h4>
+An updated errors-table went online today! Planet dump was updated as of april 7th 2009.<br><br>
+
+<h4>2009-04-06</h4>
+Just added an updated version of "dead-ended one-ways" errors. The check now includes motorways and motorway_links, which are regarded as one-way streets implicitly. Second there is a new part that searches for colliding one-way streets (one-ways pointing to a single node that cannot be left or from a single node that cannot be reached). Thank you, Ossi, for that hint!
 
 <h4>2009-04-05</h4>
 Just added an updated version of "misspelled tags" errors. Because of user feedback I removed some false positives.

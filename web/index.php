@@ -23,6 +23,10 @@ By default you will be put into the center of Vienna for the European version.<b
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-05-02</h4>
+An updated errors-table went online today! Planet dump was updated as of april 28th 2009.<br><br>
+Waterways are included by now in the checks 'intersections without junctions' and 'overlapping ways'. This will identify spots where bridges are missing.
+
 <h4>2009-04-25</h4>
 An updated errors-table went online today! Planet dump was updated as of april 19th 2009.<br><br>
 Some checks are modified this week:<br>
@@ -33,12 +37,6 @@ Some checks are modified this week:<br>
 <h4>2009-04-18</h4>
 An updated errors-table went online today! Planet dump was updated as of april 14th 2009.<br><br>
 The first keepright partner site is now online! Please visit <a href="http://keepright.x10hosting.com" target="_blank">keepright Australia</a>
-
-<h4>2009-04-10</h4>
-An updated errors-table went online today! Planet dump was updated as of april 7th 2009.<br><br>
-
-<h4>2009-04-06</h4>
-Just added an updated version of "dead-ended one-ways" errors. The check now includes motorways and motorway_links, which are regarded as one-way streets implicitly. Second there is a new part that searches for colliding one-way streets (one-ways pointing to a single node that cannot be left or from a single node that cannot be reached). Thank you, Ossi, for that hint!
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
 
