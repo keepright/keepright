@@ -12,34 +12,77 @@ to avoid false positives on highways crossing squares, areas are excluded here
 */
 
 
+if (!pg_exists($db1, 'type', 'type_way_type'))
+	query("CREATE TYPE type_way_type AS ENUM('highway','waterway','riverbank')", $db1, false);
+
 // tmp_ways will contain all highways with their linestring geometry and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
 	CREATE TABLE _tmp_ways (
 	way_id bigint NOT NULL,
-	layer text
+	layer text,
+	way_type type_way_type DEFAULT 'highway'
 	)
 ", $db1);
 query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
 
-// find any highway-tagged way that is not an area
+// find any highway-tagged way
 query("
 	INSERT INTO _tmp_ways (way_id, geom)
-	SELECT id, geom
+	SELECT DISTINCT id, geom
 	FROM ways
 	WHERE EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k='highway' AND wt.way_id=ways.id
-	)
-	AND NOT EXISTS (
-		SELECT wt.v
-		FROM way_tags wt
-		WHERE wt.k='area' AND wt.v='yes' AND wt.way_id=ways.id
+		WHERE wt.k = 'highway' AND wt.way_id=ways.id
 	)
 ", $db1);
 
 query("ALTER TABLE _tmp_ways ADD PRIMARY KEY (way_id);", $db1);
+
+// now add waterways but not riverbanks
+query("
+	INSERT INTO _tmp_ways (way_id, geom, way_type)
+	SELECT DISTINCT id, geom, CAST('waterway' AS type_way_type)
+	FROM ways
+	WHERE EXISTS (
+		SELECT wt.v
+		FROM way_tags wt
+		WHERE wt.k = 'waterway' AND wt.v <> 'riverbank' AND wt.way_id=ways.id
+	)
+	AND NOT EXISTS (
+		SELECT id
+		FROM _tmp_ways tmp
+		WHERE tmp.way_id=ways.id
+	)
+", $db1);
+
+// finally add riverbanks
+query("
+	INSERT INTO _tmp_ways (way_id, geom, way_type)
+	SELECT DISTINCT id, geom, CAST('riverbank' AS type_way_type)
+	FROM ways
+	WHERE EXISTS (
+		SELECT wt.v
+		FROM way_tags wt
+		WHERE wt.k = 'waterway' AND wt.v = 'riverbank' AND wt.way_id=ways.id
+	)
+	AND NOT EXISTS (
+		SELECT id
+		FROM _tmp_ways tmp
+		WHERE tmp.way_id=ways.id
+	)
+", $db1);
+
+// remove areas
+query("
+	DELETE FROM _tmp_ways
+	WHERE EXISTS (
+		SELECT wt.v
+		FROM way_tags wt
+		WHERE wt.k='area' AND wt.v='yes' AND wt.way_id=_tmp_ways.way_id
+	)
+", $db1);
 
 // fetch layer tag
 query("
@@ -76,7 +119,17 @@ query("
 ", $db1);
 
 query("CREATE INDEX idx_tmp_ways_layer ON _tmp_ways (layer)", $db1);
+query("CREATE INDEX idx_tmp_ways_way_type ON _tmp_ways (way_type)", $db1);
 query("CREATE INDEX idx_tmp_ways_geom ON _tmp_ways USING gist (geom)", $db1);
+
+
+// ignore crossings/overlappings of a riverbank with the river itself (there are tousands!)
+// ignore crossings/overlappings of a riverbanks with each other (there are tousands too!)
+$waterway_exlusion="
+	NOT ((w1.way_type='waterway' AND w2.way_type='riverbank') OR
+	(w1.way_type='riverbank' AND w2.way_type='waterway') OR
+	(w1.way_type='riverbank' AND w2.way_type='riverbank'))
+";
 
 
 // find ways that graphically intersect (i.e. cross or overlap)
@@ -86,6 +139,7 @@ $result=query("
 	FROM _tmp_ways w1, _tmp_ways w2
 	WHERE w1.layer=w2.layer AND
 		w1.way_id<w2.way_id AND
+		$waterway_exlusion AND
 		ST_crosses(w1.geom, w2.geom)
 ", $db1);
 
@@ -119,13 +173,14 @@ pg_free_result($result);
 
 // now look for overlapping ways
 // that is ways that (partly) use the same sequences of nodes.
-// Such segments lie on top of each other and are not covered 
+// Such segments lie on top of each other and are not covered
 // by the intersections-test above
 $result=query("
 	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom
 	FROM _tmp_ways w1, _tmp_ways w2
 	WHERE w1.layer=w2.layer AND
 		w1.way_id<w2.way_id AND
+		$waterway_exlusion AND
 		ST_overlaps(w1.geom, w2.geom)
 ", $db1);
 
@@ -146,6 +201,8 @@ pg_free_result($result);
 
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 
+if (pg_exists($db1, 'type', 'type_way_type'))
+	query("DROP TYPE type_way_type", $db1, false);
 
 
 
