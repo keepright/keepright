@@ -269,7 +269,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 			state, description, first_occurrence, last_checked, lat, lon)
 		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '${row['error_type']}',
 			'relation', ${row['object_id']}, '${row['state']}',
-			'${row['description']}', '${row['first_occurrence']}',
+			'" . addslashes($row['description']) . "', '${row['first_occurrence']}',
 			'${row['last_checked']}', 1e7*${latlong['lat']}, 1e7*${latlong['lon']})
 	", $db2, false);
 }
@@ -337,8 +337,8 @@ pg_free_result($result);
 /*
 select error_type, state, last_checked>'2009-03-09' as recently, count(error_id)
 from error_view
-group by error_type, state, last_checked>'2009-03-09'
-order by last_checked>'2009-03-09', state, error_type
+group by error_type, state, recently
+order by recently, state, error_type
 */
 
 
@@ -367,7 +367,7 @@ if ($f) {
 } else {
 	echo "Cannot open error_view file ($filename) for writing";
 }
-                          
+
 
 $f = fopen($ERROR_TYPES_FILE . '_'. $MAIN_DB_NAME . '.txt', 'w');
 
@@ -379,12 +379,11 @@ if ($f) {
 	}
 	pg_free_result($result);
 	fclose($f);
-	
+
 } else {
         echo "Cannot open error-types file ($filename) for writing";
 }
-           
-	
+
 
 // clean up...
 drop_postgres_functions($db1);
