@@ -264,6 +264,7 @@ query("DROP TABLE IF EXISTS _tmp_ways;", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_way_tags;", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_members_ways;", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_members_nodes;", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_members", $db1, false);
 
 
 

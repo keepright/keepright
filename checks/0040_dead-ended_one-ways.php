@@ -134,5 +134,5 @@ foreach ($cfg as $item=>$msg) {
 }
 
 query("DROP TABLE IF EXISTS _tmp_one_ways", $db1);
-query("TRUNCATE TABLE _tmp_one_way_junctions", $db1);
+query("DROP TABLE IF EXISTS _tmp_one_way_junctions", $db1);
 ?>
