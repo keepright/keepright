@@ -23,6 +23,9 @@ By default you will be put into the center of Vienna for the European version.<b
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-05-09</h4>
+An updated errors-table went online today! Planet dump was updated as of may 5th 2009.<br><br>
+
 <h4>2009-05-02</h4>
 An updated errors-table went online today! Planet dump was updated as of april 28th 2009.<br><br>
 Waterways are included by now in the checks 'intersections without junctions' and 'overlapping ways'. This will identify spots where bridges are missing.
