@@ -51,7 +51,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 	var map=null;
 	var plnk=null;
 
-	//Initialise the 'map' object
+<?php 	//Initialise the 'map' object ?>
 	function init() {
 		map = new OpenLayers.Map ("map", {
 			controls:[
@@ -69,21 +69,21 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 			displayProjection: new OpenLayers.Projection("EPSG:4326")
 		} );
 
-		// add the mapnik layer
+<?php		// add the mapnik layer ?>
 		var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
 		map.addLayer(layerMapnik);
 
-		// add the osmarender layer
+<?php		// add the osmarender layer ?>
 		var layerTilesAtHome = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
 		map.addLayer(layerTilesAtHome);
 
 
-		// add point markers layer. This is not the standard text layer but a derived version!
+<?php		// add point markers layer. This is not the standard text layer but a derived version! ?>
 		pois = new OpenLayers.Layer.myText("Errors on Nodes", { location:"<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $path . 'points.php'); ?>", projection: new OpenLayers.Projection("EPSG:4326")} );
 		map.addLayer(pois);
 
 
-		// move map center to lat/lon
+<?php		// move map center to lat/lon ?>
 		var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
 		map.setCenter(lonLat, zoom);
 
@@ -93,7 +93,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		map.addControl(plnk);
 
 
-		// register event that records new lon/lat coordinates in form fields after panning
+<?php		// register event that records new lon/lat coordinates in form fields after panning ?>
 		map.events.register("moveend", map, function() {
 			var pos = this.getCenter().clone();
 			var lonlat = pos.transform(this.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
@@ -108,6 +108,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		});
 	}
 
+<?php 	//Initialise the 'map' object ?>
 	function saveComment(error_id, error_type) {
 		var myfrm = document['errfrm_'+error_id];
 		repaintIcon(error_id, myfrm.st, error_type);
@@ -116,18 +117,18 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 	}
 
 	function repaintIcon(error_id, state, error_type) {
-		// state is a reference to the option group inside the bubble's form;
+<?php		// state is a reference to the option group inside the bubble's form;
 		// state[0].checked==true means state==none
 		// state[1].checked==true means state==ignore temporarily
 		// state[2].checked==true means state==ignore
-
+?>
 
 		var feature_id = pois.error_ids[error_id];
 
 		var i=0;
 		var len=pois.features.length;
 		var feature=null;
-		// find feature's id in list of features
+<?php		// find feature's id in list of features ?>
 		while (i<len && feature==null) {
 			if (pois.features[i].id == feature_id) feature=pois.features[i];
 			i++;
@@ -138,21 +139,23 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		else if (state[2].checked) feature.marker.icon.setUrl("img/zapdevil.png");
 	}
 
+<?php	// called as event handler on the cancel button ?>
 	function closeBubble(error_id) {
 		var feature_id = pois.error_ids[error_id];
 
 		var i=0;
 		var len=pois.features.length;
 		var feature=null;
-		// find feature's id in list of features
+<?php		// find feature's id in list of features ?>
 		while (i<len && feature==null) {
 			if (pois.features[i].id == feature_id) feature=pois.features[i];
 			i++;
 		}
-		// call event handler as if one had clicked the icon
+<?php		// call event handler as if one had clicked the icon ?>
 		feature.marker.events.triggerEvent("mousedown");
 	}
 
+<?php	// check/uncheck all checboxes for error type selection ?>
 	function set_checkboxes(new_value) {
 		for (var i = 0; i < document.myform.elements.length; ++i) {
 			var el=document.myform.elements[i];
@@ -163,6 +166,8 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		plnk.updateLink();
 	}
 
+
+<?php	// reload the error types and the permalink, which includes the error type selection ?>
 	function checkbox_click() {
 		pois.loadText();
 		plnk.updateLink();
