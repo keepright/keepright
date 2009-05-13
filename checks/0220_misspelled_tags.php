@@ -76,6 +76,34 @@ check_tags("relation");
 
 
 
+
+// This is a completely different story:
+// look for tags where the key is "key"
+$tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_tags');
+
+// this loop will execute similar queries for all three *_tags tables
+foreach ($tables as $object_type=>$table) {
+
+	query("
+		INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked) 
+		SELECT $error_type+1, '$object_type', {$object_type}_id, 'The key of this ${object_type}s tag is \"key\": ' || array_to_string(array(
+			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
+			FROM $table AS tmp
+			WHERE tmp.{$object_type}_id=t.{$object_type}_id AND (tmp.k='key')
+		), ' and '), NOW()
+
+		FROM $table t
+		WHERE k='key'
+		GROUP BY {$object_type}_id
+	", $db1);
+}
+// (end of completely different story)
+
+
+
+
+
+
 function check_tags($item) {
 global $error_type, $false_positives, $db1, $db2;
 	query("DROP TABLE IF EXISTS _tmp_tags", $db1, false);
