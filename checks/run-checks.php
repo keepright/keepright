@@ -238,6 +238,7 @@ query("
 		1e7*n.lat, 1e7*n.lon
 	FROM errors e INNER JOIN nodes n ON (e.object_id = n.id)
 	WHERE e.object_type='node' AND (e.lat IS NULL OR e.lon IS NULL)
+		AND n.lat IS NOT NULL AND n.lon IS NOT NULL
 ", $db1);
 
 // second insert errors on ways that don't have lat/lon
@@ -249,6 +250,7 @@ query("
 		1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon
 	FROM errors e INNER JOIN ways w ON w.id=e.object_id
 	WHERE e.object_type='way' AND (e.lat IS NULL OR e.lon IS NULL)
+		AND w.first_node_lat IS NOT NULL AND w.first_node_lon IS NOT NULL
 	GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state,
 		e.description, e.first_occurrence, e.last_checked,
 		1e7*w.first_node_lat, 1e7*w.first_node_lon
