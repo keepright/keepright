@@ -23,6 +23,12 @@ By default you will be put into the center of Vienna for the European version.<b
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-05-16</h4>
+An updated errors-table went online today! Planet dump was updated as of may 12th 2009.<br><br>
+The misspelled-tags check learned a new feature: It will complain about tags where the key is &quot;key&quot;. That are 1341 ways and 436 nodes in Europe. Thank you, Matthias for the tip!<br>
+'Intersections without junctions' and 'overlapping ways' were expanded to find errors on waterways two weeks ago. Some of the newly found errors were false-positives (overlappings of riverbanks, intersections of waterways and riverbanks for example) and are removed now. The rest is now splitted to sub-types you can switch on and off individually as you prefer. Thank you, again, Hans for the valuable input!<br>
+As the number of checkboxes got rather large, there is a new style of display. You can collapse the subtypes if you like. As soon as a well suited grouping scheme is found, the errors could be organized in groups reflecting a hierarchy by topic, but I'm still thinking about this. Comments are welcome!
+
 <h4>2009-05-09</h4>
 An updated errors-table went online today! Planet dump was updated as of may 5th 2009.<br><br>
 
@@ -30,16 +36,6 @@ An updated errors-table went online today! Planet dump was updated as of may 5th
 An updated errors-table went online today! Planet dump was updated as of april 28th 2009.<br><br>
 Waterways are included by now in the checks 'intersections without junctions' and 'overlapping ways'. This will identify spots where bridges are missing.
 
-<h4>2009-04-25</h4>
-An updated errors-table went online today! Planet dump was updated as of april 19th 2009.<br><br>
-Some checks are modified this week:<br>
-* 'almost junctions' will not complain about end-nodes that are tagged as bus stop or as amenity any more. There were many errors on short linking ways connecting amenities with the nearest road (see an <a target="_blank" href="http://openstreetmap.org/?lat=53.597046&lon=9.984201&zoom=18&layers=B000FTF">example</a>). In my opinion these short ways are not necessary but it is not the purpose of this check to show them. Thank you, Sören for the tip!<br>
-* 'points of interest without name' will not complain about amenity=bank where the name tag is missing any more. Instead it will require the operator tag to be set. Don't panic about numerous new error markers! Consider it just as a notice... Thank you, Hans for the tip!<br>
-* 'intersections without junctions/overlapping ways' won't complain about junctions/overlappings between highways and areas. For example a street leading across a square is a valid <a target="_blank" href="http://www.openstreetmap.org/edit?lat=50.7352246&lon=7.0983218&zoom=19&way=4801445&way=4935206">exception</a> as well as two squares tagged as highway sharing a way segment on their border (<a target="_blank" href="http://www.openstreetmap.org/edit?lat=50.733607&lon=7.10003&zoom=19&way=23659367">example</a>). Thank you, Peter for the tip!
-
-<h4>2009-04-18</h4>
-An updated errors-table went online today! Planet dump was updated as of april 14th 2009.<br><br>
-The first keepright partner site is now online! Please visit <a href="http://keepright.x10hosting.com" target="_blank">keepright Australia</a>
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
 
