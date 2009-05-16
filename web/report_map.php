@@ -43,6 +43,10 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 
 <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 
+<link rel="stylesheet" type="text/css" href="<?php echo $path; ?>style.css">
+<script type="text/javascript" src="<?php echo $path; ?>outline.js"></script>
+
+
 <script type="text/javascript">
 	var lat=<?php echo $lat/1e7; ?>;
 	var lon=<?php echo $lon/1e7; ?>;
@@ -176,43 +180,57 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 
 </script>
 
-<style type="text/css">
-<!--
-.p1 { margin:0px; margin-right:13px; border-style:solid; border-width:thin; border-color:#800000; background-color:#FF8080; }
-.p2 { margin:5px; padding-top:3px; padding-bottom:3px;}
-.p3 { background-color:#FFFFD0; }
--->
-</style>
+
 </head>
-<body onload="init();">
+<body onload="init(); outlineInit();">
+
+<form name="myform" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
+
+<a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br><br>
+
+<?php // echo checkboxes for error types ?>
+
+<ul class="outline">
 
 <?php
 
-echo '<form name="myform" method="get" action="' . $_SERVER['PHP_SELF'] . '">' . "\n";
-
-echo '<div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
-
-<a href="/"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br><br>';
-
-// echo checkboxes for error types
-
-//echo '<input type="checkbox" name="ch" value="*"/>all<br>';
-
+$level=0;
+$firstloop=true;
 $result=mysqli_query($db1, "
 	SELECT error_type, error_name
 	FROM $error_types_name
 	ORDER BY error_type
 ");
+
 while ($row = mysqli_fetch_array($result)) {
-	echo '<img border=0 height=12 src="img/zap' . $row['error_type'] . '.png" alt="error marker ' . $row['error_type'] . '">';
+	$et = $row['error_type'];
 
-	echo '<input type="checkbox" id="ch' . $row['error_type'] . '" name="ch' . $row['error_type'] . '" value="' . $row['error_type'] . '" onclick="javascript:checkbox_click();"';
+	if ($et <> 10*floor($et/10)) {
+		if ($level==0) {	// output a new list start on the beginning of subtypes
+			$level++;
+			echo '<ul>';
+		} else if (!$firstloop) { echo "</li>\n"; }
+	} else {
+		if ($level!=0) {	// output list end when back to main types
+			$level--;
+			echo '</ul>';
+		}
+		if (!$firstloop) { echo "</li>\n"; }
+	}
+	//echo "<li>" . $row['error_name'];
 
-	if ($ch==='0' || $_GET['ch' . $row['error_type']]) echo ' checked="checked"';
+	echo "<li><img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>";
+	echo "<input type='checkbox' id='ch$et' name='ch$et' value='$et' onclick='javascript:checkbox_click();'";
 
-	echo '><label for="ch' . $row['error_type'] . '">' . $row['error_name'] . "</label><br>\n";
+	if ($ch==='0' || $_GET['ch' . $et]) echo ' checked="checked"';
+
+	echo '><label for="ch' . $et . '">' . $row['error_name'] . "</label>\n";
+
+	$firstloop=false;
 }
-echo "<br>\n";
+
+echo "</li></ul><br>\n";
 mysqli_free_result($result);
 
 

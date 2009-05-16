@@ -7,7 +7,7 @@ spot given by lat/lon coordinates
 
 This table will be interpreted by the OpenLayers layer with
 client-side JavaScript and rendered in the browser
-
+see myTextFormat.js and myText.js
 */
 require('webconfig.inc.php');
 require('helpers.inc.php');
@@ -24,12 +24,53 @@ $sq = 1e7*$_GET['sq'];
 if (!$st) $st='open';
 
 
+// select all error types where sub-types exist
+$subtyped_errors = array();
+$result=mysqli_query($db1, "
+	SELECT 10*floor(et1.error_type/10) AS error_type
+	FROM $error_types_name et1
+	WHERE EXISTS (
+		SELECT error_type
+		FROM $error_types_name et2
+		WHERE et2.error_type BETWEEN et1.error_type+1 AND et1.error_type+9
+	)
+	AND et1.error_type MOD 10 = 0
+");
+while ($row = mysqli_fetch_assoc($result)) {
+	$subtyped_errors[] = $row['error_type'];
+}
+mysqli_free_result($result);
+
+
+
+
+// build SQL for fetching errors
 $sql='SELECT e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.description, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment
 FROM ' . $error_view_name . ' e LEFT JOIN ' . $comments_name . ' c ON (e.error_id=c.error_id)
 WHERE TRUE ';
 
-//if ($db<>'*') $sql .=' AND db_name="' . addslashes($db) . '"';
-/*if ($ch<>'0')*/ $sql .=' AND 10*floor(error_type/10) IN (' . addslashes($ch) . ')';
+
+
+// add criteria for selecting error types
+$error_types=explode(',', addslashes($ch));
+$nonsubtyped='0';
+$subtyped='0';
+//print_r($subtyped_errors);
+// split list of error types into subtyped an non-subtyped ones
+foreach ($error_types as $error_type) {
+
+	if (is_numeric($error_type)) {
+		if (in_array(10*floor($error_type/10), $subtyped_errors))
+			$subtyped.=", $error_type";
+		else
+			$nonsubtyped.=", $error_type";
+	}
+}
+
+// non-subtyped errors selected including the complete 10-window (always include
+// (exclude) all ten errors together. subtyped errors selected individually.
+$sql .=" AND (10*floor(error_type/10) IN ($nonsubtyped)	OR error_type IN ($subtyped))";
+
 
 $sql .=' AND lat >= ' . ($lat-1e6) . ' AND lat <= ' . ($lat+1e6);	// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
 $sql .=' AND lon >= ' . ($lon-1e6) . ' AND lon <= ' . ($lon+1e6);
@@ -58,7 +99,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 			$filenr='devil';
 			break;
 		default:
-			$filenr=10*floor($row['error_type']/10);
+			//$filenr=10*floor($row['error_type']/10);
+			$filenr=$row['error_type'];
 	}
 
 	echo $row['la'] . "\t" .
