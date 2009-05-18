@@ -134,6 +134,12 @@ for i do	# loop all given parameter values
 
                 if [ $? != 0 ]; then
 			echo File "$TMPDIR/$FILE" is changed
+			FILE_CHANGED="1"
+		else
+			FILE_CHANGED="0"
+		fi
+
+		if [ "$KEEP_OSM" = "1" -o "$FILE_CHANGED" = "1" ]; then
 			# this file will be the last file next time
 			cksum "$TMPDIR/$FILE" > "$TMPDIR/sum-last_${i}"
 
