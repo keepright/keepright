@@ -137,8 +137,16 @@ for i do	# loop all given parameter values
 			" | mysql --user="$WEB_DB_USER" --password="$WEB_DB_PASS" "$WEB_DB_NAME"
 
 			php updateTables.php "$ERROR_TYPES_FILE"_"$MAIN_DB_NAME".txt "$MAIN_DB_NAME" error_types
-
 			cd "$CHECKSDIR"
+
+                        if [ -f postWebDB.sh ]; then
+                            echo "Start user post script"
+                            ./postWebDB.sh "$MAIN_DB_NAME" "$WEB_DB_NAME" "$WEB_DB_USER" "$WEB_DB_PASS"
+                            # In case custom script not did not put back
+                            # the correct directory
+                            cd "$CHECKSDIR"
+                        fi
+
 			echo "`date` * ready."
 		fi
 	fi
