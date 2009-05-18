@@ -52,7 +52,8 @@ $false_positives = array(
 );
 
 // keys that lead to diverse values. It doesn't ever make sense
-// to compare these keys' values with each other
+// to compare these keys' values with each other.
+// Most of these keys have numbers, dates or times as values. Comparing them is useless.
 // this string will be used in an SQL 'column NOT IN (...)' clause,
 // so you have to properly escape apos!
 $never_complain_about = "(
@@ -67,6 +68,9 @@ $never_complain_about = "(
 	'opening_hours:=',
 	'nat_ref:=',
 	'ref_no:=',
+	'source:=',
+	'source_ref:=',
+	'source_ref:name:=',
 	'strassen-nrw:abs:='
 )";
 
