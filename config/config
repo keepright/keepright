@@ -118,7 +118,6 @@ MAIN_DB_NAME_AU="osm_AU"
 CAT_AU="zcat"
 MIN_SIZE_AU="90000"
 
-# file not yet present on server
 URL_XB="http://download.geofabrik.de/osm/north-america.osm.bz2"
 FILE_XB="north-america.osm.bz2"
 MAIN_DB_NAME_XB="osm_XB"
@@ -150,7 +149,7 @@ MIN_SIZE_ZZ="4000000"
 # web space ftp account
 ############################################
 
-FTP_HOST="ftp.yourprovider.com"
+FTP_HOST="ftp://ftp.yourprovider.com"
 FTP_USER="yourname"
 FTP_PASS="shh!"
 FTP_PATH="/path/to/website/"
@@ -162,7 +161,14 @@ FTP_PATH="/path/to/website/"
 # configured by your web hoster kills it
 MAX_LINES_PER_FILE="200000"
 
+# this URL will be called once for every part of error_view
+# to load data into the table
+UPDATE_TABLES_URL="http://website.yourprovider.com/updateTables.php"
 
+# shared secret for use in updateTables script to prevent anonymous
+# users from emptying your tables. You HAVE TO change this password.
+# The script will not work with default settings
+UPDATE_TABLES_PASSWD="changethis"
 
 ############################################
 # error types
@@ -263,10 +269,20 @@ CHECK_0190_ENABLED="1"
 CHECK_0190_FILE="0190_intersections_without_junctions.php"
 CHECK_0190_DESCRIPTION="Streets that graphically intersect need a common node that represents the crossing. The only exception are intersections on different layers (eg. bridges or tunnels)."
 
+SUBTYPE_0191_NAME="highway-highway"
+SUBTYPE_0192_NAME="highway-waterway"
+SUBTYPE_0193_NAME="highway-riverbank"
+SUBTYPE_0194_NAME="waterway-waterway"
+
 CHECK_0200_NAME="overlapping ways"
 CHECK_0200_ENABLED="1"
 CHECK_0200_FILE=""
 CHECK_0200_DESCRIPTION="Segments of ways that lie on top of each other (the same nodes connected by different ways in the same order) are a problem for routing software. They happen accidently and are hard to find."
+
+SUBTYPE_0201_NAME="highway-highway"
+SUBTYPE_0202_NAME="highway-waterway"
+SUBTYPE_0203_NAME="highway-riverbank"
+SUBTYPE_0204_NAME="waterway-waterway"
 
 CHECK_0210_NAME="loopings"
 CHECK_0210_ENABLED="1"

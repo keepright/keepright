@@ -10,11 +10,16 @@ parse_config_vars($_ENV["HOME"] . '/keepright.config');
 
 function parse_config_vars($filename) {
 	global $error_types, $db_postfix;
+
+	if (!file_exists($filename)) return;
+
 	$configfile=file($filename);	// read config file into variable
 
 	$conf_vars = array('MAIN_DB_HOST', 'MAIN_DB_USER', 'MAIN_DB_PASS',
 		'WEB_DB_HOST', 'WEB_DB_USER', 'WEB_DB_PASS', 'WEB_DB_NAME',
-		"ERROR_VIEW_FILE", "ERROR_TYPES_FILE", "RESULTSDIR");
+		'ERROR_VIEW_FILE', 'ERROR_TYPES_FILE', 'RESULTSDIR',
+		'FTP_HOST', 'FTP_USER', 'FTP_PASS', 'FTP_PATH',
+		'UPDATE_TABLES_URL', 'UPDATE_TABLES_PASSWD');
 
 	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
 
@@ -37,6 +42,12 @@ function parse_config_vars($filename) {
 			foreach ($check_parts as $var) {
 				if (preg_match('/^\s*CHECK_([0-9]{4})_' . $var . '\s*=\s*"(.*)\"/', $line, $matches))
 					$error_types[1*$matches[1]][$var] = $matches[2];
+			}
+
+			// find check subtypes
+			if (preg_match('/^\s*SUBTYPE_([0-9]{4})_NAME\s*=\s*"(.*)\"/', $line, $matches)) {
+				$main_type = 10*floor($matches[1]/10);
+				$error_types[$main_type]['SUBTYPES'][$matches[1]] = $matches[2];
 			}
 
 		}
