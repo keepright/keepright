@@ -99,7 +99,16 @@ foreach ($error_types as $error_type=>$error) {
 			INSERT INTO error_types(error_type, error_name, error_description) 
 			VALUES(" . addslashes($error_type) . ",'" . addslashes($error['NAME']) . "','" . addslashes($error['DESCRIPTION']) . "')
 		", $db1, false);
+
+		// insert any subtype if some exist
+		if (is_array($error['SUBTYPES'])) foreach ($error['SUBTYPES'] as $subtype_id=>$subtype) {
+			query("
+				INSERT INTO error_types(error_type, error_name, error_description) 
+				VALUES(" . addslashes($subtype_id) . ",'" . addslashes($subtype) . "','" . addslashes($error['DESCRIPTION']) . "')
+			", $db1, false);
+		}
 	}
+
 }
 
 
@@ -294,10 +303,17 @@ query("
 
 
 // finally add the error names
+// first for error types that don't have subtypes...
 query("
 	UPDATE error_view v SET error_name=t.error_name
 	FROM error_types t
 	WHERE (10*floor(v.error_type/10) = t.error_type)
+", $db1);
+// and second the subtypes (they have individual names)
+query("
+	UPDATE error_view v SET error_name=t.error_name
+	FROM error_types t
+	WHERE v.error_type = t.error_type
 ", $db1);
 
 
@@ -345,12 +361,12 @@ order by recently, state, error_type
 
 
 /*
-UPDATE comments_osm_EU inner join error_view_osm_EU using (error_id) 
-SET comments_osm_EU.state=null, 
-comments_osm_EU.comment=CONCAT("[error still open, 2009-05-05] ", comments_osm_EU.comment)
-WHERE comments_osm_EU.state='ignore_temporarily' AND 
-error_view_osm_EU.state<>'cleared' AND 
-comments_osm_EU.timestamp<"2009-05-05"
+UPDATE comments_osm_EU inner join error_view_osm_EU using (error_id)
+SET comments_osm_EU.state=null,
+comments_osm_EU.comment=CONCAT("[error still open, 2009-05-12] ", comments_osm_EU.comment)
+WHERE comments_osm_EU.state='ignore_temporarily' AND
+error_view_osm_EU.state<>'cleared' AND
+comments_osm_EU.timestamp<"2009-05-12"
 */
 
 
@@ -359,7 +375,11 @@ $f = fopen($ERROR_VIEW_FILE . '_'. $MAIN_DB_NAME . '.txt', 'w');
 
 if ($f) {
 
-	$result = query("SELECT * FROM error_view WHERE description NOT LIKE '%kms:%'", $db1, false);
+	$result = query("
+		SELECT * FROM error_view
+		WHERE description NOT LIKE '%kms:%'
+		AND NOT (state='cleared' AND last_checked < CURRENT_DATE - INTERVAL '2 MONTH')
+	", $db1, false);
 	while ($row=pg_fetch_assoc($result)) {
 		fwrite($f, $row['error_id'] .",'". $row['db_name'] ."',". $row['error_type'] .",'". $row['error_name'] ."','". $row['object_type'] ."',". $row['object_id'] .",'". $row['state'] ."','". strtr($row['description'], array("'"=>"\'")) ."','". $row['first_occurrence'] ."','". $row['last_checked'] ."',".  $row['lat'] . ",". $row['lon'] . "\n");
 	}
