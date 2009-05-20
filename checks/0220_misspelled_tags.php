@@ -74,6 +74,21 @@ $never_complain_about = "(
 	'strassen-nrw:abs:='
 )";
 
+
+
+// sometimes the misspelled tags come more often than the regular tag
+// use these lists to correct these cases.
+// please note the special notation!
+
+$force_irregular = array(
+	'usability:skate:=excelent'
+);
+
+$force_regular = array(
+	'usability:skate:=excellent'
+);
+
+
 check_tags("node");
 check_tags("way");
 check_tags("relation");
@@ -234,7 +249,7 @@ function found_in($needle1, $needle2, $haystack) {
 
 // find keys that are rarely used and that are very similar to keys that are used very often
 function find_offending_keys($db1, $item, $keylen) {
-global $never_complain_about;
+global $never_complain_about, $force_irregular, $force_regular;
 
 	//find regular tags (i.e. tags that are used very frequently, currently at least 1/100000 of the whole number of tags)
 	$tag_count_limit = query_firstval("SELECT SUM(tag_count) FROM _tmp_keys", $db1, false) / 100000;
@@ -262,9 +277,16 @@ global $never_complain_about;
 	", $db1, false);
 
 	while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-		if ($row['tag_count']>=$tag_count_limit)
+
+		if (in_array($row['prefix'] . $row['k'], $force_irregular)) {	// force to irreg?
+			$irregulars[] = array($row['prefix'], $row['k']);
+
+		} else if (in_array($row['prefix'] . $row['k'], $force_regular)) {// force to regular?
 			$regulars[] = array($row['prefix'], $row['k']);
-		else
+
+		} else if ($row['tag_count']>=$tag_count_limit) {	// let numbers decide
+			$regulars[] = array($row['prefix'], $row['k']);
+		} else
 			$irregulars[] = array($row['prefix'], $row['k']);
 	}
 	pg_free_result($result);
@@ -292,4 +314,5 @@ global $never_complain_about;
 query("DROP TABLE IF EXISTS _tmp_tags", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_keys", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_bad_tags", $db1, false);
+
 ?>
