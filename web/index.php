@@ -23,6 +23,9 @@ By default you will be put into the center of Vienna for the European version.<b
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-05-23</h4>
+An updated errors-table went online today! Planet dump was updated as of may 19th 2009.<br><br>
+
 <h4>2009-05-16</h4>
 An updated errors-table went online today! Planet dump was updated as of may 12th 2009.<br><br>
 The misspelled-tags check learned a new feature: It will complain about tags where the key is &quot;key&quot;. That are 1341 ways and 436 nodes in Europe. Thank you, Matthias for the tip!<br>

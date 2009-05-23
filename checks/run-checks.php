@@ -363,10 +363,10 @@ order by recently, state, error_type
 /*
 UPDATE comments_osm_EU inner join error_view_osm_EU using (error_id)
 SET comments_osm_EU.state=null,
-comments_osm_EU.comment=CONCAT("[error still open, 2009-05-12] ", comments_osm_EU.comment)
+comments_osm_EU.comment=CONCAT("[error still open, 2009-05-17] ", comments_osm_EU.comment)
 WHERE comments_osm_EU.state='ignore_temporarily' AND
 error_view_osm_EU.state<>'cleared' AND
-comments_osm_EU.timestamp<"2009-05-12"
+comments_osm_EU.timestamp<"2009-05-17"
 */
 
 
