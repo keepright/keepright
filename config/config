@@ -112,10 +112,10 @@ MAIN_DB_NAME_MG="osm_MG"
 CAT_MG="bzcat"
 MIN_SIZE_MG="2500"
 
-URL_AU="http://www.osmaustralia.org/osmdumps/australia.osm.zip"
-FILE_AU="australia.osm.zip"
+URL_AU="http://download.geofabrik.de/osm/australia-oceania.osm.bz2"
+FILE_AU="australia-oceania.osm.bz2"
 MAIN_DB_NAME_AU="osm_AU"
-CAT_AU="zcat"
+CAT_AU="bzcat"
 MIN_SIZE_AU="90000"
 
 URL_XB="http://download.geofabrik.de/osm/north-america.osm.bz2"
@@ -149,10 +149,13 @@ MIN_SIZE_ZZ="4000000"
 # web space ftp account
 ############################################
 
-FTP_HOST="ftp://ftp.yourprovider.com"
+FTP_HOST="ftp.yourprovider.com"
 FTP_USER="yourname"
 FTP_PASS="shh!"
-FTP_PATH="/path/to/website/"
+
+# do not give a slash at the beginning, but leave one
+# at the end of this path
+FTP_PATH="path/to/website/"
 
 # the error_view export file will be split into chunks.
 # configure the size of each chunk small enough so that
