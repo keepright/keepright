@@ -159,7 +159,7 @@ FTP_PATH="path/to/website/"
 
 # the error_view export file will be split into chunks.
 # configure the size of each chunk small enough so that
-# the updateTables.php script will succeccfully import
+# the updateTables.php script will successfully import
 # each chunk before the max_execution_time limit
 # configured by your web hoster kills it
 MAX_LINES_PER_FILE="200000"
