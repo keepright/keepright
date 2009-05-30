@@ -23,6 +23,10 @@ By default you will be put into the center of Vienna for the European version.<b
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-05-30</h4>
+An updated errors-table went online today! Planet dump was updated as of may 26th 2009.<br><br>
+According to <a href="http://de.wikipedia.org/wiki/Döner">Wikipedia (german)</a>, <i>kebab</i> and <i>kebap</i> are both valid spellings, the misspelled-tags check will accept both spellings as correct.
+
 <h4>2009-05-23</h4>
 An updated errors-table went online today! Planet dump was updated as of may 19th 2009.<br><br>
 
@@ -31,13 +35,6 @@ An updated errors-table went online today! Planet dump was updated as of may 12t
 The misspelled-tags check learned a new feature: It will complain about tags where the key is &quot;key&quot;. That are 1341 ways and 436 nodes in Europe. Thank you, Matthias for the tip!<br>
 'Intersections without junctions' and 'overlapping ways' were expanded to find errors on waterways two weeks ago. Some of the newly found errors were false-positives (overlappings of riverbanks, intersections of waterways and riverbanks for example) and are removed now. The rest is now splitted to sub-types you can switch on and off individually as you prefer. Thank you, again, Hans for the valuable input!<br>
 As the number of checkboxes got rather large, there is a new style of display. You can collapse the subtypes if you like. As soon as a well suited grouping scheme is found, the errors could be organized in groups reflecting a hierarchy by topic, but I'm still thinking about this. Comments are welcome!
-
-<h4>2009-05-09</h4>
-An updated errors-table went online today! Planet dump was updated as of may 5th 2009.<br><br>
-
-<h4>2009-05-02</h4>
-An updated errors-table went online today! Planet dump was updated as of april 28th 2009.<br><br>
-Waterways are included by now in the checks 'intersections without junctions' and 'overlapping ways'. This will identify spots where bridges are missing.
 
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
