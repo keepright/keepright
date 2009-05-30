@@ -33,6 +33,7 @@ $false_positives = array(
 	array('hotel', 'hostel', 'motel'),
 	array('lanes', 'lines'),
 	array('icn_ref', 'lcn_ref', 'lwn_ref', 'loc_ref', 'ncn_ref', 'nwn_ref', 'rcn_ref', 'rwn_ref'),
+	array('kebab', 'kebap'),
 	array('left', 'lift'),
 	array('levels', 'level'),
 	array('light', 'right'),
@@ -48,7 +49,8 @@ $false_positives = array(
 	array('short', 'sport'),
 	array('ship', 'show', 'shop', 'stop'),
 	array('tell', 'toll'),
-	array('trail', 'train')
+	array('trail', 'train'),
+	array('wikimedia', 'wikipedia'),
 );
 
 // keys that lead to diverse values. It doesn't ever make sense
