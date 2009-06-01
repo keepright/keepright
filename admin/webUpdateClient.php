@@ -30,8 +30,6 @@ steps required for a database update:
 <?php
 	// show a list of dump files available
 	system('ls -lh results/error_view_osm_??_part??.bz2');
-	system('pwd');
-	system('whoami');
 ?>
 </pre>
 
