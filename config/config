@@ -164,14 +164,13 @@ FTP_PATH="path/to/website/"
 # configured by your web hoster kills it
 MAX_LINES_PER_FILE="200000"
 
-# this URL will be called once for every part of error_view
-# to load data into the table
-UPDATE_TABLES_URL="http://website.yourprovider.com/updateTables.php"
+# this URL will be called to load data into the tables
+UPDATE_TABLES_URL="http://website.yourprovider.com/webUpdateServer.php"
 
 # shared secret for use in updateTables script to prevent anonymous
 # users from emptying your tables. You HAVE TO change this password.
 # The script will not work with default settings
-UPDATE_TABLES_PASSWD="changethis"
+UPDATE_TABLES_PASSWD="shhh!"
 
 ############################################
 # error types
