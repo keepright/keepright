@@ -23,6 +23,8 @@ $error_view_name="error_view_" . $db;
 $error_types_name="error_types_" . $db;
 $comments_name="comments_" . $db;
 $comments_historic_name="comments_historic_" . $db;
+$updated_file_name="updated_" . $db;
 
+$UPDATE_TABLES_PASSWD="shhh!";
 
 ?>
