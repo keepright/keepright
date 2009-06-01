@@ -1,24 +1,27 @@
 <h1>Keep Right!<sup>VM</sup></h1>
 
-<a target="_blank" href="/phppgadmin">PHPPgAdmin</a> | 
-<a target="_blank" href="/phpmyadmin">PHPMyAdmin</a> | 
-<a href="configure.php">config</a> | 
-<a href="update.php">update</a> | 
-<a href="logs.php">logs</a> | 
-<a href="results">results</a> | 
-<!-- <a href="upload.php">ftp upload</a> | -->
+<a target="_blank" href="/phppgadmin">PHPPgAdmin</a> |
+<a target="_blank" href="/phpmyadmin">PHPMyAdmin</a> |
+<a href="configure.php">config</a> |
+<a href="update.php">update</a> |
+<a href="logs.php">logs</a> |
+<a href="results">results</a> |
+<a href="webUpdateClient.php">ftp upload</a>
 <br>
 
 <?php
 
-// determine which databases exist in the MySQL server and provide links to the map
-include("webconfig.inc.php");
+// dirty hack: config.inc.php depends on a country code given on the command line to finish
+// this is not needed here, so we override it
+if (!isset($argv[1])) $argv[1]='AT';
+include("config.inc.php");
 
-$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+// determine which databases exist in the MySQL server and provide links to the map
+$db1=mysqli_connect($WEB_DB_HOST, $WEB_DB_USER, $WEB_DB_PASS, $WEB_DB_NAME);
 $result=mysqli_query($db1, "
   SELECT TABLE_NAME
   FROM information_schema.TABLES
-  WHERE TABLE_SCHEMA='$db_name' AND TABLE_NAME LIKE 'error\_view\_osm\___'
+  WHERE TABLE_SCHEMA='$WEB_DB_NAME' AND TABLE_NAME LIKE 'error\_view\_osm\___'
 ");
 
 while ($row = mysqli_fetch_assoc($result)) {
