@@ -66,6 +66,11 @@ RESULTSDIR="/home/haraldk/OSM/keepright/results"
 ERROR_VIEW_FILE="/home/haraldk/OSM/keepright/results/error_view"
 ERROR_TYPES_FILE="/home/haraldk/OSM/keepright/results/error_types"
 
+
+# set this to 0 for local use (testing) only
+# set this to 1 if you want to upload the results to a web space
+CREATE_COMPRESSED_DUMPS="1"
+
 ############################################
 # Download URLs for various databases
 ############################################

@@ -189,7 +189,11 @@ for i do	# loop all given parameter values
 			echo "`date` * running the checks"
 			php run-checks.php "$i"
 
-			./updateWebDB.sh "$i"
+			if [ "$CREATE_COMPRESSED_DUMPS" = "1" ]; then
+				./updateWebDB.sh --full "$i"
+			else
+				./updateWebDB.sh "$i"
+			fi
 
 			cd "$CHECKSDIR"
 			echo "`date` * ready."
