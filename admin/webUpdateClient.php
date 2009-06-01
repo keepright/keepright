@@ -95,7 +95,7 @@ global $FTP_USER, $FTP_PASS, $FTP_HOST, $FTP_PATH;
 
 	// call wput, overwrite files if already existing, dont create directories
 	// upload the error_view dumps and the error_types dump
-	system("/usr/bin/wput --reupload --binary --verbose --no-directories --basename=results/  results/error_view_{$db}_part??.bz2 results/error_types_{$db}.txt \"$FTPURL\" 2>&1 | tee -a permalog");
+	system("/usr/bin/wput --reupload --binary --no-directories --basename=results/  results/error_view_{$db}_part??.bz2 results/error_types_{$db}.txt \"$FTPURL\" 2>&1");
 }
 
 function load_dump_helper($SID, $db, $filename, $destination) {
@@ -103,7 +103,7 @@ global $UPDATE_TABLES_URL;
 	$WEBURL=$UPDATE_TABLES_URL . "?db=$db&cmd=load_dump&filename=" . basename($filename) . "&destination=$destination&PHPSESSID=$SID";
 
 	// call updateTables.php script, redirect output to stdout (into the webpage)
-	$cmd = '/usr/bin/wget -O - "' . $WEBURL . '" 2>&1 | tee -a permalog';
+	$cmd = '/usr/bin/wget -O - "' . $WEBURL . '" 2>&1';
 	echo "$cmd\n";
 	system($cmd);
 }
