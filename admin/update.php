@@ -5,7 +5,7 @@
 <?php
 	if (isset($_POST['svn_up'])) {
 		echo '<pre>';
-		system('sudo -u osm cd .. && /usr/bin/svn up 2>&1 | tee -a permalog');
+		system('sudo -u osm cd .. && /usr/bin/svn up --non-interactive 2>&1 | tee -a permalog');
 		echo '</pre>';
 	}
 ?>
