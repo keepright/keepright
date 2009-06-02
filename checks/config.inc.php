@@ -6,12 +6,18 @@ $error_types=array();
 // first read default config file shipped with keepright
 // then read the user-defined config file to overwrite custom settings
 parse_config_vars('config');
+
+// for calling from shell, find config in HOME directory
 parse_config_vars($_ENV["HOME"] . '/keepright.config');
 
-function parse_config_vars($filename) {
-	global $error_types, $db_postfix;
+// for calling from the admin interface. There is no suitable HOME variable (the script is run by the apache user), instead there is a symlink pointing to keepright.config
+parse_config_vars('keepright.config');
 
-	if (!file_exists($filename)) return;
+
+function parse_config_vars($filename) {
+	global $error_types, $db_postfix, $db_params;
+
+	if (!file_exists($filename)) return;	// ignore missing files silently
 
 	$configfile=file($filename);	// read config file into variable
 
@@ -22,6 +28,7 @@ function parse_config_vars($filename) {
 		'UPDATE_TABLES_URL', 'UPDATE_TABLES_PASSWD');
 
 	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
+	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'CAT', 'MIN_SIZE');
 
 	foreach ($configfile as $line) {
 
@@ -38,6 +45,12 @@ function parse_config_vars($filename) {
 			}
 
 
+			// find database parameters
+			foreach ($db_parts as $var) {
+				if (preg_match('/^\s*' . $var . '_([A-Z]{2})\s*=\s*"(.*)\"/', $line, $matches))
+					$db_params[$matches[1]][$var] = $matches[2];
+			}
+
 			// find check parameters
 			foreach ($check_parts as $var) {
 				if (preg_match('/^\s*CHECK_([0-9]{4})_' . $var . '\s*=\s*"(.*)\"/', $line, $matches))
@@ -53,6 +66,7 @@ function parse_config_vars($filename) {
 		}
 	}
 }
+
 //print_r($error_types);
 /*
 example for $error_types:
