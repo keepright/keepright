@@ -72,7 +72,7 @@ run-checks.php                        rebuild the error_view
                     export and compress error_view for upload to webspace provider
                                                  |
                                                  v
-updateTables.php                import error_view on webspace provider
+webUpdateServer.php             import error_view on webspace provider
 called on webserver                              |
                                                  |
                                                  v
@@ -215,6 +215,54 @@ Any checks run in the same scope, you are even allowed to declare functions (ins
 Maybe in the future I will change this into an oop-styled buch of classes, but up to now it is working great this way.
 
 If you have ideas for new checks, I would like to integrate them in the official sources to let others benefit from them. So please let me know! And please let me assign a unique check numer for your checks to avoid collisions.
+
+
+THE ADMIN INTERFACE (VM edition)
+--------------------------------
+
+Once there were plans to distribute virtualbox disk images containing a complete linux system running a database where people could run keepright checks and contribute computing power. Such a virtual machine needs an admin interface that can be utilized from outside using a browser. The vm plans died because of poor performance, but the admin interface survived.
+
+To use it, copy or link the admin subdirectory into your webserver's document root and make sure, the following symlinks exist and point into your existing keepright installation:
+
+lrwxrwxrwx 1 haraldk  haraldk   16 2009-05-09 16:21 config -> ../config/config
+lrwxrwxrwx 1 haraldk  haraldk   24 2009-04-13 21:51 config.inc.php -> ../checks/config.inc.php
+lrwxrwxrwx 1 haraldk  haraldk   30 2009-05-09 15:54 keepright.config -> /home/haraldk/keepright.config
+lrwxrwxrwx 1 haraldk  haraldk   24 2009-06-02 20:59 planet -> /media/raid0/planet_new/
+lrwxrwxrwx 1 haraldk  haraldk   11 2009-05-09 16:21 results -> ../results/
+
+Also make sure that the log files exist and belong to your apache user:
+
+-rw-r--r-- 1 www-data haraldk   31 2009-06-01 18:47 log
+-rw-r--r-- 1 www-data haraldk    0 2009-06-01 18:47 permalog
+
+All the other files in the admin directory are essential too:
+
+-rw-r--r-- 1 haraldk  haraldk  264 2009-04-19 20:19 logs.php
+-rw-r--r-- 1 haraldk  haraldk 1129 2009-05-30 16:42 navigate.php
+-rw-r--r-- 1 haraldk  haraldk 1004 2009-05-09 16:29 configure.php
+-rw-r--r-- 1 haraldk  haraldk   64 2009-04-15 20:04 index.php
+-rw-r--r-- 1 haraldk  haraldk  910 2009-06-01 21:48 update.php
+-rw-r--r-- 1 haraldk  haraldk 5500 2009-06-01 21:49 webUpdateClient.php
+
+Now point your browser to the admin directory and have a look at the little helpers you will find:
+* Links to the local phppgadmin and phpmyadmin (if existing)
+* a config file editor
+* an update feature to get the newest source from the keepright repository
+* a button to start the checks
+* a log file viewer
+* a view of the results directory
+* an ftp uploader + database loader
+
+Where the last one it the best: This script will establish a session with a partner script on your webspace to manage the update of the MySQL database from uploading the dump files to finally switching the new error_view table into production use
+
+* upload dump files
+* toggle tables (rename error_view_old to error_view_shadow and empty it)
+* load dump files into error_view_shadow
+* toggle tables (rename error_view to error_view_old and error_view_shadow to error_view)
+* update updated.inc
+* re-open temporarily ignored errors
+
+To make all this work for you and not for anyone else, you have to configure the URL of the partner script on your webspace in keepright.config using the UPDATE_TABLES_URL parameter. Also set a good password in UPDATE_TABLES_PASSWD. This has to be the same in webconfig.inc.php on your webspace.
 
 
 LEGAL STUFF
