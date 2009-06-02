@@ -5,7 +5,7 @@
 <?php
 	if (isset($_POST['svn_up'])) {
 		echo '<pre>';
-		system('sudo -u osm /usr/bin/svn up .. --non-interactive 2>&1 | tee -a permalog');
+		system("sudo -u $ADMIN_USERNAME /usr/bin/svn up .. --non-interactive 2>&1 | tee -a permalog");
 		echo '</pre>';
 	}
 ?>
@@ -20,7 +20,7 @@
 
 	if (isset($_POST['updateDB']) && isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 		echo '<pre>';
-		system('sudo -u osm /home/osm/keepright/checks/updateDB.sh ' . $_POST['isocode'] . '  2>&1 | tee log >> permalog &');
+		system("sudo -u $ADMIN_USERNAME /home/haraldk/OSM/keepright/checks/updateDB.sh " . $_POST['isocode'] . '  2>&1 | tee log >> permalog &');
 		echo '</pre>update started. Please view the logs for results.';
 	}
 ?>
