@@ -20,7 +20,7 @@
 
 	if (isset($_POST['updateDB']) && isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 		echo '<pre>';
-		system("sudo -u $ADMIN_USERNAME /home/haraldk/OSM/keepright/checks/updateDB.sh " . $_POST['isocode'] . '  2>&1 | tee log >> permalog &');
+		system("sudo -u $ADMIN_USERNAME " . dirname($_SERVER['SCRIPT_FILENAME']) . "/updateDB.sh " . $_POST['isocode'] . '  2>&1 | tee log >> permalog &');
 		echo '</pre>update started. Please view the logs for results.';
 	}
 ?>
