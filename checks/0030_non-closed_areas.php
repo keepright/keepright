@@ -7,17 +7,17 @@
 
 select all way-ids into a temporary table and find the id of the
 first and last node of each way.
-If borderlines or areas are closed loops there must not be any way ending 
-in a node, where not another way starts. In other words: every 
+If borderlines or areas are closed loops there must not be any way ending
+in a node, where not another way starts. In other words: every
 last node of a way has to be the first node of another (or the same) way
 
 There's one exception to this: an area may be built from smaller segments
-that share common nodes (imagine a lake as a closed loop and the river 
+that share common nodes (imagine a lake as a closed loop and the river
 leaving the lake, both drawn as areas: the borders of the river end in common
-nodes with the lake border and are non-closed loops) 
+nodes with the lake border and are non-closed loops)
 So the first part is not the whole story...
-For each way that is not continued by the end-node of another way or closed-loop 
-in itself one has to look if there is any connection from it's open-ended node 
+For each way that is not continued by the end-node of another way or closed-loop
+in itself one has to look if there is any connection from it's open-ended node
 to its other end-node using equal-tagged ways but not the way itself.
 */
 
@@ -30,7 +30,7 @@ to its other end-node using equal-tagged ways but not the way itself.
 		v varchar(255) NOT NULL,
 		PRIMARY KEY (id)
 		)
-	", $db1);
+	", $db1, false);
 
 
 
@@ -60,13 +60,13 @@ to its other end-node using equal-tagged ways but not the way itself.
 	// in some key values you have some values explicitly named
 	// and all others are catched with "*". That doesn't bother here,
 	// so delete all explicitly called values as they are included with "*"
-	$result=query("SELECT DISTINCT k FROM _tmp_way_tags WHERE v='*'", $db1);
+	$result=query("SELECT DISTINCT k FROM _tmp_way_tags WHERE v='*'", $db1, false);
 	while ($row=pg_fetch_array($result)) {
 		query("
 			DELETE FROM _tmp_way_tags
 			WHERE k='" . $row['k'] . "'
 			AND v<>'*'
-		", $db2);
+		", $db2, false);
 	}
 	pg_free_result($result);
 
@@ -100,7 +100,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		last_node_id bigint,
 		PRIMARY KEY (way_id)
 		)
-	", $db1);
+	", $db1, false);
 
 	// find id of ways that are tagged as areas
 	query("
@@ -121,7 +121,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 				FROM way_tags t
 				WHERE t.way_id=_tmp_ways.way_id AND t.k='highway'
 			)
-		", $db1);
+		", $db1, false);
 	}
 
 	// find for those ways the first and last node
@@ -130,9 +130,9 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		SET first_node_id=ways.first_node_id, last_node_id=ways.last_node_id
 		FROM ways
 		WHERE ways.id=w.way_id
-	", $db1);
-	query("CREATE INDEX idx_tmp_ways_first_node_id ON _tmp_ways (first_node_id)", $db1);
-	query("CREATE INDEX idx_tmp_ways_last_node_id ON _tmp_ways (last_node_id)", $db1);
+	", $db1, false);
+	query("CREATE INDEX idx_tmp_ways_first_node_id ON _tmp_ways (first_node_id)", $db1, false);
+	query("CREATE INDEX idx_tmp_ways_last_node_id ON _tmp_ways (last_node_id)", $db1, false);
 
 
 	// now find any intermediate nodes but discard nodes that are used only once
@@ -150,8 +150,8 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		INSERT INTO _tmp_way_nodes3 (way_id, node_id)
 		SELECT w.way_id, wn.node_id
 		FROM _tmp_ways w INNER JOIN way_nodes wn ON w.way_id=wn.way_id
-	", $db1);
-	query("CREATE INDEX idx_tmp_way_nodes3 ON _tmp_way_nodes3 (node_id, way_id)", $db1);
+	", $db1, false);
+	query("CREATE INDEX idx_tmp_way_nodes3 ON _tmp_way_nodes3 (node_id, way_id)", $db1, false);
 
 	// find nodes that are used at least twice and
 	// reduce _tmp_way_nodes3 to just the nodes found
@@ -172,8 +172,8 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 			GROUP BY tmp.node_id
 			HAVING COUNT(DISTINCT tmp.way_id)>1
 		)
-	", $db1);
-	query("CREATE INDEX idx_tmp_way_nodes ON _tmp_way_nodes (way_id)", $db1);
+	", $db1, false);
+	query("CREATE INDEX idx_tmp_way_nodes ON _tmp_way_nodes (way_id)", $db1, false);
 
 
 	// member_ways will contain all ways that are already connected
@@ -184,7 +184,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		marker int NOT NULL default 0,
 		PRIMARY KEY (way_id)
 		)
-	", $db1);
+	", $db1, false);
 	query("CREATE INDEX idx_tmp_members_ways ON _tmp_members_ways (marker)", $db1, false);
 	add_insert_ignore_rule('_tmp_members_ways', 'way_id', $db1);
 
@@ -197,7 +197,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		marker int NOT NULL default 0,
 		PRIMARY KEY  (node_id)
 		)
-	", $db1);
+	", $db1, false);
 	query("CREATE INDEX idx_tmp_members_nodes ON _tmp_members_nodes (marker)", $db1, false);
 	add_insert_ignore_rule('_tmp_members_nodes', 'node_id', $db1);
 
