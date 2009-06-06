@@ -20,6 +20,7 @@ will be found so any name value will be ok
 // please keep values in ascending order!
 $false_positives = array(
 	array('AND_a', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_w'),
+	array('area', 'arena'),
 	array('block', 'lock'),
 	array('county', 'country'),
 	array('derail', 'detail', 'retail'),
@@ -27,12 +28,14 @@ $false_positives = array(
 	array('email', 'e-mail', 'mail'),
 	array('food', 'foot', 'wood'),
 	array('function', 'junction'),
+	array('good', 'wood'),
 	array('hall', 'mall', 'wall'),
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
 	array('lanes', 'lines'),
 	array('icn_ref', 'lcn_ref', 'lwn_ref', 'loc_ref', 'ncn_ref', 'nwn_ref', 'rcn_ref', 'rwn_ref'),
+	array('j-bar', 't-bar'),
 	array('kebab', 'kebap'),
 	array('left', 'lift'),
 	array('levels', 'level'),
@@ -50,6 +53,7 @@ $false_positives = array(
 	array('ship', 'show', 'shop', 'stop'),
 	array('tell', 'toll'),
 	array('trail', 'train'),
+	array('water_power', 'water_tower'),
 	array('wikimedia', 'wikipedia'),
 );
 
@@ -83,7 +87,8 @@ $never_complain_about = "(
 // please note the special notation!
 
 $force_irregular = array(
-	'usability:skate:=excelent'
+	'usability:skate:=excelent',
+	'note_'
 );
 
 $force_regular = array(
