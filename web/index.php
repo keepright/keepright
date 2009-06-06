@@ -23,6 +23,9 @@ By default you will be put into the center of Vienna for the European version.<b
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
+<h4>2009-056-06</h4>
+An updated errors-table went online today! Planet dump was updated as of june 2nd 2009.<br><br>
+
 <h4>2009-05-30</h4>
 An updated errors-table went online today! Planet dump was updated as of may 26th 2009.<br><br>
 According to <a href="http://de.wikipedia.org/wiki/Döner">Wikipedia (german)</a>, <i>kebab</i> and <i>kebap</i> are both valid spellings, the misspelled-tags check will accept both spellings as correct.
