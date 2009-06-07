@@ -66,6 +66,7 @@ $never_complain_about = "(
 	'collection_times:=',
 	'created_by:=',
 	'garmin_type:=',
+	'gns_classification:=',
 	'gns:DSG:=',
 	'gns:MGRS:=',
 	'history:=',
