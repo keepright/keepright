@@ -125,8 +125,8 @@ query("CREATE INDEX idx_tmp_ways_way_type ON _tmp_ways (way_type)", $db1);
 query("CREATE INDEX idx_tmp_ways_geom ON _tmp_ways USING gist (geom)", $db1);
 
 
-// ignore crossings/overlappings of a riverbank with the river itself (there are tousands!)
-// ignore crossings/overlappings of a riverbanks with each other (there are tousands too!)
+// ignore crossings/overlappings of a riverbank with the river itself (there are thousands!)
+// ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
 $waterway_exlusion="
 	NOT ((w1.way_type='waterway' AND w2.way_type='riverbank') OR
 	(w1.way_type='riverbank' AND w2.way_type='waterway') OR
@@ -136,6 +136,8 @@ $waterway_exlusion="
 
 // find ways that graphically intersect (i.e. cross or overlap)
 // intersecting is not an error if ways share a common node; this will be checked later
+// check every way with every other way but don't check way A with B AND B with A
+// leads to "w1.way_id<w2.way_id"
 $result=query("
 	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2
 	FROM _tmp_ways w1, _tmp_ways w2
@@ -199,7 +201,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 	if ($additivum <> -1)
 		query("
 			INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lon, lat) 
-			VALUES($error_type+5+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
+			VALUES($error_type+10+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
 			'This way overlaps way #' || {$row['way_id2']} || '.', NOW()," .
 			1e7*merc_lon($point[0]) . ',' . 1e7*merc_lat($point[1]) . ')'
 		, $db2, false);
@@ -264,10 +266,10 @@ function connected_near($way_id1, $way_id2, $x, $y, $db) {
 }
 
 
-// highway-highway: 0
-// highway-waterway: 1
-// highway-riverbank: 2
-// waterway-waterway: 3
+// highway-highway: 1
+// highway-waterway: 2
+// highway-riverbank: 3
+// waterway-waterway: 4
 // any other: invalid (-1)
 function subtype_number($type1, $type2) {
 
@@ -275,23 +277,23 @@ function subtype_number($type1, $type2) {
 		case 'highway':
 			switch ($type2) {
 				case 'highway':
-					return 0;
-				break;
-				case 'waterway':
 					return 1;
 				break;
-				case 'riverbank':
+				case 'waterway':
 					return 2;
+				break;
+				case 'riverbank':
+					return 3;
 				break;
 			}
 		break;
 		case 'waterway':
 			switch ($type2) {
 				case 'highway':
-					return 1;
+					return 2;
 				break;
 				case 'waterway':
-					return 3;
+					return 4;
 				break;
 				case 'riverbank':
 					return -1;
@@ -301,7 +303,7 @@ function subtype_number($type1, $type2) {
 		case 'riverbank':
 			switch ($type2) {
 				case 'highway':
-					return 2;
+					return 3;
 				break;
 				case 'waterway':
 					return -1;
