@@ -168,7 +168,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 				query("
 					INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lon, lat)
 					VALUES($error_type+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
-					'This way intersects way #' || {$row['way_id2']} || ' but there is no junction node', NOW()," . 
+					'This {$row['typ1']} intersects the {$row['typ2']} #' || {$row['way_id2']} || ' but there is no junction node', NOW()," . 
 					round(1e7*merc_lon($point[0])) . ',' . round(1e7*merc_lat($point[1])) . ')'
 				, $db2, false);
 
@@ -202,7 +202,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 		query("
 			INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lon, lat) 
 			VALUES($error_type+10+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
-			'This way overlaps way #' || {$row['way_id2']} || '.', NOW()," .
+			'This {$row['typ1']} overlaps the {$row['typ2']} #' || {$row['way_id2']} || '.', NOW()," .
 			1e7*merc_lon($point[0]) . ',' . 1e7*merc_lat($point[1]) . ')'
 		, $db2, false);
 
