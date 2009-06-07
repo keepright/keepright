@@ -25,7 +25,7 @@ function parse_config_vars($filename) {
 		'WEB_DB_HOST', 'WEB_DB_USER', 'WEB_DB_PASS', 'WEB_DB_NAME',
 		'ERROR_VIEW_FILE', 'ERROR_TYPES_FILE', 'RESULTSDIR',
 		'FTP_HOST', 'FTP_USER', 'FTP_PASS', 'FTP_PATH',
-		'UPDATE_TABLES_URL', 'UPDATE_TABLES_PASSWD');
+		'UPDATE_TABLES_URL', 'UPDATE_TABLES_PASSWD', 'ADMIN_USERNAME');
 
 	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
 	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'CAT', 'MIN_SIZE');
