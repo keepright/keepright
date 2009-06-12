@@ -160,7 +160,12 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 			toggle_tables2($SID, $db);
 
 			$FILE=$db_params[addslashes(htmlspecialchars($_POST['isocode']))]['FILE'];
-			reopen_errors($SID, $db, date("Y-m-d", filemtime("planet/$FILE")));
+
+			if (file_exists("planet/$FILE"))
+				reopen_errors($SID, $db, date("Y-m-d", filemtime("planet/$FILE")));
+			else
+				echo "ERROR: planet file 'planet/$FILE' not found. cannot reopen temp.ignored errors because I cannot determine the date of planet file download\n";
+
 			set_updated_date($SID, $db, date("Y-m-d"));
 			logout($SID);
 		}

@@ -285,16 +285,19 @@ function set_updated_date($date) {
 function reopen_errors($db1, $date) {
 global $error_view_name, $comments_name;
 
-	query("
+	$sql="
 		UPDATE $comments_name c inner join $error_view_name ev using (error_id)
 		SET c.state=null,
 		c.comment=CONCAT(\"[error still open, $date] \", c.comment)
 		WHERE c.state='ignore_temporarily' AND
 		ev.state<>'cleared' AND
 		c.timestamp<\"$date\"
-	", $db1);
+	";
 
-	echo "done.\n";
+	echo $sql;
+	query($sql, $db1);
+
+	echo "\ndone.\n";
 }
 
 ?>
