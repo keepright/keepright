@@ -2,18 +2,25 @@
 
 require('webconfig.inc.php');
 require('helpers.inc.php');
-$starttime=microtime(true);
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 $db2=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
 
 
-$st = htmlentities($_GET['st']);
-$lat = 1e7*htmlentities($_GET['lat']);
+$st = htmlentities($_GET['st']);		// comma separated list of error type numbers
+$lat = 1e7*htmlentities($_GET['lat']);		// center of view
 $lon = 1e7*htmlentities($_GET['lon']);
 $zoom = 1*htmlentities($_GET['zoom']);
 
+// flags for display of ignored/temp.ignored errors. Default is "on"
+if (!isset($_GET['show_ign'])) $_GET['show_ign']='1';
+if (!isset($_GET['show_tmpign'])) $_GET['show_tmpign']='1';
+
+$show_ign=$_GET['show_ign']<>'0';
+$show_tmpign=$_GET['show_tmpign']<>'0';
+
+// default settings: center of Vienna:
 if ($lat==0) $lat=482080810;
 if ($lon==0) $lon=163722146;
 if ($zoom==0) $zoom=14;
@@ -83,7 +90,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 
 
 <?php		// add point markers layer. This is not the standard text layer but a derived version! ?>
-		pois = new OpenLayers.Layer.myText("Errors on Nodes", { location:"<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $path . 'points.php'); ?>", projection: new OpenLayers.Projection("EPSG:4326")} );
+		pois = new OpenLayers.Layer.myText("Errors on Nodes", { location:"<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $path . 'points.php'); ?>", projection: new OpenLayers.Projection("EPSG:4326")} );
 		map.addLayer(pois);
 
 
@@ -187,7 +194,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 <form name="myform" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
 
-<a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br><br>
+<a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
 
 <?php // echo checkboxes for error types ?>
 
@@ -221,7 +228,7 @@ while ($row = mysqli_fetch_array($result)) {
 	//echo "<li>" . $row['error_name'];
 
 	echo "<li><img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>";
-	echo "<input type='checkbox' id='ch$et' name='ch$et' value='$et' onclick='javascript:checkbox_click();'";
+	echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
 
 	if ($ch==='0' || $_GET['ch' . $et]) echo ' checked="checked"';
 
@@ -230,7 +237,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$firstloop=false;
 }
 
-echo "</li></ul><br>\n";
+echo "</li></ul>\n";
 mysqli_free_result($result);
 
 
@@ -246,6 +253,9 @@ echo "
 <input type='button' value='all' onClick='javascript:set_checkboxes(true); pois.loadText();'>
 <input type='button' value='none' onClick='javascript:set_checkboxes(false); pois.loadText();'><br>
 
+<input type='checkbox' id='show_ign' name='show_ign' value='1' onclick='javascript:checkbox_click();' " . ($show_ign ? 'checked="checked"' : '') . "><label for='show_ign'>show ignored errors</label><br>
+
+<input type='checkbox' id='show_tmpign' name='show_tmpign' value='1' onclick='javascript:checkbox_click();' " . ($show_tmpign ? 'checked="checked"' : '') . "><label for='show_tmpign'>show temp. ignored errors</label><br>
 
 <a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
 
@@ -282,12 +292,12 @@ mysqli_close($db2);
 
 
 
-function mklink($db, $ch, $st, $label, $lat, $lon, $zoom, $filename="") {
-	return '<a href="' . mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $filename) . '">' . $label . '</a> ';
+function mklink($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
+	return '<a href="' . mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename) . '">' . $label . '</a> ';
 }
 
-function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $filename="") {
-	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?db=' . $db . '&ch=' . $ch .  '&st=' . $st .  '&lat=' . $lat/1e7 .  '&lon=' . $lon/1e7 .  '&zoom=' . $zoom;
+function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
+	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?db=' . $db . '&ch=' . $ch .  '&st=' . $st .  '&lat=' . $lat/1e7 .  '&lon=' . $lon/1e7 .  '&zoom=' . $zoom . '&show_ign=' . $show_ign .  '&show_tmpign=' . $show_tmpign;
 }
 
 ?>

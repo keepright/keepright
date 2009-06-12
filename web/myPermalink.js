@@ -220,6 +220,10 @@ OpenLayers.Control.myPermalink = OpenLayers.Class(OpenLayers.Control, {
 		}
 	}
 
+	// append checkboxes for hiding ignored errors/temp.ignored errors
+	params["show_ign"] = document.myform.show_ign.checked ? 1 : 0;
+	params["show_tmpign"] = document.myform.show_tmpign.checked ? 1 : 0;
+
         return params;
     },
 

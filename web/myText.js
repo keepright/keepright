@@ -124,6 +124,8 @@ loadText: function() {
 			"&lon="+document.myform.lon.value+
 			"&db="+document.myform.db.value+
 			"&zoom="+document.myform.zoom.value+
+			"&show_ign="+ (document.myform.show_ign.checked ? 1 : 0)+
+			"&show_tmpign="+ (document.myform.show_tmpign.checked ? 1 : 0)+
 			"&ch=0";
 
 		// append error types for any checked checkbox that is called "ch[0-9]+"
