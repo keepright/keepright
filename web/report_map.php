@@ -52,6 +52,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 
 <link rel="stylesheet" type="text/css" href="<?php echo $path; ?>style.css">
 <script type="text/javascript" src="<?php echo $path; ?>outline.js"></script>
+<script type="text/javascript" src="<?php echo $path; ?>tristate-0.9.2.js"></script>
 
 
 <script type="text/javascript">
@@ -135,7 +136,6 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 ?>
 
 		var feature_id = pois.error_ids[error_id];
-
 		var i=0;
 		var len=pois.features.length;
 		var feature=null;
@@ -166,7 +166,7 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		feature.marker.events.triggerEvent("mousedown");
 	}
 
-<?php	// check/uncheck all checboxes for error type selection ?>
+<?php	// check/uncheck all checkboxes for error type selection ?>
 	function set_checkboxes(new_value) {
 		for (var i = 0; i < document.myform.elements.length; ++i) {
 			var el=document.myform.elements[i];
@@ -184,7 +184,6 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		plnk.updateLink();
 	}
 
-
 </script>
 
 
@@ -196,14 +195,16 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 
 <a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
 
-<?php // echo checkboxes for error types ?>
 
-<ul class="outline">
+
 
 <?php
+// echo checkboxes for error types
 
-$level=0;
-$firstloop=true;
+$subgroup_counter=0;
+$error_types=array();
+$subtypes = array();
+
 $result=mysqli_query($db1, "
 	SELECT error_type, error_name
 	FROM $error_types_name
@@ -212,33 +213,47 @@ $result=mysqli_query($db1, "
 
 while ($row = mysqli_fetch_array($result)) {
 	$et = $row['error_type'];
+	$main_type=10*floor($et/10);
 
-	if ($et <> 10*floor($et/10)) {
-		if ($level==0) {	// output a new list start on the beginning of subtypes
-			$level++;
-			echo '<ul>';
-		} else if (!$firstloop) { echo "</li>\n"; }
-	} else {
-		if ($level!=0) {	// output list end when back to main types
-			$level--;
-			echo '</ul>';
-		}
-		if (!$firstloop) { echo "</li>\n"; }
+	if ($et == $main_type) {	// not a subtype of an error
+		$error_types[$main_type]=$row['error_name'];
+
+	} else {			// subtype of an error
+		$subtypes[$main_type][$et]=$row['error_name'];
 	}
-	//echo "<li>" . $row['error_name'];
-
-	echo "<li><img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>";
-	echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
-
-	if ($ch==='0' || $_GET['ch' . $et]) echo ' checked="checked"';
-
-	echo '><label for="ch' . $et . '">' . $row['error_name'] . "</label>\n";
-
-	$firstloop=false;
 }
-
-echo "</li></ul>\n";
 mysqli_free_result($result);
+
+
+echo "<ul class='outline'>\n";
+foreach ($error_types as $et=>$en) {
+
+	echo "<li>";
+	$has_subtypes = is_array($subtypes[$et]);
+	if ($has_subtypes) $subgroup_counter++;
+
+	mkcheckbox($et, $en, $ch, !$has_subtypes, $subgroup_counter);
+
+	if ($has_subtypes) {
+		echo "<ul><div id='subgroup$subgroup_counter'>";
+		foreach ($subtypes[$et] as $st=>$sn) {
+			echo "<li>";
+			mkcheckbox($st, $sn, $ch);
+			echo "</li>";
+		}
+		echo '</div></ul>';
+	}
+
+	echo "</li>\n";
+}
+echo "</ul>\n";
+
+
+echo "<script type='text/javascript'>\n";
+for ($i=1;$i<=$subgroup_counter;$i++)
+	echo "\tinitTriStateCheckBox('tristateBox$i', 'subgroup$i', false, function() { checkbox_click(); } );\n";
+echo "</script>\n";
+
 
 
 
@@ -298,6 +313,25 @@ function mklink($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpig
 
 function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
 	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?db=' . $db . '&ch=' . $ch .  '&st=' . $st .  '&lat=' . $lat/1e7 .  '&lon=' . $lon/1e7 .  '&zoom=' . $zoom . '&show_ign=' . $show_ign .  '&show_tmpign=' . $show_tmpign;
+}
+
+
+
+// draws a checkbox with icon and label for a given error type and error name
+// checks the checkbox if applicable
+function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0) {
+	echo "\n\t<img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>\n\t";
+
+	if ($draw_checkbox) {
+		echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
+
+		if ($ch==='0' || $_GET['ch' . $et]) echo ' checked="checked"';
+
+		echo ">\n\t<label for='ch$et'>$en</label>\n";
+
+	} else {
+		echo "<span id='tristateBox$subgroup_counter' style='cursor: default;'>&nbsp; $en</span>\n";
+	}
 }
 
 ?>
