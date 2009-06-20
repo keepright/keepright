@@ -98,6 +98,16 @@ global $FTP_USER, $FTP_PASS, $FTP_HOST, $FTP_PATH;
 	system("/usr/bin/wput --reupload --binary --no-directories --basename=results/  results/error_view_{$db}_part??.bz2 results/error_types_{$db}.txt \"$FTPURL\" 2>&1");
 }
 
+function empty_error_types_table($SID, $db) {
+global $UPDATE_TABLES_URL;
+	echo "\n\nemptying error_types table -----------------------------\n\n";
+	$URL="$UPDATE_TABLES_URL?db=$db&date=$date&cmd=empty_error_types_table&PHPSESSID=$SID";
+	echo "$URL\n";
+	$result = file($URL);
+	echo implode("", $result) . "\n";
+}
+
+
 function load_dump_helper($SID, $db, $filename, $destination) {
 global $UPDATE_TABLES_URL;
 	$WEBURL=$UPDATE_TABLES_URL . "?db=$db&cmd=load_dump&filename=" . basename($filename) . "&destination=$destination&PHPSESSID=$SID";
@@ -117,6 +127,7 @@ function load_dump($SID, $db) {
 		load_dump_helper($SID, $db, $filename, 'error_view');
 	}
 
+	empty_error_types_table($SID, $db);
 	// now load the error_types
 	load_dump_helper($SID, $db, "error_types_{$db}.txt", 'error_types');
 }
@@ -179,7 +190,7 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 
 <form name="complete_run" action="webUpdateClient.php" method="post">
 	<input type="submit" name="complete_run" value="one button does it all">
-	<input type="text" name="isocode" size="2" value="MG">
+	<input type="text" name="isocode" size="2" value="EU">
 </form>
 
 </body></html>
