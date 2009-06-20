@@ -24,11 +24,12 @@ any way that now is not member of the list of found ways is an island (not conne
 // these are way_ids picked randomly in central locations
 // ways are chosen that seem to be "well-connected" (motorways typically)
 $islands = array(
-	'europe' => array(4433559, 4680727, 4990561, 13863372, 24318266),
+	'europe' => array(4433559, 4680727, 4990561, 24318266),
 	'australia' => array(20275086, 5152283),
-	'africa' => array(26278273, 4698854, 27352405),
+	'africa' => array(25830659, 13644714, 25458412, 26990144, 26140716, 26278273, 25866550, 27352405),
+	'asia' => array(4794399, 5074927, 4075154, 28653226, 5873630, 32731560, 9656730),
 	'japan' => array(24039781),
-	'america' => array(27053604, 28433666, 4615026, 15729697, 13235888, 4757176, 19627507)
+	'america' => array(11985527, 31514564, 24061680, 31519627, 27053604, 28433666, 4615026, 13235888, 4757176, 19627507, 15729697, 24009279)
 );
 
 
