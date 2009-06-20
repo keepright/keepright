@@ -294,7 +294,6 @@ global $error_view_name, $comments_name;
 		c.timestamp<\"$date\"
 	";
 
-	echo $sql;
 	query($sql, $db1);
 
 	echo "\ndone.\n";
