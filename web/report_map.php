@@ -275,7 +275,7 @@ echo "
 <a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
 
 <div style='overflow:auto; width:20%'>
-You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Planet file downloaded at <b>" . trim(file_get_contents('updated.inc')) . "</b>
+You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Planet file downloaded at <b>" . trim(file_get_contents($updated_file_name)) . "</b>
 </div>
 
 </div></form>

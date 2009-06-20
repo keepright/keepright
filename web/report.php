@@ -77,7 +77,7 @@ latitude:<input size=6 type='text' name='lat' value='" . $lat/1e7 . "'>&deg;<br>
 longitude:<input size=6 type='text' name='lon' value='" . $lon/1e7 . "'>&deg;<br>
 square size:<input size=6 type='text' name='sq' value='" . $sq/1e7 . "'>&deg;
 </td></tr>
-<tr><td colspan=2 style='border-style:none'>Planet file downloaded at " . trim(file_get_contents('updated.inc')) . ".&nbsp;&nbsp;<input type='submit' name='requery' value='requery'></td>";
+<tr><td colspan=2 style='border-style:none'>Planet file downloaded at " . trim(file_get_contents($updated_file_name)) . ".&nbsp;&nbsp;<input type='submit' name='requery' value='requery'></td>";
 
 
 //echo "<br>db:$db / check:$ch / state:$st / lat:$lat / lon:$lon / sq:$sq'<br>";
