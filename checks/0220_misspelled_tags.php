@@ -20,6 +20,7 @@ will be found so any name value will be ok
 // please keep values in ascending order!
 $false_positives = array(
 	array('AND_a', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_w'),
+	array('AND_nosr_p', 'AND_nosr_r'),
 	array('area', 'arena'),
 	array('block', 'lock'),
 	array('county', 'country'),
