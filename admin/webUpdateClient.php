@@ -153,6 +153,17 @@ global $UPDATE_TABLES_URL;
 }
 
 
+function set_planetfile_date($SID, $db, $date) {
+global $UPDATE_TABLES_URL;
+	echo "\n\nupdating planet file date-----------------------------------\n\n";
+	$URL="$UPDATE_TABLES_URL?db=$db&date=$date&cmd=set_planetfile_date&PHPSESSID=$SID";
+	echo "$URL\n";
+	$result = file($URL);
+	echo implode("", $result) . "\n";
+}
+
+
+
 // start uploading procedure
 if (isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 
@@ -172,10 +183,12 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 
 			$FILE=$db_params[addslashes(htmlspecialchars($_POST['isocode']))]['FILE'];
 
-			if (file_exists("planet/$FILE"))
-				reopen_errors($SID, $db, date("Y-m-d", filemtime("planet/$FILE")));
-			else
-				echo "ERROR: planet file 'planet/$FILE' not found. cannot reopen temp.ignored errors because I cannot determine the date of planet file download\n";
+			if (file_exists("planet/$FILE")) {
+				$planetfile_date=date("Y-m-d", filemtime("planet/$FILE"));
+				reopen_errors($SID, $db, $planetfile_date);
+				set_planetfile_date($SID, $db, $planetfile_date);
+			} else
+				echo "ERROR: planet file 'planet/$FILE' not found. Cannot reopen temp.ignored errors because I cannot determine the date of planet file download\n";
 
 			set_updated_date($SID, $db, date("Y-m-d"));
 			logout($SID);

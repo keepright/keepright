@@ -10,7 +10,8 @@ Call this script from your client pc using webUpdateClient.php
 * toggle tables (rename _old to _shadow and empty it)
 * load dump files
 * toggle tables (rename error_view to error_view_old and _shadow to error_view)
-* update updated.inc
+* update updated_osm_XX file (date of last site update)
+* update planetfile_date_osm_XX file (date of planet file used during update)
 * create log entry
 * re-open temporarily ignored errors
 */
@@ -27,7 +28,7 @@ session_start();
 
 // enforce people to change their password
 if ($UPDATE_TABLES_PASSWD=="shhh!" || strlen($UPDATE_TABLES_PASSWD)==0) {
-	echo "password not yet configured";
+	echo "Password not yet configured. Please change your password in webconfig.inc.php";
 	exit;
 }
 
@@ -79,7 +80,10 @@ if ($_SESSION['authorized']===true) {
 			reopen_errors($db1, $_GET['date']);
 		break;
 		case 'set_updated_date':
-			set_updated_date($_GET['date']);
+			write_file($updated_file_name, $_GET['date']);
+		break;
+		case 'set_planetfile_date':
+			write_file($planetfile_date_file_name, $_GET['date']);
 		break;
 		case 'logout':
 			// Unset all of the session variables and destroy the session.
@@ -259,23 +263,23 @@ function empty_error_types_table($db1){
 	echo "done.\n";
 }
 
-// write date into updated_osmXX file
-function set_updated_date($date) {
-	global $updated_file_name;
+// overwrite $filename with $content
+function write_file($filename, $content) {
 
-	if (!$handle = fopen($updated_file_name, 'w')) {
-		echo "Cannot open file ($updated_file_name)";
+	if (!$handle = fopen($filename, 'w')) {
+		echo "Cannot open file ($filename)";
 		exit;
 	}
 
-	if (fwrite($handle, $date) === FALSE) {
-		echo "Cannot write to file ($updated_file_name)";
+	if (fwrite($handle, $content) === FALSE) {
+		echo "Cannot write to file ($filename)";
 		exit;
 	}
 	fclose($handle);
 
 	echo "done.\n";
 }
+
 
 
 // update temporarily ignored errors to open again

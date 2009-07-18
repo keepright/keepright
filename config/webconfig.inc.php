@@ -24,6 +24,7 @@ $error_types_name="error_types_" . $db;
 $comments_name="comments_" . $db;
 $comments_historic_name="comments_historic_" . $db;
 $updated_file_name="updated_" . $db;
+$planetfile_date_file_name="planetfile_date_" . $db;
 
 $UPDATE_TABLES_PASSWD="shhh!";
 
