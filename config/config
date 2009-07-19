@@ -28,7 +28,7 @@ MAIN_DB_PASS="osm"
 # the web server's database server.
 # this is the MySQL server behind the web presentation
 # please note: you have to duplicate these credentials
-# in the file keepright/webconfig.inc.php!
+# in the file keepright/config/webconfig.inc.php!
 
 WEB_DB_HOST="localhost"
 WEB_DB_USER="root"
@@ -127,7 +127,7 @@ URL_XB="http://download.geofabrik.de/osm/north-america.osm.bz2"
 FILE_XB="north-america.osm.bz2"
 MAIN_DB_NAME_XB="osm_XB"
 CAT_XB="bzcat"
-MIN_SIZE_XB="70000"
+MIN_SIZE_XB="1200000"
 
 URL_XC="http://download.geofabrik.de/osm/south-america.osm.bz2"
 FILE_XC="south-america.osm.bz2"
@@ -314,4 +314,18 @@ CHECK_0220_DESCRIPTION="Tags that are used very seldom and almost look like very
 CHECK_0230_NAME="layer conflicts"
 CHECK_0230_ENABLED="0"
 CHECK_0230_FILE="0230_layer_conflicts.php"
-CHECK_0230_DESCRIPTION="Connected ways should be on the same layer. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly"
+CHECK_0230_DESCRIPTION="Connected ways should be on the same layer. Crossings on intermediate nodes of ways on different layers are obviously wrong. Junctions on end-nodes of ways on different layers are also deprecated, but common practice. So you may switch them off separately. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly if no layer tag is present."
+
+SUBTYPE_0231_NAME="obviously wrong"
+SUBTYPE_0232_NAME="not so obviuos"
+
+
+# 240, 250 reserved for Peter
+
+
+CHECK_0260_NAME="map features"
+CHECK_0260_ENABLED="0"
+CHECK_0260_FILE="0260_map_features.php"
+CHECK_0260_DESCRIPTION="checks taggins against the proposed map features and asserts dependencies of tags"
+
+
