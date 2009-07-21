@@ -7,37 +7,38 @@
 
 <img src="keepright.png" alt="keep-right logo">data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
-These pages show checks that are run on a local excerpt database filled with OSM data. Checks are run on a database containing just the Europe part of the planet file for performance and memory reasons.
+These pages show checks that are run on a local excerpt database filled with OSM data.
 <br><br>
+<!--
+<div style="border:thin solid #800000; background-color:#80FF80;">Please welcome the first Keepright partner site providing error checks for <a href="http://keepright.x10hosting.com" target="_blank">Australia</a><br><br>Want to become a partner too? Want to have a look into the sources behind keepright? Have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access, a mailing list and a trac ticket request system</div>-->
+<a href="report_map.php?db=osm_EU&zoom=14&lat=48.20808&lon=16.37221">Data Checks for Europe</a> (Starting point Vienna, Austria)<br>
+<a href="http://keepright.x10hosting.com" target="_blank">Australian Keepright partner site</a><br>
 
-<div style="border:thin solid #800000; background-color:#80FF80;">Please welcome the first Keepright partner site providing error checks for <a href="http://keepright.x10hosting.com" target="_blank">Australia</a><br><br>Want to become a partner too? Want to have a look into the sources behind keepright? Have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access, a mailing list and a trac ticket request system</div>
+<a href="report_map.php?db=osm_XA&zoom=14&lat=30.039&lon=31.25345">Data Checks for Africa</a> (Starting point Cairo, Egypt)<br>
+<a href="report_map.php?db=osm_XC&zoom=14&lat=-23.58791&lon=-46.65713">Data Checks for South America</a> (Starting point São Paulo, Brazil)<br>
+<a href="report_map.php?db=osm_XD&zoom=14&lat=35.68051&lon=139.76404">Data Checks for Asia</a> (Starting point Tokio, Japan)<br>
+<br>
+<a href="report.php">Europe Data Checks as ugly list</a><br>
 
-<ul>
-	<li><a href="report.php">Europe Data Checks as ugly list</a></li>
-	<li><a href="report_map.php">Europe Data Checks painted on the map</a></li>
-	<li><a href="http://keepright.x10hosting.com" target="_blank">Australian Keepright partner site</a></li>
-</ul>
-By default you will be put into the center of Vienna for the European version.<br>
+<p>North America is still missing in the list. Volunteers wanting to run the scripts on their powerful machine are welcome to join!</p>
+<br>
+Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
+
 
 <h4>a few words on the new comment feature</h4>
 Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
 
 <h3>logfile</h3>
-<h4>2009-056-06</h4>
-An updated errors-table went online today! Planet dump was updated as of june 2nd 2009.<br><br>
+<h4>2009-07-21</h4>
+There is a new link that will bring you immediately back to the error you're visiting at the moment. Find the link at the bottom of the error bubble. Thank you, Rejo, for the suggestion!
+<br><br>
 
-<h4>2009-05-30</h4>
-An updated errors-table went online today! Planet dump was updated as of may 26th 2009.<br><br>
-According to <a href="http://de.wikipedia.org/wiki/Döner">Wikipedia (german)</a>, <i>kebab</i> and <i>kebap</i> are both valid spellings, the misspelled-tags check will accept both spellings as correct.
+<h4>2009-07-17</h4>
+An updated errors-table went online today! Planet dump was updated as of july 13th 2009.<br>
+During the last three weeks some errors were not updated correctly because of my wrong use of <tt>wput</tt>. This is now resolved.
+<br><br>
 
-<h4>2009-05-23</h4>
-An updated errors-table went online today! Planet dump was updated as of may 19th 2009.<br><br>
 
-<h4>2009-05-16</h4>
-An updated errors-table went online today! Planet dump was updated as of may 12th 2009.<br><br>
-The misspelled-tags check learned a new feature: It will complain about tags where the key is &quot;key&quot;. That are 1341 ways and 436 nodes in Europe. Thank you, Matthias for the tip!<br>
-'Intersections without junctions' and 'overlapping ways' were expanded to find errors on waterways two weeks ago. Some of the newly found errors were false-positives (overlappings of riverbanks, intersections of waterways and riverbanks for example) and are removed now. The rest is now splitted to sub-types you can switch on and off individually as you prefer. Thank you, again, Hans for the valuable input!<br>
-As the number of checkboxes got rather large, there is a new style of display. You can collapse the subtypes if you like. As soon as a well suited grouping scheme is found, the errors could be organized in groups reflecting a hierarchy by topic, but I'm still thinking about this. Comments are welcome!
 
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
@@ -51,7 +52,12 @@ require('helpers.inc.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
-$result=query("SELECT error_type, error_name, error_description FROM $error_types_name ORDER BY error_type", $db1, false);
+$result=query("
+	SELECT error_type, error_name, error_description
+	FROM $error_types_name 
+	WHERE error_type=10*FLOOR(error_type/10)
+	ORDER BY error_type
+	", $db1, false);
 while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
 	echo '<p><b>' . $row['error_name'] . '</b><br>' . $row['error_description'] . '</p>';
 }

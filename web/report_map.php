@@ -12,6 +12,7 @@ $st = htmlentities($_GET['st']);		// comma separated list of error type numbers
 $lat = 1e7*htmlentities($_GET['lat']);		// center of view
 $lon = 1e7*htmlentities($_GET['lon']);
 $zoom = 1*htmlentities($_GET['zoom']);
+$highlight_error_id=1*htmlentities($_GET['error']);
 
 // flags for display of ignored/temp.ignored errors. Default is "on"
 if (!isset($_GET['show_ign'])) $_GET['show_ign']='1';
@@ -19,6 +20,27 @@ if (!isset($_GET['show_tmpign'])) $_GET['show_tmpign']='1';
 
 $show_ign=$_GET['show_ign']<>'0';
 $show_tmpign=$_GET['show_tmpign']<>'0';
+
+
+if ($highlight_error_id<>0) {
+	// find lat/lon if URL specifies an error id to highlight
+	$lat=0;
+	$lon=0;
+
+	$result=mysqli_query($db1, "
+		SELECT lat, lon
+		FROM $error_view_name
+		WHERE error_id=" . addslashes($highlight_error_id)
+	);
+
+	while ($row = mysqli_fetch_array($result)) {
+		$lat=$row['lat'];
+		$lon=$row['lon'];
+		$zoom=17;
+	}
+	mysqli_free_result($result);
+
+}
 
 // default settings: center of Vienna:
 if ($lat==0) $lat=482080810;
@@ -258,6 +280,7 @@ echo "</script>\n";
 
 
 echo "
+<input type='hidden' name='highlight_error_id' value='" . $highlight_error_id . "'>
 <input type='hidden' name='db' value='" . $db . "'>
 <input type='hidden' name='lat' value='" . $lat/1e7 . "'>
 <input type='hidden' name='lon' value='" . $lon/1e7 . "'>

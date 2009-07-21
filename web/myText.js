@@ -260,7 +260,9 @@ parseData: function(ajaxRequest) {
 			'<input type="hidden" name="id" value="'+error_id+'">'+
 			'<input type="button" value="save" onClick="javascript:saveComment('+error_id+', '+error_type+');">' +
 			'<input type="button" value="cancel" onClick="javascript:closeBubble('+error_id+');">' +
-			'</form><small>please click on the icon to fixate the bubble</small>';
+			'</form><small>please click on the icon to fixate the bubble<br>' +
+			'link to here: error #<a href="report_map.php?'+
+			((document.myform.db.value=='osm_EU') ? '' : 'db='+document.myform.db.value+'&')+ 'error='+error_id+'">'+error_id+'</a></small>';
 		}
 
 
@@ -278,6 +280,11 @@ parseData: function(ajaxRequest) {
 			marker.events.register("mouseout",markerFeature,thisObject.onOutHandler);
 		}
 		thisObject.addMarker(marker);
+
+		// open error bubble if it is to highlight
+		if (error_id==document.myform.highlight_error_id.value)
+			marker.events.triggerEvent("mousedown");
+
 		return markerFeature.id;
 	}
 
