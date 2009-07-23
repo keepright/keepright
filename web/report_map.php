@@ -111,6 +111,9 @@ $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 		var layerTilesAtHome = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
 		map.addLayer(layerTilesAtHome);
 
+<?php		// add the open cycle map layer ?>
+		var layerCycle = new OpenLayers.Layer.OSM.CycleMap("OSM Cycle Map");
+		map.addLayer(layerCycle);
 
 <?php		// add point markers layer. This is not the standard text layer but a derived version! ?>
 		pois = new OpenLayers.Layer.myText("Errors on Nodes", { location:"<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $path . 'points.php'); ?>", projection: new OpenLayers.Projection("EPSG:4326")} );
