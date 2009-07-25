@@ -27,7 +27,10 @@ $replacement_list = array(
 	array("2007-07-16", "abutters", "*", "landuse=* around the area ", "?"),
 	array("2007-07-16", "amenity", "store", "shop=* ", "Shop introduced"),
 	array("2007-07-16", "boundary", "national_park", "?", "?"),
+	/*
+	// removed at 2009-07-20 because of a discussion on talk list
 	array("2007-07-16", "landuse", "wood", "landuse=forest", "?"),
+	*/
 	array("2007-07-16", "railway", "preserved_rail", "railway=preserved ", "the '_rail' suffix is redundant"),
 	array("2007-07-13", "amenity", "supermarket", "shop=supermarket ", "Shop introduced"),
 	array("2007-07-13", "amenity", "bakers", "shop=bakery ", "Shop introduced"),
