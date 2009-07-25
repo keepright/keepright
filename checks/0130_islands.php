@@ -24,12 +24,87 @@ any way that now is not member of the list of found ways is an island (not conne
 // these are way_ids picked randomly in central locations
 // ways are chosen that seem to be "well-connected" (motorways typically)
 $islands = array(
-	'europe' => array(4433559, 4680727, 4990561, 24318266),
-	'australia' => array(20275086, 5152283),
-	'africa' => array(25830659, 13644714, 25458412, 26990144, 26140716, 26278273, 25866550, 27352405),
-	'asia' => array(4794399, 5074927, 4075154, 28653226, 5873630, 32731560, 9656730),
-	'japan' => array(24039781),
-	'america' => array(11985527, 31514564, 24061680, 31519627, 27053604, 28433666, 4615026, 13235888, 4757176, 19627507, 15729697, 24009279)
+	'europe' => array(
+		'Kufstein, Austria' => 4433559,
+		'Madrid, Spain' => 4680727,
+		'Warszawa, Poland' => 4990561,
+		'Lahti, Finland' => 24318266,
+		'Reykjavik, Iceland' => 22529614,
+		'Torshavn, Faröer' => 4967431
+	),
+	'australia' => array(
+		'Melbourne' => 20275086,
+		'Sydney' => 5152283
+	),
+	'africa' => array(
+		'Ruanda' => 25830659,
+		'Lagos, Nigeria' => 13644714,
+		'Santa Cruz de Tenerife' => 25458412,
+		'Pretoria, South Africa' => 26990144,
+		'Marrakesh, Morocco' => 26140716,
+		'Tunis, Tunisia' => 26278273,
+		'Cairo, Egypt' => 25866550,
+		'Antananarivo, Madagascar' => 27352405,
+		'Nairobi, Kenya' => 4742016,
+		'Saint-Denis, La Reunion' => 31130327,
+		'Port Lois, Mauritius' => 22821395,
+		'Kinshasa, Kongo' => 4450237,
+		'Addis Abeba, Ethiopia' => 8104263,
+		'Abijan, Ivory Coast' => 30613353,
+		'Mogadishu, Somalia' => 5069961
+	),
+	'asia' => array(
+		'Manila, Philippines' => 4794399,
+		'Kuala Lumpur, Malaysia' => 5074927,
+		'Baghdad, Iraq' => 4075154,
+		'Damascus, Syria' => 28653226,
+		'New Delhi, India' => 5873630,
+		'Chelyabinsk, Russia' => 32731560,
+		'Workuta, Russia' => 31838171,
+		'Hanoi, Vietnam' => 9656730,
+		'Colombo, Sri Lanka' => 24791916,
+		'Tokyo, Japan' => 24039781,
+		'Higashi-Fukuma, Japan' => 369681624,
+		'Sapporo, Japan' => 30705114,
+		'Taipeh, Taiwan' => 187243326,
+		'Singapore' => 133745551,
+		'Medan, Sumatra' => 34337328,
+		'Dabo, Pulau Singkep' => 31027937,
+		'Jakarta, Java' => 28781825,
+		'Surabaya, Java' => 28376237,
+		'Makassar, Celebes' => 28919403,
+		'Dilli, Timor' => 24240157,
+		'Lombok' => 35270707,
+		'Bali' => 25132045,
+		'Bandar Seri Begawan, Borneo' => 19296686,
+		'Labuan, Borneo' => 28717158,
+		'Davao City, Mindanao, Philippines' => 372702884,
+		'Cebu City, Philippines' => 28817565,
+		'Talubhan, Philippines' => 31951418,
+		'Jin Island, Philippines' => 27480514
+	),
+	'north america' => array(
+		'Philadelphia, NJ' => 27053604,
+		'Santa Clara, CA' => 28433666,
+		'Kansas City, KS' => 13235888,
+		'Seattle, WA' => 4757176,
+		'Memphis, TN' => 19627507,
+	),
+	'south america' => array(
+		'Lima, Peru' => 11985527,
+		'Fortaleza, Brazil' => 23340440,
+		'Bogota, Colombia' => 24061680,
+		'Sao Paulo, Brazil' => 4615026,
+		'Maceijo, Brazil' => 28639929,
+		'Recife, Brazil' => 30811117,
+		'Belem, Brazil' => 25171652,
+		'Santiago, Chile' => 15729697,
+		'Caracas, Venezuela' => 24009279,
+		'Georgetown, Guyana' => 30755813,
+		'Pt. Stanley, Falkland Islands' => 14143339,
+		'Paramaribo, Suriname' => 4383404,
+		'Cayenne, Fr. Guyana' => 34316537
+	)
 );
 
 
@@ -89,13 +164,12 @@ query("
 query("CREATE INDEX idx_tmp_nodes_node_id ON _tmp_nodes (node_id)", $db1);
 
 
-
 // add starting way_ids that are part of islands
 $sql = "INSERT INTO _tmp_ways (way_id) VALUES ";
-foreach ($islands as $island=>$ways) foreach ($ways as $way) $sql.="($way),";
+foreach ($islands as $island=>$ways) foreach ($ways as $dontcare=>$way) $sql.="($way),";
 
 query(substr($sql, 0, -1), $db1);
-query("INSERT INTO _tmp_ways2 SELECT way_id FROM _tmp_ways", $db1, false);
+query("INSERT INTO _tmp_ways2 SELECT way_id FROM _tmp_ways", $db1);
 
 do {
 	// first find nodes that belong to ways found in the last round
