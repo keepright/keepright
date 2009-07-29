@@ -243,7 +243,7 @@ parseData: function(ajaxRequest) {
 			data['popupContentHTML'] ='<h5>'+error_name+', '+object_type+' <a href="http://www.openstreetmap.org/browse/'+object_type+'/'+object_id+'"  target="_blank">'+object_id+'</a></h5>'+
 			'<p class="p1">'+description+'</p>'+
 
-			'<p class="p2">edit in <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.01) + '&right=' + (lon-(-0.01)) + '&top=' + (lat-(-0.01)) + '&bottom=' + (lat-0.01) + '&select=' + object_type + object_id + '" target="hiddenIframe">JOSM</a> ' +
+			'<p class="p2">edit in <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.01) + '&right=' + (lon-(-0.01)) + '&top=' + (lat-(-0.01)) + '&bottom=' + (lat-0.01) + '&select=' + object_type + object_id + '" target="hiddenIframe" title="JOSM must be running and JOSM\'s remote control plugin must be enabled for this to work!">JOSM</a> ' +
 
 			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">Potlatch</a></p>' +
 

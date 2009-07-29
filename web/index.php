@@ -24,11 +24,14 @@ These pages show checks that are run on a local excerpt database filled with OSM
 <br>
 Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
 
-
-<h4>a few words on the new comment feature</h4>
-Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
-
 <h3>logfile</h3>
+<h4>2009-07-25</h4>
+With today's update I introduce a new check that looks for ways that are connected but reside on different layers. There seems to be a difference between what the <a href="http://wiki.openstreetmap.org/wiki/Tunnel" target="_blank">wiki says</a> and what's <a href="http://www.openstreetmap.org/?zoom=18&lat=48.20244&lon=16.40252" target="_blank">common practice</a>.<br>
+So I split the check in cases where ways intersect on in-between-nodes ("obviously wrong") and ways that start in a common node ("not so obvious").<br>
+Thank you, Christian, for the idea to this check!
+
+<br><br>
+
 <h4>2009-07-21</h4>
 There is a new link that will bring you immediately back to the error you're visiting at the moment. Find the link at the bottom of the error bubble. Thank you, Rejo, for the suggestion!
 <br><br>
@@ -36,13 +39,16 @@ There is a new link that will bring you immediately back to the error you're vis
 <h4>2009-07-17</h4>
 An updated errors-table went online today! Planet dump was updated as of july 13th 2009.<br>
 During the last three weeks some errors were not updated correctly because of my wrong use of <tt>wput</tt>. This is now resolved.
-<br><br>
-
-
 
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
 
+
+<br><br>
+<h4>a few words on the new comment feature</h4>
+Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!
+<br><br>
+Please note that in order to make the JOSM link work, JOSM must already be running when you hit the JOSM-link. Furthermore you have to enable the &apos;remote control&apos;-plugin in JOSMs options.
 
 <h3>Currently the following checking procedures are implemented</h3>
 <?php
@@ -67,9 +73,6 @@ mysqli_close($db1);
 ?>
 
 
-<!-- <h3>Source files</h3>
-
-If you like to try running data consistency checks by yourself you may <a href="keepright.tar.gz">download the source files</a>. Please refer to the README file for detailed installation instructions.<br><br> -->
 
 If you find an error in my errors lists I would definitely like to hear about it!<br>
 
