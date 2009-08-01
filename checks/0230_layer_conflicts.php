@@ -39,6 +39,15 @@ this is the only exception:
 
 */
 
+// select all highways but ignore steps as they are meant for changing layers
+query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("
+	CREATE TABLE _tmp_ways AS
+	SELECT DISTINCT way_id
+	FROM way_tags
+	WHERE k='highway' AND v<>'steps'
+", $db1);
+query("CREATE INDEX idx_tmp_ways_way_id ON _tmp_ways (way_id)", $db1);
 
 
 // leave out intermediate-nodes that don't interest anybody:
@@ -49,16 +58,11 @@ query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
 	CREATE TABLE _tmp_junctions AS
 	SELECT node_id
-	FROM way_nodes wn
-	WHERE EXISTS (
-		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND t.k='highway'
-	)
+	FROM way_nodes wn INNER JOIN _tmp_ways USING (way_id)
 	GROUP BY node_id
 	HAVING COUNT(DISTINCT way_id)>1
 ", $db1);
 query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
-
-
 
 
 // tmp_ways will contain all highways with their nodes and layer tag
@@ -121,12 +125,6 @@ query("
 	t.way_id=c.way_id AND
 	t.k='tunnel'
 ", $db1);
-query("
-	UPDATE _tmp_ways c
-	SET layer=0
-	WHERE layer IS NULL
-", $db1);
-
 
 
 
@@ -135,7 +133,7 @@ query("
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
 query("
 	CREATE TABLE _tmp_error_candidates AS
-	SELECT way_id, node_id, end_node, layer, false AS all_intermediate_nodes
+	SELECT way_id, node_id, end_node, COALESCE(_tmp_ways.layer, '0') AS layer, false AS all_intermediate_nodes
 	FROM _tmp_ways
 	WHERE node_id IN (
 		SELECT node_id
@@ -187,8 +185,6 @@ query("
 ", $db1);
 
 
-
-
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
 	SELECT $error_type + CASE WHEN all_intermediate_nodes THEN 1 ELSE 2 END,
@@ -197,7 +193,6 @@ query("
 	FROM _tmp_error_candidates AS T
 	GROUP BY node_id, all_intermediate_nodes
 ", $db1);
-
 
 
 
