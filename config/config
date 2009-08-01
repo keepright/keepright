@@ -314,7 +314,7 @@ CHECK_0220_DESCRIPTION="Tags that are used very seldom and almost look like very
 CHECK_0230_NAME="layer conflicts"
 CHECK_0230_ENABLED="0"
 CHECK_0230_FILE="0230_layer_conflicts.php"
-CHECK_0230_DESCRIPTION="Connected ways should be on the same layer. Crossings on intermediate nodes of ways on different layers are obviously wrong. Junctions on end-nodes of ways on different layers are also deprecated, but common practice. So you may switch them off separately. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly if no layer tag is present."
+CHECK_0230_DESCRIPTION="Connected ways should be on the same layer. Crossings on intermediate nodes of ways on different layers are obviously wrong. Junctions on end-nodes of ways on different layers are also deprecated, but common practice. So you may ignore this part of the check and switch them off separately. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly if no layer tag is present"
 
 SUBTYPE_0231_NAME="obviously wrong"
 SUBTYPE_0232_NAME="not so obviuos"
@@ -327,5 +327,10 @@ CHECK_0260_NAME="map features"
 CHECK_0260_ENABLED="0"
 CHECK_0260_FILE="0260_map_features.php"
 CHECK_0260_DESCRIPTION="checks taggins against the proposed map features and asserts dependencies of tags"
+
+CHECK_0270_NAME="motorways connected directly"
+CHECK_0270_ENABLED="1"
+CHECK_0270_FILE="0270_motorways_connected_directly.php"
+CHECK_0270_DESCRIPTION="Motorways should only be connected to other motorways or motorway_links. They should especially not be directly connected to highway=primary or highway=residential roads. Please note: This check may produce false positives on motorways ending in cities but it can be a valuable tool for looking up unwanted connections of motorways and other roads."
 
 
