@@ -48,6 +48,7 @@ $false_positives = array(
 	array('next', 'text'),
 	array('number', 'numbers'),
 	array('power', 'tower'),
+	array('rail', 'trail'),
 	array('salb', 'sale', 'salt'),
 	array('service', 'services'),
 	array('short', 'sport'),
