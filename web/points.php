@@ -24,6 +24,7 @@ require('webconfig.inc.php');
 require('helpers.inc.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+mysqli_query($db1, "SET SESSION wait_timeout=60");
 
 
 $ch = $_GET['ch'];
