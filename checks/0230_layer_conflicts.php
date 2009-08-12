@@ -40,14 +40,14 @@ this is the only exception:
 */
 
 // select all highways but ignore steps as they are meant for changing layers
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_highways", $db1);
 query("
-	CREATE TABLE _tmp_ways AS
+	CREATE TABLE _tmp_highways AS
 	SELECT DISTINCT way_id
 	FROM way_tags
 	WHERE k='highway' AND v<>'steps'
 ", $db1);
-query("CREATE INDEX idx_tmp_ways_way_id ON _tmp_ways (way_id)", $db1);
+query("CREATE UNIQUE INDEX idx_tmp_highways_way_id ON _tmp_highways (way_id)", $db1);
 
 
 // leave out intermediate-nodes that don't interest anybody:
@@ -58,11 +58,11 @@ query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
 	CREATE TABLE _tmp_junctions AS
 	SELECT node_id
-	FROM way_nodes wn INNER JOIN _tmp_ways USING (way_id)
+	FROM way_nodes wn INNER JOIN _tmp_highways USING (way_id)
 	GROUP BY node_id
 	HAVING COUNT(DISTINCT way_id)>1
 ", $db1);
-query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
+query("CREATE UNIQUE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
 
 
 // tmp_ways will contain all highways with their nodes and layer tag
@@ -77,11 +77,11 @@ query("
 	)
 ", $db1);
 
-// find any way/node tupel using just junction nodes
+// find any way/node tupel using just junction nodes and just the highways
 query("
 	INSERT INTO _tmp_ways (way_id, node_id)
 	SELECT DISTINCT wn.way_id, wn.node_id
-	FROM _tmp_junctions j INNER JOIN way_nodes wn USING (node_id)
+	FROM (_tmp_junctions j INNER JOIN way_nodes wn USING (node_id)) INNER JOIN _tmp_highways USING (way_id)
 ", $db1);
 
 query("CREATE INDEX idx_tmp_ways_layer ON _tmp_ways (layer)", $db1);
@@ -99,9 +99,10 @@ query("
 // mark end nodes
 query("
 	UPDATE _tmp_ways c
-	SET end_node=(w.first_node_id = node_id) OR (w.last_node_id = node_id)
+	SET end_node=true
 	FROM ways w
-	WHERE w.id=c.way_id
+	WHERE w.id=c.way_id AND
+	((w.first_node_id = node_id) OR (w.last_node_id = node_id))
 ", $db1);
 
 
@@ -139,7 +140,7 @@ query("
 		SELECT node_id
 		FROM _tmp_ways
 		GROUP BY node_id
-		HAVING COUNT(DISTINCT layer)>=2
+		HAVING COUNT(DISTINCT COALESCE(_tmp_ways.layer, '0'))>=2
 	)
 ", $db1);
 query("CREATE INDEX idx_tmp_error_candidates_node_id ON _tmp_error_candidates (node_id)", $db1);
@@ -199,5 +200,6 @@ query("
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_highways", $db1);
 
 ?>
