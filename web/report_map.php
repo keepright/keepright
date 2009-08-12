@@ -206,6 +206,23 @@ if (!$st) $st='open';
 		plnk.updateLink();
 	}
 
+
+<?php	// build the list of error type checkbox states for use in URLs
+	// echo the error_type number for every active checkbox, separated with ','
+ ?>
+function getURL_checkboxes() {
+	loc="ch=0"
+	// append error types for any checked checkbox that is called "ch[0-9]+"
+	for (var i = 0; i < document.myform.elements.length; ++i) {
+		var el=document.myform.elements[i];
+		if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
+			if (el.checked)
+				loc+="," + el.name.substr(2);
+		}
+	}
+	return loc;
+}
+
 </script>
 
 

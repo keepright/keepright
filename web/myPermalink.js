@@ -209,16 +209,7 @@ OpenLayers.Control.myPermalink = OpenLayers.Class(OpenLayers.Control, {
             }
         }
 
-
-	// append error types for any checked checkbox that is called "ch[0-9]+"
-	for (var i = 0; i < document.myform.elements.length; ++i) {
-		var el=document.myform.elements[i];
-		if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
-			//alert(el.name + " is " + el.checked);
-			params["ch" + el.name.substr(2)] = (el.checked ? 1 : 0);
-
-		}
-	}
+	params["ch"]=getURL_checkboxes();	// see file report_map.php
 
 	// append checkboxes for hiding ignored errors/temp.ignored errors
 	params["show_ign"] = document.myform.show_ign.checked ? 1 : 0;

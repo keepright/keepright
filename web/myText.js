@@ -126,19 +126,8 @@ loadText: function() {
 			"&zoom="+document.myform.zoom.value+
 			"&show_ign="+ (document.myform.show_ign.checked ? 1 : 0)+
 			"&show_tmpign="+ (document.myform.show_tmpign.checked ? 1 : 0)+
-			"&ch=0";
+			"&"+getURL_checkboxes();
 
-		// append error types for any checked checkbox that is called "ch[0-9]+"
-		for (var i = 0; i < document.myform.elements.length; ++i) {
-			var el=document.myform.elements[i];
-			if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
-				//alert(el.name + " is " + el.checked);
-				if (el.checked)
-					loc+="," + el.name.substr(2);
-
-			}
-		}
-		//alert (loc);
 
 		var onFail = function(e) {
 			this.events.triggerEvent("loadend");
