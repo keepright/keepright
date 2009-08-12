@@ -25,6 +25,16 @@ These pages show checks that are run on a local excerpt database filled with OSM
 Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
 
 <h3>logfile</h3>
+<h4>2009-08-03</h4>
+I just published a minor update that cleans up the levels check and the motorways check:<br>
+Not only highways but also landuse ways were included in the layers conflict check. This was not intended and is now fixed. Thank you, Norbert, for the hint!<br>Motorways that are continued by highway=trunk roads are not reported as error any more as this seems to be a common case. Thank you, Jean-Luc, for the hint!<br><br>
+
+<h4>2009-08-01</h4>
+There was some discussion going on about the layers check without a clear conclusion (at least for me). So please take the layers check as a warning, not as an error. It&apos;s just saying that there are ways on different layers that are connected. Please decide on your own, if that&apos;s OK.<br><br>
+There is a new check that looks for motorways that are connected to other ways by accidant (this easily happens at bridges crossing motorways). Again, this check is not always right. Motorways that end somewhere may continue in a primary road.
+
+<br><br>
+
 <h4>2009-07-25</h4>
 With today's update I introduce a new check that looks for ways that are connected but reside on different layers. There seems to be a difference between what the <a href="http://wiki.openstreetmap.org/wiki/Tunnel" target="_blank">wiki says</a> and what's <a href="http://www.openstreetmap.org/?zoom=18&lat=48.20244&lon=16.40252" target="_blank">common practice</a>.<br>
 So I split the check in cases where ways intersect on in-between-nodes ("obviously wrong") and ways that start in a common node ("not so obvious").<br>
@@ -57,6 +67,7 @@ require('webconfig.inc.php');
 require('helpers.inc.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+mysqli_query($db1, "SET SESSION wait_timeout=60");
 
 $result=query("
 	SELECT error_type, error_name, error_description
