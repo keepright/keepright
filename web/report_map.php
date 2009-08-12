@@ -57,9 +57,6 @@ if (!$st) $st='open';
 
 
 
-$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
-$path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
-
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><title>keep right!</title>
@@ -301,7 +298,7 @@ echo "
 <a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
 
 <div style='overflow:auto; width:20%'>
-You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Site updated at <b>" . trim(file_get_contents($updated_file_name)) . "</b>. Planet file downloaded at <b>" . trim(file_get_contents($planetfile_date_file_name)) . "</b>
+You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Site updated at <b>" . get_updated_date() . "</b>. Planet file downloaded at <b>" . get_planetfile_date() . "</b>
 </div>
 
 </div></form>
