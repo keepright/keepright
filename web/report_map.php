@@ -4,7 +4,7 @@ require('webconfig.inc.php');
 require('helpers.inc.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-$db2=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+mysqli_query($db1, "SET SESSION wait_timeout=60");
 
 
 
@@ -328,7 +328,6 @@ echo '<div style="display:none" id="dbname" name="dbname">' . $db . '</div>';
 
 echo "\n</body></html>";
 mysqli_close($db1);
-mysqli_close($db2);
 
 
 
