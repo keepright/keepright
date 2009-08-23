@@ -19,7 +19,7 @@ will be found so any name value will be ok
 // list of key or value parts that sound very similar but are something completely different
 // please keep values in ascending order!
 $false_positives = array(
-	array('AND_a', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_w'),
+	array('AND_a', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_r', 'AND_w'),
 	array('AND_nosr_p', 'AND_nosr_r'),
 	array('area', 'arena'),
 	array('block', 'lock'),
@@ -35,6 +35,7 @@ $false_positives = array(
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
+	array('land', 'sand'),
 	array('lanes', 'lines'),
 	array('icn_ref', 'lcn_ref', 'lwn_ref', 'loc_ref', 'ncn_ref', 'nwn_ref', 'rcn_ref', 'rwn_ref'),
 	array('j-bar', 't-bar'),
@@ -65,6 +66,7 @@ $false_positives = array(
 // Most of these keys have numbers, dates or times as values. Comparing them is useless.
 // this string will be used in an SQL 'column NOT IN (...)' clause,
 // so you have to properly escape apos!
+// there is already an exception for any 'tiger'-prefixed tag in action so you needn't add one here
 $never_complain_about = "(
 	'collection_times:=',
 	'created_by:=',
@@ -284,6 +286,7 @@ global $never_complain_about, $force_irregular, $force_regular;
 			HAVING COUNT(k)>$tag_diversity_limit
 		)
 		AND prefix NOT IN $never_complain_about
+		AND prefix NOT LIKE 'tiger:%'
 		) OR prefix IS NULL or prefix=''
 	", $db1, false);
 
