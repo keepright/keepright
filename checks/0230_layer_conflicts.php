@@ -188,11 +188,12 @@ query("
 
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
-	SELECT $error_type + CASE WHEN all_intermediate_nodes THEN 1 ELSE 2 END,
+	SELECT $error_type + 1,
 	CAST('node' AS type_object_type), node_id, 'This node is a junction of ways on different layers: ' ||
 	group_concat('#' || way_id || '(' || layer || ')'), NOW()
 	FROM _tmp_error_candidates AS T
-	GROUP BY node_id, all_intermediate_nodes
+	WHERE all_intermediate_nodes
+	GROUP BY node_id
 ", $db1);
 
 
