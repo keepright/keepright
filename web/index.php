@@ -25,6 +25,30 @@ These pages show checks that are run on a local excerpt database filled with OSM
 Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
 
 <h3>logfile</h3>
+<h4>2009-08-13</h4>
+After a long discussion about the layers check I just removed the &quot;not so obvious&quot; part of the check. 
+from now on, this is (again) correct:
+<pre>
+way A, layer 0	|
+ 		|           way B, layer 1
+		|
+ 		*------------------------------------
+		|
+		|
+
+</pre>
+Intersections of ways on different layers are still not OK, if way A and B share a common node and intersect at intermediate nodes:
+<pre>
+ way A, layer 0	|
+ 		|           way B, layer 1
+		|
+ 	--------*------------------------------------
+		|
+		|
+</pre>
+sorry for the confusion and thanks for the discussion!
+
+<br><br>
 <h4>2009-08-03</h4>
 I just published a minor update that cleans up the levels check and the motorways check:<br>
 Not only highways but also landuse ways were included in the layers conflict check. This was not intended and is now fixed. Thank you, Norbert, for the hint!<br>Motorways that are continued by highway=trunk roads are not reported as error any more as this seems to be a common case. Thank you, Jean-Luc, for the hint!<br><br>
