@@ -20,6 +20,7 @@ if (!isset($db)) {
 	}
 }
 $error_view_name="error_view_" . $db;
+$error_view_old_name="error_view_" . $db . "_old";
 $error_types_name="error_types_" . $db;
 $comments_name="comments_" . $db;
 $comments_historic_name="comments_historic_" . $db;
@@ -27,5 +28,16 @@ $updated_file_name="updated_" . $db;
 $planetfile_date_file_name="planetfile_date_" . $db;
 
 $UPDATE_TABLES_PASSWD="shhh!";
+
+
+/*
+details on the web path:
+website located at eg. http://localhost/kr/index.php
+$path == "/kr/"
+$baseURL == "http://localhost/kr/"
+*/
+$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
+$path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
+$baseURL="http://" . $_SERVER['SERVER_NAME'] . $path;
 
 ?>
