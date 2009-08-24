@@ -14,7 +14,7 @@ If any node is found more than twice in the same way or
 if more than one node is found twice it looks like an error.
 
 Any way with only 2 different nodes in it,
-having one node more than once, is also an error.
+having one node more than once, is also an error. (from Sebastiaan)
 
 */
 
