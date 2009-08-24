@@ -186,6 +186,9 @@ for i do	# loop all given parameter values
 			echo "`date` * preparing helper tables and columns"
 			php prepare_helpertables.php "$i"
 
+			echo "`date` * preparing country helper table"
+			php prepare_countries.php "$i"
+
 			echo "`date` * running the checks"
 			php run-checks.php "$i"
 

@@ -646,3 +646,13 @@ CHECK_0270_ENABLED="1"
 CHECK_0270_FILE="0270_motorways_connected_directly.php"
 CHECK_0270_DESCRIPTION="Motorways should only be connected to other motorways or motorway_links. They should especially not be directly connected to highway=primary or highway=residential roads. Please note: This check may produce false positives on motorways ending in cities but it can be a valuable tool for looking up unwanted connections of motorways and other roads."
 
+
+CHECK_0280_NAME="boundaries"
+CHECK_0280_ENABLED="1"
+CHECK_0280_FILE="0280_boundaries.php"
+CHECK_0280_DESCRIPTION="Administrative Boundaries can be expressed either by tagging ways or by adding them to a relation. They should be closed-loop sequences of ways, they must not self-intersect or split and they must have a name and an admin_level."
+
+SUBTYPE_0281_NAME="missing name"
+SUBTYPE_0282_NAME="missing admin_level"
+SUBTYPE_0283_NAME="not closed loop"
+
