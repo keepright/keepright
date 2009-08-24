@@ -12,6 +12,10 @@ anything else like A,B,C,D,A,B looks like an error.
 So any way may contain up to one node twice at most.
 If any node is found more than twice in the same way or
 if more than one node is found twice it looks like an error.
+
+Any way with only 2 different nodes in it,
+having one node more than once, is also an error.
+
 */
 
 
@@ -54,7 +58,7 @@ query("
 // be two node ids with the same number of occurrences, so just pick the larger id one...
 query("
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lat, lon)
-	SELECT $error_type, 'way', c.way_id, 'This way contains node #' || c.node_id || ' ' || c.node_count || ' times. This may or may not be an error.', NOW(), c.lat, c.lon
+	SELECT $error_type, CAST('way' AS type_object_type), c.way_id, 'This way contains node #' || c.node_id || ' ' || c.node_count || ' times. This may or may not be an error.', NOW(), c.lat, c.lon
 	FROM _tmp_tmp_errors c
 	WHERE node_id=(
 		SELECT MAX(node_id)
@@ -75,7 +79,7 @@ query("DROP TABLE IF EXISTS _tmp_tmp_errors", $db1, false);
 // any way may contain just one node twice. If more than one node is found twice it is considered an error
 query("
         INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
-	SELECT 1+$error_type, 'way', c.way_id, 'This way contains more than one node at least twice. Nodes are ' || array_to_string(array(
+	SELECT 1+$error_type, CAST('way' AS type_object_type), c.way_id, 'This way contains more than one node at least twice. Nodes are ' || array_to_string(array(
 
 		SELECT '#' || t.node_id
 		FROM _tmp_node_count t
@@ -86,6 +90,25 @@ query("
 	GROUP BY c.way_id
 	HAVING COUNT(c.node_id)>1
 ", $db1);
+
+
+// third part:
+// Any way with only 2 different nodes in it, having one node more than once, is an error.
+query("
+        INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
+	SELECT DISTINCT 2+$error_type, CAST('way' AS type_object_type), nc.way_id, 'This way has only two different nodes and contains one of them more than once.', NOW()
+	FROM _tmp_node_count nc
+
+	WHERE EXISTS(
+		SELECT wn.way_id
+		FROM way_nodes wn
+		WHERE wn.way_id=nc.way_id
+		GROUP BY wn.way_id
+		HAVING COUNT(DISTINCT wn.node_id)<=2
+	)
+", $db1);
+
+
 
 query("DROP TABLE IF EXISTS _tmp_node_count", $db1, false);
 ?>
