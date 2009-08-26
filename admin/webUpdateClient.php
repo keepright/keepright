@@ -165,7 +165,7 @@ global $UPDATE_TABLES_URL;
 
 
 // start uploading procedure
-if (isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
+if (isset($_POST['isocode']) && strlen($_POST['isocode'])<=4) {
 
 	$db='osm_' . addslashes(htmlspecialchars($_POST['isocode']));
 
@@ -203,7 +203,7 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])==2) {
 
 <form name="complete_run" action="webUpdateClient.php" method="post">
 	<input type="submit" name="complete_run" value="one button does it all">
-	<input type="text" name="isocode" size="2" value="EU">
+	<input type="text" name="isocode" size="4" value="EU">
 </form>
 
 </body></html>
