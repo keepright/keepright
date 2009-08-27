@@ -23,6 +23,40 @@ $starttime=microtime(true);
 //--------------------------------------------------
 create_postgres_functions($db1);
 
+
+// ways crossing the boundary of export bounding box get truncated
+// ie in way_nodes you find node ids that are missing in nodes
+// these are fetched here via api
+echo "retrieve missing nodes via api\n";
+
+$result = query("
+	SELECT DISTINCT node_id
+	FROM way_nodes
+	WHERE lat IS NULL
+", $db1);
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+
+	if ($response=file_get_contents("http://www.openstreetmap.org/api/0.6/node/" . $row['node_id'])) {
+		$xml = new SimpleXMLElement($response);
+
+		foreach ($xml->xpath('//node') as $node) {
+
+			query("INSERT INTO nodes(id, lat, lon, tstamp, user_name) VALUES (" . addslashes($node['id']) . ", " . addslashes($node['lat']) . ", " . addslashes($node['lon']) . ", '" . addslashes($node['timestamp']) . "', '" . addslashes($node['user']) . "')", $db2);
+
+			foreach ($node->xpath('tag') as $tag) {
+
+				query("INSERT INTO node_tags(node_id, k, v) VALUES (" . addslashes($node['id']) . ", '" . addslashes($tag['k']) . "', '" . addslashes($tag['v']) . "')", $db2);
+
+			}
+		}
+	}
+}
+pg_free_result($result);
+
+
+
+
+
 echo "add indexes to tags\n";
 query("DELETE FROM way_tags WHERE v IS NULL", $db1);
 query("DELETE FROM node_tags WHERE v IS NULL", $db1);
@@ -36,6 +70,29 @@ query("CREATE INDEX idx_way_tags_v ON way_tags (v)", $db1);
 
 query("CREATE INDEX idx_relation_tags_k ON relation_tags (k)", $db1);
 query("CREATE INDEX idx_relation_tags_v ON relation_tags (v)", $db1);
+
+
+// calculate x/y coordinates for nodes
+query("UPDATE nodes
+	SET x=merc_x(nodes.lon), y=merc_y(nodes.lat)
+	WHERE x IS NULL
+", $db1);
+
+// build point geometry for nodes
+query("UPDATE nodes
+	SET geom=GeomFromText('POINT(' || x || ' ' || y || ')', 4326)
+	WHERE geom IS NULL
+", $db1);
+
+// copy lat/lon and x/y coordinates from nodes into way_nodes, where missing
+query("UPDATE way_nodes
+	SET lat=nodes.lat, lon=nodes.lon, x=merc_x(nodes.lon), y=merc_y(nodes.lat)
+	FROM nodes
+	WHERE way_nodes.lat IS NULL AND nodes.id=way_nodes.node_id
+", $db1);
+
+// now remove everything that could not be retrieved
+query("DELETE FROM way_nodes WHERE lat IS NULL", $db1);
 
 
 echo "expand way_nodes with node data\n";
@@ -78,24 +135,6 @@ query("UPDATE ways SET bbox = Expand(geom, 10) WHERE bbox IS NULL", $db1);
 //Index the way bounding box column.
 query("CREATE INDEX idx_ways_bbox ON ways USING gist (bbox)", $db1);
 
-// calculate x/y coordinates for nodes
-query("UPDATE nodes
-	SET x=merc_x(nodes.lon), y=merc_y(nodes.lat)
-	WHERE x IS NULL
-", $db1);
-
-// build point geometry for nodes
-query("UPDATE nodes
-	SET geom=GeomFromText('POINT(' || x || ' ' || y || ')', 4326)
-	WHERE geom IS NULL
-", $db1);
-
-// copy lat/lon and x/y coordinates from nodes into way_nodes, where missing
-query("UPDATE way_nodes
-	SET lat=nodes.lat, lon=nodes.lon, x=merc_x(nodes.lon), y=merc_y(nodes.lat)
-	FROM nodes
-	WHERE way_nodes.lat IS NULL AND nodes.id=way_nodes.node_id
-", $db1);
 
 // copy lat/lon and x/y coordinates from first nodes into ways, where missing
 query("UPDATE ways
