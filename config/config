@@ -185,24 +185,6 @@ MAIN_DB_NAME_USCO="osm_USCO"
 CAT_USCO="bzcat"
 MIN_SIZE_USCO=0
 
-URL_USCT="http://downloads.cloudmade.com/north_america/united_states/connecticut/connecticut.osm.bz2"
-FILE_USCT="connecticut.osm.bz2"
-MAIN_DB_NAME_USCT="osm_USCT"
-CAT_USCT="bzcat"
-MIN_SIZE_USCT=0
-
-URL_USDE="http://downloads.cloudmade.com/north_america/united_states/delaware/delaware.osm.bz2"
-FILE_USDE="delaware.osm.bz2"
-MAIN_DB_NAME_USDE="osm_USDE"
-CAT_USDE="bzcat"
-MIN_SIZE_USDE=0
-
-URL_USDC="http://downloads.cloudmade.com/north_america/united_states/district_of_columbia/district_of_columbia.osm.bz2"
-FILE_USDC="district_of_columbia.osm.bz2"
-MAIN_DB_NAME_USDC="osm_USDC"
-CAT_USDC="bzcat"
-MIN_SIZE_USDC=0
-
 URL_USFL="http://downloads.cloudmade.com/north_america/united_states/florida/florida.osm.bz2"
 FILE_USFL="florida.osm.bz2"
 MAIN_DB_NAME_USFL="osm_USFL"
@@ -269,18 +251,6 @@ MAIN_DB_NAME_USLA="osm_USLA"
 CAT_USLA="bzcat"
 MIN_SIZE_USLA=0
 
-URL_USME="http://downloads.cloudmade.com/north_america/united_states/maine/maine.osm.bz2"
-FILE_USME="maine.osm.bz2"
-MAIN_DB_NAME_USME="osm_USME"
-CAT_USME="bzcat"
-MIN_SIZE_USME=0
-
-URL_USMD="http://downloads.cloudmade.com/north_america/united_states/maryland/maryland.osm.bz2"
-FILE_USMD="maryland.osm.bz2"
-MAIN_DB_NAME_USMD="osm_USMD"
-CAT_USMD="bzcat"
-MIN_SIZE_USMD=0
-
 URL_USMA="http://downloads.cloudmade.com/north_america/united_states/massachusetts/massachusetts.osm.bz2"
 FILE_USMA="massachusetts.osm.bz2"
 MAIN_DB_NAME_USMA="osm_USMA"
@@ -328,12 +298,6 @@ FILE_USNV="nevada.osm.bz2"
 MAIN_DB_NAME_USNV="osm_USNV"
 CAT_USNV="bzcat"
 MIN_SIZE_USNV=0
-
-URL_USNH="http://downloads.cloudmade.com/north_america/united_states/new_hampshire/new_hampshire.osm.bz2"
-FILE_USNH="new_hampshire.osm.bz2"
-MAIN_DB_NAME_USNH="osm_USNH"
-CAT_USNH="bzcat"
-MIN_SIZE_USNH=0
 
 URL_USNJ="http://downloads.cloudmade.com/north_america/united_states/new_jersey/new_jersey.osm.bz2"
 FILE_USNJ="new_jersey.osm.bz2"
@@ -389,12 +353,6 @@ MAIN_DB_NAME_USPA="osm_USPA"
 CAT_USPA="bzcat"
 MIN_SIZE_USPA=0
 
-URL_USRI="http://downloads.cloudmade.com/north_america/united_states/rhode_island/rhode_island.osm.bz2"
-FILE_USRI="rhode_island.osm.bz2"
-MAIN_DB_NAME_USRI="osm_USRI"
-CAT_USRI="bzcat"
-MIN_SIZE_USRI=0
-
 URL_USSC="http://downloads.cloudmade.com/north_america/united_states/south_carolina/south_carolina.osm.bz2"
 FILE_USSC="south_carolina.osm.bz2"
 MAIN_DB_NAME_USSC="osm_USSC"
@@ -424,12 +382,6 @@ FILE_USUT="utah.osm.bz2"
 MAIN_DB_NAME_USUT="osm_USUT"
 CAT_USUT="bzcat"
 MIN_SIZE_USUT=0
-
-URL_USVT="http://downloads.cloudmade.com/north_america/united_states/vermont/vermont.osm.bz2"
-FILE_USVT="vermont.osm.bz2"
-MAIN_DB_NAME_USVT="osm_USVT"
-CAT_USVT="bzcat"
-MIN_SIZE_USVT=0
 
 URL_USVA="http://downloads.cloudmade.com/north_america/united_states/virginia/virginia.osm.bz2"
 FILE_USVA="virginia.osm.bz2"
@@ -461,9 +413,85 @@ MAIN_DB_NAME_USWY="osm_USWY"
 CAT_USWY="bzcat"
 MIN_SIZE_USWY=0
 
-## DC, MD, DE
-## ME, NH, VT, MA, RI, CT
-##
+
+## federal states too small are put together:
+## XE := DC, MD, DE
+## XF := CT, MA, ME, NH, VT, RI
+
+URL_XE1="http://downloads.cloudmade.com/north_america/united_states/district_of_columbia/district_of_columbia.osm.bz2"
+URL_XE2="http://downloads.cloudmade.com/north_america/united_states/delaware/delaware.osm.bz2"
+URL_XE3="http://downloads.cloudmade.com/north_america/united_states/maryland/maryland.osm.bz2"
+FILE_XE="maryland_dc_delaware.osm.bz2"
+MAIN_DB_NAME_XE="osm_XE"
+CAT_XE="bzcat"
+MIN_SIZE_XE="0"
+
+URL_XF1="http://downloads.cloudmade.com/north_america/united_states/connecticut/connecticut.osm.bz2"
+URL_XF2="http://downloads.cloudmade.com/north_america/united_states/massachusetts/massachusetts.osm.bz2"
+URL_XF3="http://downloads.cloudmade.com/north_america/united_states/maine/maine.osm.bz2"
+URL_XF4="http://downloads.cloudmade.com/north_america/united_states/new_hampshire/new_hampshire.osm.bz2"
+URL_XF5="http://downloads.cloudmade.com/north_america/united_states/vermont/vermont.osm.bz2"
+URL_XF6="http://downloads.cloudmade.com/north_america/united_states/rhode_island/rhode_island.osm.bz2"
+FILE_XF="from_maine_to_connecticut.osm.bz2"
+MAIN_DB_NAME_XF="osm_XF"
+CAT_XF="bzcat"
+MIN_SIZE_XF="0"
+
+
+URL_CA1="http://downloads.cloudmade.com/north_america/canada/alberta/alberta.osm.bz2"
+URL_CA2="http://downloads.cloudmade.com/north_america/canada/british_columbia/british_columbia.osm.bz2"
+URL_CA3="http://downloads.cloudmade.com/north_america/canada/manitoba/manitoba.osm.bz2"
+URL_CA4="http://downloads.cloudmade.com/north_america/canada/new_brunswick/new_brunswick.osm.bz2"
+URL_CA5="http://downloads.cloudmade.com/north_america/canada/newfoundland/newfoundland.osm.bz2"
+URL_CA6="http://downloads.cloudmade.com/north_america/canada/nova_scotia/nova_scotia.osm.bz2"
+URL_CA7="http://downloads.cloudmade.com/north_america/canada/nunavut/nunavut.osm.bz2"
+URL_CA8="http://downloads.cloudmade.com/north_america/canada/nw_territories/nw_territories.osm.bz2"
+URL_CA9="http://downloads.cloudmade.com/north_america/canada/ontario/ontario.osm.bz2"
+URL_CA10="http://downloads.cloudmade.com/north_america/canada/pr_edwrd_island/pr_edwrd_island.osm.bz2"
+URL_CA11="http://downloads.cloudmade.com/north_america/canada/quebec/quebec.osm.bz2"
+URL_CA12="http://downloads.cloudmade.com/north_america/canada/saskatchewan/saskatchewan.osm.bz2"
+URL_CA13="http://downloads.cloudmade.com/north_america/canada/yukon/yukon.osm.bz2"
+FILE_CA="canada.osm.bz2"
+MAIN_DB_NAME_CA="osm_CA"
+CAT_CA="bzcat"
+MIN_SIZE_CA="0"
+
+
+URL_XG1="http://downloads.cloudmade.com/north_america/anguilla/anguilla.osm.bz2"
+URL_XG2="http://downloads.cloudmade.com/north_america/antigua_and_barbuda/antigua_and_barbuda.osm.bz2"
+URL_XG3="http://downloads.cloudmade.com/north_america/aruba/aruba.osm.bz2"
+URL_XG4="http://downloads.cloudmade.com/north_america/bahamas/bahamas.osm.bz2"
+URL_XG5="http://downloads.cloudmade.com/north_america/barbados/barbados.osm.bz2"
+URL_XG6="http://downloads.cloudmade.com/north_america/belize/belize.osm.bz2"
+URL_XG7="http://downloads.cloudmade.com/north_america/bermuda/bermuda.osm.bz2"
+URL_XG8="http://downloads.cloudmade.com/north_america/british_virgin_islands/british_virgin_islands.osm.bz2"
+URL_XG9="http://downloads.cloudmade.com/north_america/costa_rica/costa_rica.osm.bz2"
+URL_XG10="http://downloads.cloudmade.com/north_america/cuba/cuba.osm.bz2"
+URL_XG11="http://downloads.cloudmade.com/north_america/dominican_republic/dominican_republic.osm.bz2"
+URL_XG12="http://downloads.cloudmade.com/north_america/el_salvador/el_salvador.osm.bz2"
+URL_XG13="http://downloads.cloudmade.com/north_america/federation_of_saint_kitts_and_nevis/federation_of_saint_kitts_and_nevis.osm.bz2"
+URL_XG14="http://downloads.cloudmade.com/north_america/greenland/greenland.osm.bz2"
+URL_XG15="http://downloads.cloudmade.com/north_america/grenada/grenada.osm.bz2"
+URL_XG16="http://downloads.cloudmade.com/north_america/guadeloupe/guadeloupe.osm.bz2"
+URL_XG17="http://downloads.cloudmade.com/north_america/guatemala/guatemala.osm.bz2"
+URL_XG18="http://downloads.cloudmade.com/north_america/haiti/haiti.osm.bz2"
+URL_XG19="http://downloads.cloudmade.com/north_america/honduras/honduras.osm.bz2"
+URL_XG20="http://downloads.cloudmade.com/north_america/jamaica/jamaica.osm.bz2"
+URL_XG21="http://downloads.cloudmade.com/north_america/martinique/martinique.osm.bz2"
+URL_XG22="http://downloads.cloudmade.com/north_america/mexico/mexico.osm.bz2"
+URL_XG23="http://downloads.cloudmade.com/north_america/netherlands_antilles/netherlands_antilles.osm.bz2"
+URL_XG24="http://downloads.cloudmade.com/north_america/nicaragua/nicaragua.osm.bz2"
+URL_XG25="http://downloads.cloudmade.com/north_america/panama/panama.osm.bz2"
+URL_XG26="http://downloads.cloudmade.com/north_america/puerto_rico/puerto_rico.osm.bz2"
+URL_XG27="http://downloads.cloudmade.com/north_america/st_lucia/st_lucia.osm.bz2"
+URL_XG28="http://downloads.cloudmade.com/north_america/st_pierre_and_miquelon/st_pierre_and_miquelon.osm.bz2"
+URL_XG29="http://downloads.cloudmade.com/north_america/st_vincent_and_the_grenadines/st_vincent_and_the_grenadines.osm.bz2"
+URL_XG30="http://downloads.cloudmade.com/north_america/trinidad_and_tobago/trinidad_and_tobago.osm.bz2"
+URL_XG31="http://downloads.cloudmade.com/north_america/virgin_islands/virgin_islands.osm.bz2"
+FILE_XG="central_america.osm.bz2"
+MAIN_DB_NAME_XG="osm_XG"
+CAT_XG="bzcat"
+MIN_SIZE_XG="0"
 
 
 ############################################
