@@ -686,4 +686,5 @@ CHECK_0280_DESCRIPTION="Administrative Boundaries can be expressed either by tag
 SUBTYPE_0281_NAME="missing name"
 SUBTYPE_0282_NAME="missing admin_level"
 SUBTYPE_0283_NAME="not closed loop"
+SUBTYPE_0284_NAME="splitting boundary"
 
