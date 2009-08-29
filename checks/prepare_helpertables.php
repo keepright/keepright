@@ -28,7 +28,7 @@ create_postgres_functions($db1);
 // ie in way_nodes you find node ids that are missing in nodes
 // these are fetched here via api
 echo "retrieve missing nodes via api\n";
-
+$count=0;
 $result = query("
 	SELECT DISTINCT node_id
 	FROM way_nodes
@@ -51,11 +51,14 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 				query("INSERT INTO node_tags(node_id, k, v) VALUES (" . addslashes($node['id']) . ", '" . addslashes($tag['k']) . "', '" . addslashes($tag['v']) . "')", $db2);
 
 			}
+			$count++;
 		}
 	}
 }
 pg_free_result($result);
+echo "fetched $count nodes via api.\n";
 
+//--------------------------------------------------
 
 
 
