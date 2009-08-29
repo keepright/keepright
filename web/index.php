@@ -25,6 +25,11 @@ These pages show checks that are run on a local excerpt database filled with OSM
 Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
 
 <h3>logfile</h3>
+<h4>2009-08-29</h4>
+There&apos;s a new check that looks for errors on administrative boundaries. It complains about missing names and admin_levels as well as non-closed loops on boundary ways. <br>At the moment there are (at least) two ways of tagging boundaries: direct way tagging and relations. Both are considered valid and both methods are included in this check.<br><br>
+A minor improvement to the loopings-check was suggested by Sebastiaan: Any way with only 2 different nodes in it, having one node more than once, is an error. Thank you!
+
+
 <h4>2009-08-13</h4>
 After a long discussion about the layers check I just removed the &quot;not so obvious&quot; part of the check. 
 from now on, this is (again) correct:
@@ -48,31 +53,6 @@ Intersections of ways on different layers are still not OK, if way A and B share
 </pre>
 sorry for the confusion and thanks for the discussion!
 
-<br><br>
-<h4>2009-08-03</h4>
-I just published a minor update that cleans up the levels check and the motorways check:<br>
-Not only highways but also landuse ways were included in the layers conflict check. This was not intended and is now fixed. Thank you, Norbert, for the hint!<br>Motorways that are continued by highway=trunk roads are not reported as error any more as this seems to be a common case. Thank you, Jean-Luc, for the hint!<br><br>
-
-<h4>2009-08-01</h4>
-There was some discussion going on about the layers check without a clear conclusion (at least for me). So please take the layers check as a warning, not as an error. It&apos;s just saying that there are ways on different layers that are connected. Please decide on your own, if that&apos;s OK.<br><br>
-There is a new check that looks for motorways that are connected to other ways by accidant (this easily happens at bridges crossing motorways). Again, this check is not always right. Motorways that end somewhere may continue in a primary road.
-
-<br><br>
-
-<h4>2009-07-25</h4>
-With today's update I introduce a new check that looks for ways that are connected but reside on different layers. There seems to be a difference between what the <a href="http://wiki.openstreetmap.org/wiki/Tunnel" target="_blank">wiki says</a> and what's <a href="http://www.openstreetmap.org/?zoom=18&lat=48.20244&lon=16.40252" target="_blank">common practice</a>.<br>
-So I split the check in cases where ways intersect on in-between-nodes ("obviously wrong") and ways that start in a common node ("not so obvious").<br>
-Thank you, Christian, for the idea to this check!
-
-<br><br>
-
-<h4>2009-07-21</h4>
-There is a new link that will bring you immediately back to the error you're visiting at the moment. Find the link at the bottom of the error bubble. Thank you, Rejo, for the suggestion!
-<br><br>
-
-<h4>2009-07-17</h4>
-An updated errors-table went online today! Planet dump was updated as of july 13th 2009.<br>
-During the last three weeks some errors were not updated correctly because of my wrong use of <tt>wput</tt>. This is now resolved.
 
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
