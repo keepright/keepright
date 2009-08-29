@@ -104,7 +104,7 @@ for i do	# loop all given parameter values
 			if [ "$URL" ]; then
 				# there's just one planet file configured with URL_XY=...
 
-				echo wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
+				wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
 
 			else
 				# there are multiple planet files configured with URL_XY1=..., URLXY2=...
@@ -117,7 +117,7 @@ for i do	# loop all given parameter values
 				# download files as long as URL_XY# parameters exist
 				while [ "$URL" ]; do
 
-					echo wget --progress=dot:mega --output-document "$TMPDIR/${FILE}_$COUNTER" "$URL"
+					wget --progress=dot:mega --output-document "$TMPDIR/${FILE}_$COUNTER" "$URL"
 					UNITE_CMD="${UNITE_CMD} --rx $TMPDIR/${FILE}_$COUNTER  compressionMethod=bzip2 "
 
 					COUNTER=$[$COUNTER+1]
