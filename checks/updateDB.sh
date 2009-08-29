@@ -100,7 +100,45 @@ for i do	# loop all given parameter values
 
                 if [ "$KEEP_OSM" = "0" ]; then
 			echo "`date` * downloading osm file"
-			wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
+
+			if [ "$URL" ]; then
+				# there's just one planet file configured with URL_XY=...
+
+				echo wget --progress=dot:mega --output-document "$TMPDIR/$FILE" "$URL"
+
+			else
+				# there are multiple planet files configured with URL_XY1=..., URLXY2=...
+				# download them all and unite them
+
+				COUNTER=1
+				eval 'URL=${URL_'"${i}"''"${COUNTER}"'}'
+				UNITE_CMD="java -jar osmosis.jar"
+
+				# download files as long as URL_XY# parameters exist
+				while [ "$URL" ]; do
+
+					echo wget --progress=dot:mega --output-document "$TMPDIR/${FILE}_$COUNTER" "$URL"
+					UNITE_CMD="${UNITE_CMD} --rx $TMPDIR/${FILE}_$COUNTER  compressionMethod=bzip2 "
+
+					COUNTER=$[$COUNTER+1]
+					eval 'URL=${URL_'"${i}"''"${COUNTER}"'}'
+
+				done
+
+				# add the merge commands to the osmosis command line (one merge less than files because of stack principle!)
+				while [ $COUNTER -gt 2 ]; do
+					UNITE_CMD="${UNITE_CMD} --merge"
+					COUNTER=$[$COUNTER-1]
+				done
+				UNITE_CMD="${UNITE_CMD} --wx $TMPDIR/$FILE"
+
+				# execute unite command
+				cd "$TMPDIR"
+				eval "$UNITE_CMD"
+				cd "$CHECKSDIR"
+			fi
+
+
                 else
 			echo "Using previous downloaded $TMPDIR/$FILE"
 			echo "--------------------"
