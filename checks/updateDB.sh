@@ -94,7 +94,10 @@ for i do	# loop all given parameter values
 			# create tables
 			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f $PREFIX/planet/pgsql_simple_schema.sql
 
+			# create schema info table
+			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "DROP TABLE IF EXISTS schema_info; CREATE TABLE schema_info (version integer NOT NULL); INSERT INTO schema_info VALUES (1);"
 		fi
+
 
 
 
