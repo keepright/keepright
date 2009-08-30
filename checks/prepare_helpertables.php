@@ -42,13 +42,13 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 		foreach ($xml->xpath('//node') as $node) {
 
 			// add node
-			query("INSERT INTO nodes(id, lat, lon, tstamp, user_name) VALUES (" . addslashes($node['id']) . ", " . addslashes($node['lat']) . ", " . addslashes($node['lon']) . ", '" . addslashes($node['timestamp']) . "', '" . addslashes($node['user']) . "')", $db2);
+			query("INSERT INTO nodes(id, lat, lon, tstamp, user_name) VALUES (" . addslashes($node['id']) . ", " . addslashes($node['lat']) . ", " . addslashes($node['lon']) . ", '" . addslashes($node['timestamp']) . "', '" . addslashes($node['user']) . "')", $db2, false);
 
 
 			// add tags of node
 			foreach ($node->xpath('tag') as $tag) {
 
-				query("INSERT INTO node_tags(node_id, k, v) VALUES (" . addslashes($node['id']) . ", '" . addslashes($tag['k']) . "', '" . addslashes($tag['v']) . "')", $db2);
+				query("INSERT INTO node_tags(node_id, k, v) VALUES (" . addslashes($node['id']) . ", '" . addslashes($tag['k']) . "', '" . addslashes($tag['v']) . "')", $db2, false);
 
 			}
 			$count++;
