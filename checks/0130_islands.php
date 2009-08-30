@@ -126,7 +126,9 @@ $islands = array(
 		'Columbia, SC' => 34443968,
 		'Tallahassee, FL' => 11049098,
 
-		'Mexico City' => 24723212
+		'Mexico City' => 24723212,
+		'Havanna, Cuba' => 38448366,
+		'Ottawa, Canada' => 23220188
 	),
 	'south america' => array(
 		'Lima, Peru' => 11985527,
