@@ -22,12 +22,23 @@ query("
 	)
 ", $db1);
 
+
+// fetch all one-way tagged ways
+// that are ways with oneway=yes/true/1
+// and all motorways (tagged implicitly)
+// and all motorway_links that don't have a oneway=no/false/0 tag
 query("
 	INSERT INTO _tmp_one_ways (way_id)
 	SELECT way_id
 	FROM way_tags
 	WHERE (k='oneway' AND v IN ('yes', 'true', '1')) OR
-		(k='highway' AND v IN ('motorway', 'motorway_link'))
+		(k='highway' AND v = 'motorway') OR
+		(k='highway' AND v = 'motorway_link' AND NOT EXISTS(
+			SELECT tmp.k
+			FROM way_tags tmp
+			WHERE tmp.way_id=way_tags.way_id AND
+			tmp.k='oneway' AND tmp.v IN ('no', 'false', '0')
+		))
 	GROUP BY way_id
 ", $db1);
 
