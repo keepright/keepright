@@ -125,6 +125,28 @@ query("CREATE INDEX idx_tmp_ways_way_type ON _tmp_ways (way_type)", $db1);
 query("CREATE INDEX idx_tmp_ways_geom ON _tmp_ways USING gist (geom)", $db1);
 
 
+// create a helper table needed by connected_near() function
+// all junctions of ways and the location of junction
+// first include all crossings; remove crossings on ways not interesting
+query("DROP TABLE IF EXISTS _tmp_xings", $db1);
+query("
+	CREATE TABLE _tmp_xings AS
+	SELECT wn1.way_id as way1, wn2.way_id as way2, wn1.x, wn1.y
+	FROM way_nodes wn1 INNER JOIN way_nodes wn2 USING (node_id)
+", $db1);
+query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
+query("
+	DELETE FROM _tmp_xings
+	WHERE NOT EXISTS (
+		SELECT way_id FROM _tmp_ways w1 WHERE w1.way_id=_tmp_xings.way1
+	) OR NOT EXISTS (
+		SELECT way_id FROM _tmp_ways w2 WHERE w2.way_id=_tmp_xings.way2
+	)
+", $db1);
+
+
+
+
 // ignore crossings/overlappings of a riverbank with the river itself (there are thousands!)
 // ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
 $waterway_exlusion="
@@ -183,6 +205,7 @@ pg_free_result($result);
 // that is ways that (partly) use the same sequences of nodes.
 // Such segments lie on top of each other and are not covered
 // by the intersections-test above
+
 $result=query("
 	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2
 	FROM _tmp_ways w1, _tmp_ways w2
@@ -211,6 +234,7 @@ pg_free_result($result);
 
 
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_xings", $db1, false);
 
 if (pg_exists($db1, 'type', 'type_way_type'))
 	query("DROP TYPE type_way_type", $db1, false);
@@ -259,10 +283,11 @@ function connected_near($way_id1, $way_id2, $x, $y, $db) {
 
 	return query_firstval("
 		SELECT COUNT(*)
-		FROM way_nodes wn1 INNER JOIN way_nodes wn2 USING (node_id)
-		WHERE wn1.way_id=$way_id1 AND wn2.way_id=$way_id2
-                AND (wn1.x-($x)) ^ 2 + (wn1.y-($y)) ^ 2 <= 100
+		FROM _tmp_xings
+		WHERE way1=$way_id1 AND way2=$way_id2
+                AND (x-($x)) ^ 2 + (y-($y)) ^ 2 <= 100
 	", $db, false);
+
 }
 
 
