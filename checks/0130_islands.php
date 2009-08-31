@@ -128,7 +128,24 @@ $islands = array(
 
 		'Mexico City' => 24723212,
 		'Havanna, Cuba' => 38448366,
-		'Ottawa, Canada' => 23220188
+		'Ottawa, Canada' => 23220188,
+		'Santo Domingo, Dominican Republic' => 28118564,
+		'San Juan, Puerto Rico' => 22231517,
+		'Isla de Vieques' => 22256504,
+		'Virgin Islands 1' => 38291731,
+		'Virgin Islands 2' => 25875825,
+		'Virgin Islands 3' => 24434624,
+		'Saint Croix' => 28298216,
+		'Basseterre' => 24762738,
+		'All Saints' => 13511960,
+		'Baie Mahault' => 27266571,
+		'Roseau' => 23042676,
+		'Dillon' => 25861959,
+		'St. Lucia' => 25578440,
+		'Saint Vincent' => 25577931,
+		'St. George\'s' => 25570824,
+		'Tobago' => 15242967,
+		'Trinidad' => 37576225
 	),
 	'south america' => array(
 		'Lima, Peru' => 11985527,
