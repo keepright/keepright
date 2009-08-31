@@ -175,7 +175,7 @@ query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type);", $
 query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type);", $db1);
 query("
 	UPDATE errors AS e
-	SET last_checked=_tmp_errors.last_checked
+	SET last_checked=_tmp_errors.last_checked, description=_tmp_errors.description
 	FROM _tmp_errors
 	WHERE ($checks_executed) AND e.error_type=_tmp_errors.error_type AND e.object_type=_tmp_errors.object_type AND e.object_id=_tmp_errors.object_id AND e.lat IS NOT DISTINCT FROM _tmp_errors.lat AND e.lon IS NOT DISTINCT FROM _tmp_errors.lon
 ", $db1);
@@ -183,7 +183,7 @@ query("
 // set reopened-state for cleared errors that are now found in _tmp_errors again
 query("
 	UPDATE errors e
-	SET state='reopened'
+	SET state='reopened', description=_tmp_errors.description
 	FROM _tmp_errors
 	WHERE e.state='cleared' AND ($checks_executed) AND e.error_type=_tmp_errors.error_type AND e.object_type=_tmp_errors.object_type AND e.object_id=_tmp_errors.object_id AND e.lat IS NOT DISTINCT FROM _tmp_errors.lat AND e.lon IS NOT DISTINCT FROM _tmp_errors.lon
 ", $db1);
