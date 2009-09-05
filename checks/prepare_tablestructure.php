@@ -16,7 +16,7 @@ require('BufferedInserter.php');
 echo "Adapting table structure for $db_postfix \n";
 
 $db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
-$db2 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
+
 
 $starttime=microtime(true);
 
@@ -58,7 +58,4 @@ query("ALTER TABLE node_tags ALTER COLUMN v DROP NOT NULL", $db1);
 //--------------------------------------------------
 
 pg_close($db1);
-pg_close($db2);
-
-
 ?>
