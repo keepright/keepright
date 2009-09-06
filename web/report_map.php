@@ -104,9 +104,11 @@ if (!$st) $st='open';
 		var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
 		map.addLayer(layerMapnik);
 
+
 <?php		// add the osmarender layer ?>
-		var layerTilesAtHome = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
-		map.addLayer(layerTilesAtHome);
+		var layerOsmarender = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
+		map.addLayer(layerOsmarender);
+
 
 <?php		// add the open cycle map layer ?>
 		var layerCycle = new OpenLayers.Layer.OSM.CycleMap("OSM Cycle Map");
@@ -190,12 +192,27 @@ if (!$st) $st='open';
 
 <?php	// check/uncheck all checkboxes for error type selection ?>
 	function set_checkboxes(new_value) {
+
+<?php		// update all the checkboxes ?>
 		for (var i = 0; i < document.myform.elements.length; ++i) {
 			var el=document.myform.elements[i];
 			if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
 				el.checked=new_value;
 			}
 		}
+
+<?php		// update the images that look like tristated checkboxes
+		// this was stolen from tristate.js, function onCheckboxClick()
+?>
+		for (i = 1; i <= document.myform.number_of_tristate_checkboxes.value; i++) {
+			var imageId = 'tristateBox' + i + '.Img';
+			var fieldAndContainerIds = getFieldAndContainerIds(imageId);
+			var allTheCheckboxes = getAllCheckboxesInContainer(fieldAndContainerIds[1]);
+
+			var triStateBoxField = document.getElementById(fieldAndContainerIds[0]);
+			updateStateAndImage(allTheCheckboxes, triStateBoxField, imageId);
+		}
+
 		plnk.updateLink();
 	}
 
@@ -297,6 +314,7 @@ echo "</script>\n";
 
 
 echo "
+<input type='hidden' name='number_of_tristate_checkboxes' value='" . $subgroup_counter . "'>
 <input type='hidden' name='highlight_error_id' value='" . $highlight_error_id . "'>
 <input type='hidden' name='db' value='" . $db . "'>
 <input type='hidden' name='lat' value='" . $lat/1e7 . "'>
