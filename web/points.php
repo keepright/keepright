@@ -86,8 +86,8 @@ foreach ($error_types as $error_type) {
 $sql .=" (10*floor(error_type/10) IN ($nonsubtyped) OR error_type IN ($subtyped))";
 
 
-//$sql .=' AND lat >= ' . ($lat-1e6) . ' AND lat <= ' . ($lat+1e6);	// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
-//$sql .=' AND lon >= ' . ($lon-1e6) . ' AND lon <= ' . ($lon+1e6);
+$sql .=' AND lat >= ' . ($lat-1e6) . ' AND lat <= ' . ($lat+1e6);	// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
+$sql .=' AND lon >= ' . ($lon-1e6) . ' AND lon <= ' . ($lon+1e6);
 
 switch ($st) {
 	case 'open': $sql.=' AND e.state IN ("new", "reopened")'; break;
