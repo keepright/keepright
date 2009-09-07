@@ -61,6 +61,9 @@ if (!$st) $st='open';
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><title>keep right!</title>
 
+<!-- <link rel="alternate" type="application/rss+xml"
+   title="RSS" href="export.php" /> -->
+
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 
 <script type="text/javascript" src="<?php echo $path; ?>myPermalink.js"></script>
@@ -139,6 +142,13 @@ if (!$st) $st='open';
 
 			var editierlink = document.getElementById('editierlink');
 			editierlink.href="http://www.openstreetmap.org/edit?lat=" + lonlat.lat + "&lon=" + lonlat.lon + "&zoom=" + this.getZoom();
+
+
+/*			var rsslink=document.getElementById('rsslink');
+			var b=this.getExtent();
+			var bbox = b.transform(this.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+			rsslink.href = '<?php echo $path; ?>export.php?format=rss&' + getURL_checkboxes() + '&left=' + bbox.left + '&bottom=' + bbox.bottom + '&right=' + bbox.right + '&top=' + bbox.top + '&db=' + document.myform.db.value;
+*/
 
 			pois.loadText();		//reload markers after panning
 		});
@@ -251,6 +261,7 @@ function getURL_checkboxes() {
 
 <a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
 
+<!-- <a id="rsslink" href="<?php echo $path; ?>export.php">RSS</a><br> --> 
 
 
 
