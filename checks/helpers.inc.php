@@ -282,7 +282,7 @@ function create_postgres_functions($db) {
 				con := eccent * sin(phi);
 				com := 0.5 * eccent;
 				con := POW(((1.0-con)/(1.0+con)), com);
-				RETURN 0.0 - r_major * LOG(TAN(0.5 * ((PI()*0.5) - phi))/con);
+				RETURN 0.0 - r_major * LN(TAN(0.5 * ((PI()*0.5) - phi))/con);
 			END;
 		$$ LANGUAGE plpgsql IMMUTABLE;
 	", $db, false);
