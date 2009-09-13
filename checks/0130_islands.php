@@ -6,10 +6,10 @@
 -------------------------------------
 
 thesis: any point in the whole map should be connected to any other node
-in other words: from any point in the whole map one should be able to reach 
-any one of well known points that have to be defined (for performance reasons: 
+in other words: from any point in the whole map one should be able to reach
+any one of well known points that have to be defined (for performance reasons:
 at least one point on every continent).
-This check includes even small islands because ferries are considered to be 
+This check includes even small islands because ferries are considered to be
 highways. So it is not neccessary to define starting points on every island.
 
 algorithm: starting in a few nodes find ways connected to given nodes
@@ -26,11 +26,29 @@ any way that now is not member of the list of found ways is an island (not conne
 $islands = array(
 	'europe' => array(
 		'Kufstein, Austria' => 4433559,
-		'Madrid, Spain' => 4680727,
-		'Warszawa, Poland' => 4990561,
+		'Ponta Delgada, Azores' => 26644602,
+		'Bruxelles, Belgium' => 15371932,
+		'Sarajevo, Bosnia and Herzegowina' => 10644674,
+		'Nicosia, Cyprus' => 4746551,
+		'Praha, Czech Republic' => 26167667,
+		'Kopenhagen, Denmark' => 5056358,
+		'Torshavn, Faröer' => 4967431,
+		'Berlin, Germany' => 13853652,
+		'Athens, Greece' => 14292261,
 		'Lahti, Finland' => 24318266,
+		'Paris, France' => 26503463,
+		'London, Great Britain' => 2499066,
+		'Budapest, Hungaria' => 34923072,
 		'Reykjavik, Iceland' => 22529614,
-		'Torshavn, Faröer' => 4967431
+		'Roma, Italy' => 28604181,
+		'Riga, Latvia' => 38788862,
+		'Amsterdam, Netherlands' => 7382660,
+		'Oslo, Norway' => 4394237,
+		'Warszawa, Poland' => 4990561,
+		'Madrid, Spain' => 4680727,
+		'Stockholm, Sweden' => 39068318,
+		'Bern, Switzerland' => 23584688,
+		'Kiew, Ukraine' => 4375099,
 	),
 	'australia' => array(
 		'Melbourne' => 20275086,
