@@ -91,6 +91,7 @@ to its other end-node using equal-tagged ways but not the way itself.
 
 function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	global $error_type;
+	echo "checking for $k=$v\n";
 
 	query("DROP TABLE IF EXISTS _tmp_ways;", $db1, false);
 	query("
@@ -108,7 +109,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		SELECT DISTINCT t.way_id
 		FROM way_tags t
 		WHERE t.k = '$k' " . (trim($v)=='*' ? '' : " AND t.v = '$v'")
-	, $db1);
+	, $db1, false);
 
 	// this is an exception introduced for eg. bridges that are attractions.
 	// tourism-attractions that are highways need not be closed-loop
