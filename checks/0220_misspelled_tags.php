@@ -24,6 +24,7 @@ $false_positives = array(
 	array('area', 'arena'),
 	array('block', 'lock'),
 	array('biking', 'hiking'),
+	array('bump', 'hump'),
 	array('county', 'country'),
 	array('derail', 'detail', 'retail'),
 	array('door', 'moor'),
