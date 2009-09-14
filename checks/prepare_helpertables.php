@@ -23,10 +23,10 @@ $starttime=microtime(true);
 //--------------------------------------------------
 create_postgres_functions($db1);
 
-
 // ways crossing the boundary of export bounding box get truncated
 // ie in way_nodes you find node ids that are missing in nodes
 // these are fetched here via api
+/*
 echo "retrieve missing nodes via api\n";
 $count=0;
 $result = query("
@@ -57,7 +57,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 }
 pg_free_result($result);
 echo "fetched $count nodes via api.\n";
-
+*/
 //--------------------------------------------------
 
 
@@ -104,18 +104,19 @@ query("DELETE FROM way_nodes WHERE lat IS NULL", $db1);
 echo "expand way_nodes with node data\n";
 
 // find node counts and update table ways
-$result = query("SELECT ways.id AS id, COUNT(*) AS cnt
+query("DROP TABLE IF EXISTS _tmp_nodecounts", $db1);
+query("SELECT ways.id AS way_id, COUNT(*) AS cnt
+	INTO _tmp_nodecounts
 	FROM ways INNER JOIN way_nodes ON (ways.id=way_nodes.way_id)
-	WHERE ways.node_count IS NULL
 	GROUP BY ways.id
 ", $db1);
-while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-	query("UPDATE ways
-		SET node_count={$row['cnt']}
-		WHERE id={$row['id']}
-	", $db1, false);
-}
-pg_free_result($result);
+query("CREATE INDEX idx_tmp_nodecounts_way_id ON _tmp_nodecounts (way_id)", $db1);
+query("UPDATE ways
+	SET node_count=nc.cnt
+	FROM _tmp_nodecounts nc
+	WHERE id=nc.way_id
+", $db1);
+query("DROP TABLE IF EXISTS _tmp_nodecounts", $db1);
 
 
 // Add a postgis bounding box column used for indexing the location of the way.
