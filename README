@@ -27,7 +27,9 @@ mysql-client
 phpMyAdmin
 phpPgAdmin
 a java6 vm
+subversion
 wget
+wput
 bzip2
 
 Optional:
@@ -138,7 +140,15 @@ su - postgres
 createuser keepright
 Shall the new role be a superuser? (y/n) y
 
-You needn't create the postgres database, as the updateDB script will do that automatically.
+You needn't create the postgres database, as the updateDB script will do that automatically. But you have to set the password for the keepright user inside postgres.
+
+Still as user postgres start the psql shell:
+> psql
+
+postgres=# ALTER ROLE keepright WITH PASSWORD 'shhh!';
+ALTER ROLE
+
+
 
 
 Wondering why the auto-vac-daemon ist shut off?
