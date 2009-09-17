@@ -27,8 +27,21 @@ $comments_historic_name="comments_historic_" . $db;
 $updated_file_name="updated_" . $db;
 $planetfile_date_file_name="planetfile_date_" . $db;
 
-$UPDATE_TABLES_PASSWD="shhh!";
 
+$USERS = array(
+	'harald.kleiner@web.de' => array(	// super guru has access to all DBs
+		'password' => 'shhh!',
+		'DB' => array(
+			'%' => array('%')
+		)
+	),
+	'lennard' => array(			// Lennard: Belgium/Netherlands/Luxembourg
+		'password' => 'shhh!',
+		'DB' => array(
+			'osm_EU' => array('osm_XK')
+		)
+	)
+);
 
 /*
 details on the web path:

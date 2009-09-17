@@ -47,40 +47,7 @@ require('BufferedInserter_MySQL.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
-if ($argv[3] == "error_types") {
-	$bi=new BufferedInserter('INSERT INTO ' . $error_types_name . ' (error_type, error_name, error_description)', $db1, 300);
-} else {
-	$bi=new BufferedInserter('INSERT INTO ' . $error_view_name . '_shadow (error_id, db_name, error_type, error_name, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)', $db1, 300);
-}
-
-if (substr($file, -4) == ".bz2") {
-
-	$handle = bzopen($file, 'r') or die("Couldn't open $file for reading");
-
-	$counter=0;
-	while (!gzeof($handle)) {
-		$buffer=trim(gzgets($handle, 40960));
-	//	echo $buffer;
-		if(strlen($buffer)>1) $bi->insert( str_replace('\N', 'NULL', $buffer) );
-		if (!($counter++ % 1000)) echo "$counter ";
-	}
-	$bi->flush_buffer();
-	gzclose($handle);
-
-} else {
-	$handle = fopen($file, 'r') or die("Couldn't open $file for reading");
-
-	$counter=0;
-	while (!feof($handle)) {
-		$buffer=trim(fgets($handle, 40960));
-	//	echo $buffer;
-		if(strlen($buffer)>1) $bi->insert( str_replace('\N', 'NULL', $buffer) );
-		if (!($counter++ % 1000)) echo "$counter ";
-	}
-	$bi->flush_buffer();
-	fclose($handle);
-}
-
+load_dump($db1, $f, $argv[3]);
 
 mysqli_close($db1);
 

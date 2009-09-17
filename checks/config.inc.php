@@ -25,10 +25,11 @@ function parse_config_vars($filename) {
 		'WEB_DB_HOST', 'WEB_DB_USER', 'WEB_DB_PASS', 'WEB_DB_NAME',
 		'ERROR_VIEW_FILE', 'ERROR_TYPES_FILE', 'RESULTSDIR',
 		'FTP_HOST', 'FTP_USER', 'FTP_PASS', 'FTP_PATH',
-		'UPDATE_TABLES_URL', 'UPDATE_TABLES_PASSWD', 'ADMIN_USERNAME');
+		'UPDATE_TABLES_URL', 'UPDATE_TABLES_USERNAME', 'UPDATE_TABLES_PASSWD',
+		'ADMIN_USERNAME', 'CREATE_COMPRESSED_DUMPS');
 
 	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
-	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'CAT', 'MIN_SIZE');
+	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'MAIN_SCHEMA_NAME', 'CAT', 'MIN_SIZE');
 
 	foreach ($configfile as $line) {
 
@@ -47,7 +48,7 @@ function parse_config_vars($filename) {
 
 			// find database parameters
 			foreach ($db_parts as $var) {
-				if (preg_match('/^\s*' . $var . '_([A-Z]{2})\s*=\s*"(.*)\"/', $line, $matches))
+				if (preg_match('/^\s*' . $var . '_([A-Z]{2,4})\s*=\s*"(.*)\"/', $line, $matches))
 					$db_params[$matches[1]][$var] = $matches[2];
 			}
 
@@ -100,8 +101,18 @@ if (strlen(trim($MAIN_DB_HOST))==0) {
 	exit;
 }
 
+// BEWARE: postgres really is NOT ALWAYS case sensitive!
+// if you create schema osm_TT then in fact osm_tt will be created
+// but if you create schema 'osm_TT' then it will be called osm_TT
+
 $connectstring="host=$MAIN_DB_HOST dbname=$MAIN_DB_NAME user=$MAIN_DB_USER password=$MAIN_DB_PASS";
 
+// if a schema config variable is set append it to the connect string
+// to make any connection use the given schema automatically
+if (isset($db_params[$db_postfix]['MAIN_SCHEMA_NAME']))
+	 $connectstring.=" options='--search_path=" . $db_params[$db_postfix]['MAIN_SCHEMA_NAME']. ",public'";
+else
+	$db_params[$db_postfix]['MAIN_SCHEMA_NAME']='public';
 
 
 

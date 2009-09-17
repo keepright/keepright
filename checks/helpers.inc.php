@@ -55,58 +55,92 @@ function query_firstval($sql, $link, $debug=true) {
 
 // there is no "CREATE ... IF NOT EXISTS" in Postgres.
 // so look up the meta-tables instead...
-function pg_exists($link, $class, $item) {
-	$classnames=array('tables'=>'tablename', 'type'=>'typname');
+function table_exists($db, $tablename, $schema='') {
 
-	$r=query("
-		SELECT COUNT(*) AS a
-		FROM pg_$class
-		WHERE " . $classnames[$class] . "='$item'
-	", $link, false);
+	$sch=get_schema($schema);
 
-	$result=false;
-	if ($row=pg_fetch_array($r)) $result=$row['a']>0;
-	//echo "result is $result\n";
-	pg_free_result($r);
-	return $result;
+	return query_firstval("
+		SELECT COUNT(*)
+		FROM pg_tables
+		WHERE schemaname='$sch' AND tablename='$tablename'
+	", $db, false) != 0;
+
 }
 
 
+// there is no "CREATE ... IF NOT EXISTS" in Postgres.
+// so look up the meta-tables instead...
+function type_exists($db, $typename, $schema='') {
+
+	$sch=get_schema($schema);
+
+	return query_firstval("
+		SELECT COUNT(*)
+		FROM pg_type INNER JOIN pg_namespace ON (pg_namespace.oid=pg_type.typnamespace) WHERE typname='$typename' AND nspname='$sch'
+ 	", $db, false) != 0;
+
+}
+
+// there is no "CREATE ... IF NOT EXISTS" in Postgres.
+// so look up the meta-tables instead...
+function index_exists($db, $indexname, $schema='') {
+
+	$sch=get_schema($schema);
+
+	return query_firstval("
+		SELECT COUNT(*)
+		FROM pg_indexes WHERE indexname='$indexname' AND schemaname='$sch'
+ 	", $db, false) != 0;
+
+}
 
 // will examine meta data to find out if a column of given name exists
-function column_exists($table, $column, $db) {
+function column_exists($table, $column, $db, $schema) {
 	global $MAIN_DB_NAME;
 
 	// query meta table of all columns for column to add
 	return query_firstval("
-		SELECT column_name
+		SELECT COUNT(column_name)
 		FROM information_schema.columns
 		WHERE 	table_catalog='$MAIN_DB_NAME'
-			AND table_schema='public'
+			AND table_schema='$schema'
 			AND table_name='$table'
 			AND column_name='$column'
-	",$db, false) != false;
+	",$db, false) != 0;
 }
 
 // will examine meta data to find out if a column of given name
 // already exists and will create one if not
-function add_column($table, $column, $type, $db) {
+function add_column($table, $column, $type, $db, $schema='') {
 
-	if (!column_exists($table, $column, $db))
-		query("
-			ALTER TABLE $table ADD COLUMN $column $type
-		",$db, false);
+	$sch=get_schema($schema);
+
+	if (!column_exists($table, $column, $db, $sch)) {
+		query("ALTER TABLE $sch.$table ADD COLUMN $column $type", $db);
+	}
 }
 
 // will examine meta data to find out if a column of given name
 // exists and will drop it if if does
-function drop_column($table, $column, $db) {
+function drop_column($table, $column, $db, $schema='') {
 
-	if (column_exists($table, $column, $db))
-		query("
-			ALTER TABLE $table DROP COLUMN $column
-		",$db, false);	
+	$sch=get_schema($schema);
+
+	if (column_exists($table, $column, $db, $sch)) {
+		query("ALTER TABLE $sch.$table DROP COLUMN $column", $db);
+	}
 }
+
+// return $schema if present or configured MAIN_SCHEMA_NAME parameter
+function get_schema($schema) {
+	global $db_params, $db_postfix;
+
+	if ($schema=='')
+		return $db_params[$db_postfix]['MAIN_SCHEMA_NAME'];
+	else
+		return $schema;
+}
+
 
 // create a rule that checks on each INSERT-event 
 // if a record with identical primary key already exists
@@ -144,8 +178,6 @@ START
 $r_major = 6378137.0;
 $r_minor = 6356752.3142;
 
-
-
 function deg_rad($ang)
 {
 	return (float)((float)$ang * (float)(M_PI / 180.0));
@@ -165,7 +197,6 @@ function merc_x($lon)
 function merc_y($lat)
 {
 	global $r_major, $r_minor;
-	
 	if ($lat > 89.5) $lat = 89.5;
 	if ($lat < -89.5) $lat = -89.5;
 	$temp = $r_minor / $r_major;

@@ -105,10 +105,10 @@ echo "expand way_nodes with node data\n";
 
 // find node counts and update table ways
 query("DROP TABLE IF EXISTS _tmp_nodecounts", $db1);
-query("SELECT ways.id AS way_id, COUNT(*) AS cnt
+query("SELECT way_id, COUNT(node_id) AS cnt
 	INTO _tmp_nodecounts
-	FROM ways INNER JOIN way_nodes ON (ways.id=way_nodes.way_id)
-	GROUP BY ways.id
+	FROM way_nodes
+	GROUP BY way_id
 ", $db1);
 query("CREATE INDEX idx_tmp_nodecounts_way_id ON _tmp_nodecounts (way_id)", $db1);
 query("UPDATE ways

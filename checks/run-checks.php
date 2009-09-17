@@ -37,17 +37,19 @@ $db6 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 // check routines drop their errors into _tmp_errors. A syncing-job updates state information
 // in the "real" errors-table at the end of this script
 
-if (!pg_exists($db1, 'type', 'type_error_state'))
-	query("CREATE TYPE type_error_state AS ENUM('new','cleared','ignored','reopened')", $db1, false);
+if (!type_exists($db1, 'type_error_state', 'public'))
+	query("CREATE TYPE public.type_error_state AS ENUM('new','cleared','ignored','reopened')", $db1, false);
 
-if (!pg_exists($db1, 'type', 'type_object_type'))
-	query("CREATE TYPE type_object_type AS ENUM('node','way','relation')", $db1, false);
+if (!type_exists($db1, 'type_object_type', 'public'))
+	query("CREATE TYPE public.type_object_type AS ENUM('node','way','relation')", $db1, false);
+
+
 
 query("DROP TABLE IF EXISTS _tmp_errors", $db1, false);
 query("
 	CREATE TABLE _tmp_errors (
 	error_type int NOT NULL,
-	object_type type_object_type NOT NULL,
+	object_type public.type_object_type NOT NULL,
 	object_id bigint NOT NULL,
 	description text NOT NULL,
 	last_checked timestamp NOT NULL,
@@ -61,12 +63,12 @@ add_insert_ignore_rule('_tmp_errors', array('error_type', 'object_type', 'object
 
 // the "real" errors-table. it looks like _tmp_errors with one difference:
 // errors has state information (new, closed , ignored...) and is persistent
-if (!pg_exists($db1, 'tables', 'errors')) {
+if (!table_exists($db1, 'errors', 'public')) {
 	query("
-		CREATE TABLE errors (
+		CREATE TABLE public.errors (
 		error_id serial,
 		error_type int NOT NULL,
-		object_type type_object_type NOT NULL,
+		object_type public.type_object_type NOT NULL,
 		object_id bigint NOT NULL,
 		state type_error_state NOT NULL,
 		description text NOT NULL,
@@ -74,12 +76,14 @@ if (!pg_exists($db1, 'tables', 'errors')) {
 		last_checked timestamp NOT NULL,
 		lat double precision,
 		lon double precision,
+		schema VARCHAR(8) NOT NULL DEFAULT ''
 		UNIQUE (error_type, object_type, object_id, lat, lon)
 		)
 	", $db1, false);
-	query("CREATE INDEX idx_errors_object_id ON errors (object_id);", $db1);
-	query("CREATE INDEX idx_errors_state ON errors (state);", $db1);
-	add_insert_ignore_rule('errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
+	query("CREATE INDEX idx_errors_schema ON public.errors (schema);", $db1);
+	query("CREATE INDEX idx_errors_object_id ON public.errors (object_id);", $db1);
+	query("CREATE INDEX idx_errors_state ON public.errors (state);", $db1);
+	add_insert_ignore_rule('public.errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
 }
 // (re)create table of error type descriptions out of definition-array in config.inc
 query("DROP TABLE IF EXISTS error_types;", $db1, false);
@@ -169,38 +173,40 @@ $checks_executed.=')';
 // The workaround is to use 'IS NOT DISTINCT FROM' which will return false
 // if one value is not null and return true if both are null
 
-// update last-checked timestamp for all errors that (still) exist
 query("CREATE INDEX idx_tmp_errors_object_id ON _tmp_errors (object_id);", $db1);
 query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type);", $db1);
 query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type);", $db1);
-query("
-	UPDATE errors AS e
-	SET last_checked=_tmp_errors.last_checked, description=_tmp_errors.description
-	FROM _tmp_errors
-	WHERE ($checks_executed) AND e.error_type=_tmp_errors.error_type AND e.object_type=_tmp_errors.object_type AND e.object_id=_tmp_errors.object_id AND e.lat IS NOT DISTINCT FROM _tmp_errors.lat AND e.lon IS NOT DISTINCT FROM _tmp_errors.lon
-", $db1);
+query("CREATE INDEX idx_tmp_errors_latlon ON _tmp_errors (lat, lon);", $db1);
+$schema=$db_params[$db_postfix]['MAIN_SCHEMA_NAME'];
 
+// update last-checked timestamp for all errors that (still) exist
 // set reopened-state for cleared errors that are now found in _tmp_errors again
 query("
-	UPDATE errors e
-	SET state='reopened', description=_tmp_errors.description
-	FROM _tmp_errors
-	WHERE e.state='cleared' AND ($checks_executed) AND e.error_type=_tmp_errors.error_type AND e.object_type=_tmp_errors.object_type AND e.object_id=_tmp_errors.object_id AND e.lat IS NOT DISTINCT FROM _tmp_errors.lat AND e.lon IS NOT DISTINCT FROM _tmp_errors.lon
+	UPDATE public.errors AS e
+	SET schema='$schema', last_checked=te.last_checked,
+	description=te.description,
+	state = CAST(CASE e.state WHEN 'cleared' THEN 'reopened' ELSE 'new' END AS type_error_state)
+	FROM _tmp_errors te
+	WHERE e.error_type=te.error_type AND e.object_type=te.object_type AND e.object_id=te.object_id AND e.lat IS NOT DISTINCT FROM te.lat AND e.lon IS NOT DISTINCT FROM te.lon
 ", $db1);
+
+
 
 // set cleared-state for errors that are not found in _tmp_errors any more
-query("
-	UPDATE errors e
+/*query("
+	UPDATE public.errors e
 	SET state='cleared', last_checked=NOW()
-	WHERE e.state<>'cleared' AND ($checks_executed) AND
+	WHERE e.schema='$schema' AND e.state<>'cleared' AND ($checks_executed) AND
 	NOT EXISTS (SELECT * FROM _tmp_errors WHERE e.error_type=_tmp_errors.error_type AND e.object_type=_tmp_errors.object_type AND e.object_id=_tmp_errors.object_id AND e.lat IS NOT DISTINCT FROM _tmp_errors.lat AND e.lon IS NOT DISTINCT FROM _tmp_errors.lon)
 ", $db1);
+*/
 
+// add newly found errors
 query("
-	INSERT INTO errors (error_type, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)
-	SELECT e.error_type, e.object_type, e.object_id, CAST('new' AS type_error_state), e.description, e.last_checked, e.last_checked, e.lat, e.lon
-	FROM _tmp_errors AS e LEFT JOIN errors ON (e.error_type=errors.error_type AND e.object_type=errors.object_type AND e.object_id=errors.object_id AND e.lat IS NOT DISTINCT FROM errors.lat AND e.lon IS NOT DISTINCT FROM errors.lon)
-	WHERE errors.object_id IS NULL AND ($checks_executed)
+	INSERT INTO public.errors (schema, error_type, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)
+	SELECT '$schema', e.error_type, e.object_type, e.object_id, CAST('new' AS type_error_state), e.description, e.last_checked, e.last_checked, e.lat, e.lon
+	FROM _tmp_errors AS e LEFT JOIN public.errors ON (e.error_type=errors.error_type AND e.object_type=errors.object_type AND e.object_id=errors.object_id AND e.lat IS NOT DISTINCT FROM errors.lat AND e.lon IS NOT DISTINCT FROM errors.lon)
+	WHERE public.errors.object_id IS NULL AND ($checks_executed)
 ", $db1);
 
 
@@ -218,47 +224,58 @@ query("
 // only in special cases (e.g. a check wants to point to the _last_ node of a way,
 // a check may specify values for lat/lon
 
+if (!table_exists($db1, 'error_view', 'public')) {
+	query("
+		CREATE TABLE public.error_view (
+		error_id int NOT NULL,
+		db_name VARCHAR(50) NOT NULL,
+		schema VARCHAR(8) NOT NULL DEFAULT '',
+		error_type int NOT NULL,
+		error_name VARCHAR(100) NOT NULL DEFAULT '',
+		object_type public.type_object_type NOT NULL,
+		object_id bigint NOT NULL,
+		state type_error_state NOT NULL,
+		description text NOT NULL,
+		first_occurrence timestamp NOT NULL,
+		last_checked timestamp NOT NULL,
+		lat int NOT NULL,
+		lon int NOT NULL
+		)
+	", $db1, false);
+}
 
-query("DROP TABLE IF EXISTS error_view", $db1, false);
+if (!index_exists($db1, 'idx_tmp_error_view_schema', 'public')) {
+	query("CREATE INDEX idx_tmp_error_view_schema ON public.error_view (schema);", $db1);
+}
+
+
+// delete anything from this (sub-)database
 query("
-	CREATE TABLE error_view (
-	error_id int NOT NULL,
-	db_name VARCHAR(50) NOT NULL,
-	error_type int NOT NULL,
-	error_name VARCHAR(100) NOT NULL DEFAULT '',
-	object_type type_object_type NOT NULL,
-	object_id bigint NOT NULL,
-	state type_error_state NOT NULL,
-	description text NOT NULL,
-	first_occurrence timestamp NOT NULL,
-	last_checked timestamp NOT NULL,
-	lat int NOT NULL,
-	lon int NOT NULL
-	)
-", $db1, false);
-
+	DELETE FROM public.error_view
+	WHERE schema='$schema' OR schema IS NULL
+", $db1);
 
 // first insert errors on nodes that don't have lat/lon
 query("
-	INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
+	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
 		state, description, first_occurrence, last_checked, lat, lon)
-	SELECT e.error_id, '$MAIN_DB_NAME' as db_name, e.error_type, e.object_type, e.object_id,
+	SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
 		e.state, e.description, e.first_occurrence, e.last_checked,
 		1e7*n.lat, 1e7*n.lon
-	FROM errors e INNER JOIN nodes n ON (e.object_id = n.id)
-	WHERE e.object_type='node' AND (e.lat IS NULL OR e.lon IS NULL)
+	FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
+	WHERE e.schema='$schema' AND e.object_type='node' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND n.lat IS NOT NULL AND n.lon IS NOT NULL
 ", $db1);
 
 // second insert errors on ways that don't have lat/lon
 query("
-	INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
+	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
 		state, description, first_occurrence, last_checked, lat, lon)
-	SELECT e.error_id, '$MAIN_DB_NAME' as db_name, e.error_type, e.object_type, e.object_id,
+	SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
 		e.state, e.description, e.first_occurrence, e.last_checked,
 		1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon
-	FROM errors e INNER JOIN ways w ON w.id=e.object_id
-	WHERE e.object_type='way' AND (e.lat IS NULL OR e.lon IS NULL)
+	FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
+	WHERE e.schema='$schema' AND e.object_type='way' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND w.first_node_lat IS NOT NULL AND w.first_node_lon IS NOT NULL
 	GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state,
 		e.description, e.first_occurrence, e.last_checked,
@@ -269,16 +286,16 @@ query("
 $result=query("
 	SELECT DISTINCT e.error_id, e.error_type, e.object_id, e.state, e.description,
 		e.first_occurrence, e.last_checked
-	FROM errors e
-	WHERE e.object_type='relation' AND (e.lat IS NULL OR e.lon IS NULL)
+	FROM public.errors e
+	WHERE e.schema='$schema' AND e.object_type='relation' AND (e.lat IS NULL OR e.lon IS NULL)
 ", $db1, false);
 
 while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 	$latlong = locate_relation($row['object_id'], $db3);
 	query("
-		INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
+		INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
 			state, description, first_occurrence, last_checked, lat, lon)
-		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '${row['error_type']}',
+		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '$schema', '${row['error_type']}',
 			'relation', ${row['object_id']}, '${row['state']}',
 			'" . addslashes($row['description']) . "', '${row['first_occurrence']}',
 			'${row['last_checked']}', 1e7*${latlong['lat']}, 1e7*${latlong['lon']})
@@ -290,13 +307,13 @@ pg_free_result($result);
 
 // finally insert errors on ways/nodes/relations that do have lat/lon values
 query("
-	INSERT INTO error_view (error_id, db_name, error_type, object_type, object_id,
+	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
 		state, description, first_occurrence, last_checked, lat, lon)
-	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME' as db_name, e.error_type,
+	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME' as db_name, e.schema, e.error_type,
 		e.object_type, e.object_id, e.state, e.description,
 		e.first_occurrence, e.last_checked, e.lat, e.lon
-	FROM errors e
-	WHERE NOT(e.lat IS NULL OR e.lon IS NULL)
+	FROM public.errors e
+	WHERE e.schema='$schema' AND NOT(e.lat IS NULL OR e.lon IS NULL)
 ", $db1);
 
 
@@ -305,15 +322,15 @@ query("
 // finally add the error names
 // first for error types that don't have subtypes...
 query("
-	UPDATE error_view v SET error_name=t.error_name
+	UPDATE public.error_view v SET error_name=t.error_name
 	FROM error_types t
-	WHERE (10*floor(v.error_type/10) = t.error_type)
+	WHERE v.schema='$schema' AND (10*floor(v.error_type/10) = t.error_type)
 ", $db1);
 // and second the subtypes (they have individual names)
 query("
-	UPDATE error_view v SET error_name=t.error_name
+	UPDATE public.error_view v SET error_name=t.error_name
 	FROM error_types t
-	WHERE v.error_type = t.error_type
+	WHERE v.schema='$schema' AND v.error_type = t.error_type
 ", $db1);
 
 
@@ -368,43 +385,6 @@ WHERE comments_osm_EU.state='ignore_temporarily' AND
 error_view_osm_EU.state<>'cleared' AND
 comments_osm_EU.timestamp<"2009-05-26"
 */
-
-
-echo "Exporting result tables into dump files\n";
-$f = fopen($ERROR_VIEW_FILE . '_'. $MAIN_DB_NAME . '.txt', 'w');
-
-if ($f) {
-
-	$result = query("
-		SELECT * FROM error_view
-		WHERE description NOT LIKE '%kms:%'
-		AND NOT (state='cleared' AND last_checked < CURRENT_DATE - INTERVAL '2 MONTH')
-	", $db1, false);
-	while ($row=pg_fetch_assoc($result)) {
-		fwrite($f, $row['error_id'] .",'". $row['db_name'] ."',". $row['error_type'] .",'". $row['error_name'] ."','". $row['object_type'] ."',". $row['object_id'] .",'". $row['state'] ."','". strtr($row['description'], array("'"=>"\'")) ."','". $row['first_occurrence'] ."','". $row['last_checked'] ."',".  $row['lat'] . ",". $row['lon'] . "\n");
-	}
-	pg_free_result($result);
-	fclose($f);
-
-} else {
-	echo "Cannot open error_view file ($filename) for writing";
-}
-
-
-$f = fopen($ERROR_TYPES_FILE . '_'. $MAIN_DB_NAME . '.txt', 'w');
-
-if ($f) {
-
-	$result = query('SELECT * FROM error_types', $db1, false);
-	while ($row=pg_fetch_assoc($result)) {
-		fwrite($f, $row['error_type'] .",'". $row['error_name'] ."','". strtr($row['error_description'], array("'"=>"\'")) ."'\n");
-	}
-	pg_free_result($result);
-	fclose($f);
-
-} else {
-        echo "Cannot open error-types file ($filename) for writing";
-}
 
 
 // clean up...

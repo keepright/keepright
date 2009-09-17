@@ -31,39 +31,37 @@ for i do	# loop all given parameter values
 
 
 			if [ "$CREATE_DUMPFILES" != "0" ]; then
-				echo "`date` * updating splitted and compressed result files"
-				rm -f "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME"_part*
-				# make small chunks of 200k lines each
-				split -l 200000 "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME"_part
+				echo "`date` * creating compressed result files"
 
+				bzip2 -c "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt > "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt.bz2
 
-				# compress dump parts using bz2
-				bzip2 -f "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME"_part*
-
-				# add a header line to the main dump file and compress it
-				echo "error_id,db_name,error_type,error_name,object_type,object_id,state,description,first_occurrence,last_checked,lat,lon" | cat - "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt | bzip2 --stdout > "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".bz2
+				bzip2 -c "$ERROR_TYPES_FILE"_"$MAIN_DB_NAME".txt > "$ERROR_TYPES_FILE"_"$MAIN_DB_NAME".txt.bz2
 			fi
 
 			echo "`date` * creating/swapping error_view table"
 			# ensure all tables exist and empty old error_view
 			echo "
 				CREATE TABLE IF NOT EXISTS comments_""$MAIN_DB_NAME"" (
+				subschema varchar(6) NOT NULL DEFAULT '',
 				error_id int(11) NOT NULL,
 				state enum('ignore_temporarily','ignore') default NULL,
 				\`comment\` text,
 				\`timestamp\` timestamp NOT NULL default CURRENT_TIMESTAMP,
 				ip varchar(255) default NULL,
 				user_agent varchar(255) default NULL,
+				KEY subschema (subschema),
 				KEY error_id (error_id)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 				CREATE TABLE IF NOT EXISTS comments_historic_""$MAIN_DB_NAME"" (
+				subschema varchar(6) NOT NULL DEFAULT '',
 				error_id int(11) NOT NULL,
 				state enum('ignore_temporarily','ignore') default NULL,
 				\`comment\` text,
 				\`timestamp\` timestamp NOT NULL default CURRENT_TIMESTAMP,
 				ip varchar(255) default NULL,
 				user_agent varchar(255) default NULL,
+				KEY subschema (subschema),
 				KEY error_id (error_id)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -75,6 +73,7 @@ for i do	# loop all given parameter values
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 				CREATE TABLE IF NOT EXISTS error_view_""$MAIN_DB_NAME""_old (
+				subschema varchar(6) NOT NULL DEFAULT '',
 				error_id int(11) NOT NULL,
 				db_name varchar(50) NOT NULL,
 				error_type int(11) NOT NULL,
@@ -87,6 +86,7 @@ for i do	# loop all given parameter values
 				last_checked datetime NOT NULL,
 				lat int(11) NOT NULL,
 				lon int(11) NOT NULL,
+				KEY subschema (subschema),
 				KEY error_id (error_id),
 				KEY lat (lat),
 				KEY lon (lon),
@@ -95,6 +95,7 @@ for i do	# loop all given parameter values
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 				CREATE TABLE IF NOT EXISTS error_view_""$MAIN_DB_NAME"" (
+				subschema varchar(6) NOT NULL DEFAULT '',
 				error_id int(11) NOT NULL,
 				db_name varchar(50) NOT NULL,
 				error_type int(11) NOT NULL,
@@ -107,6 +108,7 @@ for i do	# loop all given parameter values
 				last_checked datetime NOT NULL,
 				lat int(11) NOT NULL,
 				lon int(11) NOT NULL,
+				KEY subschema (subschema),
 				KEY error_id (error_id),
 				KEY lat (lat),
 				KEY lon (lon),

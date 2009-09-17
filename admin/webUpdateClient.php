@@ -1,5 +1,5 @@
 <html><body>
-<?php include('navigate.php'); 
+<?php include('navigate.php');
 
 /*
 script for assistance in updating the web presentation
@@ -18,9 +18,8 @@ steps required for a database update:
    rename error_view_osm_XX_shadow to error_view_osm_XX
 5) re-open errors marked as ingnore-temporarily (use SQL provided
    at the end of run-checks.php)
-6) update file updated.inc with date of planet file download (your job)
-7) update log section of index.php and logs.php, if applicable (your job)
-
+6) update file updated_osm_XX with date of last database update
+7) update file planetfile_date_osm_XX with date of planet file download
 */
 ?>
 
@@ -29,7 +28,7 @@ steps required for a database update:
 <pre>
 <?php
 	// show a list of dump files available
-	system('ls -lh results/error_view_osm_??_part??.bz2');
+	system('ls -lh results/error_view_osm_??_*.bz2');
 ?>
 </pre>
 
@@ -40,18 +39,17 @@ steps required for a database update:
 // establish a session with the server module
 // return the session id on success, 0 on error
 function login() {
-global $UPDATE_TABLES_URL, $UPDATE_TABLES_PASSWD;
+global $UPDATE_TABLES_URL, $UPDATE_TABLES_USERNAME, $UPDATE_TABLES_PASSWD;
 	echo "\n\nlogging in----------------------------------------------\n\n";
 
 	// call the server script to receive the session id and challenge
-	$result1 = file($UPDATE_TABLES_URL);
+	$result1 = readHTTP($UPDATE_TABLES_URL);
 	//echo implode("", $result1) . "\n";
 
-	$response=md5(trim($result1[1]) . $UPDATE_TABLES_PASSWD);
+	$response=md5($UPDATE_TABLES_USERNAME . trim($result1[1]) . $UPDATE_TABLES_PASSWD);
 
 	// now respond...
-	$result2 = file("$UPDATE_TABLES_URL?response=$response&PHPSESSID=" . trim($result1[2]));
-	echo implode("", $result2) . "\n";
+	$result2 = readHTTP("$UPDATE_TABLES_URL?username=$UPDATE_TABLES_USERNAME&response=$response&PHPSESSID=" . trim($result1[2]));
 
 	if (trim($result2[0])=="OK welcome!") {
 		echo "session id is " . trim($result1[2]) . "\n";
@@ -65,25 +63,25 @@ global $UPDATE_TABLES_URL, $UPDATE_TABLES_PASSWD;
 function logout($SID) {
 global $UPDATE_TABLES_URL;
 	echo "\n\nlogging out---------------------------------------------\n\n";
-	$result = file("$UPDATE_TABLES_URL?cmd=logout&PHPSESSID=$SID");
+	$result = readHTTP("$UPDATE_TABLES_URL?cmd=logout&PHPSESSID=$SID");
 	echo implode("", $result) . "\n";
 }
 
-function toggle_tables1($SID, $db) {
+function toggle_tables1($SID, $db, $schema) {
 global $UPDATE_TABLES_URL;
 	echo "\n\ntoggling tables 1---------------------------------------\n\n";
-	$URL="$UPDATE_TABLES_URL?db=$db&cmd=toggle_tables1&PHPSESSID=$SID";
+	$URL="$UPDATE_TABLES_URL?db=$db&schema=$schema&cmd=toggle_tables1&PHPSESSID=$SID";
 	echo "$URL\n";
-	$result = file($URL);
+	$result = readHTTP($URL);
 	echo implode("", $result) . "\n";
 }
 
-function toggle_tables2($SID, $db) {
+function toggle_tables2($SID, $db, $schema) {
 global $UPDATE_TABLES_URL;
 	echo "\n\ntoggling tables 2---------------------------------------\n\n";
-	$URL="$UPDATE_TABLES_URL?db=$db&cmd=toggle_tables2&PHPSESSID=$SID";
+	$URL="$UPDATE_TABLES_URL?db=$db&schema=$schema&cmd=toggle_tables2&PHPSESSID=$SID";
 	echo "$URL\n";
-	$result = file($URL);
+	$result = readHTTP($URL);
 	echo implode("", $result) . "\n";
 }
 
@@ -98,19 +96,19 @@ global $FTP_USER, $FTP_PASS, $FTP_HOST, $FTP_PATH;
 	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=results/  results/error_view_{$db}_part??.bz2 results/error_types_{$db}.txt \"$FTPURL\" 2>&1");
 }
 
-function empty_error_types_table($SID, $db) {
+function empty_error_types_table($SID, $db, $schema) {
 global $UPDATE_TABLES_URL;
 	echo "\n\nemptying error_types table -----------------------------\n\n";
-	$URL="$UPDATE_TABLES_URL?db=$db&date=$date&cmd=empty_error_types_table&PHPSESSID=$SID";
+	$URL="$UPDATE_TABLES_URL?db=$db&schema=$schema&date=$date&cmd=empty_error_types_table&PHPSESSID=$SID";
 	echo "$URL\n";
-	$result = file($URL);
+	$result = readHTTP($URL);
 	echo implode("", $result) . "\n";
 }
 
 
-function load_dump_helper($SID, $db, $filename, $destination) {
+function load_dump_helper($SID, $db, $schema, $filename, $destination) {
 global $UPDATE_TABLES_URL;
-	$WEBURL=$UPDATE_TABLES_URL . "?db=$db&cmd=load_dump&filename=" . basename($filename) . "&destination=$destination&PHPSESSID=$SID";
+	$WEBURL=$UPDATE_TABLES_URL . "?db=$db&schema=$schema&cmd=load_dump&filename=" . basename($filename) . "&destination=$destination&PHPSESSID=$SID";
 
 	// call updateTables.php script, redirect output to stdout (into the webpage)
 	$cmd = '/usr/bin/wget -O - "' . $WEBURL . '" 2>&1';
@@ -119,46 +117,45 @@ global $UPDATE_TABLES_URL;
 }
 
 // call the server script to load every dump file part (error_view + error_types)
-function load_dump($SID, $db) {
+function load_dump($SID, $db, $schema) {
 	echo "\n\nloading dump files--------------------------------------\n\n";
 
-	// glob == ls
-	foreach (glob("results/error_view_{$db}_part??.bz2") as $filename) {
-		load_dump_helper($SID, $db, $filename, 'error_view');
-	}
+	if ($schema!=='%') $dbname=$schema; else $dbname=$db;
 
-	empty_error_types_table($SID, $db);
+	load_dump_helper($SID, $db, $schema, "results/error_view_{$dbname}.txt.bz2", 'error_view');
+
+	empty_error_types_table($SID, $db, $schema);
 	// now load the error_types
-	load_dump_helper($SID, $db, "error_types_{$db}.txt", 'error_types');
+	load_dump_helper($SID, $db, $schema, "error_types_{$dbname}.txt", 'error_types');
 }
 
 
-function reopen_errors($SID, $db, $date) {
+function reopen_errors($SID, $db, $schema, $date) {
 global $UPDATE_TABLES_URL;
 	echo "\n\nreopening temp.ignored errors---------------------------\n\n";
-	$URL="$UPDATE_TABLES_URL?db=$db&date=$date&cmd=reopen_errors&PHPSESSID=$SID";
+	$URL="$UPDATE_TABLES_URL?db=$db&schema=$schema&date=$date&cmd=reopen_errors&PHPSESSID=$SID";
 	echo "$URL\n";
-	$result = file($URL);
+	$result = readHTTP($URL);
 	echo implode("", $result) . "\n";
 }
 
 
-function set_updated_date($SID, $db, $date) {
+function set_updated_date($SID, $db, $schema, $date) {
 global $UPDATE_TABLES_URL;
 	echo "\n\nupdating updated date-----------------------------------\n\n";
-	$URL="$UPDATE_TABLES_URL?db=$db&date=$date&cmd=set_updated_date&PHPSESSID=$SID";
+	$URL="$UPDATE_TABLES_URL?db=$db&schema=$schema&date=$date&cmd=set_updated_date&PHPSESSID=$SID";
 	echo "$URL\n";
-	$result = file($URL);
+	$result = readHTTP($URL);
 	echo implode("", $result) . "\n";
 }
 
 
-function set_planetfile_date($SID, $db, $date) {
+function set_planetfile_date($SID, $db, $schema, $date) {
 global $UPDATE_TABLES_URL;
 	echo "\n\nupdating planet file date-----------------------------------\n\n";
-	$URL="$UPDATE_TABLES_URL?db=$db&date=$date&cmd=set_planetfile_date&PHPSESSID=$SID";
+	$URL="$UPDATE_TABLES_URL?db=$db&schema=$schema&date=$date&cmd=set_planetfile_date&PHPSESSID=$SID";
 	echo "$URL\n";
-	$result = file($URL);
+	$result = readHTTP($URL);
 	echo implode("", $result) . "\n";
 }
 
@@ -169,6 +166,11 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])<=4) {
 
 	$db='osm_' . addslashes(htmlspecialchars($_POST['isocode']));
 
+	if (strlen($_POST['schema'])==2)
+		$schema='osm_' . addslashes(htmlspecialchars($_POST['schema']));
+	else
+		$schema='%';
+
 	if (isset($_POST['complete_run'])) {
 		echo '<pre>';
 
@@ -176,26 +178,63 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])<=4) {
 		//echo "session id is $SID";
 
 		if ($SID) {
-			ftp_upload($db);
-			toggle_tables1($SID, $db);
-			load_dump($SID, $db);
-			toggle_tables2($SID, $db);
+			//ftp_upload($db);
+			toggle_tables1($SID, $db, $schema);
+			load_dump($SID, $db, $schema);
+			toggle_tables2($SID, $db, $schema);
 
 			$FILE=$db_params[addslashes(htmlspecialchars($_POST['isocode']))]['FILE'];
 
 			if (file_exists("planet/$FILE")) {
 				$planetfile_date=date("Y-m-d", filemtime("planet/$FILE"));
-				reopen_errors($SID, $db, $planetfile_date);
-				set_planetfile_date($SID, $db, $planetfile_date);
+				reopen_errors($SID, $db, $schema, $planetfile_date);
+				set_planetfile_date($SID, $db, $schema, $planetfile_date);
 			} else
 				echo "ERROR: planet file 'planet/$FILE' not found. Cannot reopen temp.ignored errors because I cannot determine the date of planet file download\n";
 
-			set_updated_date($SID, $db, date("Y-m-d"));
-			logout($SID);
+			set_updated_date($SID, $db, $schema, date("Y-m-d"));
+//////////////////////////////////////////			logout($SID);
 		}
 
 		echo '</pre>';
 	}
+}
+
+// opens a http url and reads its contents
+// instead of the file() function this one allows
+// for an arbitrary timeout value
+// copied from http://de.php.net/manual/de/function.stream-set-timeout.php
+function readHTTP($URL) {
+	// Timeout in seconds
+	$timeout = 300;
+	$data='';
+	$URLparts = parse_url($URL);
+
+	$fp = fsockopen($URLparts['host'], 80, $errno, $errstr, $timeout);
+
+	if ($fp) {
+		fwrite($fp, "GET " . $URLparts['path'].'?'.$URLparts['query']. " HTTP/1.0\r\n");
+		fwrite($fp, "Host: " . $URLparts['host'] . "\r\n");
+		fwrite($fp, "Connection: Close\r\n\r\n");
+
+		stream_set_blocking($fp, TRUE);
+		stream_set_timeout($fp,$timeout);
+		$info = stream_get_meta_data($fp);
+
+		while ((!feof($fp)) && (!$info['timed_out'])) {
+			$data .= fgets($fp, 4096);
+			$info = stream_get_meta_data($fp);
+			ob_flush;
+			flush();
+		}
+
+		if ($info['timed_out']) {
+			echo "Connection Timed Out!";
+		}
+	}
+	// strip away http response header
+
+	return explode("\n", substr($data, 4+strpos($data, "\r\n\r\n")));
 }
 
 ?>
@@ -204,6 +243,7 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])<=4) {
 <form name="complete_run" action="webUpdateClient.php" method="post">
 	<input type="submit" name="complete_run" value="one button does it all">
 	<input type="text" name="isocode" size="4" value="EU">
+	<input type="text" name="schema" size="4" value="AT">
 </form>
 
 </body></html>

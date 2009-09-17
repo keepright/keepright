@@ -62,42 +62,67 @@ for i do	# loop all given parameter values
 	eval 'URL=${URL_'"${i}"'}'
 	eval 'FILE=${FILE_'"${i}"'}'
 	eval 'MAIN_DB_NAME=${MAIN_DB_NAME_'"${i}"'}'
+	eval 'SCHEMA=${MAIN_SCHEMA_NAME_'"${i}"'}'
 	eval 'CAT=${CAT_'"${i}"'}'
 	eval 'MIN_SIZE=${MIN_SIZE_'"${i}"'}'
-
 
 	if [ "$FILE" != "0" ]; then
 
 
 		echo "--------------------"
-		echo "processing file $FILE"
+		echo "processing file $FILE for database $MAIN_DB_NAME schema $SCHEMA"
 		echo "--------------------"
+
+		PGHOST="$MAIN_DB_HOST"
+		export PGHOST
+
+		PGDATABASE="$MAIN_DB_NAME"
+		export PGDATABASE
+
+		PGUSER="$MAIN_DB_USER"
+		export PGUSER
 
 		PGPASSWORD="$MAIN_DB_PASS"
 		export PGPASSWORD
 
+		# if SCHEMA config option exists, change the search_path to given schema
+		# psql will read and use content of the environment variable PGOPTIONS
+		if [ "$SCHEMA" ]; then
+			PGOPTIONS="--search_path=$SCHEMA"
+		else
+			PGOPTIONS="--search_path=public"
+		fi
+		export PGOPTIONS
+
 		# check if connect to database is possible
-		psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "SELECT 1+1" > /dev/null 2>&1
+		psql -c "SELECT error_id FROM errors LIMIT 1" > /dev/null 2>&1
                 if [ $? != 0 ]; then
 			# there was an error, so create the db
 
 			echo "`date` * creating the database $MAIN_DB_NAME"
 			# create fresh database and activate PL/PGSQL
-			createdb -E UTF8 -U "$MAIN_DB_USER" -O "$MAIN_DB_USER" "$MAIN_DB_NAME"
-			createlang plpgsql -U "$MAIN_DB_USER" "$MAIN_DB_NAME"
+			createdb -E UTF8 "$MAIN_DB_NAME"
+			createlang plpgsql "$MAIN_DB_NAME"
+
+			if [ "$SCHEMA" ]; then
+				psql -c "CREATE SCHEMA $SCHEMA"
+			fi
 
 			# Activate GIS
-			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql > /dev/null 2>&1
+			psql -f /usr/share/postgresql-8.3-postgis/lwpostgis.sql > /dev/null 2>&1
 
-			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "ALTER TABLE geometry_columns OWNER TO $MAIN_DB_USER; ALTER TABLE spatial_ref_sys OWNER TO $MAIN_DB_USER;"
+			psql -c "ALTER TABLE geometry_columns OWNER TO $MAIN_DB_USER; ALTER TABLE spatial_ref_sys OWNER TO $MAIN_DB_USER;"
 
 			# create tables
-			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -f $PREFIX/planet/pgsql_simple_schema.sql
+			psql -f $PREFIX/planet/pgsql_simple_schema.sql
 
 			# create schema info table
-			psql -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER" -c "DROP TABLE IF EXISTS schema_info; CREATE TABLE schema_info (version integer NOT NULL); INSERT INTO schema_info VALUES (1);"
+			psql -c "DROP TABLE IF EXISTS schema_info; CREATE TABLE schema_info (version integer NOT NULL); INSERT INTO schema_info VALUES (1);"
 		fi
 
+		echo "`date` * preparing table structures"
+		#cd "$CHECKSDIR"
+		php prepare_tablestructure.php "$i"
 
 
 
@@ -185,13 +210,8 @@ for i do	# loop all given parameter values
 			cksum "$TMPDIR/$FILE" > "$TMPDIR/sum-last_${i}"
 
 			echo "`date` * truncating database"
-			cd "$TMPDIR"
-			java -jar osmosis.jar --truncate-pgsql host="$MAIN_DB_HOST" database="$MAIN_DB_NAME" user="$MAIN_DB_USER" password="$MAIN_DB_PASS"
 
-
-			echo "`date` * preparing table structures"
-			cd "$CHECKSDIR"
-			php prepare_tablestructure.php "$i"
+			psql -c "TRUNCATE node_tags, way_tags, relation_tags, relation_members, relations, way_nodes, ways, nodes"
 
 			echo "`date` * converting osm file into database dumps"
 			cd "$TMPDIR"
@@ -216,7 +236,7 @@ for i do	# loop all given parameter values
 			rm pgimport/ways_sorted.txt
 
 			echo "`date` * loading database dumps"
-			psql -f "$PSQL_LOAD_SCRIPT" -h "$MAIN_DB_HOST" -d "$MAIN_DB_NAME" -U "$MAIN_DB_USER"
+			psql -f "$PSQL_LOAD_SCRIPT"
 			cd "$CHECKSDIR"
 
 			PGPASSWORD="shhh!"
@@ -233,12 +253,16 @@ for i do	# loop all given parameter values
 			echo "`date` * running the checks"
 			php run-checks.php "$i"
 
-			if [ "$CREATE_COMPRESSED_DUMPS" = "1" ]; then
-				./updateWebDB.sh --full "$i"
-			else
-				./updateWebDB.sh "$i"
-			fi
+			if [ "$MAIN_DB_NAME" != "osm_EU" -a "$MAIN_DB_NAME" != "osm_US" ]; then
 
+				php export_errors.php "$i"
+
+				if [ "$CREATE_DUMPS" = "1" ]; then
+					./updateWebDB.sh --full "$i"
+				else
+					./updateWebDB.sh "$i"
+				fi
+			fi
 			cd "$CHECKSDIR"
 			echo "`date` * ready."
 
