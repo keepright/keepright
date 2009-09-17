@@ -12,8 +12,8 @@ to avoid false positives on highways crossing squares, areas are excluded here
 */
 
 
-if (!pg_exists($db1, 'type', 'type_way_type'))
-	query("CREATE TYPE type_way_type AS ENUM('highway','waterway','riverbank')", $db1, false);
+if (!type_exists($db1, 'type_way_type'))
+	query("CREATE TYPE type_way_type AS ENUM('highway','waterway','riverbank')", $db1);
 
 // tmp_ways will contain all highways with their linestring geometry and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
@@ -236,8 +236,8 @@ pg_free_result($result);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_xings", $db1, false);
 
-if (pg_exists($db1, 'type', 'type_way_type'))
-	query("DROP TYPE type_way_type", $db1, false);
+
+query("DROP TYPE type_way_type", $db1, false);
 
 
 
