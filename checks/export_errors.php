@@ -22,7 +22,7 @@ $db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 
 $schema=$db_params[$db_postfix]['MAIN_SCHEMA_NAME'];
 
-$fname=$ERROR_VIEW_FILE . '_'. (strlen($schema)>0 ? $schema : $MAIN_DB_NAME) . '.txt';
+$fname=$ERROR_VIEW_FILE . '_'. ((strlen($schema)>0 && $schema!='public') ? $schema : $MAIN_DB_NAME) . '.txt';
 $f = fopen($fname, 'w');
 
 if (strlen($schema)>0)
@@ -52,7 +52,7 @@ if ($f) {
 }
 
 
-$fname = $ERROR_TYPES_FILE . '_'. (strlen($schema)>0 ? $schema : $MAIN_DB_NAME) . '.txt';
+$fname = $ERROR_TYPES_FILE . '_'. ((strlen($schema)>0 && $schema!='public') ? $schema : $MAIN_DB_NAME) . '.txt';
 $f = fopen($fname, 'w');
 
 if ($f) {
