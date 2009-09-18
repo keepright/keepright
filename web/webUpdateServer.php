@@ -136,27 +136,27 @@ function toggle_tables1($db1, $schema){
 
 	query("
 		CREATE TABLE IF NOT EXISTS $comments_name (
-		subschema varchar(6) NOT NULL DEFAULT '',
+		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		state enum('ignore_temporarily','ignore') default NULL,
 		`comment` text,
 		`timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
 		ip varchar(255) default NULL,
 		user_agent varchar(255) default NULL,
-		KEY subschema (subschema),
+		KEY `schema` (`schema`),
 		KEY error_id (error_id)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 	query("
 		CREATE TABLE IF NOT EXISTS $comments_historic_name (
-		subschema varchar(6) NOT NULL DEFAULT '',
+		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		state enum('ignore_temporarily','ignore') default NULL,
 		`comment` text,
 		`timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
 		ip varchar(255) default NULL,
 		user_agent varchar(255) default NULL,
-		KEY subschema (subschema),
+		KEY `schema` (`schema`),
 		KEY error_id (error_id)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
@@ -170,7 +170,7 @@ function toggle_tables1($db1, $schema){
 	", $db1, false);
 	query("
 		CREATE TABLE IF NOT EXISTS {$error_view_name}_old (
-		subschema varchar(6) NOT NULL DEFAULT '',
+		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		db_name varchar(50) NOT NULL,
 		error_type int(11) NOT NULL,
@@ -183,7 +183,7 @@ function toggle_tables1($db1, $schema){
 		last_checked datetime NOT NULL,
 		lat int(11) NOT NULL,
 		lon int(11) NOT NULL,
-		UNIQUE schema_error_id (subschema, error_id),
+		UNIQUE schema_error_id (`schema`, error_id),
 		KEY lat (lat),
 		KEY lon (lon),
 		KEY error_type (error_type),
@@ -192,7 +192,7 @@ function toggle_tables1($db1, $schema){
 	", $db1, false);
 	query("
 		CREATE TABLE IF NOT EXISTS $error_view_name (
-		subschema varchar(6) NOT NULL DEFAULT '',
+		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		db_name varchar(50) NOT NULL,
 		error_type int(11) NOT NULL,
@@ -205,7 +205,7 @@ function toggle_tables1($db1, $schema){
 		last_checked datetime NOT NULL,
 		lat int(11) NOT NULL,
 		lon int(11) NOT NULL,
-		UNIQUE schema_error_id (subschema, error_id),
+		UNIQUE schema_error_id (`schema`, error_id),
 		KEY lat (lat),
 		KEY lon (lon),
 		KEY error_type (error_type),
@@ -214,20 +214,20 @@ function toggle_tables1($db1, $schema){
 	", $db1, false);
 
 	// ensure the schema column is added when tables already exist
-	add_column_if_not_exists($db1, $comments_name, 'subschema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, $comments_historic_name, 'subschema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, "{$error_view_name}_old", 'subschema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, $error_view_name, 'subschema', "varchar(6) NOT NULL DEFAULT '' FIRST");
+	add_column_if_not_exists($db1, $comments_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
+	add_column_if_not_exists($db1, $comments_historic_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
+	add_column_if_not_exists($db1, "{$error_view_name}_old", 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
+	add_column_if_not_exists($db1, $error_view_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
 
 	drop_index_if_exists($db1, $comments_name, 'error_id');
 	drop_index_if_exists($db1, $comments_historic_name, 'error_id');
 	drop_index_if_exists($db1, "{$error_view_name}_old", 'error_id');
 	drop_index_if_exists($db1, $error_view_name, 'error_id');
 
-	add_index_if_not_exists($db1, $comments_name, 'subschema_error_id', 'subschema,error_id', 'UNIQUE');
-	add_index_if_not_exists($db1, $comments_historic_name, 'subschema_error_id', 'subschema,error_id', 'UNIQUE');
-	add_index_if_not_exists($db1, "{$error_view_name}_old", 'subschema_error_id', 'subschema,error_id', 'UNIQUE');
-	add_index_if_not_exists($db1, $error_view_name, 'subschema_error_id', 'subschema,error_id', 'UNIQUE');
+	add_index_if_not_exists($db1, $comments_name, 'schema_error_id', '`schema`,error_id', 'UNIQUE');
+	add_index_if_not_exists($db1, $comments_historic_name, 'schema_error_id', '`schema`,error_id');
+	add_index_if_not_exists($db1, "{$error_view_name}_old", 'schema_error_id', '`schema`,error_id', 'UNIQUE');
+	add_index_if_not_exists($db1, $error_view_name, 'schema_error_id', '`schema`,error_id', 'UNIQUE');
 
 
 	query("RENAME TABLE {$error_view_name}_old TO {$error_view_name}_shadow", $db1, false);
@@ -238,7 +238,7 @@ function toggle_tables1($db1, $schema){
 		query("
 			INSERT INTO {$error_view_name}_shadow
 			SELECT * FROM $error_view_name
-			WHERE subschema NOT LIKE '" . $schema . "'
+			WHERE `schema` NOT LIKE '" . $schema . "'
 		", $db1, false);
 	}
 	// now we have a shadow table containing all records _except_

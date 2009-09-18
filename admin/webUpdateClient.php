@@ -126,7 +126,7 @@ function load_dump($SID, $db, $schema) {
 
 	empty_error_types_table($SID, $db, $schema);
 	// now load the error_types
-	load_dump_helper($SID, $db, $schema, "error_types_{$dbname}.txt", 'error_types');
+	load_dump_helper($SID, $db, $schema, "error_types_{$dbname}.txt.bz2", 'error_types');
 }
 
 
@@ -193,7 +193,7 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])<=4) {
 				echo "ERROR: planet file 'planet/$FILE' not found. Cannot reopen temp.ignored errors because I cannot determine the date of planet file download\n";
 
 			set_updated_date($SID, $db, $schema, date("Y-m-d"));
-//////////////////////////////////////////			logout($SID);
+			logout($SID);
 		}
 
 		echo '</pre>';
