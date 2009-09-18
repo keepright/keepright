@@ -303,265 +303,309 @@ MIN_SIZE_ZZ="4000000"
 
 URL_USAL="http://downloads.cloudmade.com/north_america/united_states/alabama/alabama.osm.bz2"
 FILE_USAL="alabama.osm.bz2"
-MAIN_DB_NAME_USAL="osm_USAL"
+MAIN_DB_NAME_USAL="osm_US"
+MAIN_SCHEMA_NAME_USAL="osm_USAL"
 CAT_USAL="bzcat"
 MIN_SIZE_USAL=0
 
 URL_USAK="http://downloads.cloudmade.com/north_america/united_states/alaska/alaska.osm.bz2"
 FILE_USAK="alaska.osm.bz2"
-MAIN_DB_NAME_USAK="osm_USAK"
+MAIN_DB_NAME_USAK="osm_US"
+MAIN_SCHEMA_NAME_USAK="osm_USAK"
 CAT_USAK="bzcat"
 MIN_SIZE_USAK=0
 
 URL_USAZ="http://downloads.cloudmade.com/north_america/united_states/arizona/arizona.osm.bz2"
 FILE_USAZ="arizona.osm.bz2"
-MAIN_DB_NAME_USAZ="osm_USAZ"
+MAIN_DB_NAME_USAZ="osm_US"
+MAIN_SCHEMA_NAME_USAZ="osm_USAZ"
 CAT_USAZ="bzcat"
 MIN_SIZE_USAZ=0
 
 URL_USAR="http://downloads.cloudmade.com/north_america/united_states/arkansas/arkansas.osm.bz2"
 FILE_USAR="arkansas.osm.bz2"
-MAIN_DB_NAME_USAR="osm_USAR"
+MAIN_DB_NAME_USAR="osm_US"
+MAIN_SCHEMA_NAME_USAR="osm_USAR"
 CAT_USAR="bzcat"
 MIN_SIZE_USAR=0
 
 URL_USCA="http://downloads.cloudmade.com/north_america/united_states/california/california.osm.bz2"
 FILE_USCA="california.osm.bz2"
-MAIN_DB_NAME_USCA="osm_USCA"
+MAIN_DB_NAME_USCA="osm_US"
+MAIN_SCHEMA_NAME_USCA="osm_USCA"
 CAT_USCA="bzcat"
 MIN_SIZE_USCA=0
 
 URL_USCO="http://downloads.cloudmade.com/north_america/united_states/colorado/colorado.osm.bz2"
 FILE_USCO="colorado.osm.bz2"
-MAIN_DB_NAME_USCO="osm_USCO"
+MAIN_DB_NAME_USCO="osm_US"
+MAIN_SCHEMA_NAME_USCO="osm_USCO"
 CAT_USCO="bzcat"
 MIN_SIZE_USCO=0
 
 URL_USFL="http://downloads.cloudmade.com/north_america/united_states/florida/florida.osm.bz2"
 FILE_USFL="florida.osm.bz2"
-MAIN_DB_NAME_USFL="osm_USFL"
+MAIN_DB_NAME_USFL="osm_US"
+MAIN_SCHEMA_NAME_USFL="osm_USFL"
 CAT_USFL="bzcat"
 MIN_SIZE_USFL=0
 
 URL_USGA="http://downloads.cloudmade.com/north_america/united_states/georgia/georgia.osm.bz2"
 FILE_USGA="georgia.osm.bz2"
-MAIN_DB_NAME_USGA="osm_USGA"
+MAIN_DB_NAME_USGA="osm_US"
+MAIN_SCHEMA_NAME_USGA="osm_USGA"
 CAT_USGA="bzcat"
 MIN_SIZE_USGA=0
 
 URL_USGU="http://downloads.cloudmade.com/north_america/united_states/guantanamo_bay/guantanamo_bay.osm.bz2"
 FILE_USGU="guantanamo_bay.osm.bz2"
-MAIN_DB_NAME_USGU="osm_USGU"
+MAIN_DB_NAME_USGU="osm_US"
+MAIN_SCHEMA_NAME_USGU="osm_USGU"
 CAT_USGU="bzcat"
 MIN_SIZE_USGU=0
 
 URL_USHI="http://downloads.cloudmade.com/north_america/united_states/hawaii/hawaii.osm.bz2"
 FILE_USHI="hawaii.osm.bz2"
-MAIN_DB_NAME_USHI="osm_USHI"
+MAIN_DB_NAME_USHI="osm_US"
+MAIN_SCHEMA_NAME_USHI="osm_USHI"
 CAT_USHI="bzcat"
 MIN_SIZE_USHI=0
 
 URL_USID="http://downloads.cloudmade.com/north_america/united_states/idaho/idaho.osm.bz2"
 FILE_USID="idaho.osm.bz2"
-MAIN_DB_NAME_USID="osm_USID"
+MAIN_DB_NAME_USID="osm_US"
+MAIN_SCHEMA_NAME_USID="osm_USID"
 CAT_USID="bzcat"
 MIN_SIZE_USID=0
 
 URL_USIL="http://downloads.cloudmade.com/north_america/united_states/illinois/illinois.osm.bz2"
 FILE_USIL="illinois.osm.bz2"
-MAIN_DB_NAME_USIL="osm_USIL"
+MAIN_DB_NAME_USIL="osm_US"
+MAIN_SCHEMA_NAME_USIL="osm_USIL"
 CAT_USIL="bzcat"
 MIN_SIZE_USIL=0
 
 URL_USIN="http://downloads.cloudmade.com/north_america/united_states/indiana/indiana.osm.bz2"
 FILE_USIN="indiana.osm.bz2"
-MAIN_DB_NAME_USIN="osm_USIN"
+MAIN_DB_NAME_USIN="osm_US"
+MAIN_SCHEMA_NAME_USIN="osm_USIN"
 CAT_USIN="bzcat"
 MIN_SIZE_USIN=0
 
 URL_USIA="http://downloads.cloudmade.com/north_america/united_states/iowa/iowa.osm.bz2"
 FILE_USIA="iowa.osm.bz2"
-MAIN_DB_NAME_USIA="osm_USIA"
+MAIN_DB_NAME_USIA="osm_US"
+MAIN_SCHEMA_NAME_USIA="osm_USIA"
 CAT_USIA="bzcat"
 MIN_SIZE_USIA=0
 
 URL_USKS="http://downloads.cloudmade.com/north_america/united_states/kansas/kansas.osm.bz2"
 FILE_USKS="kansas.osm.bz2"
-MAIN_DB_NAME_USKS="osm_USKS"
+MAIN_DB_NAME_USKS="osm_US"
+MAIN_SCHEMA_NAME_USKS="osm_USKS"
 CAT_USKS="bzcat"
 MIN_SIZE_USKS=0
 
 URL_USKY="http://downloads.cloudmade.com/north_america/united_states/kentucky/kentucky.osm.bz2"
 FILE_USKY="kentucky.osm.bz2"
-MAIN_DB_NAME_USKY="osm_USKY"
+MAIN_DB_NAME_USKY="osm_US"
+MAIN_SCHEMA_NAME_USKY="osm_USKY"
 CAT_USKY="bzcat"
 MIN_SIZE_USKY=0
 
 URL_USLA="http://downloads.cloudmade.com/north_america/united_states/louisiana/louisiana.osm.bz2"
 FILE_USLA="louisiana.osm.bz2"
-MAIN_DB_NAME_USLA="osm_USLA"
+MAIN_DB_NAME_USLA="osm_US"
+MAIN_SCHEMA_NAME_USLA="osm_USLA"
 CAT_USLA="bzcat"
 MIN_SIZE_USLA=0
 
 URL_USMA="http://downloads.cloudmade.com/north_america/united_states/massachusetts/massachusetts.osm.bz2"
 FILE_USMA="massachusetts.osm.bz2"
-MAIN_DB_NAME_USMA="osm_USMA"
+MAIN_DB_NAME_USMA="osm_US"
+MAIN_SCHEMA_NAME_USMA="osm_USMA"
 CAT_USMA="bzcat"
 MIN_SIZE_USMA=0
 
 URL_USMI="http://downloads.cloudmade.com/north_america/united_states/michigan/michigan.osm.bz2"
 FILE_USMI="michigan.osm.bz2"
-MAIN_DB_NAME_USMI="osm_USMI"
+MAIN_DB_NAME_USMI="osm_US"
+MAIN_SCHEMA_NAME_USMI="osm_USMI"
 CAT_USMI="bzcat"
 MIN_SIZE_USMI=0
 
 URL_USMN="http://downloads.cloudmade.com/north_america/united_states/minnesota/minnesota.osm.bz2"
 FILE_USMN="minnesota.osm.bz2"
-MAIN_DB_NAME_USMN="osm_USMN"
+MAIN_DB_NAME_USMN="osm_US"
+MAIN_SCHEMA_NAME_USMN="osm_USMN"
 CAT_USMN="bzcat"
 MIN_SIZE_USMN=0
 
 URL_USMS="http://downloads.cloudmade.com/north_america/united_states/mississippi/mississippi.osm.bz2"
 FILE_USMS="mississippi.osm.bz2"
-MAIN_DB_NAME_USMS="osm_USMS"
+MAIN_DB_NAME_USMS="osm_US"
+MAIN_SCHEMA_NAME_USMS="osm_USMS"
 CAT_USMS="bzcat"
 MIN_SIZE_USMS=0
 
 URL_USMO="http://downloads.cloudmade.com/north_america/united_states/missouri/missouri.osm.bz2"
 FILE_USMO="missouri.osm.bz2"
-MAIN_DB_NAME_USMO="osm_USMO"
+MAIN_DB_NAME_USMO="osm_US"
+MAIN_SCHEMA_NAME_USMO="osm_USMO"
 CAT_USMO="bzcat"
 MIN_SIZE_USMO=0
 
 URL_USMT="http://downloads.cloudmade.com/north_america/united_states/montana/montana.osm.bz2"
 FILE_USMT="montana.osm.bz2"
-MAIN_DB_NAME_USMT="osm_USMT"
+MAIN_DB_NAME_USMT="osm_US"
+MAIN_SCHEMA_NAME_USMT="osm_USMT"
 CAT_USMT="bzcat"
 MIN_SIZE_USMT=0
 
 URL_USNE="http://downloads.cloudmade.com/north_america/united_states/nebraska/nebraska.osm.bz2"
 FILE_USNE="nebraska.osm.bz2"
-MAIN_DB_NAME_USNE="osm_USNE"
+MAIN_DB_NAME_USNE="osm_US"
+MAIN_SCHEMA_NAME_USNE="osm_USNE"
 CAT_USNE="bzcat"
 MIN_SIZE_USNE=0
 
 URL_USNV="http://downloads.cloudmade.com/north_america/united_states/nevada/nevada.osm.bz2"
 FILE_USNV="nevada.osm.bz2"
-MAIN_DB_NAME_USNV="osm_USNV"
+MAIN_DB_NAME_USNV="osm_US"
+MAIN_SCHEMA_NAME_USNV="osm_USNV"
 CAT_USNV="bzcat"
 MIN_SIZE_USNV=0
 
 URL_USNJ="http://downloads.cloudmade.com/north_america/united_states/new_jersey/new_jersey.osm.bz2"
 FILE_USNJ="new_jersey.osm.bz2"
-MAIN_DB_NAME_USNJ="osm_USNJ"
+MAIN_DB_NAME_USNJ="osm_US"
+MAIN_SCHEMA_NAME_USNJ="osm_USNJ"
 CAT_USNJ="bzcat"
 MIN_SIZE_USNJ=0
 
 URL_USNM="http://downloads.cloudmade.com/north_america/united_states/new_mexico/new_mexico.osm.bz2"
 FILE_USNM="new_mexico.osm.bz2"
-MAIN_DB_NAME_USNM="osm_USNM"
+MAIN_DB_NAME_USNM="osm_US"
+MAIN_SCHEMA_NAME_USNM="osm_USNM"
 CAT_USNM="bzcat"
 MIN_SIZE_USNM=0
 
 URL_USNY="http://downloads.cloudmade.com/north_america/united_states/new_york/new_york.osm.bz2"
 FILE_USNY="new_york.osm.bz2"
-MAIN_DB_NAME_USNY="osm_USNY"
+MAIN_DB_NAME_USNY="osm_US"
+MAIN_SCHEMA_NAME_USNY="osm_USNY"
 CAT_USNY="bzcat"
 MIN_SIZE_USNY=0
 
 URL_USNC="http://downloads.cloudmade.com/north_america/united_states/north_carolina/north_carolina.osm.bz2"
 FILE_USNC="north_carolina.osm.bz2"
-MAIN_DB_NAME_USNC="osm_USNC"
+MAIN_DB_NAME_USNC="osm_US"
+MAIN_SCHEMA_NAME_USNC="osm_USNC"
 CAT_USNC="bzcat"
 MIN_SIZE_USNC=0
 
 URL_USND="http://downloads.cloudmade.com/north_america/united_states/north_dakota/north_dakota.osm.bz2"
 FILE_USND="north_dakota.osm.bz2"
-MAIN_DB_NAME_USND="osm_USND"
+MAIN_DB_NAME_USND="osm_US"
+MAIN_SCHEMA_NAME_USND="osm_USND"
 CAT_USND="bzcat"
 MIN_SIZE_USND=0
 
 URL_USOH="http://downloads.cloudmade.com/north_america/united_states/ohio/ohio.osm.bz2"
 FILE_USOH="ohio.osm.bz2"
-MAIN_DB_NAME_USOH="osm_USOH"
+MAIN_DB_NAME_USOH="osm_US"
+MAIN_SCHEMA_NAME_USOH="osm_USOH"
 CAT_USOH="bzcat"
 MIN_SIZE_USOH=0
 
 URL_USOK="http://downloads.cloudmade.com/north_america/united_states/oklahoma/oklahoma.osm.bz2"
 FILE_USOK="oklahoma.osm.bz2"
-MAIN_DB_NAME_USOK="osm_USOK"
+MAIN_DB_NAME_USOK="osm_US"
+MAIN_SCHEMA_NAME_USOK="osm_USOK"
 CAT_USOK="bzcat"
 MIN_SIZE_USOK=0
 
 URL_USOR="http://downloads.cloudmade.com/north_america/united_states/oregon/oregon.osm.bz2"
 FILE_USOR="oregon.osm.bz2"
-MAIN_DB_NAME_USOR="osm_USOR"
+MAIN_DB_NAME_USOR="osm_US"
+MAIN_SCHEMA_NAME_USOR="osm_USOR"
 CAT_USOR="bzcat"
 MIN_SIZE_USOR=0
 
 URL_USPA="http://downloads.cloudmade.com/north_america/united_states/pennsylvania/pennsylvania.osm.bz2"
 FILE_USPA="pennsylvania.osm.bz2"
-MAIN_DB_NAME_USPA="osm_USPA"
+MAIN_DB_NAME_USPA="osm_US"
+MAIN_SCHEMA_NAME_USPA="osm_USPA"
 CAT_USPA="bzcat"
 MIN_SIZE_USPA=0
 
 URL_USSC="http://downloads.cloudmade.com/north_america/united_states/south_carolina/south_carolina.osm.bz2"
 FILE_USSC="south_carolina.osm.bz2"
-MAIN_DB_NAME_USSC="osm_USSC"
+MAIN_DB_NAME_USSC="osm_US"
+MAIN_SCHEMA_NAME_USSC="osm_USSC"
 CAT_USSC="bzcat"
 MIN_SIZE_USSC=0
 
 URL_USSD="http://downloads.cloudmade.com/north_america/united_states/south_dakota/south_dakota.osm.bz2"
 FILE_USSD="south_dakota.osm.bz2"
-MAIN_DB_NAME_USSD="osm_USSD"
+MAIN_DB_NAME_USSD="osm_US"
+MAIN_SCHEMA_NAME_USSD="osm_USSD"
 CAT_USSD="bzcat"
 MIN_SIZE_USSD=0
 
 URL_USTN="http://downloads.cloudmade.com/north_america/united_states/tennessee/tennessee.osm.bz2"
 FILE_USTN="tennessee.osm.bz2"
-MAIN_DB_NAME_USTN="osm_USTN"
+MAIN_DB_NAME_USTN="osm_US"
+MAIN_SCHEMA_NAME_USTN="osm_USTN"
 CAT_USTN="bzcat"
 MIN_SIZE_USTN=0
 
 URL_USTX="http://downloads.cloudmade.com/north_america/united_states/texas/texas.osm.bz2"
 FILE_USTX="texas.osm.bz2"
-MAIN_DB_NAME_USTX="osm_USTX"
+MAIN_DB_NAME_USTX="osm_US"
+MAIN_SCHEMA_NAME_USTX="osm_USTX"
 CAT_USTX="bzcat"
 MIN_SIZE_USTX=0
 
 URL_USUT="http://downloads.cloudmade.com/north_america/united_states/utah/utah.osm.bz2"
 FILE_USUT="utah.osm.bz2"
-MAIN_DB_NAME_USUT="osm_USUT"
+MAIN_DB_NAME_USUT="osm_US"
+MAIN_SCHEMA_NAME_USUT="osm_USUT"
 CAT_USUT="bzcat"
 MIN_SIZE_USUT=0
 
 URL_USVA="http://downloads.cloudmade.com/north_america/united_states/virginia/virginia.osm.bz2"
 FILE_USVA="virginia.osm.bz2"
-MAIN_DB_NAME_USVA="osm_USVA"
+MAIN_DB_NAME_USVA="osm_US"
+MAIN_SCHEMA_NAME_USVA="osm_USVA"
 CAT_USVA="bzcat"
 MIN_SIZE_USVA=0
 
 URL_USWA="http://downloads.cloudmade.com/north_america/united_states/washington/washington.osm.bz2"
 FILE_USWA="washington.osm.bz2"
-MAIN_DB_NAME_USWA="osm_USWA"
+MAIN_DB_NAME_USWA="osm_US"
+MAIN_SCHEMA_NAME_USWA="osm_USWA"
 CAT_USWA="bzcat"
 MIN_SIZE_USWA=0
 
 URL_USWV="http://downloads.cloudmade.com/north_america/united_states/west_virginia/west_virginia.osm.bz2"
 FILE_USWV="west_virginia.osm.bz2"
-MAIN_DB_NAME_USWV="osm_USWV"
+MAIN_DB_NAME_USWV="osm_US"
+MAIN_SCHEMA_NAME_USWV="osm_USWV"
 CAT_USWV="bzcat"
 MIN_SIZE_USWV=0
 
 URL_USWI="http://downloads.cloudmade.com/north_america/united_states/wisconsin/wisconsin.osm.bz2"
 FILE_USWI="wisconsin.osm.bz2"
-MAIN_DB_NAME_USWI="osm_USWI"
+MAIN_DB_NAME_USWI="osm_US"
+MAIN_SCHEMA_NAME_USWI="osm_USWI"
 CAT_USWI="bzcat"
 MIN_SIZE_USWI=0
 
 URL_USWY="http://downloads.cloudmade.com/north_america/united_states/wyoming/wyoming.osm.bz2"
 FILE_USWY="wyoming.osm.bz2"
-MAIN_DB_NAME_USWY="osm_USWY"
+MAIN_DB_NAME_USWY="osm_US"
+MAIN_SCHEMA_NAME_USWY="osm_USWY"
 CAT_USWY="bzcat"
 MIN_SIZE_USWY=0
 
@@ -574,7 +618,8 @@ URL_XE1="http://downloads.cloudmade.com/north_america/united_states/district_of_
 URL_XE2="http://downloads.cloudmade.com/north_america/united_states/delaware/delaware.osm.bz2"
 URL_XE3="http://downloads.cloudmade.com/north_america/united_states/maryland/maryland.osm.bz2"
 FILE_XE="maryland_dc_delaware.osm.bz2"
-MAIN_DB_NAME_XE="osm_XE"
+MAIN_DB_NAME_XE="osm_US"
+MAIN_SCHEMA_NAME_XE="osm_XE"
 CAT_XE="bzcat"
 MIN_SIZE_XE="0"
 
@@ -585,7 +630,8 @@ URL_XF4="http://downloads.cloudmade.com/north_america/united_states/new_hampshir
 URL_XF5="http://downloads.cloudmade.com/north_america/united_states/vermont/vermont.osm.bz2"
 URL_XF6="http://downloads.cloudmade.com/north_america/united_states/rhode_island/rhode_island.osm.bz2"
 FILE_XF="from_maine_to_connecticut.osm.bz2"
-MAIN_DB_NAME_XF="osm_XF"
+MAIN_DB_NAME_XF="osm_US"
+MAIN_SCHEMA_NAME_XF="osm_XF"
 CAT_XF="bzcat"
 MIN_SIZE_XF="0"
 
