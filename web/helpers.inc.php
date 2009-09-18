@@ -67,7 +67,7 @@ function load_dump($db1, $filename, $destination) {
 	global $db_host, $db_user, $db_pass, $db_name, $error_types_name, $error_view_name;
 
 	switch ($destination) {
-		case "error_types": $tbl=$error_types_name . '_shadow'; break;
+		case "error_types": $tbl=$error_types_name; break;
 		case "error_view": $tbl=$error_view_name . '_shadow'; break;
 		default: die('invalid load dump destination: ' . $destination);
 	}

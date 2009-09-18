@@ -47,7 +47,7 @@ require('BufferedInserter_MySQL.php');
 
 $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
-load_dump($db1, $f, $argv[3]);
+load_dump($db1, $file, $argv[3]);
 
 mysqli_close($db1);
 
