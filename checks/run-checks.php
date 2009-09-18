@@ -76,7 +76,7 @@ if (!table_exists($db1, 'errors', 'public')) {
 		last_checked timestamp NOT NULL,
 		lat double precision,
 		lon double precision,
-		schema VARCHAR(8) NOT NULL DEFAULT ''
+		schema VARCHAR(8) NOT NULL DEFAULT '',
 		UNIQUE (error_type, object_type, object_id, lat, lon)
 		)
 	", $db1, false);
