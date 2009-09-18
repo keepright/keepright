@@ -142,7 +142,7 @@ function get_schema($schema) {
 }
 
 
-// create a rule that checks on each INSERT-event 
+// create a rule that checks on each INSERT-event
 // if a record with identical primary key already exists
 // $primary may be just one string denominating the p.key field
 // or an array of field names if the primary key has more than one column
@@ -150,19 +150,21 @@ function add_insert_ignore_rule($table, $primary, $db) {
 
 	$crit = "";
 	if (is_array($primary)) {
-		foreach ($primary as $p) 
+		foreach ($primary as $p)
 			$crit .= " $p = NEW.$p AND ";
 		$crit = substr($crit, 0, strlen($crit)-4);
-	} else 
+	} else
 		$crit = " $primary = NEW.$primary ";
 
+	$rulename = strtr($table, '.', '_');
+
 	query("
-                CREATE OR REPLACE RULE insert_ignore_$table AS
+                CREATE OR REPLACE RULE insert_ignore_$rulename AS
 			ON INSERT TO $table WHERE EXISTS (
-			SELECT 1 FROM $table 
+			SELECT 1 FROM $table
 			WHERE $crit
 		) DO INSTEAD NOTHING
-	",$db, false);	
+	",$db, false);
 }
 
 
