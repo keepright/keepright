@@ -111,6 +111,9 @@ query("SELECT way_id, COUNT(node_id) AS cnt
 	GROUP BY way_id
 ", $db1);
 query("CREATE INDEX idx_tmp_nodecounts_way_id ON _tmp_nodecounts (way_id)", $db1);
+query("ANALYZE _tmp_nodecounts", $db1);
+query("ANALYZE ways", $db1);
+
 query("UPDATE ways
 	SET node_count=nc.cnt
 	FROM _tmp_nodecounts nc
@@ -123,7 +126,6 @@ query("DROP TABLE IF EXISTS _tmp_nodecounts", $db1);
 // This will contain a bounding box surrounding the extremities of the way.
 query("SELECT AddGeometryColumn('ways', 'bbox', 4326, 'GEOMETRY', 2)", $db1);
 query("SELECT AddGeometryColumn('ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
-
 
 query("UPDATE ways
 	SET geom=GeomFromText( 'LINESTRING(' || array_to_string(array(

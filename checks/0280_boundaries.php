@@ -199,8 +199,8 @@ query("
 
 
 
-//query("DROP TABLE IF EXISTS _tmp_open_parts", $db1);
-//query("DROP TABLE IF EXISTS _tmp_nodelists", $db1);query("
-//query("DROP TABLE IF EXISTS _tmp_evil_nodes", $db1);query("
+query("DROP TABLE IF EXISTS _tmp_open_parts", $db1);
+query("DROP TABLE IF EXISTS _tmp_nodelists", $db1);
+query("DROP TABLE IF EXISTS _tmp_evil_nodes", $db1);
 
 ?>

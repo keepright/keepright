@@ -110,6 +110,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		FROM way_tags t
 		WHERE t.k = '$k' " . (trim($v)=='*' ? '' : " AND t.v = '$v'")
 	, $db1, false);
+	query("ANALYZE _tmp_ways", $db1, false);
 
 	// this is an exception introduced for eg. bridges that are attractions.
 	// tourism-attractions that are highways need not be closed-loop
@@ -134,6 +135,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	", $db1, false);
 	query("CREATE INDEX idx_tmp_ways_first_node_id ON _tmp_ways (first_node_id)", $db1, false);
 	query("CREATE INDEX idx_tmp_ways_last_node_id ON _tmp_ways (last_node_id)", $db1, false);
+	query("ANALYZE _tmp_ways", $db1, false);
 
 
 	// now find any intermediate nodes but discard nodes that are used only once
@@ -153,6 +155,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		FROM _tmp_ways w INNER JOIN way_nodes wn ON w.way_id=wn.way_id
 	", $db1, false);
 	query("CREATE INDEX idx_tmp_way_nodes3 ON _tmp_way_nodes3 (node_id, way_id)", $db1, false);
+	query("ANALYZE _tmp_way_nodes3", $db1, false);
 
 	// find nodes that are used at least twice and
 	// reduce _tmp_way_nodes3 to just the nodes found
@@ -175,6 +178,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		)
 	", $db1, false);
 	query("CREATE INDEX idx_tmp_way_nodes ON _tmp_way_nodes (way_id)", $db1, false);
+	query("ANALYZE _tmp_way_nodes", $db1, false);
 
 
 	// member_ways will contain all ways that are already connected
@@ -227,7 +231,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	$closed_ways=array();
 
 	$result=query("
-		SELECT way_id, first_node_id, last_node_id 
+		SELECT way_id, first_node_id, last_node_id
 		FROM _tmp_ways
 		WHERE first_node_id<>last_node_id
 	", $db1, false);

@@ -89,6 +89,7 @@ query("
 	)
 ", $db1);
 query("CREATE INDEX idx_tmp_border_relations_relation_id ON _tmp_border_relations (relation_id)", $db1, false);
+query("ANALYZE _tmp_border_relations", $db1);
 
 // fetch name of boundary
 query("
@@ -152,6 +153,7 @@ query("
 	)
 ", $db1);
 query("CREATE INDEX idx_tmp_border_ways_way_id ON _tmp_border_ways (way_id)", $db1, false);
+query("ANALYZE _tmp_border_ways", $db1);
 
 // fetch admin level
 query("
@@ -174,6 +176,7 @@ query("CREATE INDEX idx_tmp_border_ways_relation_id ON _tmp_border_ways (relatio
 query("CREATE INDEX idx_tmp_border_ways_name ON _tmp_border_ways (name)", $db1, false);
 query("CREATE INDEX idx_tmp_border_ways_admin_level ON _tmp_border_ways (admin_level)", $db1, false);
 query("CREATE INDEX idx_tmp_border_ways_part ON _tmp_border_ways (part)", $db1, false);
+query("ANALYZE _tmp_border_ways", $db1);
 
 
 // some ways are already part of a relation but are still tagged as boundary
@@ -401,6 +404,7 @@ query("UPDATE _tmp_nodelists t
 ", $db1);
 
 query("CREATE INDEX idx_tmp_nodelists_way_id_direction ON _tmp_nodelists (way_id, direction)", $db1, false);
+query("ANALYZE _tmp_nodelists", $db1);
 
 // fetch sums of nodes for each boundary
 query("UPDATE _tmp_boundaries b

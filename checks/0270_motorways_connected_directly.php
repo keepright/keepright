@@ -19,6 +19,7 @@ query("
 	WHERE t.k='highway' and t.v='motorway'
 ", $db1);
 query("CREATE INDEX idx_tmp_ways_way_id ON _tmp_ways (way_id)", $db1);
+query("ANALYZE _tmp_ways", $db1);
 
 
 // leave out intermediate-nodes that don't interest anybody:
@@ -32,6 +33,7 @@ query("
 	FROM way_nodes wn INNER JOIN _tmp_ways w USING (way_id)
 ", $db1);
 query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
+query("ANALYZE _tmp_junctions", $db1);
 
 
 

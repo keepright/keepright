@@ -38,6 +38,9 @@ query("
 	HAVING COUNT(sequence_id)>1
 ", $db1);
 
+query("CREATE INDEX idx_tmp_node_count_node_id ON _tmp_node_count (node_id)", $db1);
+query("ANALYZE _tmp_node_count", $db1);
+
 
 
 // first part:
@@ -50,6 +53,9 @@ query("
 	FROM _tmp_node_count c INNER JOIN nodes n ON (c.node_id=n.id)
 	WHERE c.node_count>2
 ", $db1);
+
+query("CREATE INDEX idx_tmp_tmp_errors ON _tmp_tmp_errors (way_id, lat, lon, node_count)", $db1);
+query("ANALYZE _tmp_tmp_errors", $db1);
 
 // there have been cases when a way contained two nodes more than twice,
 // that where located in exactly the same spot.
@@ -67,7 +73,7 @@ query("
 		AND node_count=(
 			SELECT MAX(node_count)
 			FROM _tmp_tmp_errors tmp2
-			WHERE  tmp2.way_id=c.way_id and tmp2.lat=c.lat and tmp2.lon=c.lon
+			WHERE tmp2.way_id=c.way_id and tmp2.lat=c.lat and tmp2.lon=c.lon
 		)
 	)
 ", $db1);

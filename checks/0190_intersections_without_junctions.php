@@ -39,6 +39,7 @@ query("
 ", $db1);
 
 query("ALTER TABLE _tmp_ways ADD PRIMARY KEY (way_id);", $db1);
+query("ANALYZE _tmp_ways", $db1);
 
 // now add waterways but not riverbanks(docks)
 query("
@@ -123,6 +124,7 @@ query("
 query("CREATE INDEX idx_tmp_ways_layer ON _tmp_ways (layer)", $db1);
 query("CREATE INDEX idx_tmp_ways_way_type ON _tmp_ways (way_type)", $db1);
 query("CREATE INDEX idx_tmp_ways_geom ON _tmp_ways USING gist (geom)", $db1);
+query("ANALYZE _tmp_ways", $db1);
 
 
 // create a helper table needed by connected_near() function
@@ -135,6 +137,8 @@ query("
 	FROM way_nodes wn1 INNER JOIN way_nodes wn2 USING (node_id)
 ", $db1);
 query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
+query("ANALYZE _tmp_xings", $db1);
+
 query("
 	DELETE FROM _tmp_xings
 	WHERE NOT EXISTS (

@@ -47,7 +47,7 @@ query("CREATE INDEX idx_tmp_one_ways_last_node_id ON _tmp_one_ways (last_node_id
 query("CREATE INDEX idx_tmp_one_ways_way_id ON _tmp_one_ways (way_id)", $db1, false);
 
 // implicitly oneway-tagged ways may be tagged non-oneway here
-// mustly applicable to motorway_link, trunk_link, primary_link, secondary_link
+// mostly applicable to motorway_link, trunk_link, primary_link, secondary_link
 query("
 	DELETE FROM _tmp_one_ways
 	WHERE way_id IN (
@@ -94,6 +94,7 @@ query("
 	FROM ways AS w
 	WHERE c.reversed AND w.id=c.way_id
 ", $db1);
+query("ANALYZE _tmp_one_ways", $db1);
 
 
 // find end nodes that are not connected to any other way

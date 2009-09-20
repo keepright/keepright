@@ -47,6 +47,7 @@ query("
 query("CREATE INDEX idx_tmp_ways_first_node_id ON _tmp_ways (first_node_id)", $db1, false);
 query("CREATE INDEX idx_tmp_ways_last_node_id ON _tmp_ways (last_node_id)", $db1, false);
 query("CREATE INDEX idx_tmp_ways_bbox ON _tmp_ways USING gist (bbox);", $db1);
+query("ANALYZE _tmp_ways", $db1);
 
 
 
@@ -89,6 +90,7 @@ query("
 	GROUP BY w.way_id, w.last_node_id
 	HAVING COUNT(wn.way_id)=1
 ", $db1);
+query("ANALYZE _tmp_end_nodes", $db1);
 
 // now remove nodes that have noexit=yes tags
 // as they are marked as dead ends of roads intentionally
@@ -119,6 +121,7 @@ query("
 	WHERE en.node_id=n.id
 ", $db1);
 query("CREATE INDEX idx_tmp_end_nodes_geom ON _tmp_end_nodes USING gist (geom);", $db1);
+query("ANALYZE _tmp_end_nodes", $db1);
 
 
 

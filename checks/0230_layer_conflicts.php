@@ -48,6 +48,7 @@ query("
 	WHERE k='highway' AND v<>'steps'
 ", $db1);
 query("CREATE UNIQUE INDEX idx_tmp_highways_way_id ON _tmp_highways (way_id)", $db1);
+query("ANALYZE _tmp_highways", $db1);
 
 
 // leave out intermediate-nodes that don't interest anybody:
@@ -63,6 +64,7 @@ query("
 	HAVING COUNT(DISTINCT way_id)>1
 ", $db1);
 query("CREATE UNIQUE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
+query("ANALYZE _tmp_junctions", $db1);
 
 
 // tmp_ways will contain all highways with their nodes and layer tag
@@ -86,6 +88,7 @@ query("
 
 query("CREATE INDEX idx_tmp_ways_layer ON _tmp_ways (layer)", $db1);
 query("CREATE INDEX idx_tmp_ways_node_id ON _tmp_ways (node_id)", $db1);
+query("ANALYZE _tmp_ways", $db1);
 
 
 // fetch layer tag
@@ -126,6 +129,7 @@ query("
 	t.way_id=c.way_id AND
 	t.k='tunnel'
 ", $db1);
+query("ANALYZE _tmp_ways", $db1);
 
 
 
@@ -144,6 +148,7 @@ query("
 	)
 ", $db1);
 query("CREATE INDEX idx_tmp_error_candidates_node_id ON _tmp_error_candidates (node_id)", $db1);
+query("ANALYZE _tmp_error_candidates", $db1);
 
 
 // error candidates are errors with the exception that
@@ -185,6 +190,8 @@ query("
 	)
 ", $db1);
 
+query("CREATE INDEX idx_tmp_error_candidates_all_intermediate_nodes ON _tmp_error_candidates (all_intermediate_nodes)", $db1);
+query("ANALYZE _tmp_error_candidates", $db1);
 
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)

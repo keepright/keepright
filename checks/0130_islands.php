@@ -201,6 +201,7 @@ query("
 	HAVING COUNT(DISTINCT way_id)>1
 ", $db1);
 query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
+query("ANALYZE _tmp_junctions", $db1);
 
 // this is our optimized (==reduced) version of way_nodes with junctions only
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
@@ -211,6 +212,7 @@ query("
 ", $db1);
 query("CREATE INDEX idx_tmp_wn_node_id ON _tmp_wn (node_id)", $db1);
 query("CREATE INDEX idx_tmp_wn_way_id ON _tmp_wn (way_id)", $db1);
+query("ANALYZE _tmp_wn", $db1);
 
 // _tmp_island_members will hold the elitair nodes that belong to an island
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
@@ -246,7 +248,7 @@ foreach ($islands as $island=>$ways) foreach ($ways as $dontcare=>$way) $sql.="(
 
 query(substr($sql, 0, -1), $db1);
 query("INSERT INTO _tmp_ways2 SELECT way_id FROM _tmp_ways", $db1);
-
+$analyze_counter=0;
 do {
 	// first find nodes that belong to ways found in the last round
 	query("TRUNCATE TABLE _tmp_nodes", $db1, false);
@@ -255,6 +257,7 @@ do {
 		SELECT DISTINCT wn.node_id
 		FROM _tmp_ways w INNER JOIN _tmp_wn wn USING (way_id)
 	", $db1, false);
+	if (++$analyze_counter % 10 == 0) query("ANALYZE _tmp_nodes", $db1);
 
 	// remove ways of last round
 	query("TRUNCATE TABLE _tmp_ways", $db1, false);
@@ -268,6 +271,10 @@ do {
 		WHERE w.way_id IS NULL
 	", $db1, false);
 	$count=pg_affected_rows($result);
+	if ($analyze_counter % 10 == 0) {
+		query("ANALYZE _tmp_ways", $db1);
+		query("ANALYZE _tmp_ways2", $db1);
+	}
 
 	// remember any newly found way in separate table
 	query("INSERT INTO _tmp_ways2 SELECT way_id FROM _tmp_ways", $db1, false);
