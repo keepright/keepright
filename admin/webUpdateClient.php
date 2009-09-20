@@ -93,7 +93,7 @@ global $FTP_USER, $FTP_PASS, $FTP_HOST, $FTP_PATH;
 
 	// call wput, overwrite files if already existing, dont create directories
 	// upload the error_view dumps and the error_types dump
-	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=results/  results/error_view_{$db}_part??.bz2 results/error_types_{$db}.txt \"$FTPURL\" 2>&1");
+	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=results/  results/error_view_{$db}.txt.bz2 results/error_types_{$db}.txt \"$FTPURL\" 2>&1");
 }
 
 function empty_error_types_table($SID, $db, $schema) {
