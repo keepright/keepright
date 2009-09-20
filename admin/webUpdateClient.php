@@ -178,7 +178,7 @@ if (isset($_POST['isocode']) && strlen($_POST['isocode'])<=4) {
 		//echo "session id is $SID";
 
 		if ($SID) {
-			//ftp_upload($db);
+			ftp_upload($db);
 			toggle_tables1($SID, $db, $schema);
 			load_dump($SID, $db, $schema);
 			toggle_tables2($SID, $db, $schema);
