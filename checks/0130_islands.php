@@ -257,7 +257,7 @@ do {
 		SELECT DISTINCT wn.node_id
 		FROM _tmp_ways w INNER JOIN _tmp_wn wn USING (way_id)
 	", $db1, false);
-	if (++$analyze_counter % 10 == 0) query("ANALYZE _tmp_nodes", $db1);
+	if (++$analyze_counter % 10 == 0) query("ANALYZE _tmp_nodes", $db1, false);
 
 	// remove ways of last round
 	query("TRUNCATE TABLE _tmp_ways", $db1, false);
@@ -272,8 +272,8 @@ do {
 	", $db1, false);
 	$count=pg_affected_rows($result);
 	if ($analyze_counter % 10 == 0) {
-		query("ANALYZE _tmp_ways", $db1);
-		query("ANALYZE _tmp_ways2", $db1);
+		query("ANALYZE _tmp_ways", $db1, false);
+		query("ANALYZE _tmp_ways2", $db1, false);
 	}
 
 	// remember any newly found way in separate table
