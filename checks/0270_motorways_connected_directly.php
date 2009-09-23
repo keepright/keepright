@@ -40,11 +40,11 @@ query("ANALYZE _tmp_junctions", $db1);
 
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
-	SELECT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, service or unclassified', NOW()
+	SELECT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, service, unclassified or construction', NOW()
 	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 	WHERE wn.way_id<>j.way_id AND EXISTS (
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
-		t.k='highway' AND t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'service', 'unclassified')
+		t.k='highway' AND t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'service', 'unclassified', 'construction')
 	)
 ", $db1);
 
