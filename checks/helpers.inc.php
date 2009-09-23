@@ -136,9 +136,9 @@ function get_schema($schema) {
 	global $db_params, $db_postfix;
 
 	if ($schema=='')
-		return $db_params[$db_postfix]['MAIN_SCHEMA_NAME'];
+		return strtolower($db_params[$db_postfix]['MAIN_SCHEMA_NAME']);
 	else
-		return $schema;
+		return strtolower($schema);
 }
 
 
