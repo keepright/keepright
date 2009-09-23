@@ -166,8 +166,17 @@ query("UPDATE ways
 
 
 //Perform database maintenance due to large database changes.
-query("VACUUM ANALYZE", $db1);
-
+query("VACUUM ANALYZE nodes", $db1);
+query("VACUUM ANALYZE node_tags", $db1);
+query("VACUUM ANALYZE ways", $db1);
+query("VACUUM ANALYZE way_tags", $db1);
+query("VACUUM ANALYZE way_nodes", $db1);
+query("VACUUM ANALYZE relations", $db1);
+query("VACUUM ANALYZE relation_tags", $db1);
+query("VACUUM ANALYZE relation_members", $db1);
+query("VACUUM ANALYZE error_types", $db1);
+query("VACUUM ANALYZE public.errors", $db1);
+query("VACUUM ANALYZE public.error_view", $db1);
 //--------------------------------------------------
 drop_postgres_functions($db1);
 
