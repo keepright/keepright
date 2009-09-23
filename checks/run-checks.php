@@ -193,13 +193,13 @@ query("
 
 
 // set cleared-state for errors that are not found in _tmp_errors any more
-/*query("
+query("
 	UPDATE public.errors e
 	SET state='cleared', last_checked=NOW()
 	WHERE e.schema='$schema' AND e.state<>'cleared' AND ($checks_executed) AND
 	NOT EXISTS (SELECT * FROM _tmp_errors WHERE e.error_type=_tmp_errors.error_type AND e.object_type=_tmp_errors.object_type AND e.object_id=_tmp_errors.object_id AND e.lat IS NOT DISTINCT FROM _tmp_errors.lat AND e.lon IS NOT DISTINCT FROM _tmp_errors.lon)
 ", $db1);
-*/
+
 
 // add newly found errors
 query("
