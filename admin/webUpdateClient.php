@@ -28,7 +28,7 @@ steps required for a database update:
 <pre>
 <?php
 	// show a list of dump files available
-	system('ls -lh results/error_view_osm_??_*.bz2');
+	system('ls -lh results/error_view_osm_??.txt.bz2');
 ?>
 </pre>
 
