@@ -219,15 +219,10 @@ function toggle_tables1($db1, $schema){
 	add_column_if_not_exists($db1, "{$error_view_name}_old", 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
 	add_column_if_not_exists($db1, $error_view_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
 
-	drop_index_if_exists($db1, $comments_name, 'error_id');
-	drop_index_if_exists($db1, $comments_historic_name, 'error_id');
-	drop_index_if_exists($db1, "{$error_view_name}_old", 'error_id');
-	drop_index_if_exists($db1, $error_view_name, 'error_id');
-
-	add_index_if_not_exists($db1, $comments_name, 'schema_error_id', '`schema`,error_id', 'UNIQUE');
-	add_index_if_not_exists($db1, $comments_historic_name, 'schema_error_id', '`schema`,error_id');
-	add_index_if_not_exists($db1, "{$error_view_name}_old", 'schema_error_id', '`schema`,error_id', 'UNIQUE');
-	add_index_if_not_exists($db1, $error_view_name, 'schema_error_id', '`schema`,error_id', 'UNIQUE');
+	add_index_if_not_exists($db1, $comments_name, '`schema`', '`schema`');
+	add_index_if_not_exists($db1, $comments_historic_name, '`schema`', '`schema`');
+	add_index_if_not_exists($db1, "{$error_view_name}_old", '`schema`', '`schema`');
+	add_index_if_not_exists($db1, $error_view_name, '`schema`', '`schema`');
 
 
 	query("RENAME TABLE {$error_view_name}_old TO {$error_view_name}_shadow", $db1, false);
@@ -295,56 +290,6 @@ function index_exists($db, $table, $keyname) {
 	return false;
 }
 
-
-
-/*
-// load a dump file from the local webspace
-// dump file may be .bz2 compressed or plain text
-// file format has to be valid SQL so that each line of dump file
-// can be enclosed with brackets and put inside an INSERT statement
-// like this:
-// INSERT INTO table(...) VALUES (<line1>), (<line2>), ...
-// NULL values can be represented by "\N"
-function load_dump_old($db1, $filename, $destination) {
-	global $error_types_name, $error_view_name;
-
-	if ($destination == "error_types") {
-		$bi=new BufferedInserter('INSERT INTO ' . $error_types_name . ' (error_type, error_name, error_description)', $db1, 300);
-	} else {
-		$bi=new BufferedInserter('INSERT INTO ' . $error_view_name . '_shadow (subschema, error_id, db_name, error_type, error_name, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)', $db1, 300);
-	}
-
-	if (substr($filename, -4) == ".bz2") {
-		echo "loading bz2 - dump into $destination\n";
-		$handle = bzopen($filename, 'r') or die("Couldn't open $filename for reading");
-
-		$counter=0;
-		while (!gzeof($handle)) {
-			$buffer=trim(gzgets($handle, 40960));
-		//	echo $buffer;
-			if(strlen($buffer)>1) $bi->insert( str_replace('\N', 'NULL', $buffer) );
-			if (!($counter++ % 1000)) echo "$counter ";
-		}
-		$bi->flush_buffer();
-		gzclose($handle);
-
-	} else {
-		echo "loading txt - dump into $destination\n";
-		$handle = fopen($filename, 'r') or die("Couldn't open $filename for reading");
-
-		$counter=0;
-		while (!feof($handle)) {
-			$buffer=trim(fgets($handle, 40960));
-		//	echo $buffer;
-			if(strlen($buffer)>1) $bi->insert( str_replace('\N', 'NULL', $buffer) );
-			if (!($counter++ % 1000)) echo "$counter ";
-		}
-		$bi->flush_buffer();
-		fclose($handle);
-	}
-	echo "done.\n";
-}
-*/
 
 // switch _shadow table to main table, rename main table to _old
 function toggle_tables2($db1){
