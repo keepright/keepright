@@ -8,10 +8,45 @@
 data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
+
 <br><br>
+
+<h4>2009-08-29</h4>
+There&apos;s a new check that looks for errors on administrative boundaries. It complains about missing names and admin_levels as well as non-closed loops on boundary ways. <br>At the moment there are (at least) two ways of tagging boundaries: direct way tagging and relations. Both are considered valid and both methods are included in this check.<br><br>
+A minor improvement to the loopings-check was suggested by Sebastiaan: Any way with only 2 different nodes in it, having one node more than once, is an error. Thank you!
+
+<br><br>
+
+<h4>2009-08-13</h4>
+After a long discussion about the layers check I just removed the &quot;not so obvious&quot; part of the check. 
+from now on, this is (again) correct:
+<pre>
+way A, layer 0	|
+ 		|           way B, layer 1
+		|
+ 		*------------------------------------
+		|
+		|
+
+</pre>
+Intersections of ways on different layers are still not OK, if way A and B share a common node and intersect at intermediate nodes:
+<pre>
+ way A, layer 0	|
+ 		|           way B, layer 1
+		|
+ 	--------*------------------------------------
+		|
+		|
+</pre>
+sorry for the confusion and thanks for the discussion!
+
+<br><br>
+
 <h4>2009-08-03</h4>
 I just published a minor update that cleans up the levels check and the motorways check:<br>
 Not only highways but also landuse ways were included in the layers conflict check. This was not intended and is now fixed. Thank you, Norbert, for the hint!<br>Motorways that are continued by highway=trunk roads are not reported as error any more as this seems to be a common case. Thank you, Jean-Luc, for the hint!<br><br>
+
+<br><br>
 
 <h4>2009-08-01</h4>
 There was some discussion going on about the layers check without a clear conclusion (at least for me). So please take the layers check as a warning, not as an error. It&apos;s just saying that there are ways on different layers that are connected. Please decide on your own, if that&apos;s OK.<br><br>
