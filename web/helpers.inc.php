@@ -86,11 +86,13 @@ function load_dump($db1, $filename, $destination) {
 	posix_mkfifo($fifoname, 0666) or die("Couldn't create fifo.");
 	echo "reading dump file $filename<br>\n";
 
-	if (substr($filename, -4, 4)=='.bz2') {
+	// remember: $filename is shellescaped and has apos around it!
+	if (substr(trim($filename), -5, 4)=='.bz2') {
 		$CAT='bzcat';
 	} else {
 		$CAT='cat';
 	}
+
 	system("($CAT $filename > $fifoname) >/dev/null &");	// must run in the background
 
 
