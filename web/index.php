@@ -25,6 +25,11 @@ These pages show checks that are run on a local excerpt database filled with OSM
 Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
 
 <h3>logfile</h3>
+<h4>2009-09-21</h4>
+After a break there is again an update for the error tables. The delay was caused by restructuring work on the scripts wich are necessary for checking US states in the future. European countries are now checked individually, the results are put together into one big results table afterwards.<br>If you find any strange errors, especially near country borders, I would like to know!<br>
+Thank you for your patience.<br>
+<b>&lt;edit&gt;</b>you <i>will</i> find strange errors near the country borders. In fact there are issues with floating islands, ways without nodes and maybe more checks that are caused by truncated ways. I'm looking for a solution for this. Please be careful near country borders in the meantime! Thank you, Armin, for telling me.<b>&lt;/edit&gt;</b>
+
 <h4>2009-08-29</h4>
 There&apos;s a new check that looks for errors on administrative boundaries. It complains about missing names and admin_levels as well as non-closed loops on boundary ways. <br>At the moment there are (at least) two ways of tagging boundaries: direct way tagging and relations. Both are considered valid and both methods are included in this check.<br><br>
 A minor improvement to the loopings-check was suggested by Sebastiaan: Any way with only 2 different nodes in it, having one node more than once, is an error. Thank you!
