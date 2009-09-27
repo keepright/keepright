@@ -223,11 +223,10 @@ function toggle_tables1($db1, $schema){
 	add_column_if_not_exists($db1, "{$error_view_name}_old", 'object_timestamp', "datetime NOT NULL AFTER last_checked");
 	add_column_if_not_exists($db1, $error_view_name, 'object_timestamp', "datetime NOT NULL AFTER last_checked");
 
-	add_index_if_not_exists($db1, $comments_name, '`schema`', '`schema`');
-	add_index_if_not_exists($db1, $comments_historic_name, '`schema`', '`schema`');
-	add_index_if_not_exists($db1, "{$error_view_name}_old", '`schema`', '`schema`');
-	add_index_if_not_exists($db1, $error_view_name, '`schema`', '`schema`');
-
+	add_index_if_not_exists($db1, $comments_name, 'schema', '`schema`');
+	add_index_if_not_exists($db1, $comments_historic_name, 'schema', '`schema`');
+	add_index_if_not_exists($db1, "{$error_view_name}_old", 'schema', '`schema`');
+	add_index_if_not_exists($db1, $error_view_name, 'schema', '`schema`');
 
 	query("RENAME TABLE {$error_view_name}_old TO {$error_view_name}_shadow", $db1, false);
 	query("ALTER TABLE {$error_view_name}_shadow DISABLE KEYS", $db1, false);
@@ -268,7 +267,7 @@ function add_column_if_not_exists($db, $table, $column, $attribs) {
 function add_index_if_not_exists($db, $table, $keyname, $column, $attrib='') {
 
 	if(!index_exists($db, $table, $keyname)){
-		query("CREATE $attrib INDEX $keyname ON `$table` ($column)", $db, false);
+		query("CREATE $attrib INDEX `$keyname` ON `$table` ($column)", $db, false);
 	}
 }
 
@@ -276,7 +275,7 @@ function add_index_if_not_exists($db, $table, $keyname, $column, $attrib='') {
 function drop_index_if_exists($db, $table, $keyname) {
 
 	if(index_exists($db, $table, $keyname)){
-		query("DROP INDEX $keyname ON `$table`", $db, false);
+		query("DROP INDEX `$keyname` ON `$table`", $db, false);
 	}
 }
 
