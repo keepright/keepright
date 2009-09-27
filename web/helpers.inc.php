@@ -60,7 +60,7 @@ function content($filename) {
 
 
 // load a dump file from the local webspace
-// dump file must be .bz2 compressed
+// dump file may be plain text or .bz2 compressed
 // file format has to be tab-separated plain text
 // just the way you receive from SELECT INTO OUTFILE
 function load_dump($db1, $filename, $destination) {
@@ -86,7 +86,13 @@ function load_dump($db1, $filename, $destination) {
 	posix_mkfifo($fifoname, 0666) or die("Couldn't create fifo.");
 	echo "reading dump file $filename<br>\n";
 
-	system("(bzcat $filename > $fifoname) >/dev/null &");	// must run in the background
+	if (substr($filename, -4, 4)=='.bz2') {
+		$CAT='bzcat';
+	} else {
+		$CAT='cat';
+	}
+	system("($CAT $filename > $fifoname) >/dev/null &");	// must run in the background
+
 
 	system("mysql -h$db_host -u$db_user -p$db_pass -e \"LOAD DATA LOCAL INFILE '$fifoname' INTO TABLE $tbl\" $db_name");
 

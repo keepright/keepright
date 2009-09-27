@@ -126,7 +126,7 @@ function load_dump($SID, $db, $schema) {
 
 	empty_error_types_table($SID, $db, $schema);
 	// now load the error_types
-	load_dump_helper($SID, $db, $schema, "error_types_{$dbname}.txt.bz2", 'error_types');
+	load_dump_helper($SID, $db, $schema, "error_types_{$dbname}.txt", 'error_types');
 }
 
 
