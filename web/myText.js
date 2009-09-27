@@ -223,6 +223,7 @@ parseData: function(ajaxRequest) {
 			var error_id=feature.attributes.error_id;
 			var object_type=feature.attributes.object_type;
 			var object_id=feature.attributes.object_id;
+			var object_timestamp=feature.attributes.object_timestamp;
 			var description=feature.attributes.description;
 			var comment=feature.attributes.comment.replace(/<br>/g, "\n");
 			var state=feature.attributes.state;
@@ -251,7 +252,7 @@ parseData: function(ajaxRequest) {
 			'<input type="button" value="cancel" onClick="javascript:closeBubble('+error_id+');">' +
 			'</form><small>please click on the icon to fixate the bubble<br>' +
 			'link to here: error #<a href="report_map.php?'+
-			((document.myform.db.value=='osm_EU') ? '' : 'db='+document.myform.db.value+'&')+ 'error='+error_id+'">'+error_id+'</a></small>';
+			((document.myform.db.value=='osm_EU') ? '' : 'db='+document.myform.db.value+'&')+ 'error='+error_id+'">'+error_id+'</a><br>last edit of this ' + object_type + ': ' + object_timestamp + '</small>';
 		}
 
 
@@ -365,7 +366,7 @@ onClickHandler: function (evt) {
 			this.popup=this.createPopup();
 			this.popup.autoSize=false;
 			this.popup.panMapIfOutOfView=false;//document.myform.autopan.checked;
-			this.popup.setSize(new OpenLayers.Size(340, 360));
+			this.popup.setSize(new OpenLayers.Size(350, 380));
 			map.addPopup(this.popup);
 		} else {
 			this.popup.toggle();
@@ -385,7 +386,7 @@ onHOverHandler: function (evt) {
 			this.popup=this.createPopup();
 			this.popup.autoSize=false;
 			this.popup.panMapIfOutOfView=false;//document.myform.autopan.checked;
-			this.popup.setSize(new OpenLayers.Size(340, 360));
+			this.popup.setSize(new OpenLayers.Size(350, 380));
 			map.addPopup(this.popup);
 		} else {
 			this.popup.toggle();

@@ -238,6 +238,7 @@ if (!table_exists($db1, 'error_view', 'public')) {
 		description text NOT NULL,
 		first_occurrence timestamp NOT NULL,
 		last_checked timestamp NOT NULL,
+		object_timestamp timestamp NOT NULL DEFAULT '1970-01-01',
 		lat int NOT NULL,
 		lon int NOT NULL
 		)
@@ -247,7 +248,9 @@ if (!table_exists($db1, 'error_view', 'public')) {
 if (!index_exists($db1, 'idx_tmp_error_view_schema', 'public')) {
 	query("CREATE INDEX idx_tmp_error_view_schema ON public.error_view (schema);", $db1);
 }
-
+if (!column_exists('error_view', 'object_timestamp', $db1, 'public')) {
+	query("ALTER TABLE public.error_view ADD COLUMN object_timestamp timestamp NOT NULL DEFAULT '1970-01-01'", $db1);
+}
 
 // delete anything from this (sub-)database
 query("
@@ -258,9 +261,9 @@ query("
 // first insert errors on nodes that don't have lat/lon
 query("
 	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
-		state, description, first_occurrence, last_checked, lat, lon)
+		state, description, first_occurrence, last_checked, object_timestamp, lat, lon)
 	SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
-		e.state, e.description, e.first_occurrence, e.last_checked,
+		e.state, e.description, e.first_occurrence, e.last_checked, n.tstamp,
 		1e7*n.lat, 1e7*n.lon
 	FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
 	WHERE e.schema='$schema' AND e.object_type='node' AND (e.lat IS NULL OR e.lon IS NULL)
@@ -270,15 +273,15 @@ query("
 // second insert errors on ways that don't have lat/lon
 query("
 	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
-		state, description, first_occurrence, last_checked, lat, lon)
+		state, description, first_occurrence, last_checked, object_timestamp, lat, lon)
 	SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
-		e.state, e.description, e.first_occurrence, e.last_checked,
+		e.state, e.description, e.first_occurrence, e.last_checked, w.tstamp,
 		1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon
 	FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
 	WHERE e.schema='$schema' AND e.object_type='way' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND w.first_node_lat IS NOT NULL AND w.first_node_lon IS NOT NULL
 	GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state,
-		e.description, e.first_occurrence, e.last_checked,
+		e.description, e.first_occurrence, e.last_checked, w.tstamp,
 		1e7*w.first_node_lat, 1e7*w.first_node_lon
 ", $db1);
 
@@ -332,6 +335,15 @@ query("
 	FROM error_types t
 	WHERE v.schema='$schema' AND v.error_type = t.error_type
 ", $db1);
+
+
+foreach (array('node', 'way', 'relation') as $item) {
+	query("
+		UPDATE public.error_view v SET object_timestamp=t.tstamp
+		FROM ${item}s t
+		WHERE v.schema='$schema' AND v.object_timestamp='1970-01-01' AND v.object_type='$item' AND t.id=v.object_id
+	", $db1);
+}
 
 
 // drop temporary table

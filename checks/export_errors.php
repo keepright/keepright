@@ -35,13 +35,13 @@ else
 if ($f) {
 
 	$result = query("
-		SELECT *, date_trunc('hour',first_occurrence) AS fo, date_trunc('hour',last_checked) AS lc
+		SELECT *, date_trunc('hour',first_occurrence) AS fo, date_trunc('hour',last_checked) AS lc, date_trunc('second',object_timestamp) AS ts
 		FROM error_view
 		WHERE description NOT LIKE '%kms:%'
 		AND NOT (state='cleared' AND last_checked < CURRENT_DATE - INTERVAL '1 MONTH') $schemaselector
 	", $db1);
 	while ($row=pg_fetch_assoc($result)) {
-		fwrite($f, $row['schema'] ."\t". $row['error_id'] ."\t". $row['db_name'] ."\t". $row['error_type'] ."\t". $row['error_name'] ."\t". $row['object_type'] ."\t". $row['object_id'] ."\t". $row['state'] ."\t". strtr($row['description'], array("\t"=>" ")) ."\t". $row['fo'] ."\t". $row['lc'] ."\t".  $row['lat'] . "\t". $row['lon'] . "\n");
+		fwrite($f, $row['schema'] ."\t". $row['error_id'] ."\t". $row['db_name'] ."\t". $row['error_type'] ."\t". $row['error_name'] ."\t". $row['object_type'] ."\t". $row['object_id'] ."\t". $row['state'] ."\t". strtr($row['description'], array("\t"=>" ")) ."\t". $row['fo'] ."\t". $row['lc'] ."\t". $row['ts'] ."\t".  $row['lat'] . "\t". $row['lon'] . "\n");
 	}
 	pg_free_result($result);
 	fclose($f);

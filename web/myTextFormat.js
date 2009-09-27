@@ -101,6 +101,8 @@ OpenLayers.Format.myTextFormat = OpenLayers.Class(OpenLayers.Format, {
                                 attributes['error_type'] = vals[valIndex];
                              else if (columns[valIndex] == 'error_id')
                                 attributes['error_id'] = vals[valIndex];
+                             else if (columns[valIndex] == 'object_timestamp')
+                                attributes['object_timestamp'] = vals[valIndex];
                              else if (columns[valIndex] == 'object_type')
                                 attributes['object_type'] = vals[valIndex];
                              else if (columns[valIndex] == 'object_id')
