@@ -301,6 +301,8 @@ CAT_ZZ="bzcat"
 MIN_SIZE_ZZ="4000000"
 
 
+MAIN_DB_NAME_US="osm_US"
+
 URL_USAL="http://downloads.cloudmade.com/north_america/united_states/alabama/alabama.osm.bz2"
 FILE_USAL="alabama.osm.bz2"
 MAIN_DB_NAME_USAL="osm_US"
