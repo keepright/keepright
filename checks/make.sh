@@ -11,7 +11,7 @@ for i do	# loop all given parameter values
 	case "$i" in
 
 		EU)
-			./updateDB.sh AT CZ DE DK FI PL SE XH XJ XK XL XM XN XO XP XQ XR XS XT >> make_EU.log 2>&1
+			./updateDB.sh AT CZ DE DK FI NL PL SE XH XJ XK XL XM XN XO XP XQ XR XS XT >> make_EU.log 2>&1
 			php export_errors.php EU >> make_EU.log 2>&1
 			./updateWebDB.sh EU >> make_EU.log 2>&1
 		;;
