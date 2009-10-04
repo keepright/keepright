@@ -255,7 +255,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 
 		} else {
 			if (!is_closed_loop($row['way_id'], $row['first_node_id'], $row['last_node_id'], $db2)) 
-				$bi->insert("$error_type\tway\t{$row['way_id']}\tThis way is tagged with '$k=$v' and should be closed-loop.'\tNOW()\t\\N\t\\N");
+				$bi->insert("$error_type\tway\t{$row['way_id']}\tThis way is tagged with '$k=$v' and should be closed-loop.\tNOW()\t\\N\t\\N");
 		}
 	}
 	$bi->flush_buffer();
