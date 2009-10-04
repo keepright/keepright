@@ -19,19 +19,27 @@ These pages show checks that are run on a local excerpt database filled with OSM
 
 <a href="report_map.php?db=osm_CA&zoom=12&lat=46.79923&lon=-71.19432">Data Checks for Canada</a> (Starting point Québec)<br>
 
-<a href="report_map.php?db=osm_XC&zoom=14&lat=-23.58791&lon=-46.65713">Data Checks for South America</a> (Starting point São Paulo, Brazil)<br>
+<a href="http://keepright.ipax.at/report_map.php?db=osm_US&zoom=12&lat=39.95356&lon=-75.12364">Data Checks for USA</a> (Starting point Philadelphia, PA)<br>
 
 <a href="report_map.php?db=osm_XG&zoom=11&lat=18.61093&lon=-69.9473">Data Checks for Central America</a> (Starting point Santo Domingo, Republica Dominicana)<br>
+
+<a href="report_map.php?db=osm_XC&zoom=14&lat=-23.58791&lon=-46.65713">Data Checks for South America</a> (Starting point São Paulo, Brazil)<br>
 
 <a href="report_map.php?db=osm_XD&zoom=14&lat=35.68051&lon=139.76404">Data Checks for Asia</a> (Starting point Tokio, Japan)<br>
 <br>
 <a href="report.php">Europe Data Checks as ugly list</a><br>
 
-<p>North America is still missing in the list. Volunteers wanting to run the scripts on their powerful machine are welcome to join!</p>
+
 <br>
 Developers have a look at the <a href="http://apps.sourceforge.net/trac/keepright/">sourceforge</a> site providing svn access to the sources.
 
 <h3>logfile</h3>
+
+
+<h4>2009-10-01</h4>
+I&apos;m proud to announce that finally the first run for The United States of America is finished. Keepright now covers all of the planet!<br>
+The procedure took 12 days to complete, so please be patient for the next update to come in (almost) two weeks.
+
 <h4>2009-09-27</h4>
 I&apos;m proud to announce that Canada and Central America are now part of the checking process schedule. Please find the links on top of the page and have fun!
 
