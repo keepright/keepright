@@ -236,7 +236,7 @@ for i do	# loop all given parameter values
 			rm pgimport/ways_sorted.txt
 
 			echo "`date` * loading database dumps"
-			psql --single-transaction -f "$PSQL_LOAD_SCRIPT"
+			psql -f "$PSQL_LOAD_SCRIPT"
 			cd "$CHECKSDIR"
 
 			PGPASSWORD="shhh!"
