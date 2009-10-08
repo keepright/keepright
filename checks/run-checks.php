@@ -209,6 +209,12 @@ query("
 	WHERE public.errors.object_id IS NULL AND ($checks_executed)
 ", $db1);
 
+// clear errors not present in any schema
+query("
+	UPDATE public.errors AS e
+	SET state = CAST('cleared' AS type_error_state)
+	WHERE schema='' OR schema IS NULL
+", $db1);
 
 
 // rebuild the error-view:
@@ -255,7 +261,7 @@ if (!column_exists('error_view', 'object_timestamp', $db1, 'public')) {
 // delete anything from this (sub-)database
 query("
 	DELETE FROM public.error_view
-	WHERE schema='$schema' OR schema IS NULL
+	WHERE schema='$schema' OR schema IS NULL or schema=''
 ", $db1);
 
 // first insert errors on nodes that don't have lat/lon
