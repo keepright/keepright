@@ -69,6 +69,7 @@ for i do	# loop all given parameter values
 			description text NOT NULL,
 			first_occurrence datetime NOT NULL,
 			last_checked datetime NOT NULL,
+			object_timestamp datetime NOT NULL,
 			lat int(11) NOT NULL,
 			lon int(11) NOT NULL,
 			KEY \`schema\` (\`schema\`),
@@ -91,6 +92,7 @@ for i do	# loop all given parameter values
 			description text NOT NULL,
 			first_occurrence datetime NOT NULL,
 			last_checked datetime NOT NULL,
+			object_timestamp datetime NOT NULL,
 			lat int(11) NOT NULL,
 			lon int(11) NOT NULL,
 			KEY \`schema\` (\`schema\`),
@@ -111,7 +113,7 @@ for i do	# loop all given parameter values
 		# load new error view
 		cd ../web
 		echo "`date` * loading error_view data"
-		php updateTables.php "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt.bz2 "$MAIN_DB_NAME" error_view
+		php updateTables.php "$ERROR_VIEW_FILE"_"$MAIN_DB_NAME".txt "$MAIN_DB_NAME" error_view
 
 		# toggle tables and empty error_types
 		echo "
@@ -123,7 +125,7 @@ for i do	# loop all given parameter values
 			TRUNCATE TABLE error_types_""$MAIN_DB_NAME"";
 		" | mysql --user="$WEB_DB_USER" --password="$WEB_DB_PASS" "$WEB_DB_NAME"
 
-		php updateTables.php "$ERROR_TYPES_FILE"_"$MAIN_DB_NAME".txt.bz2 "$MAIN_DB_NAME" error_types
+		php updateTables.php "$ERROR_TYPES_FILE"_"$MAIN_DB_NAME".txt "$MAIN_DB_NAME" error_types
 		cd "$CHECKSDIR"
 
 		if [ -f postWebDB.sh ]; then
