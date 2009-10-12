@@ -246,7 +246,7 @@ parseData: function(ajaxRequest) {
 			'<input type="radio" id="st_'+error_id+'_i" '+(state=='ignore' ? 'checked="checked"' :'')+' name="st" value="ignore">'+
 			'<label for="st_'+error_id+'_i">ignore (false-positive)</label>&nbsp;'+
 			'<textarea cols="25" rows="2" name="co">'+comment+'</textarea>'+
-			'<input type="hidden" name="db" value="'+ document.getElementById("dbname").innerHTML +'">'+
+			'<input type="hidden" name="db" value="'+ document.myform.db.value +'">'+
 			'<input type="hidden" name="id" value="'+error_id+'">'+
 			'<input type="button" value="save" onClick="javascript:saveComment('+error_id+', '+error_type+');">' +
 			'<input type="button" value="cancel" onClick="javascript:closeBubble('+error_id+');">' +
