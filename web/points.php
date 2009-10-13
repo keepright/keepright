@@ -60,7 +60,7 @@ mysqli_free_result($result);
 
 // build SQL for fetching errors
 $sql='SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.object_timestamp, e.description, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment
-FROM ' . $error_view_name . ' e LEFT JOIN ' . $comments_name . ' c ON (e.error_id=c.error_id)
+FROM ' . $error_view_name . ' e LEFT JOIN ' . $comments_name . ' c USING (`schema`, error_id)
 WHERE';
 
 
