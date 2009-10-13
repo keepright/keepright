@@ -220,6 +220,7 @@ parseData: function(ajaxRequest) {
 
 			var error_name=feature.attributes.error_name;
 			var error_type=feature.attributes.error_type;
+			var schema=feature.attributes.schema;
 			var error_id=feature.attributes.error_id;
 			var object_type=feature.attributes.object_type;
 			var object_id=feature.attributes.object_id;
@@ -247,6 +248,7 @@ parseData: function(ajaxRequest) {
 			'<label for="st_'+error_id+'_i">ignore (false-positive)</label>&nbsp;'+
 			'<textarea cols="25" rows="2" name="co">'+comment+'</textarea>'+
 			'<input type="hidden" name="db" value="'+ document.myform.db.value +'">'+
+			'<input type="hidden" name="schema" value="'+schema+'">'+
 			'<input type="hidden" name="id" value="'+error_id+'">'+
 			'<input type="button" value="save" onClick="javascript:saveComment('+error_id+', '+error_type+');">' +
 			'<input type="button" value="cancel" onClick="javascript:closeBubble('+error_id+');">' +

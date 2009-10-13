@@ -99,7 +99,9 @@ OpenLayers.Format.myTextFormat = OpenLayers.Class(OpenLayers.Format, {
                                 attributes['error_name'] = vals[valIndex];
                              else if (columns[valIndex] == 'error_type')
                                 attributes['error_type'] = vals[valIndex];
-                             else if (columns[valIndex] == 'error_id')
+                              else if (columns[valIndex] == 'schema')
+                                attributes['schema'] = vals[valIndex];
+                            else if (columns[valIndex] == 'error_id')
                                 attributes['error_id'] = vals[valIndex];
                              else if (columns[valIndex] == 'object_timestamp')
                                 attributes['object_timestamp'] = vals[valIndex];

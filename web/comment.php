@@ -13,10 +13,12 @@ $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 if (!get_magic_quotes_gpc()) {
 	$co = htmlspecialchars(addslashes($_GET['co']));
 	$st = addslashes($_GET['st']);
+	$schema = addslashes($_GET['schema']);
 	$id = addslashes($_GET['id']);
 } else {
 	$co = htmlspecialchars($_GET['co']);
 	$st = $_GET['st'];
+	$schema = $_GET['schema'];
 	$id = $_GET['id'];
 }
 
@@ -41,8 +43,8 @@ if (is_numeric($id)) {
 	");
 	// insert new comment
 	$result=mysqli_query($db1, "
-		INSERT INTO $comments_name (error_id, state, comment, ip, user_agent) VALUES (
-			$id, '$st', '$co', '$ip', '$agent'
+		INSERT INTO $comments_name (`schema`, error_id, state, comment, ip, user_agent) VALUES (
+			'$schema', $id, '$st', '$co', '$ip', '$agent'
 		)
 	");
 }
