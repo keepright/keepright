@@ -210,4 +210,23 @@ query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("DROP TABLE IF EXISTS _tmp_highways", $db1);
 
+
+
+
+
+//////////////////////////////////////////////////////////
+// this is something completely different:
+// check for bridges with negative layer tags and
+// tunnels with positive layer tags.
+
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	SELECT $error_type + 2,
+	CAST('way' AS type_object_type), wt1.way_id, 'This ' || wt1.k || ' is tagged with layer ' || wt2.v || '. This need not be an error, but it looks strange.', NOW()
+	FROM way_tags wt1 INNER JOIN way_tags wt2 ON wt1.way_id=wt2.way_id
+	WHERE (wt1.k='bridge' AND wt1.v in ('1', 'yes', 'true') AND wt2.k='layer' AND wt2.v in ('-1', '-2', '-3', '-4', '-5'))
+	OR (wt1.k='tunnel' AND wt1.v in ('1', 'yes', 'true') AND wt2.k='layer' AND wt2.v in ('1', '2', '3', '4', '5'))
+
+", $db1);
+
 ?>
