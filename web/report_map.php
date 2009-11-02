@@ -48,11 +48,10 @@ if ($lon==0) $lon=163722146;
 if ($zoom==0) $zoom=14;
 
 
-// cat all checkboxes together: ch20=20&ch70=70 leads to ch=20,70
-$ch='0';
-for ($i=10;$i<300;$i+=10)
-	if (is_numeric($_GET["ch$i"])) $ch .= ',' . $i;
+$ch=$_GET["ch"];
+$checks_selected = split(',', $ch);
 //echo "ch=$ch<br>";
+//print_r($checks_selected);
 if (!$st) $st='open';
 
 
@@ -130,6 +129,11 @@ if (!$st) $st='open';
 		plnk = new OpenLayers.Control.myPermalink();
 		plnk.displayClass="olControlPermalink";
 		map.addControl(plnk);
+
+//		mp = new OpenLayers.Control.MousePosition();
+//		map.addControl(mp);
+
+
 
 
 <?php		// register event that records new lon/lat coordinates in form fields after panning ?>
@@ -236,9 +240,20 @@ if (!$st) $st='open';
 
 <?php	// build the list of error type checkbox states for use in URLs
 	// echo the error_type number for every active checkbox, separated with ','
+	// by default the var.name "ch=" is put in front of the string, this
+	// can be turned off with the optional boolean parameter
  ?>
-function getURL_checkboxes() {
-	loc="ch=0"
+function getURL_checkboxes(includeVariableName) {
+	if (includeVariableName === undefined) {
+		includeVariableName = true;
+	}
+
+	if (includeVariableName) {
+		loc="ch=0";
+	} else {
+		loc="0";
+	}
+
 	// append error types for any checked checkbox that is called "ch[0-9]+"
 	for (var i = 0; i < document.myform.elements.length; ++i) {
 		var el=document.myform.elements[i];
@@ -368,7 +383,6 @@ echo '<iframe style="display:none" id="hiddenIframe" name="hiddenIframe"></ifram
 
 // this is used inside myForm.js for building the form target to comment.php
 echo '<div style="display:none" id="dbname" name="dbname">' . $db . '</div>';
-
 echo "\n</body></html>";
 mysqli_close($db1);
 
@@ -388,12 +402,13 @@ function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign
 // draws a checkbox with icon and label for a given error type and error name
 // checks the checkbox if applicable
 function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0) {
+	global $checks_selected;
 	echo "\n\t<img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>\n\t";
 
 	if ($draw_checkbox) {
 		echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
 
-		if ($ch==='0' || $_GET['ch' . $et]) echo ' checked="checked"';
+		if ($ch==='0' || in_array($et, $checks_selected)) echo ' checked="checked"';
 
 		echo ">\n\t<label for='ch$et'>$en</label>\n";
 
