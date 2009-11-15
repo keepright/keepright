@@ -32,6 +32,25 @@ $db5 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 $db6 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 
 
+// first of all: check if the tables are populated
+if (!(query_firstval('SELECT COUNT(*) FROM nodes', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM ways', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM relations', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM node_tags', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM way_tags', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM relation_tags', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM relation_members', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM way_nodes', $db1, false)>0)) {
+
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!\n";
+		echo "!!!! A L E R T\n";
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!\n";
+		echo "one of the base tables is empty! I won't tell you which one. Go find out yourself.\n";
+
+	exit;
+}
+
+
 
 // (re)create temporary errors-table
 // check routines drop their errors into _tmp_errors. A syncing-job updates state information
