@@ -34,6 +34,7 @@ $islands = array(
 		'Nicosia, Cyprus' => 4746551,
 		'Praha, Czech Republic' => 26167667,
 		'Kopenhagen, Denmark' => 5056358,
+		'Tallinn, Estonia' => 4554198,
 		'Torshavn, Faröer' => 4967431,
 		'Berlin, Germany' => 13853652,
 		'Düsseldorf, Germany' => 4394506,
