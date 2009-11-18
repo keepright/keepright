@@ -22,7 +22,12 @@ query("
 	INSERT INTO _tmp_railways
 	SELECT wn.way_id, wn.node_id
 	FROM way_tags wt INNER JOIN way_nodes wn USING (way_id)
-	WHERE wt.k='railway' AND wt.v NOT IN ('abandoned', 'tram', 'tram:disused', 'tram;disused', 'platform', 'Platform', 'plattform', 'plateform')
+	WHERE wt.k='railway' AND wt.v NOT IN ('disused', 'abandoned', 'tram', 'tram:disused', 'tram;disused', 'platform', 'Platform', 'plattform', 'plateform')
+	AND NOT EXISTS(
+		SELECT tmp.way_id
+		FROM way_tags tmp
+		WHERE tmp.k='disused' AND tmp.v IN ('yes', 'true', '1')
+	)
 	GROUP BY wn.way_id, wn.node_id
 ", $db1);
 
