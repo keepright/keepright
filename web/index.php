@@ -35,6 +35,12 @@ Developers have a look at the <a href="http://apps.sourceforge.net/trac/keeprigh
 
 <h3>logfile</h3>
 
+<h4>2009-11-16</h4>
+The German errors table is now fixed with a complete run based on yesterday&apos;s planet file. Thank you, Norbert for telling me about the problem!
+
+<h4>2009-11-15</h4>
+To all the German users:<br>
+The last database update went wrong and you will see only a fraction of the number of errors as you would expect. I have to re-run the checking to correct this so please be patient until Monday evening or Tuesday.<br>Sorry und nix f&uuml;r ungut!
 
 <h4>2009-10-01</h4>
 I&apos;m proud to announce that finally the first run for The United States of America is finished. Keepright now covers all of the planet!<br>
