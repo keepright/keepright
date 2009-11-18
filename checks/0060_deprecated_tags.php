@@ -7,6 +7,7 @@
 //"Date", "Deprecated Key", "Deprecated Value", "Replaced by", "Reason")
 $replacement_list = array(
 
+	array("2009-02-12", "amenity", "signpost", "information=guidepost"),
 	array("2008-11-18", "natural", "marsh", "natural=wetland, wetland=*"),
 	array("2008-10-19", "highway", "gate", "barrier=*", "Their 'concept' better fits in this new key and highway gets a bit uncluttered.(voted)"), 
 	array("2008-10-19", "highway", "stile", "barrier=*", "Their 'concept' better fits in this new key and highway gets a bit uncluttered.(voted)"), 
