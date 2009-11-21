@@ -95,7 +95,7 @@ for i do	# loop all given parameter values
 		export PGOPTIONS
 
 		# check if connect to database is possible
-		psql -c "SELECT error_id FROM errors LIMIT 1" > /dev/null 2>&1
+		psql -c "SELECT error_id FROM public.errors LIMIT 1" > /dev/null 2>&1
                 if [ $? != 0 ]; then
 			# there was an error, so create the db
 
