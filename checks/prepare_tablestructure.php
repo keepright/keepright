@@ -50,7 +50,7 @@ add_column('ways', 'node_count', 'integer', $db1);
 add_column('errors', 'schema', 'text', $db1, 'public');
 add_column('error_view', 'schema', 'text', $db1, 'public');
 
-query("ALTER TABLE way_nodes ALTER COLUMN sequence_id TYPE integer", $db1);
+set_column_type('way_nodes', 'sequence_id', 'integer', $db1);
 
 query("ALTER TABLE ways ALTER COLUMN user_name DROP NOT NULL", $db1);
 query("ALTER TABLE nodes ALTER COLUMN user_name DROP NOT NULL", $db1);

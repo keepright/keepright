@@ -131,6 +131,27 @@ function drop_column($table, $column, $db, $schema='') {
 	}
 }
 
+// make sure a column has a specific data type
+function set_column_type($table, $column, $type, $db, $schema='') {
+	global $MAIN_DB_NAME;
+	$sch=get_schema($schema);
+
+	// query meta table of all columns for column datatype
+	if (query_firstval("
+		SELECT data_type
+		FROM information_schema.columns
+		WHERE 	table_catalog='$MAIN_DB_NAME'
+			AND table_schema='$sch'
+			AND table_name='$table'
+			AND column_name='$column'
+	",$db, false) !== $type) {
+
+		query("ALTER TABLE $sch.$table ALTER COLUMN $column TYPE $type", $db);
+
+	}
+}
+
+
 // return $schema if present or configured MAIN_SCHEMA_NAME parameter
 function get_schema($schema) {
 	global $db_params, $db_postfix;
