@@ -74,7 +74,7 @@ query("
 	way_id bigint NOT NULL,
 	node_id bigint NOT NULL,
 	end_node boolean NOT NULL DEFAULT FALSE,
-	layer text,
+	layer text DEFAULT '0',
 	PRIMARY KEY (way_id, node_id)
 	)
 ", $db1);
@@ -92,12 +92,7 @@ query("ANALYZE _tmp_ways", $db1);
 
 
 // fetch layer tag
-query("
-	UPDATE _tmp_ways c
-	SET layer=t.v
-	FROM way_tags t
-	WHERE t.way_id=c.way_id AND t.k='layer'
-", $db1);
+find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
 
 // mark end nodes
 query("
@@ -109,26 +104,6 @@ query("
 ", $db1);
 
 
-// set default layers:
-// bridges have layer +1 (if no layer tag is given)
-// tunnels have layer -1 (if no layer tag is given)
-// anything else has layer 0 (if no layer tag is given)
-query("
-	UPDATE _tmp_ways c
-	SET layer=1
-	FROM way_tags t
-	WHERE layer IS NULL AND
-	t.way_id=c.way_id AND
-	t.k='bridge'
-", $db1);
-query("
-	UPDATE _tmp_ways c
-	SET layer=-1
-	FROM way_tags t
-	WHERE layer IS NULL AND
-	t.way_id=c.way_id AND
-	t.k='tunnel'
-", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
 
@@ -138,13 +113,13 @@ query("ANALYZE _tmp_ways", $db1);
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
 query("
 	CREATE TABLE _tmp_error_candidates AS
-	SELECT way_id, node_id, end_node, COALESCE(_tmp_ways.layer, '0') AS layer, false AS all_intermediate_nodes
+	SELECT way_id, node_id, end_node, layer, false AS all_intermediate_nodes
 	FROM _tmp_ways
 	WHERE node_id IN (
 		SELECT node_id
 		FROM _tmp_ways
 		GROUP BY node_id
-		HAVING COUNT(DISTINCT COALESCE(_tmp_ways.layer, '0'))>=2
+		HAVING COUNT(DISTINCT _tmp_ways.layer)>=2
 	)
 ", $db1);
 query("CREATE INDEX idx_tmp_error_candidates_node_id ON _tmp_error_candidates (node_id)", $db1);

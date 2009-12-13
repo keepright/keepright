@@ -465,6 +465,43 @@ function locate_relation($id, $db1) {
 }
 
 
+// given a table containing some data about ways
+// you want to have the layer value for each row added in the table.
+// just provide the table name, the name of the way_id column and
+// the name of the layer column. This function does the rest.
+// Declare the layer column this way: layer text DEFAULT '0'
+function find_layer_values($table, $way_id_column, $layer_column, $db) {
+
+	// set default layers:
+	// bridges have layer +1 (if no layer tag is given)
+	// tunnels have layer -1 (if no layer tag is given)
+	// anything else has layer 0 (if no layer tag is given)
+	// this is default in table definition
+	query("
+		UPDATE $table c
+		SET $layer_column='1'
+		FROM way_tags t
+		WHERE t.way_id=c.$way_id_column AND
+		t.k='bridge' AND t.v IN ('yes', '1', 'true')
+	", $db);
+	query("
+		UPDATE $table c
+		SET $layer_column='-1'
+		FROM way_tags t
+		WHERE t.way_id=c.$way_id_column AND
+		t.k='tunnel' AND t.v IN ('yes', '1', 'true')
+	", $db);
+
+	// fetch layer tag and overwrite defaults
+	query("
+		UPDATE $table c
+		SET $layer_column=t.v
+		FROM way_tags t
+		WHERE t.way_id=c.$way_id_column AND t.k='layer'
+	", $db);
+}
+
+
 
 // gets a time value in seconds and writes it in s, min, h
 // according to its amount
@@ -473,7 +510,7 @@ function format_time($t) {
 		return sprintf("%01.2fs", $t);						// seconds
 	} elseif ($t<3600) {
 		return sprintf("%01.0fm %01.0fs", floor($t/60), $t % 60);		// minutes
-	} else 
+	} else
 		return sprintf("%01.0fh %01.0fm", floor($t/3600), ($t % 3600)/60);	// hours
 }
 ?>
