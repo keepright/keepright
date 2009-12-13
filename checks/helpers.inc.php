@@ -413,7 +413,7 @@ function drop_postgres_functions($db) {
 // referenced by the relation and its members (which may be relations too)
 // and calculating the center of gravity of all nodes
 // return value is an array like this: return array('lat'=>17, 'lon'=>3);
-function locate_relation($id, $db1) {
+function locate_relation_too_slow($id, $db1) {
 	// temp. table for storing members of the relation
 	query("DROP TABLE IF EXISTS _tmp_m", $db1, false);
 	query("
@@ -462,6 +462,73 @@ function locate_relation($id, $db1) {
 	pg_free_result($result);
 	query("DROP TABLE IF EXISTS _tmp_m", $db1, false);
 	return $r;
+}
+
+
+// finds the spot of a relation in the map by retrieving the coordinates
+// of the first node if a node is member of the relation,
+// ...of the first way if a way is member
+// recursively if only relations are member of this relation
+// until a node or way is found in any relation
+// return value is an array like this: return array('lat'=>17, 'lon'=>3);
+function locate_relation($id, $db1, $depth=0) {
+
+	// emergency brake for recursion
+	if ($depth>100) {
+		echo "locate_relation($id) had to pull emergency brake after 100 recursions.\n";
+		return array('lat' => 0, 'lon' =>0);
+	}
+
+	// try to find a node
+	$result=query("
+		SELECT n.lat, n.lon
+		FROM relation_members m INNER JOIN nodes n ON m.member_id=n.id
+		WHERE m.relation_id=$id AND m.member_type=1
+		ORDER BY member_id
+		LIMIT 1
+	", $db1, false);
+	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
+
+	if ($row && $row['lat']<>0) {
+		$r = array('lat' => $row['lat'], 'lon' => $row['lon']);
+		pg_free_result($result);
+		return $r;
+	}
+
+	// try to find the first node of the first way
+	$result=query("
+		SELECT wn.lat, wn.lon
+		FROM relation_members m INNER JOIN way_nodes wn ON m.member_id=wn.way_id
+		WHERE m.relation_id=$id AND m.member_type=2
+		ORDER BY member_id, sequence_id
+		LIMIT 1
+	", $db1, false);
+	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
+
+	if ($row && $row['lat']<>0) {
+		$r = array('lat' => $row['lat'], 'lon' => $row['lon']);
+		pg_free_result($result);
+		return $r;
+	}
+
+	// recurse into the next relation that is member of this relation
+	$depth++;
+	$result=query("
+		SELECT m.member_id AS id
+		FROM relation_members m
+		WHERE m.relation_id=$id AND m.member_type=3
+		ORDER BY member_id
+		LIMIT 1
+	", $db1, false);
+	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
+
+	if ($row && $row['id']<>0) {
+		$r = $row['id'];
+		pg_free_result($result);
+		return locate_relation($r, $db1, $depth);
+	}
+
+	return array('lat' => 0, 'lon' =>0);
 }
 
 
