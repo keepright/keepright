@@ -50,7 +50,6 @@ query("CREATE INDEX idx_tmp_ways_bbox ON _tmp_ways USING gist (bbox);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
 
-
 // find the first and last node of given ways
 
 // _tmp_end_nodes will store first- or last-nodes of given ways that are not connected to any other way
@@ -64,8 +63,6 @@ query("
 	PRIMARY KEY (node_id))
 ", $db1);
 query("SELECT AddGeometryColumn('_tmp_end_nodes', 'geom', 4326, 'POINT', 2)", $db1);
-add_insert_ignore_rule('_tmp_end_nodes', 'node_id', $db1);
-
 
 
 // find first nodes that are end-nodes (that are found in way_nodes just once)
@@ -92,7 +89,8 @@ query("
 ", $db1);
 query("ANALYZE _tmp_end_nodes", $db1);
 
-// now remove nodes that have noexit=yes tags
+
+// now remove nodes that have noexit=yes or turning_circle tags
 // as they are marked as dead ends of roads intentionally
 // plus: remove end-nodes tagged as some amenity
 // people connect post boxes with the nearest highway using
@@ -106,6 +104,7 @@ query("
 		FROM node_tags AS t
 		WHERE t.node_id=en.node_id AND (
 			(t.k='noexit' AND t.v IN ('yes', 'true', '1')) OR
+			(t.k='highway' AND t.v='turning_circle') OR
 			(t.k='highway' AND t.v='bus_stop') OR
 			t.k='amenity'
 		)
