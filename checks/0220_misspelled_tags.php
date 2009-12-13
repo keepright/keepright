@@ -19,7 +19,7 @@ will be found so any name value will be ok
 // list of key or value parts that sound very similar but are something completely different
 // please keep values in ascending order!
 $false_positives = array(
-	array('AND_a', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_r', 'AND_w'),
+	array('AND_a', 'AND_c', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_r', 'AND_w'),
 	array('AND_nosr_p', 'AND_nosr_r'),
 	array('area', 'arena'),
 	array('block', 'lock'),
@@ -69,6 +69,7 @@ $false_positives = array(
 // so you have to properly escape apos!
 // there is already an exception for any 'tiger'-prefixed tag in action so you needn't add one here
 $never_complain_about = "(
+	'AND_nosr_r:=',
 	'collection_times:=',
 	'created_by:=',
 	'garmin_type:=',
