@@ -27,7 +27,7 @@ for i do	# loop all given parameter values
 
 		echo "
 			CREATE TABLE IF NOT EXISTS comments_""$MAIN_DB_NAME"" (
-			\`schema\` varchar(6) NOT NULL DEFAULT '',
+			\`schema\` varchar(10) NOT NULL DEFAULT '',
 			error_id int(11) NOT NULL,
 			state enum('ignore_temporarily','ignore') default NULL,
 			\`comment\` text,
@@ -39,7 +39,7 @@ for i do	# loop all given parameter values
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS comments_historic_""$MAIN_DB_NAME"" (
-			\`schema\` varchar(6) NOT NULL DEFAULT '',
+			\`schema\` varchar(10) NOT NULL DEFAULT '',
 			error_id int(11) NOT NULL,
 			state enum('ignore_temporarily','ignore') default NULL,
 			\`comment\` text,
@@ -58,7 +58,7 @@ for i do	# loop all given parameter values
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS error_view_""$MAIN_DB_NAME""_old (
-			\`schema\` varchar(6) NOT NULL DEFAULT '',
+			\`schema\` varchar(10) NOT NULL DEFAULT '',
 			error_id int(11) NOT NULL,
 			db_name varchar(50) NOT NULL,
 			error_type int(11) NOT NULL,
@@ -81,7 +81,7 @@ for i do	# loop all given parameter values
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS error_view_""$MAIN_DB_NAME"" (
-			\`schema\` varchar(6) NOT NULL DEFAULT '',
+			\`schema\` varchar(10) NOT NULL DEFAULT '',
 			error_id int(11) NOT NULL,
 			db_name varchar(50) NOT NULL,
 			error_type int(11) NOT NULL,
