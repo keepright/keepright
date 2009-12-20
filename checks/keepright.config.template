@@ -1,0 +1,122 @@
+# main configuration file for keepright
+
+# this file is to be formatted as a valid bash script
+# double quotes around values are mandatory
+
+# a second config file resides in keepright/webconfig.inc.php
+# it holds just the options needed for the web server,
+# sensitive information contained herein is stripped
+
+#
+# written by Harald Kleiner, March 2009
+#
+
+
+############################################
+# Database credentials
+############################################
+
+# the main database server.
+# this is the PostGIS server the checks run
+# the main db server may have many databases (see below)
+
+MAIN_DB_HOST="localhost"
+MAIN_DB_USER="osm"
+MAIN_DB_PASS="osm"
+
+
+# the web servers database server.
+# this is the MySQL server behind the web presentation
+# please note: you have to duplicate these credentials
+# in the file keepright/config/webconfig.inc.php!
+
+WEB_DB_HOST="localhost"
+WEB_DB_USER="root"
+WEB_DB_PASS="haraldk"
+WEB_DB_NAME="osm_EU"
+
+
+
+############################################
+# Configuration for database import script updateDB.sh
+############################################
+
+# the root directory
+PREFIX="/home/haraldk/OSM/keepright/"
+
+# a separate high speed partition preferably
+TMPDIR=$PREFIX"planet"
+
+# to turn off downloading the planet file and use
+# the old one set this parameter to one
+KEEP_OSM="0"
+
+# this is where the check scripts reside
+CHECKSDIR=$PREFIX"checks"
+
+# where to download the complete planet file and where to store it
+PLANETFILE_URL="http://planet.openstreetmap.org/planet-latest.osm.bz2"
+PLANETFILE=$TMPDIR"/planet.osm"
+
+
+# this is where the result files will be placed
+# you HAVE TO specify the full path names here,
+# e.g. inserting $RESULTSDIR into ERROR_VIEW_FILE will
+# not work because these paremeters are read by a php script
+RESULTSDIR="/home/haraldk/OSM/keepright/results"
+
+ERROR_VIEW_FILE="/home/haraldk/OSM/keepright/results/error_view"
+ERROR_TYPES_FILE="/home/haraldk/OSM/keepright/results/error_types"
+
+
+# set this to 0 for local use (testing) only
+# set this to 1 if you want to upload the results to a web space
+CREATE_COMPRESSED_DUMPS="1"
+
+
+############################################
+# Cutting parameters for various databases
+############################################
+
+# Use MIN_SIZE parameter to automatically check if the
+# planet file is complete. Give a file size in KB.
+
+
+# addidional space around the borders (in meters)
+# used for overlapping the pieces.
+# errors in the margin space are discarded
+MARGIN="20000"
+
+
+############################################
+# web space ftp account
+############################################
+
+FTP_HOST="ftp.yourprovider.com"
+FTP_USER="yourname"
+FTP_PASS="shh!"
+
+# do not give a slash at the beginning, but leave one
+# at the end of this path
+FTP_PATH="path/to/website/"
+
+# this URL will be called to load data into the tables
+UPDATE_TABLES_URL="http://website.yourprovider.com/webUpdateServer.php"
+
+# shared secret for use in updateTables script to prevent anonymous
+# users from emptying your tables. You HAVE TO change this password.
+# The script will not work with default settings
+UPDATE_TABLES_USERNAME="bugsfrombunny"
+UPDATE_TABLES_PASSWD="shhh!"
+
+
+# this is the username you will be using on your local machine
+# for editing keepright source files
+# the admin interface will try to sudo into this user when
+# modifying the config file
+# to make this work, add the following lines to your sudoers file
+# www-data ALL=(haraldk) NOPASSWD: /home/osm/keepright/checks/updateDB.sh
+# www-data ALL=(haraldk) NOPASSWD: /usr/bin/svn
+ADMIN_USERNAME="haraldk"
+
+
