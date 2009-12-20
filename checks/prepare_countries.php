@@ -41,12 +41,13 @@ if ($argc<>2) {
 	exit;
 }
 
+$schema=$argv[1];		// AT, DE, EU etc
 require('config.inc.php');
 require('helpers.inc.php');
 require('BufferedInserter.php');
 
 
-echo "Creating country borders table for $db_postfix \n";
+echo "Creating country borders table for $schema\n";
 
 $db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 $db2 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
@@ -112,9 +113,9 @@ query("
 // table for all the way segments building boundaries
 // ways covered by relations as well as ways not member of relations
 // but tagged as boundary will be collected here
-query("DROP TABLE IF EXISTS _tmp_border_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_border_ways_tmp", $db1);
 query("
-	CREATE TABLE _tmp_border_ways (
+	CREATE TABLE _tmp_border_ways_tmp (
 	name text,
 	admin_level text,
 	relation_id bigint,
@@ -123,7 +124,7 @@ query("
 	last_node_id bigint,
 	part integer,
 	sequence_id integer,
-	direction smallint
+	direction smallint default 1
 	)
 ", $db1);
 
@@ -142,7 +143,7 @@ $sql='';
 foreach ($items as $item) $sql.=", 'left:$item', 'right:$item'";
 
 query("
-	INSERT INTO _tmp_border_ways (name, way_id)
+	INSERT INTO _tmp_border_ways_tmp (name, way_id)
 	SELECT wt.v, wt.way_id
 	FROM way_tags wt
 	WHERE wt.k IN (" . substr($sql,2) . ") AND
@@ -152,12 +153,12 @@ query("
 		WHERE tmp.way_id=wt.way_id AND tmp.k='boundary' AND tmp.v='administrative'
 	)
 ", $db1);
-query("CREATE INDEX idx_tmp_border_ways_way_id ON _tmp_border_ways (way_id)", $db1, false);
-query("ANALYZE _tmp_border_ways", $db1);
+query("CREATE INDEX idx_tmp_border_ways_tmp_way_id ON _tmp_border_ways_tmp (way_id)", $db1, false);
+query("ANALYZE _tmp_border_ways_tmp", $db1);
 
 // fetch admin level
 query("
-	UPDATE _tmp_border_ways c
+	UPDATE _tmp_border_ways_tmp c
 	SET admin_level=v
 	FROM way_tags t
 	WHERE t.way_id=c.way_id AND t.k='admin_level'
@@ -166,25 +167,25 @@ query("
 
 // now add ways found as member of relations
 query("
-	INSERT INTO _tmp_border_ways
+	INSERT INTO _tmp_border_ways_tmp
 	SELECT br.name, br.admin_level, br.relation_id, rm.member_id
 	FROM (_tmp_border_relations br INNER JOIN relation_members rm USING (relation_id))
 	WHERE rm.member_type=2
 ", $db1);
 
-query("CREATE INDEX idx_tmp_border_ways_relation_id ON _tmp_border_ways (relation_id)", $db1, false);
-query("CREATE INDEX idx_tmp_border_ways_name ON _tmp_border_ways (name)", $db1, false);
-query("CREATE INDEX idx_tmp_border_ways_admin_level ON _tmp_border_ways (admin_level)", $db1, false);
-query("CREATE INDEX idx_tmp_border_ways_part ON _tmp_border_ways (part)", $db1, false);
-query("ANALYZE _tmp_border_ways", $db1);
+query("CREATE INDEX idx_tmp_border_ways_tmp_relation_id ON _tmp_border_ways_tmp (relation_id)", $db1, false);
+query("CREATE INDEX idx_tmp_border_ways_tmp_name ON _tmp_border_ways_tmp (name)", $db1, false);
+query("CREATE INDEX idx_tmp_border_ways_tmp_admin_level ON _tmp_border_ways_tmp (admin_level)", $db1, false);
+query("CREATE INDEX idx_tmp_border_ways_tmp_part ON _tmp_border_ways_tmp (part)", $db1, false);
+query("ANALYZE _tmp_border_ways_tmp", $db1);
 
 
 // some ways are already part of a relation but are still tagged as boundary
 // themselves. We don't need the standalone ways, so delete them
 // and keep the relation members.
 query("
-	DELETE FROM _tmp_border_ways bw
-	USING _tmp_border_ways tmp
+	DELETE FROM _tmp_border_ways_tmp bw
+	USING _tmp_border_ways_tmp tmp
 	WHERE bw.name=tmp.name AND bw.admin_level=tmp.admin_level AND bw.way_id=tmp.way_id AND
 	bw.relation_id IS NULL AND tmp.relation_id IS NOT NULL
 ", $db1);
@@ -192,13 +193,22 @@ query("
 
 // add first and last node ids
 query("
-	UPDATE _tmp_border_ways c
+	UPDATE _tmp_border_ways_tmp c
 	SET first_node_id=w.first_node_id, last_node_id=w.last_node_id
 	FROM ways w
 	WHERE c.way_id=w.id
 ", $db1);
 
 
+// drop relations that contain missing ways
+query("
+	DELETE FROM _tmp_border_ways_tmp bw
+	WHERE bw.relation_id IN (
+		SELECT DISTINCT tmp.relation_id FROM
+		_tmp_border_ways_tmp tmp
+		WHERE bw.relation_id=tmp.relation_id AND tmp.first_node_id IS NULL
+	)
+", $db1);
 
 
 
@@ -207,8 +217,15 @@ query("
 ////////////////////////////////////////////
 
 
-query("CREATE INDEX idx_tmp_border_ways_sequence_id ON _tmp_border_ways (sequence_id)", $db1, false);
-query("ANALYZE _tmp_border_ways", $db1);
+query("CREATE INDEX idx_tmp_border_ways_tmp_sequence_id ON _tmp_border_ways_tmp (sequence_id)", $db1, false);
+
+query("ANALYZE _tmp_border_ways_tmp", $db1);
+
+query("DROP TABLE IF EXISTS _tmp_border_ways", $db1, false);
+
+query("CREATE TABLE _tmp_border_ways (LIKE _tmp_border_ways_tmp
+	INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES)
+", $db1, false);
 
 // a boundary may consist of several "parts" that are not connected.
 // Just think of France: There's the "main land" and several exclaves
@@ -225,6 +242,33 @@ query("ANALYZE _tmp_border_ways", $db1);
 //   increase the part number
 //   repeat all this as long as at least one new way could be added
 
+
+// before starting the algorithm remove any single-way closed-loop parts of boundaries
+// which don't take part in any junctions (there may me many and they slow down connecting parts):
+$singleway_relations="
+	FROM _tmp_border_ways_tmp T
+	WHERE T.first_node_id=T.last_node_id
+	AND NOT EXISTS(
+		SELECT name FROM _tmp_border_ways_tmp T1
+		WHERE T1.name=T.name AND T1.admin_level=T.admin_level AND T1.way_id<>T.way_id AND (T1.first_node_id=T.first_node_id OR T1.last_node_id=T.first_node_id)
+	)
+	AND NOT EXISTS(
+		SELECT name FROM _tmp_border_ways_tmp T2
+		WHERE T2.name=T.name AND T2.admin_level=T.admin_level AND T2.way_id<>T.way_id AND (T2.first_node_id=T.last_node_id OR T2.last_node_id=T.last_node_id)
+	)
+";
+query("CREATE SEQUENCE _tmp_partcounter INCREMENT -1 START -1", $db1);
+
+query("INSERT INTO _tmp_border_ways
+	SELECT name, admin_level, relation_id, way_id, first_node_id, last_node_id, nextval('_tmp_partcounter'), 0, 1
+	$singleway_relations
+", $db1);
+
+query("DROP SEQUENCE _tmp_partcounter", $db1);
+
+query("DELETE $singleway_relations", $db1);
+
+
 $part=0;
 do {
 	// pick a "random" part of each boundary as starting way.
@@ -233,13 +277,13 @@ do {
 	query("
 		CREATE TABLE _tmp_tmp AS
 		SELECT name, admin_level, MIN(way_id) AS way_id
-		FROM _tmp_border_ways
+		FROM _tmp_border_ways_tmp
 		WHERE sequence_id IS NULL
 		GROUP BY name, admin_level
 	", $db1, false);
 
 	$result=query("
-		UPDATE _tmp_border_ways c
+		UPDATE _tmp_border_ways_tmp c
 		SET part=$part, sequence_id=0, direction=1
 		FROM _tmp_tmp T
 		WHERE c.way_id=T.way_id AND T.name=c.name AND T.admin_level=c.admin_level
@@ -282,12 +326,12 @@ do {
 		// 1) find next way id in sequence in forward direction
 		// we have to use the "other end" of the previous way if its direction was negative
 		$result=query("
-			UPDATE _tmp_border_ways T1
+			UPDATE _tmp_border_ways_tmp T1
 			SET part=$part, sequence_id=$loop, direction=1
-			FROM _tmp_border_ways T0
+			FROM _tmp_border_ways_tmp T0
 			WHERE T1.name=T0.name AND T1.admin_level=T0.admin_level AND
 			T1.sequence_id IS NULL AND T0.sequence_id=$loop-1 AND
-			CASE WHEN COALESCE(T0.direction,1)=1 THEN
+			CASE WHEN T0.direction=1 THEN
 				T1.first_node_id=T0.last_node_id
 			ELSE
 				T1.first_node_id=T0.first_node_id
@@ -297,12 +341,12 @@ do {
 
 		// 2) find next way id in sequence in forward direction, way reversed
 		$result=query("
-			UPDATE _tmp_border_ways T1
+			UPDATE _tmp_border_ways_tmp T1
 			SET part=$part, sequence_id=$loop, direction=-1
-			FROM _tmp_border_ways T0
+			FROM _tmp_border_ways_tmp T0
 			WHERE T1.name=T0.name AND T1.admin_level=T0.admin_level AND
 			T1.sequence_id IS NULL AND T0.sequence_id=$loop-1 AND
-			CASE WHEN COALESCE(T0.direction,1)=1 THEN
+			CASE WHEN T0.direction=1 THEN
 				T1.last_node_id=T0.last_node_id
 			ELSE
 				T1.last_node_id=T0.first_node_id
@@ -316,12 +360,12 @@ do {
 
 		// 3) find next way id in sequence in backward direction
 		$result=query("
-			UPDATE _tmp_border_ways T1
+			UPDATE _tmp_border_ways_tmp T1
 			SET part=$part, sequence_id=-$loop, direction=1
-			FROM _tmp_border_ways T0
+			FROM _tmp_border_ways_tmp T0
 			WHERE T1.name=T0.name AND T1.admin_level=T0.admin_level AND
 			T1.sequence_id IS NULL AND T0.sequence_id=-$loop+1 AND
-			CASE WHEN COALESCE(T0.direction,1)=1 THEN
+			CASE WHEN T0.direction=1 THEN
 				T1.last_node_id=T0.first_node_id
 			ELSE
 				T1.last_node_id=T0.last_node_id
@@ -331,12 +375,12 @@ do {
 
 		// 4) find next way id in sequence in backward direction, way reversed
 		$result=query("
-			UPDATE _tmp_border_ways T1
+			UPDATE _tmp_border_ways_tmp T1
 			SET part=$part, sequence_id=-$loop, direction=-1
-			FROM _tmp_border_ways T0
+			FROM _tmp_border_ways_tmp T0
 			WHERE T1.name=T0.name AND T1.admin_level=T0.admin_level AND
 			T1.sequence_id IS NULL AND T0.sequence_id=-$loop+1 AND
-			CASE WHEN COALESCE(T0.direction,1)=1 THEN
+			CASE WHEN T0.direction=1 THEN
 				T1.first_node_id=T0.first_node_id
 			ELSE
 				T1.first_node_id=T0.last_node_id
@@ -352,6 +396,30 @@ do {
 	} while ($count_forward_straight+$count_forward_reversed+$count_backward_straight+$count_backward_reversed>0);
 
 	$part++;
+	if ($part==3 || $part==6 || !($part % 10) || !($count_newpart>0)) {	 // move away already finished records
+
+		$result=query("
+			INSERT INTO _tmp_border_ways
+			SELECT *
+			FROM _tmp_border_ways_tmp T0
+			WHERE NOT EXISTS(
+				SELECT T1.name
+				FROM _tmp_border_ways_tmp T1
+				WHERE T1.name=T0.name AND T1.admin_level=T0.admin_level AND T1.sequence_id IS NULL
+			)
+		", $db1, false);
+		$result=query("
+			DELETE FROM _tmp_border_ways_tmp T0
+			WHERE NOT EXISTS(
+				SELECT T1.name
+				FROM _tmp_border_ways_tmp T1
+				WHERE T1.name=T0.name AND T1.admin_level=T0.admin_level AND T1.sequence_id IS NULL
+			)
+		", $db1, false);
+		query("VACUUM ANALYZE _tmp_border_ways_tmp", $db1, false);
+	}
+
+
 } while ($count_newpart>0);
 
 query("ANALYZE _tmp_border_ways", $db1);
