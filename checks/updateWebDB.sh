@@ -142,11 +142,11 @@ done
 
 if [ "$FILE" = "0" ]; then
 	echo "unknown country code"
-	echo "usage: \"./updateWebDB.sh [--full] AT\""
+	echo "usage: \"./updateWebDB.sh [--full] 1\""
 	echo "will update a local keepright database from a previously "
 	echo "created error_view.txt dump file in the results directory."
 	echo "you have to configure new country codes in the config file "
-	echo "if you want to add new ones except the existing codes AT, DE, EU "
+	echo "if you want to add new ones except the existing codes "
 	echo "with --full as the first option this script will create "
 	echo "a splitted and compressed version of error_view for upload "
 	echo "to your web space provider."

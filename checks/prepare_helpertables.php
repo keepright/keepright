@@ -8,12 +8,13 @@ if ($argc<>2) {
 	exit;
 }
 
+$schema=$argv[1];		// schema number identifying planet part
 require('config.inc.php');
 require('helpers.inc.php');
 require('BufferedInserter.php');
 
 
-echo "Creating helper tables for $db_postfix \n";
+echo "Creating helper tables for $schema\n";
 
 $db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 $db2 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
@@ -22,6 +23,89 @@ $starttime=microtime(true);
 
 //--------------------------------------------------
 create_postgres_functions($db1);
+
+
+// every relation around the globe is included in each dump file
+// there are three kinds of relations:
+// ...where every member lies inside the current area (best case)
+// ...where some members lie outside
+// ...where all members lie outside
+// for the last case we can easily drop all data related to those relations:
+
+do {
+	drop_column('relation_members', 'object_exists', $db1, false);
+	add_column('relation_members', 'object_exists', 'boolean', $db1, false);
+
+	$member_types=array(1=>'node', 2=>'way', 3=>'relation');
+	// execute similar queries for all three tables to find out
+	// if the specified member exist in the current area
+	foreach($member_types as $k=>$v) {
+
+		query("
+			UPDATE relation_members rm
+			SET object_exists=true
+			FROM {$v}s
+			WHERE rm.member_type=$k AND rm.member_id={$v}s.id
+		", $db1, false);
+	}
+
+	query("CREATE INDEX idx_relation_members ON relation_members (object_exists)", $db1, false);
+	query("ANALYZE relation_members (object_exists)", $db1, false);
+
+	// foreign relations are those who don't have a single member
+	// in the database
+	query("DROP TABLE IF EXISTS _tmp_foreign_relations", $db1, false);
+	query("
+		SELECT DISTINCT relation_id INTO _tmp_foreign_relations
+		FROM relation_members rm
+		WHERE NOT EXISTS(
+			SELECT t.relation_id
+			FROM relation_members t
+			WHERE t.relation_id=rm.relation_id AND t.object_exists IS NOT NULL
+		)
+	", $db1, false);
+
+
+	// drop relations and their tags if they don't have a single member in the current db
+	foreach (array('relation_tags'=>'relation_id', 'relation_members'=>'relation_id', 'relations'=>'id') as $table=>$key) {
+		$result=query("
+			DELETE FROM $table WHERE $key IN
+				(SELECT relation_id FROM _tmp_foreign_relations)
+		", $db1, false);
+		$record_count=pg_affected_rows($result);
+	}
+	echo "dropped $record_count foreign relations\n";
+	query("DROP TABLE IF EXISTS _tmp_foreign_relations", $db1, false);
+}
+while ($record_count>0);
+
+
+
+// now drop relations that don't have a single member
+// these are of course errors but where should they
+// be located on the map??
+query("DROP TABLE IF EXISTS _tmp_empty_relations", $db1, false);
+query("
+	SELECT r.id INTO _tmp_empty_relations
+	FROM relations r LEFT JOIN relation_members m ON r.id=m.relation_id
+	WHERE m.relation_id IS NULL
+", $db1, false);
+
+
+// drop relations and their tags if they don't have a single member in the current db
+foreach (array('relation_tags'=>'relation_id', 'relations'=>'id') as $table=>$key) {
+	$result=query("
+		DELETE FROM $table WHERE $key IN
+			(SELECT id FROM _tmp_empty_relations)
+	", $db1, false);
+	$record_count=pg_affected_rows($result);
+}
+echo "dropped $record_count empty relations\n";
+query("DROP TABLE IF EXISTS _tmp_empty_relations", $db1, false);
+
+
+
+
 
 // ways crossing the boundary of export bounding box get truncated
 // ie in way_nodes you find node ids that are missing in nodes
@@ -61,21 +145,6 @@ echo "fetched $count nodes via api.\n";
 //--------------------------------------------------
 
 
-
-
-echo "add indexes to tags\n";
-query("DELETE FROM way_tags WHERE v IS NULL", $db1);
-query("DELETE FROM node_tags WHERE v IS NULL", $db1);
-
-//Index for keys and values
-query("CREATE INDEX idx_node_tags_k ON node_tags (k)", $db1);
-query("CREATE INDEX idx_node_tags_v ON node_tags (v)", $db1);
-
-query("CREATE INDEX idx_way_tags_k ON way_tags (k)", $db1);
-query("CREATE INDEX idx_way_tags_v ON way_tags (v)", $db1);
-
-query("CREATE INDEX idx_relation_tags_k ON relation_tags (k)", $db1);
-query("CREATE INDEX idx_relation_tags_v ON relation_tags (v)", $db1);
 
 
 // calculate x/y coordinates for nodes
@@ -174,10 +243,10 @@ query("VACUUM ANALYZE way_nodes", $db1);
 query("VACUUM ANALYZE relations", $db1);
 query("VACUUM ANALYZE relation_tags", $db1);
 query("VACUUM ANALYZE relation_members", $db1);
-query("VACUUM ANALYZE error_types", $db1);
 query("VACUUM ANALYZE public.errors", $db1);
 query("VACUUM ANALYZE public.error_view", $db1);
 //--------------------------------------------------
+
 drop_postgres_functions($db1);
 
 pg_close($db1);

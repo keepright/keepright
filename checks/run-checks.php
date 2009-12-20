@@ -17,12 +17,13 @@ if ($argc<2) {
 	exit;
 }
 
+$schema=$argv[1];		// schema number identifying planet part
 require('config.inc.php');
 require('helpers.inc.php');
 require('BufferedInserter.php');
 
 
-echo "Running checks for $db_postfix\n";
+echo "Running checks for $schema\n";
 
 $db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 $db2 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
@@ -196,7 +197,6 @@ query("CREATE INDEX idx_tmp_errors_object_id ON _tmp_errors (object_id);", $db1)
 query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type);", $db1);
 query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type);", $db1);
 query("CREATE INDEX idx_tmp_errors_latlon ON _tmp_errors (lat, lon);", $db1);
-$schema=$db_params[$db_postfix]['MAIN_SCHEMA_NAME'];
 
 // update last-checked timestamp for all errors that (still) exist
 // set reopened-state for cleared errors that are now found in _tmp_errors again
@@ -229,11 +229,12 @@ query("
 ", $db1);
 
 // clear errors not present in any schema
-query("
-	UPDATE public.errors AS e
-	SET state = CAST('cleared' AS type_error_state)
-	WHERE schema='' OR schema IS NULL
-", $db1);
+// don't need that any more.
+//query("
+//	UPDATE public.errors AS e
+//	SET state = CAST('cleared' AS type_error_state)
+//	WHERE schema='' OR schema IS NULL
+//", $db1);
 
 
 // rebuild the error-view:
@@ -283,6 +284,59 @@ query("
 	WHERE schema='$schema' OR schema IS NULL or schema=''
 ", $db1);
 
+// _tmp_ev is used as helper table to find the locations of relations
+query("DROP TABLE IF EXISTS _tmp_ev", $db1, false);
+query("CREATE TABLE _tmp_ev (LIKE public.error_view
+	INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES)
+", $db1, false);
+
+query("
+	INSERT INTO _tmp_ev (error_id, db_name, schema, error_type, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)
+	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id, e.state, e.description, e.first_occurrence, e.last_checked, 0, 0
+	FROM public.errors e
+	WHERE e.schema='$schema' AND e.object_type='relation' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
+", $db1);
+query("CREATE INDEX idx_tmp_error_view_object_id ON _tmp_ev (object_id);", $db1, false);
+query("CREATE INDEX idx_tmp_error_view_latlon ON _tmp_ev (lat,lon);", $db1, false);
+query("ANALYZE _tmp_ev", $db1, false);
+
+query("
+	UPDATE _tmp_ev e
+	SET lat=1e7*n.lat, lon=1e7*n.lon
+	FROM relation_members m INNER JOIN nodes n ON m.member_id=n.id
+	WHERE m.relation_id=e.object_id AND m.member_type=1
+", $db1);
+
+query("
+	UPDATE _tmp_ev e
+	SET lat=1e7*wn.lat, lon=1e7*wn.lon
+	FROM relation_members m INNER JOIN way_nodes wn ON m.member_id=wn.way_id
+	WHERE e.lat=0 AND e.lon=0 AND m.relation_id=e.object_id AND m.member_type=2
+", $db1);
+
+$result=query("
+	SELECT e.object_id
+	FROM _tmp_ev e
+	WHERE e.lat=0 AND e.lon=0
+", $db1, false);
+
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+	$latlong = locate_relation($row['object_id'], $db3);
+	if ($latlong['lat']<>'0' && $latlong['lon']<>'0') {
+		query("
+			UPDATE _tmp_ev e
+			SET lat=1e7*{$latlong['lat']}, lon=1e7*{$latlong['lon']}
+			WHERE e.schema='$schema' AND e.object_type='relation' AND e.object_id={$row['object_id']} AND e.lat=0 AND e.lon=0
+		", $db2, false);
+	}
+}
+pg_free_result($result);
+query("INSERT INTO public.error_view SELECT * FROM _tmp_ev", $db1);
+query("DROP TABLE IF EXISTS _tmp_ev", $db1, false);
+
+
+
+
 // first insert errors on nodes that don't have lat/lon
 query("
 	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
@@ -291,7 +345,7 @@ query("
 		e.state, e.description, e.first_occurrence, e.last_checked, n.tstamp,
 		1e7*n.lat, 1e7*n.lon
 	FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
-	WHERE e.schema='$schema' AND e.object_type='node' AND (e.lat IS NULL OR e.lon IS NULL)
+	WHERE e.schema='$schema' AND e.object_type='node' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND n.lat IS NOT NULL AND n.lon IS NOT NULL
 ", $db1);
 
@@ -303,13 +357,14 @@ query("
 		e.state, e.description, e.first_occurrence, e.last_checked, w.tstamp,
 		1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon
 	FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
-	WHERE e.schema='$schema' AND e.object_type='way' AND (e.lat IS NULL OR e.lon IS NULL)
+	WHERE e.schema='$schema' AND e.object_type='way' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND w.first_node_lat IS NOT NULL AND w.first_node_lon IS NOT NULL
 	GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state,
 		e.description, e.first_occurrence, e.last_checked, w.tstamp,
 		1e7*w.first_node_lat, 1e7*w.first_node_lon
 ", $db1);
 
+/*
 // now find location for relations
 $result=query("
 	SELECT DISTINCT e.error_id, e.error_type, e.object_id, e.state, e.description,
@@ -330,7 +385,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 	", $db2, false);
 }
 pg_free_result($result);
-
+*/
 
 
 // finally insert errors on ways/nodes/relations that do have lat/lon values
@@ -341,8 +396,28 @@ query("
 		e.object_type, e.object_id, e.state, e.description,
 		e.first_occurrence, e.last_checked, e.lat, e.lon
 	FROM public.errors e
-	WHERE e.schema='$schema' AND NOT(e.lat IS NULL OR e.lon IS NULL)
+	WHERE e.schema='$schema' AND state<>'cleared' AND NOT(e.lat IS NULL OR e.lon IS NULL)
 ", $db1);
+
+
+
+
+// drop errors outside of the scope, if scope is defined
+$left=$db_params[$schema]['LEFT'];
+$right=$db_params[$schema]['RIGHT'];
+$top=$db_params[$schema]['TOP'];
+$bottom=$db_params[$schema]['BOTTOM'];
+if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
+
+	echo "clipping of errors at boundaries.\n";
+	query("
+		DELETE FROM public.error_view e
+		WHERE e.schema='$schema' AND
+		(e.lat<1e7*$bottom OR e.lat>1e7*$top OR
+		e.lon<1e7*$left OR e.lon>1e7*$right)
+	", $db1);
+
+} else echo "boundaries not specified, skip clipping of errors.\n";
 
 
 

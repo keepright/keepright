@@ -152,14 +152,14 @@ function set_column_type($table, $column, $type, $db, $schema='') {
 }
 
 
-// return $schema if present or configured MAIN_SCHEMA_NAME parameter
-function get_schema($schema) {
-	global $db_params, $db_postfix;
+// return $schema if present or global schema variable given on command line
+function get_schema($schema_guess) {
+	global $schema;
 
-	if ($schema=='')
-		return strtolower($db_params[$db_postfix]['MAIN_SCHEMA_NAME']);
+	if ($schema_guess=='')
+		return 'schema' . strtolower($schema);
 	else
-		return strtolower($schema);
+		return strtolower($schema_guess);
 }
 
 

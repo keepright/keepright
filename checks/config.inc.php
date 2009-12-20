@@ -1,7 +1,7 @@
 <?php
 
-$db_postfix=$argv[1];		// AT, DE, EU etc
 $error_types=array();
+$db_params=array();
 
 // first read default config file shipped with keepright
 // then read the user-defined config file to overwrite custom settings
@@ -15,7 +15,7 @@ parse_config_vars('keepright.config');
 
 
 function parse_config_vars($filename) {
-	global $error_types, $db_postfix, $db_params;
+	global $error_types, $schema, $db_params;
 
 	if (!file_exists($filename)) return;	// ignore missing files silently
 
@@ -26,17 +26,17 @@ function parse_config_vars($filename) {
 		'ERROR_VIEW_FILE', 'ERROR_TYPES_FILE', 'RESULTSDIR',
 		'FTP_HOST', 'FTP_USER', 'FTP_PASS', 'FTP_PATH',
 		'UPDATE_TABLES_URL', 'UPDATE_TABLES_USERNAME', 'UPDATE_TABLES_PASSWD',
-		'ADMIN_USERNAME', 'CREATE_COMPRESSED_DUMPS');
+		'ADMIN_USERNAME', 'CREATE_COMPRESSED_DUMPS', 'TMPDIR', 'MARGIN');
 
 	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
-	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'MAIN_SCHEMA_NAME', 'CAT', 'MIN_SIZE');
+	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'MAIN_SCHEMA_NAME', 'CAT', 'MIN_SIZE', 'LEFT', 'TOP', 'RIGHT', 'BOTTOM');
 
 	foreach ($configfile as $line) {
 
 		if (preg_match('/^\s*#/', $line) === 0) {	// ignore comments (lines starting with #)
 
 			// find database name
-			if (preg_match('/^\s*MAIN_DB_NAME_' .$db_postfix. '\s*=\s*"(.*)\"/', $line, $matches))
+			if (preg_match('/^\s*MAIN_DB_NAME_' .$schema. '\s*=\s*"(.*)\"/', $line, $matches))
 				$GLOBALS['MAIN_DB_NAME']=$matches[1];
 
 			// find all the other db credentials
@@ -48,7 +48,7 @@ function parse_config_vars($filename) {
 
 			// find database parameters
 			foreach ($db_parts as $var) {
-				if (preg_match('/^\s*' . $var . '_([A-Z]{2,4})\s*=\s*"(.*)\"/', $line, $matches))
+				if (preg_match('/^\s*' . $var . '_([A-Z0-9]{1,4})\s*=\s*"(.*)\"/', $line, $matches))
 					$db_params[$matches[1]][$var] = $matches[2];
 			}
 
@@ -91,28 +91,30 @@ Array
 )
 */
 
+if (!isset($dont_care_about_missing_db_parameters)) {
 
-if (strlen(trim($MAIN_DB_NAME))==0) {
-	echo "no database name found in config for '$db_postfix', exiting.\n";
-	exit;
+	if (strlen(trim($MAIN_DB_NAME))==0) {
+		echo "no database name found in config for '$schema', exiting.\n";
+		exit;
+	}
+	if (strlen(trim($MAIN_DB_HOST))==0) {
+		echo "no database host name found in config for '$schema', exiting.\n";
+		exit;
+	}
 }
-if (strlen(trim($MAIN_DB_HOST))==0) {
-	echo "no database host name found in config for '$db_postfix', exiting.\n";
-	exit;
-}
-
 // BEWARE: postgres really is NOT ALWAYS case sensitive!
 // if you create schema osm_TT then in fact osm_tt will be created
 // but if you create schema 'osm_TT' then it will be called osm_TT
 
 $connectstring="host=$MAIN_DB_HOST dbname=$MAIN_DB_NAME user=$MAIN_DB_USER password=$MAIN_DB_PASS";
 
-// if a schema config variable is set append it to the connect string
-// to make any connection use the given schema automatically
-if (isset($db_params[$db_postfix]['MAIN_SCHEMA_NAME']))
-	 $connectstring.=" options='--search_path=" . $db_params[$db_postfix]['MAIN_SCHEMA_NAME']. ",public'";
-else
-	$db_params[$db_postfix]['MAIN_SCHEMA_NAME']='public';
+
+// using schemas is mandatory, even for single-schema continent's databases.
+// append it to the connect string to make any connection
+// use the given schema automatically
+if (isset($schema)) {
+	$connectstring.=" options='--search_path=schema$schema,public'";
+}
 
 
 
