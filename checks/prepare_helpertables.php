@@ -33,8 +33,8 @@ create_postgres_functions($db1);
 // for the last case we can easily drop all data related to those relations:
 
 do {
-	drop_column('relation_members', 'object_exists', $db1, false);
-	add_column('relation_members', 'object_exists', 'boolean', $db1, false);
+	drop_column('relation_members', 'object_exists', $db1, '', false);
+	add_column('relation_members', 'object_exists', 'boolean', $db1, '', false);
 
 	$member_types=array(1=>'node', 2=>'way', 3=>'relation');
 	// execute similar queries for all three tables to find out
@@ -54,14 +54,22 @@ do {
 
 	// foreign relations are those who don't have a single member
 	// in the database
+	query("DROP TABLE IF EXISTS _tmp_tmp", $db1, false);
+	query("SELECT relation_id, object_exists INTO _tmp_tmp
+		FROM relation_members rm
+		GROUP BY relation_id, object_exists
+	", $db1, false);
+
 	query("DROP TABLE IF EXISTS _tmp_foreign_relations", $db1, false);
 	query("
-		SELECT DISTINCT relation_id INTO _tmp_foreign_relations
-		FROM relation_members rm
-		WHERE NOT EXISTS(
-			SELECT t.relation_id
-			FROM relation_members t
-			WHERE t.relation_id=rm.relation_id AND t.object_exists IS NOT NULL
+		SELECT relation_id INTO _tmp_foreign_relations
+		FROM _tmp_tmp
+		WHERE object_exists IS NULL
+	", $db1, false);
+	query("
+		DELETE FROM _tmp_foreign_relations
+		WHERE relation_id IN (
+			SELECT relation_id FROM _tmp_tmp WHERE object_exists IS NOT NULL
 		)
 	", $db1, false);
 
@@ -76,6 +84,7 @@ do {
 	}
 	echo "dropped $record_count foreign relations\n";
 	query("DROP TABLE IF EXISTS _tmp_foreign_relations", $db1, false);
+	query("DROP TABLE IF EXISTS _tmp_tmp", $db1, false);
 }
 while ($record_count>0);
 
