@@ -22,7 +22,7 @@
 
 MAIN_DB_HOST="localhost"
 MAIN_DB_USER="osm"
-MAIN_DB_PASS="osm"
+MAIN_DB_PASS="shhh!"
 
 
 # the web servers database server.
@@ -32,7 +32,7 @@ MAIN_DB_PASS="osm"
 
 WEB_DB_HOST="localhost"
 WEB_DB_USER="root"
-WEB_DB_PASS="haraldk"
+WEB_DB_PASS="shhh!"
 WEB_DB_NAME="osm_EU"
 
 
@@ -568,8 +568,8 @@ BOTTOM_50="-90"
 ############################################
 
 FTP_HOST="keepright.ipax.at"
-FTP_USER="k000382"
-FTP_PASS="tFksf37v"
+FTP_USER="k000382_1"
+FTP_PASS="shhh!"
 
 # do not give a slash at the beginning, but leave one
 # at the end of this path
@@ -584,8 +584,7 @@ UPDATE_TABLES_URL="http://keepright.ipax.at/webUpdateServer.php"
 # users from emptying your tables. You HAVE TO change this password.
 # The script will not work with default settings
 UPDATE_TABLES_USERNAME="harald.kleiner@web.de"
-UPDATE_TABLES_PASSWD="alsKMjdSSslkDfm"
-#UPDATE_TABLES_PASSWD="shhh"
+UPDATE_TABLES_PASSWD="shhh!"
 
 
 # this is the username you will be using on your local machine
@@ -727,9 +726,9 @@ CHECK_0230_ENABLED="1"
 CHECK_0230_FILE="0230_layer_conflicts.php"
 CHECK_0230_DESCRIPTION="Connected ways should be on the same layer. Crossings on intermediate nodes of ways on different layers are obviously wrong. Junctions on end-nodes of ways on different layers are also deprecated, but common practice. So you may ignore this part of the check and switch them off separately. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly if no layer tag is present."
 
-
 SUBTYPE_0231_NAME="mixed layers intersections"
 SUBTYPE_0232_NAME="strange layers"
+
 
 # 240, 250 reserved for Peter
 
@@ -739,12 +738,10 @@ CHECK_0260_ENABLED="0"
 CHECK_0260_FILE="0260_map_features.php"
 CHECK_0260_DESCRIPTION="checks taggins against the proposed map features and asserts dependencies of tags"
 
-
 CHECK_0270_NAME="motorways connected directly"
 CHECK_0270_ENABLED="1"
 CHECK_0270_FILE="0270_motorways_connected_directly.php"
 CHECK_0270_DESCRIPTION="Motorways should only be connected to other motorways or motorway_links. They should especially not be directly connected to highway=primary or highway=residential roads. Please note: This check may produce false positives on motorways ending in cities but it can be a valuable tool for looking up unwanted connections of motorways and other roads."
-
 
 
 CHECK_0280_NAME="boundaries"
@@ -761,7 +758,7 @@ SUBTYPE_0284_NAME="splitting boundary"
 CHECK_0290_NAME="restrictions"
 CHECK_0290_ENABLED="1"
 CHECK_0290_FILE="0290_restrictions.php"
-CHECK_0290_DESCRIPTION=""
+CHECK_0290_DESCRIPTION="This check is about turn restrictions defined by relations. A turn restriction relation needs a valid type attribute, a way as 'from' member, another way as 'to' member and optionally one or more ways or nodes as via members that need to be connected to 'from' and 'to'"
 
 SUBTYPE_0291_NAME="missing type"
 SUBTYPE_0292_NAME="missing from way"
