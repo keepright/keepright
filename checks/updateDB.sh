@@ -40,7 +40,10 @@ if [ ! -f "$USERCONFIG" ]; then
     exit 1
 fi
 
-# import config file
+# first: import config file shipped with keepright
+. ../config/config
+
+# second: import user's config file
 . $USERCONFIG
 ###########################
 # Check config settings match the system
