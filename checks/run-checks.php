@@ -121,14 +121,14 @@ foreach ($error_types as $error_type=>$error) {
 	if ($error['ENABLED'] != '0' ) {
 		query("
 			INSERT INTO error_types(error_type, error_name, error_description) 
-			VALUES(" . addslashes($error_type) . ",'" . addslashes($error['NAME']) . "','" . addslashes($error['DESCRIPTION']) . "')
+			VALUES(" . pg_escape_string($db1, $error_type) . ",'" . pg_escape_string($db1, $error['NAME']) . "','" . pg_escape_string($db1, $error['DESCRIPTION']) . "')
 		", $db1, false);
 
 		// insert any subtype if some exist
 		if (is_array($error['SUBTYPES'])) foreach ($error['SUBTYPES'] as $subtype_id=>$subtype) {
 			query("
 				INSERT INTO error_types(error_type, error_name, error_description) 
-				VALUES(" . addslashes($subtype_id) . ",'" . addslashes($subtype) . "','" . addslashes($error['DESCRIPTION']) . "')
+				VALUES(" . pg_escape_string($db1, $subtype_id) . ",'" . pg_escape_string($db1, $subtype) . "','" . pg_escape_string($db1, $error['DESCRIPTION']) . "')
 			", $db1, false);
 		}
 	}
@@ -380,7 +380,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 			state, description, first_occurrence, last_checked, lat, lon)
 		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '$schema', '${row['error_type']}',
 			'relation', ${row['object_id']}, '${row['state']}',
-			'" . addslashes($row['description']) . "', '${row['first_occurrence']}',
+			'" . pg_escape_string($db1, $row['description']) . "', '${row['first_occurrence']}',
 			'${row['last_checked']}', 1e7*${latlong['lat']}, 1e7*${latlong['lon']})
 	", $db2, false);
 }

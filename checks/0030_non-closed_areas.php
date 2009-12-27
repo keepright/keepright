@@ -45,8 +45,8 @@ to its other end-node using equal-tagged ways but not the way itself.
 		//print_r($area);
 		foreach ($area->xpath('..') as $rule) {
 			//print_r($rule);	
-			$k=addslashes((string) $rule['k']);
-			$v=addslashes((string) $rule['v']);
+			$k=pg_escape_string($db1, (string) $rule['k']);
+			$v=pg_escape_string($db1, (string) $rule['v']);
 			$values=explode('|', $v);
 			foreach ($values as $dontcare=>$vv) {
 				query("INSERT INTO _tmp_way_tags(k,v) VALUES ('$k', '$vv');", $db1, false);

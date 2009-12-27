@@ -48,18 +48,18 @@ $tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_ta
 foreach ($replacement_list as $replacement) {
 	echo "checking for {$replacement[1]} = {$replacement[2]}\n";
 
-	$where = ' (k LIKE \'' . addslashes($replacement[1]) . '\'';
+	$where = ' (k LIKE \'' . pg_escape_string($db2, $replacement[1]) . '\'';
 	if ($replacement[2]<>'*') 
-		$where .= " AND v LIKE '". addslashes($replacement[2]) . "'";
+		$where .= " AND v LIKE '". pg_escape_string($db2, $replacement[2]) . "'";
 	$where .= ")";
 
 	$hint = (strlen(trim($replacement[3]))>1 ? '. Please use ' . trim($replacement[3]) . ' instead!' : '');
 
 	foreach ($tables as $object_type=>$table) {
 		query("
-			INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked) 
+			INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
 			SELECT $error_type, '$object_type', {$object_type}_id, 'This $object_type uses deprecated tag ' || k || '=' || v || '$hint', NOW()
-			FROM $table 
+			FROM $table
 			WHERE $where
 		", $db2, false);
 	}

@@ -231,9 +231,9 @@ global $error_type, $false_positives, $db1, $db2;
 			query("
 				INSERT INTO _tmp_bad_tags (k, v, replacement)
 				SELECT DISTINCT k_orig, v_orig,
-				'\"" . addslashes($irreg_key) . "\" looks like \"" . addslashes($reg_keys[1]) . "\"'
+				'\"" . pg_escape_string($db1, $irreg_key) . "\" looks like \"" . pg_escape_string($db1, $reg_keys[1]) . "\"'
 				FROM _tmp_tags
-				WHERE keylist[1:$keylen] = ARRAY[" . (strlen($irreg_prefix)>0 ?  "'".str_replace(':', "','", addslashes($irreg_prefix)) . "'," : '') . " '" . addslashes($irreg_key) . "']
+				WHERE keylist[1:$keylen] = ARRAY[" . (strlen($irreg_prefix)>0 ?  "'".str_replace(':', "','", pg_escape_string($db1, $irreg_prefix)) . "'," : '') . " '" . pg_escape_string($db1, $irreg_key) . "']
 			", $db1, false);
 
 		}

@@ -41,7 +41,7 @@ if ($argc<>2) {
 	exit;
 }
 
-$schema=$argv[1];		// AT, DE, EU etc
+$schema=$argv[1];		// schema number identifying planet part
 require('config.inc.php');
 require('helpers.inc.php');
 require('BufferedInserter.php');
@@ -596,7 +596,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 	query("
 		UPDATE _tmp_boundaries t
 		SET geom=ST_MPolyFromText(t, 4326)
-		WHERE name='" . addslashes($row['name']) . "' AND admin_level='" . $row['admin_level'] . "'
+		WHERE name='" . pg_escape_string($db2, $row['name']) . "' AND admin_level='" . $row['admin_level'] . "'
 	", $db2, false);
 }
 pg_free_result($result);
