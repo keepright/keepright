@@ -68,16 +68,16 @@ echo "</select><br>\n";
 if (!is_null($result)) mysqli_free_result($result);
 
 
-echo "<select name='st'>
+echo "<!-- <select name='st'>
 	<option " . (($st=='all')?'selected':'') . " value='all'>all</option>
 	<option " . (($st=='open')?'selected':'') . " value='open'>open errors</option>
 	<option " . (($st=='cleared')?'selected':'') . " value='cleared'>cleared errors</option>
-</select></td><td style='border-style:none' align='right'>
+</select> --> </td><td style='border-style:none' align='right'>
 latitude:<input size=6 type='text' name='lat' value='" . $lat/1e7 . "'>&deg;<br>
 longitude:<input size=6 type='text' name='lon' value='" . $lon/1e7 . "'>&deg;<br>
 square size:<input size=6 type='text' name='sq' value='" . $sq/1e7 . "'>&deg;
 </td></tr>
-<tr><td colspan=2 style='border-style:none'>Site updated at <b>" . get_updated_date() . "</b>.<br>Planet file downloaded at <b>" . get_planetfile_date() . "</b>&nbsp;&nbsp;<input type='submit' name='requery' value='requery'></td>";
+<tr><td colspan=2 style='border-style:none'>Site updated at <b>" . get_updated_date() . "</b>.<br><input type='submit' name='requery' value='requery'></td>";
 
 
 
@@ -87,8 +87,9 @@ square size:<input size=6 type='text' name='sq' value='" . $sq/1e7 . "'>&deg;
 
 
 $select='SELECT state, object_id, description, first_occurrence, last_checked, 
-	CONCAT("<a target=\'_blank\' href=\'report_map.php?lat=", lat/1e7, "&lon=", lon/1e7, "&zoom=15\'>map</a>") AS lnk, 
-	CONCAT("<a target=\'_blank\' href=\'http://www.openstreetmap.org/api/0.6/", object_type, "/", object_id, "\'>api</a>") AS api';
+	CONCAT("<a target=\'_blank\' href=\'report_map.php?lat=", lat/1e7, "&lon=", lon/1e7, "&zoom=15\'>map</a>") AS lnk,
+	CONCAT("<a target=\'_blank\' href=\'http://www.openstreetmap.org/api/0.6/", object_type, "/", object_id, "\'>api</a>") AS api,
+	CONCAT("<a target=\'_blank\' href=\'http://www.openstreetmap.org/edit?lat=", lat/1e7, "&lon=", lon/1e7, "&zoom=18&", object_type, "=", object_id, "\'>edit</a>") AS edit';
 $from ="FROM $error_view_name 
 WHERE TRUE ";
 
@@ -118,7 +119,7 @@ $grid = Datagrid::Create(
 
 $grid->allowSorting=true;
 $grid->showHeaders=true;
-$grid->NoSpecialChars('lnk', 'api');
+$grid->NoSpecialChars('lnk', 'api', 'edit');
 $grid->SetDisplayNames(
 	array(
 		'object_id' => 'object id',
