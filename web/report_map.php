@@ -49,6 +49,7 @@ if ($zoom==0) $zoom=14;
 
 
 $ch=$_GET["ch"];
+if (!isset($ch)) $ch='0';
 $checks_selected = split(',', $ch);
 //echo "ch=$ch<br>";
 //print_r($checks_selected);
