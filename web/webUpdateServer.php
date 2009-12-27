@@ -240,7 +240,7 @@ function toggle_tables1($db1, $schema){
 		", $db1, false);
 	}
 	// now we have a shadow table containing all records _except_
-	// the ones we don't want to update
+	// the ones we want to update
 
 	echo "done.\n";
 }
