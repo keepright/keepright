@@ -211,17 +211,35 @@ $islands = array(
 // just these nodes are important, that are used at least twice
 // in way_nodes (aka junctions)
 // select nodes of ways (and ferries) used at least twice
+// include all ways tagged as highway, route=ferry or railway=platform ( a
+// platform may connect roads in rare cases)
+// include furthermore ways that are part of a route=ferry relation even
+// though the ways themselves are not tagged as ferry
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
 	CREATE TABLE _tmp_junctions AS
 	SELECT node_id
 	FROM way_nodes wn
 	WHERE EXISTS (
-		SELECT * FROM way_tags t WHERE t.way_id=wn.way_id AND (t.k='highway' OR (t.k='route' AND t.v='ferry') OR (t.k='railway' AND t.v='platform'))
+		SELECT wt.way_id FROM way_tags wt WHERE wt.way_id=wn.way_id AND (
+			wt.k='highway' OR
+			(wt.k='route' AND wt.v='ferry') OR
+			(wt.k='railway' AND wt.v='platform')
+		)
+	) OR EXISTS (
+		SELECT rm.member_id
+		FROM relation_members rm
+		WHERE rm.member_type=2 AND rm.member_id=wn.way_id AND rm.relation_ID IN (
+			SELECT rt.relation_id
+			FROM relation_tags rt
+			WHERE rt.k='route' AND rt.v='ferry'
+		)
 	)
 	GROUP BY node_id
 	HAVING COUNT(DISTINCT way_id)>1
 ", $db1);
+
+
 query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
 query("ANALYZE _tmp_junctions", $db1);
 
