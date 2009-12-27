@@ -236,19 +236,19 @@ query("CREATE INDEX idx_tmp_wn_node_id ON _tmp_wn (node_id)", $db1);
 query("CREATE INDEX idx_tmp_wn_way_id ON _tmp_wn (way_id)", $db1);
 query("ANALYZE _tmp_wn", $db1);
 
-// _tmp_island_members will hold the elitair nodes that belong to an island
-query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
+// store the newly found way ids for the current round
+query("DROP TABLE IF EXISTS _tmp_ways_found_now ", $db1, false);
 query("
-	CREATE TABLE _tmp_ways (
+	CREATE TABLE _tmp_ways_found_now (
 	way_id bigint NOT NULL default 0,
 	PRIMARY KEY (way_id)
 	)
 ", $db1);
-add_insert_ignore_rule('_tmp_ways', 'way_id', $db1);
 
-query("DROP TABLE IF EXISTS _tmp_ways2", $db1, false);
+// store the way ids that were already known from the last rounds
+query("DROP TABLE IF EXISTS _tmp_ways_found_before", $db1, false);
 query("
-	CREATE TABLE _tmp_ways2 (
+	CREATE TABLE _tmp_ways_found_before (
 	way_id bigint NOT NULL default 0,
 	PRIMARY KEY (way_id)
 	)
@@ -265,41 +265,42 @@ query("CREATE INDEX idx_tmp_nodes_node_id ON _tmp_nodes (node_id)", $db1);
 
 
 // add starting way_ids that are part of islands
-$sql = "INSERT INTO _tmp_ways (way_id) VALUES ";
+$sql = "INSERT INTO _tmp_ways_found_now (way_id) VALUES ";
 foreach ($islands as $island=>$ways) foreach ($ways as $dontcare=>$way) $sql.="($way),";
 
 query(substr($sql, 0, -1), $db1);
-query("INSERT INTO _tmp_ways2 SELECT way_id FROM _tmp_ways", $db1);
+query("INSERT INTO _tmp_ways_found_before SELECT way_id FROM _tmp_ways_found_now ", $db1);
 $analyze_counter=0;
 do {
 	// first find nodes that belong to ways found in the last round
+	// it is sufficient to only consider ways found during the round before here!
 	query("TRUNCATE TABLE _tmp_nodes", $db1, false);
 	query("
 		INSERT INTO _tmp_nodes (node_id)
 		SELECT DISTINCT wn.node_id
-		FROM _tmp_ways w INNER JOIN _tmp_wn wn USING (way_id)
+		FROM _tmp_ways_found_now w INNER JOIN _tmp_wn wn USING (way_id)
 	", $db1, false);
 	if (++$analyze_counter % 10 == 0) query("ANALYZE _tmp_nodes", $db1, false);
 
 	// remove ways of last round
-	query("TRUNCATE TABLE _tmp_ways", $db1, false);
+	query("TRUNCATE TABLE _tmp_ways_found_now ", $db1, false);
 
 	// insert ways that are connected to nodes found before. these make the starting
 	// set for the next round
 	$result=query("
-		INSERT INTO _tmp_ways (way_id)
+		INSERT INTO _tmp_ways_found_now (way_id)
 		SELECT DISTINCT wn.way_id
-		FROM (_tmp_wn wn INNER JOIN _tmp_nodes n USING (node_id)) LEFT JOIN _tmp_ways2 w ON wn.way_id=w.way_id
+		FROM (_tmp_wn wn INNER JOIN _tmp_nodes n USING (node_id)) LEFT JOIN _tmp_ways_found_before w ON wn.way_id=w.way_id
 		WHERE w.way_id IS NULL
 	", $db1, false);
 	$count=pg_affected_rows($result);
 	if ($analyze_counter % 10 == 0) {
-		query("ANALYZE _tmp_ways", $db1, false);
-		query("ANALYZE _tmp_ways2", $db1, false);
+		query("ANALYZE _tmp_ways_found_now ", $db1, false);
+		query("ANALYZE _tmp_ways_found_before", $db1, false);
 	}
 
-	// remember any newly found way in separate table
-	query("INSERT INTO _tmp_ways2 SELECT way_id FROM _tmp_ways", $db1, false);
+	// finally add newly found ways in collector table containing all ways
+	query("INSERT INTO _tmp_ways_found_before SELECT way_id FROM _tmp_ways_found_now ", $db1, false);
 	echo "found $count additional ways\n";
 } while ($count>0);
 
@@ -309,7 +310,7 @@ do {
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), wn.way_id, 'This way is not connected to the rest of the map', NOW()
-	FROM _tmp_wn wn LEFT JOIN _tmp_ways2 w USING (way_id)
+	FROM _tmp_wn wn LEFT JOIN _tmp_ways_found_before w USING (way_id)
 	WHERE w.way_id IS NULL
 ", $db1);
 
@@ -319,7 +320,7 @@ query("DROP TABLE IF EXISTS _tmp_nodes", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_island_members", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
-query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
-query("DROP TABLE IF EXISTS _tmp_ways2", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_ways_found_now ", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_ways_found_before", $db1, false);
 
 ?>
