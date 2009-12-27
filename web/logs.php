@@ -9,6 +9,33 @@ data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
 
+<h4>2009-11-16</h4>
+The German errors table is now fixed with a complete run based on yesterday&apos;s planet file. Thank you, Norbert for telling me about the problem!
+
+<br><br>
+
+<h4>2009-11-15</h4>
+To all the German users:<br>
+The last database update went wrong and you will see only a fraction of the number of errors as you would expect. I have to re-run the checking to correct this so please be patient until Monday evening or Tuesday.<br>Sorry und nix f&uuml;r ungut!
+
+<br><br>
+
+<h4>2009-10-01</h4>
+I&apos;m proud to announce that finally the first run for The United States of America is finished. Keepright now covers all of the planet!<br>
+The procedure took 12 days to complete, so please be patient for the next update to come in (almost) two weeks.
+
+<br><br>
+
+<h4>2009-09-27</h4>
+I&apos;m proud to announce that Canada and Central America are now part of the checking process schedule. Please find the links on top of the page and have fun!
+
+<br><br>
+
+<h4>2009-09-21</h4>
+After a break there is again an update for the error tables. The delay was caused by restructuring work on the scripts wich are necessary for checking US states in the future. European countries are now checked individually, the results are put together into one big results table afterwards.<br>If you find any strange errors, especially near country borders, I would like to know!<br>
+Thank you for your patience.<br>
+<b>&lt;edit&gt;</b>you <i>will</i> find strange errors near the country borders. In fact there are issues with floating islands, ways without nodes and maybe more checks that are caused by truncated ways. I'm looking for a solution for this. Please be careful near country borders in the meantime! Thank you, Armin, for telling me.<b>&lt;/edit&gt;</b>
+
 <br><br>
 
 <h4>2009-08-29</h4>

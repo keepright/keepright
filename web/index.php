@@ -35,26 +35,15 @@ Developers have a look at the <a href="http://apps.sourceforge.net/trac/keeprigh
 
 <h3>logfile</h3>
 
+<h4>2009-12-27</h4>
+After one month without any updates for Northern America I'm back on regular operations now. Delay was caused by troubles with updating planet files with diffs but are solved now with help from the dev mailing list. Thank you, Lennard, Frederik and Brett!<br>
+The floating islands check will consider ways that are part of relations tagged with route=ferry even though the ways themselves don&apos;t have a railway=ferry tag. Thank you, Simon, for the suggestion!<br>
+The almost-junction-check now not only ignores ways tagged with noexit=yes but also those tagged with highway=turning_circle. Thank you, Riccardo, for the suggestion!
+
+<br><br>
+
 <h4>2009-11-16</h4>
-The German errors table is now fixed with a complete run based on yesterday&apos;s planet file. Thank you, Norbert for telling me about the problem!
-
-<h4>2009-11-15</h4>
-To all the German users:<br>
-The last database update went wrong and you will see only a fraction of the number of errors as you would expect. I have to re-run the checking to correct this so please be patient until Monday evening or Tuesday.<br>Sorry und nix f&uuml;r ungut!
-
-<h4>2009-10-01</h4>
-I&apos;m proud to announce that finally the first run for The United States of America is finished. Keepright now covers all of the planet!<br>
-The procedure took 12 days to complete, so please be patient for the next update to come in (almost) two weeks.
-
-<h4>2009-09-27</h4>
-I&apos;m proud to announce that Canada and Central America are now part of the checking process schedule. Please find the links on top of the page and have fun!
-
-
-<h4>2009-09-21</h4>
-After a break there is again an update for the error tables. The delay was caused by restructuring work on the scripts wich are necessary for checking US states in the future. European countries are now checked individually, the results are put together into one big results table afterwards.<br>If you find any strange errors, especially near country borders, I would like to know!<br>
-Thank you for your patience.<br>
-<b>&lt;edit&gt;</b>you <i>will</i> find strange errors near the country borders. In fact there are issues with floating islands, ways without nodes and maybe more checks that are caused by truncated ways. I'm looking for a solution for this. Please be careful near country borders in the meantime! Thank you, Armin, for telling me.<b>&lt;/edit&gt;</b>
-
+With today&apos;s update I introduce a new kind of cutting the planet into manageable parts. Checking is done on rectangular parts that overlap at their borders. Errors in the overlapping regions are discarded because they are supposed to come from cutting inconsistencies. So errors at country borders should disappear. Maybe you find some new(?) at my new <a target="_blank" href="planet.jpg">cutting borders</a>. If so please tell me via e9625163 at gmx at. For now this is only valid for Europe, the rest will follow.
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
 
