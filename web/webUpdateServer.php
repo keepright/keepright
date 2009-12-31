@@ -88,7 +88,7 @@ if ($_SESSION['authorized']===true) {
 			empty_error_types_table($db1);
 		break;
 		case 'reopen_errors':
-			reopen_errors($db1, addslashes($_GET['date']));
+			reopen_errors($db1, $schema);
 		break;
 		case 'set_updated_date':
 			write_file($updated_file_name, addslashes($_GET['date']));
@@ -339,22 +339,28 @@ function write_file($filename, $content) {
 
 
 // update temporarily ignored errors to open again
-// if they are older than the last download dump file
-// and if the error is still open in the newest error_view
-// $date HAS TO BE of the form YYYY-MM-DD
-function reopen_errors($db1, $date) {
+// if the ignore state was set before the object was edited
+// i.e. if the version of the object after the edit was checked.
+// lets assume a crace time of maximum two hours between state timestamp
+// and object timestamp (users needn't edit the objects at the same
+// time as they set the state in keepright.
+// do this only if the error is still open in the newest error_view
+function reopen_errors($db1, $schema) {
 global $error_view_name, $comments_name;
 
-	$sql="
-		UPDATE $comments_name c inner join $error_view_name ev using (error_id)
-		SET c.state=null,
-		c.comment=CONCAT(\"[error still open, $date] \", c.comment)
-		WHERE c.state='ignore_temporarily' AND
-		ev.state<>'cleared' AND
-		c.timestamp<\"$date\"
-	";
+	if (strlen($schema) && $schema!=='%') 
+		$s="ev.`schema`=\"$schema\" AND ";
+	else
+		$s="";
 
-	query($sql, $db1, false);
+	$sql="
+		UPDATE $comments_name c inner join $error_view_name ev using (`schema`, error_id)
+		SET c.state=null,
+		c.comment=CONCAT(\"[error still open, \", CURDATE(), \"] \", c.comment)
+		WHERE $s c.state='ignore_temporarily' AND
+		ev.state<>'cleared' AND
+		c.timestamp<DATE_SUB(ev.object_timestamp, INTERVAL 2 HOUR)
+	";
 
 	echo "\ndone.\n";
 }
