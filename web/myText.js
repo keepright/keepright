@@ -239,22 +239,21 @@ parseData: function(ajaxRequest) {
 			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">Potlatch</a></p>' +
 
 			''+
-			'<form class="p3" name="errfrm_'+error_id+'" target="hiddenIframe" method="get" action="comment.php">' +
-			'<input type="radio" id="st_'+error_id+'_n" '+(state!='ignore_t' && state!='ignore' ? 'checked="checked"' :'')+' name="st" value="">'+
-			'<label for="st_'+error_id+'_n">keep this error open</label><br>'+
-			'<input type="radio" id="st_'+error_id+'_t" '+(state=='ignore_t' ? 'checked="checked"' :'')+' name="st" value="ignore_t">'+
-			'<label for="st_'+error_id+'_t">ignore temporarily (error corrected)</label><br>'+
-			'<input type="radio" id="st_'+error_id+'_i" '+(state=='ignore' ? 'checked="checked"' :'')+' name="st" value="ignore">'+
-			'<label for="st_'+error_id+'_i">ignore (false-positive)</label>&nbsp;'+
+			'<form class="p3" name="errfrm_'+schema+'_'+error_id+'" target="hiddenIframe" method="get" action="comment.php">' +
+			'<input type="radio" id="st_'+schema+'_'+error_id+'_n" '+(state!='ignore_t' && state!='ignore' ? 'checked="checked"' :'')+' name="st" value="">'+
+			'<label for="st_'+schema+'_'+error_id+'_n">keep this error open</label><br>'+
+			'<input type="radio" id="st_'+schema+'_'+error_id+'_t" '+(state=='ignore_t' ? 'checked="checked"' :'')+' name="st" value="ignore_t">'+
+			'<label for="st_'+schema+'_'+error_id+'_t">ignore temporarily (error corrected)</label><br>'+
+			'<input type="radio" id="st_'+schema+'_'+error_id+'_i" '+(state=='ignore' ? 'checked="checked"' :'')+' name="st" value="ignore">'+
+			'<label for="st_'+schema+'_'+error_id+'_i">ignore (false-positive)</label>&nbsp;'+
 			'<textarea cols="25" rows="2" name="co">'+comment+'</textarea>'+
 			'<input type="hidden" name="db" value="'+ document.myform.db.value +'">'+
 			'<input type="hidden" name="schema" value="'+schema+'">'+
 			'<input type="hidden" name="id" value="'+error_id+'">'+
-			'<input type="button" value="save" onClick="javascript:saveComment('+error_id+', '+error_type+');">' +
-			'<input type="button" value="cancel" onClick="javascript:closeBubble('+error_id+');">' +
+			'<input type="button" value="save" onClick="javascript:saveComment('+schema+', '+error_id+', '+error_type+');">' +
+			'<input type="button" value="cancel" onClick="javascript:closeBubble('+schema+', '+error_id+');">' +
 			'</form><small>please click on the icon to fixate the bubble<br>' +
-			'link to here: error #<a href="report_map.php?'+
-			((document.myform.db.value=='osm_EU') ? '' : 'db='+document.myform.db.value+'&')+ 'error='+error_id+'">'+error_id+'</a><br>last edit of this ' + object_type + ': ' + object_timestamp + '</small>';
+			'link to here: error #<a href="report_map.php?db='+document.myform.db.value+'&schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>last edit of this ' + object_type + ': ' + object_timestamp + '</small>';
 		}
 
 
@@ -274,7 +273,7 @@ parseData: function(ajaxRequest) {
 		thisObject.addMarker(marker);
 
 		// open error bubble if it is to highlight
-		if (error_id==document.myform.highlight_error_id.value)
+		if (schema==document.myform.highlight_schema.value && error_id==document.myform.highlight_error_id.value)
 			marker.events.triggerEvent("mousedown");
 
 		return markerFeature.id;
@@ -298,55 +297,60 @@ parseData: function(ajaxRequest) {
 	var features = parser.read(text);
 	var newfeatures = {};
 	var error_id;
+	var schema;
 	for (var i=0, len=features.length; i<len; i++) {
 		error_id=features[i].attributes.error_id;
+		schema=features[i].attributes.schema;
 		if (error_id != undefined && error_id != null) {
+			if (this.error_ids[schema]==undefined) this.error_ids[schema]={};
 			// create it only if it doesn't already exist
-			if (!this.error_ids[error_id]) {
-				this.error_ids[error_id]=create_errorbubble_feature(this, features[i]);
+			if (!this.error_ids[schema][error_id]) {
+				this.error_ids[schema][error_id]=create_errorbubble_feature(this, features[i]);
 			}
-			newfeatures[error_id]=true;
+			if (newfeatures[schema]==undefined) newfeatures[schema]={};
+			newfeatures[schema][error_id]=true;
 		}
 	}
 
 
 	// now remove features not needed any more
 	var feature_id = null;
-	for (var i in this.error_ids) {
-		if (!newfeatures[i]) {
-			//console.log("dropping error id " + i + " " + this.error_ids[i]);
-			feature_id=this.error_ids[i];
-			var featureToDestroy = null;
-			var j=0;
-			var len=this.features.length;
-			while (j<len && featureToDestroy==null) {
-				if (this.features[j].id == feature_id) {
-					featureToDestroy=this.features[j];
-				}
-				j++;
-			}
-			if (featureToDestroy != null) {
-				OpenLayers.Util.removeItem(this.features, featureToDestroy);
-
-				// the marker associated to the feature has to be removed from map.markers manually
-				var markerToDestroy = null;
-				var k=0;
-				var len=this.markers.length;
-				while (k<len && markerToDestroy==null) {
-					if (this.markers[k].events.element.id == featureToDestroy.marker.events.element.id) {
-						markerToDestroy=this.markers[k];
+	for (var sch in this.error_ids) {
+		for (var errid in this.error_ids[sch]) {
+			if (newfeatures[sch]==undefined || !newfeatures[sch][errid]) {
+				//console.log("dropping error id " + sch + "." + " + errid + " " + this.error_ids[sch][errid]);
+				feature_id=this.error_ids[sch][errid];
+				var featureToDestroy = null;
+				var j=0;
+				var len=this.features.length;
+				while (j<len && featureToDestroy==null) {
+					if (this.features[j].id == feature_id) {
+						featureToDestroy=this.features[j];
 					}
-					k++;
+					j++;
 				}
-				OpenLayers.Util.removeItem(this.markers, markerToDestroy);
+				if (featureToDestroy != null) {
+					OpenLayers.Util.removeItem(this.features, featureToDestroy);
 
-				featureToDestroy.destroy();
-				featureToDestroy=null;
+					// the marker associated to the feature has to be removed from map.markers manually
+					var markerToDestroy = null;
+					var k=0;
+					var len=this.markers.length;
+					while (k<len && markerToDestroy==null) {
+						if (this.markers[k].events.element.id == featureToDestroy.marker.events.element.id) {
+							markerToDestroy=this.markers[k];
+						}
+						k++;
+					}
+					OpenLayers.Util.removeItem(this.markers, markerToDestroy);
+
+					featureToDestroy.destroy();
+					featureToDestroy=null;
+				}
+				delete this.error_ids[sch][errid];
 			}
-			delete this.error_ids[i];
 		}
 	}
-
 	this.events.triggerEvent("loadend");
 },
 

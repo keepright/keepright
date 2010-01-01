@@ -28,18 +28,18 @@ $agent=addslashes($_SERVER['HTTP_USER_AGENT']);
 $ip=$_SERVER['REMOTE_ADDR'];
 
 
-if (is_numeric($id)) {
+if (is_numeric($id) && is_numeric($schema)) {
 
 	// move any comment into history
 	$result=mysqli_query($db1, "
 		INSERT INTO $comments_historic_name
 		SELECT * FROM $comments_name
-		WHERE error_id=$id
+		WHERE `schema`='$schema' AND error_id=$id
 	");
 	// drop old comment
 	$result=mysqli_query($db1, "
 		DELETE FROM $comments_name
-		WHERE error_id=$id
+		WHERE `schema`='$schema' AND error_id=$id
 	");
 	// insert new comment
 	$result=mysqli_query($db1, "

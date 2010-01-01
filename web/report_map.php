@@ -13,6 +13,7 @@ $lat = 1e7*htmlentities($_GET['lat']);		// center of view
 $lon = 1e7*htmlentities($_GET['lon']);
 $zoom = 1*htmlentities($_GET['zoom']);
 $highlight_error_id=1*htmlentities($_GET['error']);
+$highlight_schema=1*htmlentities($_GET['schema']);
 
 // flags for display of ignored/temp.ignored errors. Default is "on"
 if (!isset($_GET['show_ign'])) $_GET['show_ign']='1';
@@ -30,7 +31,8 @@ if ($highlight_error_id<>0) {
 	$result=mysqli_query($db1, "
 		SELECT lat, lon
 		FROM $error_view_name
-		WHERE error_id=" . addslashes($highlight_error_id)
+		WHERE error_id=" . addslashes($highlight_error_id) ."
+		AND `schema`=" . addslashes($highlight_schema)
 	);
 
 	while ($row = mysqli_fetch_array($result)) {
@@ -160,21 +162,21 @@ if (!$st) $st='open';
 	}
 
 <?php 	//Initialise the 'map' object ?>
-	function saveComment(error_id, error_type) {
-		var myfrm = document['errfrm_'+error_id];
-		repaintIcon(error_id, myfrm.st, error_type);
+	function saveComment(schema, error_id, error_type) {
+		var myfrm = document['errfrm_'+schema+'_'+error_id];
+		repaintIcon(schema, error_id, myfrm.st, error_type);
 		myfrm.submit();
-		closeBubble(error_id);
+		closeBubble(schema, error_id);
 	}
 
-	function repaintIcon(error_id, state, error_type) {
+	function repaintIcon(schema, error_id, state, error_type) {
 <?php		// state is a reference to the option group inside the bubble's form;
 		// state[0].checked==true means state==none
 		// state[1].checked==true means state==ignore temporarily
 		// state[2].checked==true means state==ignore
 ?>
 
-		var feature_id = pois.error_ids[error_id];
+		var feature_id = pois.error_ids[schema][error_id];
 		var i=0;
 		var len=pois.features.length;
 		var feature=null;
@@ -190,8 +192,8 @@ if (!$st) $st='open';
 	}
 
 <?php	// called as event handler on the cancel button ?>
-	function closeBubble(error_id) {
-		var feature_id = pois.error_ids[error_id];
+	function closeBubble(schema, error_id) {
+		var feature_id = pois.error_ids[schema][error_id];
 
 		var i=0;
 		var len=pois.features.length;
@@ -343,6 +345,7 @@ echo "</script>\n";
 echo "
 <input type='hidden' name='number_of_tristate_checkboxes' value='" . $subgroup_counter . "'>
 <input type='hidden' name='highlight_error_id' value='" . $highlight_error_id . "'>
+<input type='hidden' name='highlight_schema' value='" . $highlight_schema . "'>
 <input type='hidden' name='db' value='" . $db . "'>
 <input type='hidden' name='lat' value='" . $lat/1e7 . "'>
 <input type='hidden' name='lon' value='" . $lon/1e7 . "'>
