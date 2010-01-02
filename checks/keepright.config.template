@@ -58,6 +58,9 @@ CHECKSDIR=$PREFIX"checks"
 PLANETFILE_URL="http://planet.openstreetmap.org/planet-latest.osm.bz2"
 PLANETFILE=$TMPDIR"/planet.osm"
 
+# the path of the osmosis calling script -- not the JAR-file!
+OSMOSIS_BIN="/home/haraldk/OSM/osmosis-0.32.1/bin/osmosis"
+
 
 # this is where the result files will be placed
 # you HAVE TO specify the full path names here,
