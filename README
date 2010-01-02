@@ -26,7 +26,7 @@ mysql-server
 mysql-client
 phpMyAdmin
 phpPgAdmin
-a java6 vm
+sun-java6-jre
 subversion
 wget
 wput
@@ -39,7 +39,9 @@ mc
 
 You will need both Postgres and MySQL because the checks require GIS functions and the error-presentation scripts rely on MySQL. They will not be recoded to use Postgres because you won't find Postgres on many webhosters.
 
-The checks depend on a whole copy of the OSM database. You need not use the full dump, an excerpt of the region interesting to you will also work. The scripts are laid out to access not just one database. I use Austria for testing new checks and a second database containing whole Europe for production. Please note that using a subset of the planet file may result in false-positives because ways are cut in two at the border!
+Using sun-java6-jre is not optional. You need java6 by Sun.
+
+The checks depend on a copy of the OSM database, split up in parts. Using only a subset of the planet file will result in false-positives because ways are cut in two at the border. To avoid this the splitting is done with overlapping borders - the border regions are included in both adjacent dumps. In the end errors in the overlapping area are discarded.
 
 
 THE BIG PICTURE
@@ -49,13 +51,10 @@ This is the whole process from getting the planet file, running the checks, publ
 error_view is the resulting table containing all errors. It's the source for the map presentation.
 
 
-updatedb.sh                             download planet file
+updatedb.sh               download planet file, update an existing planet file
                                                  |
                                                  v
-prepare_tablestructure.php     add new columns to the standard schema
-                                                 |
-                                                 v
-modified osmosis            convert and insert planet file into database
+osmosis plugin pl            convert and insert planet file into database
 pgsql_simple_load.sql                            |
                                                  |
                                                  v
@@ -92,17 +91,52 @@ called on webserver
 Everything needed for the webserver is also done locally. This way you always have a local copy of the site running for testing.
 
 
+
+DATABASE LAYOUT
+---------------
+
+For historical reasons and for avoiding webserver overload the database is split in parts:
+
+osm_EU Europe
+osm_US USA
+osm_CA Canada
+osm_XA Africa
+osm_XC South America
+osm_XD Asia
+osm_XG Central America
+osm_AU Australia
+
+Consider this splitting as logical groups, they don't actually have a special meaning. Inside all of these databases look the same.
+Inside the databases there is a finer grained splitting: schemas. The planet file is split in appriximately 70 rectangular areas represented by schemas in postgresql (have a look at config/planet.odg for the splitting layout).
+Each database has a public schema that contains the errors table for collecting all issues as well as an augmented version thereof (error_view) which is used on the web server. Besides the public schema there is a number of individual schemas containing the osm objects (ways, nodes, relations) for that specific area.
+
+osm_EU
+	public
+	schema1
+	schema2
+	schema3
+	...
+
+osm_XD
+	public
+	schema48
+	schema49
+
+Area-specific schemas are re-created on each run from scratch. They may be dropped immediately after each run. Only the public.errors table is persistent.
+
+
 SETTING UP LOCAL DATABASES
 --------------------------
 
 [Don't skip this section if you already have a local database!]
 
-This project uses the "simple PostgreSQL schema" as specified in osmosis/script/pgsql_simple_schema.sql, which is part of the source distribution of Osmosis in an extended form. This means that the base tables are the same, but there are additional columns providing redundancy. This redundancy is used to boost performance of the queries as it can save some joins. For example the ways table has the number of nodes, as well as the id and lat/lon of the first and last node as additional columns; in way_nodes you find lat/lon of the nodes.
+This project uses a modified version of the "simple PostgreSQL schema" as specified in osmosis/script/pgsql_simple_schema.sql, which is part of the source distribution of Osmosis. This means that the base tables are the same, but there are additional columns providing redundancy. This redundancy is used to boost performance of the queries as it can save some joins. For example the ways table has the number of nodes, as well as the id and lat/lon of the first and last node as additional columns; in way_nodes you find lat/lon of the nodes.
 
-The downside is, you cannot use a default database. And you have to use a modified version of Osmosis to convert the planet file. A special edition of Osmosis is provided with the sources. It knows a new option --pl that will create dump files with parts of the redundancy needed.
+The downside is, you cannot use a default database. And you have to use a modified version of Osmosis to convert the planet file. A plugin for Osmosis is provided with the sources. It teaches Osmosis a new option --pl that will create dump files with parts of the redundancy needed.
 
-The database name defined in the config is called osm_<ISO CODE> so the database created must match them or edit the config file to suit. This is the short form of an article on the wiki
-http://wiki.openstreetmap.org/wiki/Mapnik/PostGIS 
+This is the short form of an article on the wiki http://wiki.openstreetmap.org/wiki/Mapnik/PostGIS
+
+These are setup parameters you should set before starting out manually:
 
 >>>Tune database parameters
 edit /etc/postgresql/8.3/main/postgresql.conf and add/modify these parameters:
@@ -152,14 +186,14 @@ ALTER ROLE
 
 
 Wondering why the auto-vac-daemon ist shut off?
-The daemon will start analyzing and vacuuming tables every few hours to keep index performance up on a high level. But this consumes large amounts of IO bandwidth and disturbes normal operation. Vacuuming is done by hand throughout the scripts. Basically it is done once after the update and then implicitly by adding indexes after inserting the data.
+The daemon will start analyzing and vacuuming tables every few hours to keep index performance up on a high level. But this consumes large amounts of IO bandwidth and disturbes normal operation. Vacuuming is done by hand throughout the scripts because there are many temporary tables that need analyzing and the daemon never comes at the right time. Basically it is done once after loading data and then manually after creation of temp tables and adding indexes.
 
-For inserting actual data take a look at updateDB.sh and config: This is a shell script that downloads a planet dump from the net and inserts the planet files contents in a database. In config you can define the names of your databases and the URLs where the dump files are to be found.
+For inserting actual data take a look at updateDB.sh, planet.php and config: These scripts download a planet dump from the net or diff-update an already existing set of planet excerpts and insert the planet files contents in a database. In config you can define the databases and the coordinates of the areas.
 
 Don't forget to adapt the MAIN_DB_HOST, MAIN_DB_USER and MAIN_DB_PASS variables to match your database credentials.
-OSMOSIS_BIN has to point to the location where you have put the modified osmosis executable.
+OSMOSIS_BIN has to point to the location where you have put the osmosis executable.
 
-Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new error types. You will want to make settings differ from the standard settings. Therefore you can change the file ~/keepright.config which is a copy of config/config initially (this file will be created upon the first run of updateDB.sh). ~/keepright.config will be read after the built in config file so any settings made here will overwrite the default.
+Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new error types. You will want to make settings differ from the standard settings. Therefore you can change the file ~/keepright.config which includes only the system-specific settings (this file will be created upon the first run of updateDB.sh). ~/keepright.config will be read after the built-in config file so any settings made here will overwrite the default.
 
 
 Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts. Update ~/keepright.config and webconfig.inc.php with the new database credentials.
@@ -169,39 +203,17 @@ Finally you will have to setup a MySQL database and user for the destination tab
 RUNNING THE CHECKS
 ------------------
 
-First of all you need to specify database credentials in ~/keepright.config. You may specify credentials for as much databases as you like. Look at the definition of db credentials and adapt the existing ones! You specify the database of your choice on the command line by using a short-hand key (eg. "AT"). It is used to find the credentials by looking the appropriate db parameters in ~/keepright.config.
+First of all you need to specify database credentials in ~/keepright.config.
 
 Second, take a look at the list of error types. Here you may specify which types of checks should be executed. Anything different from zero will enable a job.
 
-Start checking by calling run-checks.php from the shell:
-> php run-checks.php AT 20 30 40
-will start the checks 20, 30 and 40 on the database specified under key "AT". Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in ~/keepright.config.
+Assuming you already have a populated database you start checking by calling run-checks.php from the shell:
+> php run-checks.php 1 20 30 40
+will start the checks 20, 30 and 40 on the database schema called 1. Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in ~/keepright.config.
 
 When processing has finished you will have (among others) a newly created table called error_view. Here you can find records for all errors that exist. This postgres table will get transferred into MySQL by updateDB.sh (it will call updateWebDB.sh).
 
 As time goes by you will update your database and maybe errors are getting corrected. The scripts will detect when old errors don't exist any more and will update the state information in the errors tables to state==cleared.
-
-Running checks on large databases takes plenty of time! Here you can see the time sheet when running on the Europe database on my machine:
-
-Array
-(
-    [0030_non-closed_areas.php] => 1h 57m
-    [0040_dead-ended_one-ways.php] => 25m 55s
-    [0050_almost-junctions.php] => 4h 29m
-    [0060_deprecated_tags.php] => 18m 35s
-    [0070_missing_tags.php] => 14m 20s
-    [0090_motorways_without_ref.php] => 9.94s
-    [0100_places_of_worship_without_religion.php] => 3m 21s
-    [0110_point_of_interest_without_name.php] => 3m 44s
-    [0120_ways_without_nodes.php] => 41.36s
-    [0130_islands.php] => 8h 39m
-    [0150_level_crossing_without_tag.php] => 23m 47s
-    [0160_wrong_use_of_level_crossing_tag.php] => 4m 17s
-    [0170_fixme.php] => 2m 47s
-    [0180_relations_without_type.php] => 0.95s
-    [0190_intersections_without_junctions.php] => 17h 56m
-    [0210_loopings.php] => 42m 51s
-)
 
 
 VISUALIZING RESULTS
@@ -219,7 +231,7 @@ WRITING YOUR OWN CHECKS
 
 Take a look at the existing checks to see how they work. Then take a look at the template file 0000_template.php. If you write a new check you also have to mention it in the config file.
 
-Keep in mind that all checks are included inside a while loop that is running inside run-checks.php. Surprisingly that doesn't matter much, with some exceptions:
+Keep in mind that all checks are included using include() inside a while loop that is running inside run-checks.php. Surprisingly that doesn't matter much, with some exceptions:
 Any checks run in the same scope, you are even allowed to declare functions (inside the while-loop!) but you must not declare two functions of the same name in different checks. Also don't rely on global variables not being used at the beginning of your script (maybe another check did already initialize a variable of the same name). The same is valid for temporary tables you may need. Always check if a table already exists before creating it. At the end of the script drop any tables you have created.
 
 Maybe in the future I will change this into an oop-styled buch of classes, but up to now it is working great this way.
