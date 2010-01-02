@@ -242,6 +242,11 @@ for i do	# loop all given parameter values
 		echo "`date` * running the checks"
 		php run-checks.php "$i"
 
+                if [ "$DROP_SCHEMA" != "0" ]; then
+                        echo "dropping schema $SCHEMA"
+                        psql -c "DROP SCHEMA IF EXISTS $SCHEMA CASCADE"
+                fi
+
 		cd "$CHECKSDIR"
 		echo "`date` * ready."
 

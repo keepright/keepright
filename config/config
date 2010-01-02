@@ -51,6 +51,12 @@ TMPDIR="/home/haraldk/OSM/keepright/planet"
 # the old one set this parameter to one
 KEEP_OSM="0"
 
+# set this option to "1" if you want the db schema
+# to be removed after each run to save hard disk space
+# downside is: you cannot have a look inside for debugging.
+# activate on productive systems only
+DROP_SCHEMA="0"
+
 # this is where the check scripts reside
 CHECKSDIR=$PREFIX"checks"
 
