@@ -53,7 +53,7 @@ query("
 		SELECT rm.relation_id
 		FROM relation_members rm INNER JOIN relation_tags rt ON (rm.relation_id=rt.relation_id)
 		WHERE rm.member_id=e.object_id
-		AND rm.member_type=2
+		AND rm.member_type='W'
 		AND rm.member_role in ('inner', 'outer')
 		AND rt.k='type'
 		AND rt.v='multipolygon'

@@ -170,7 +170,7 @@ query("
 	INSERT INTO _tmp_border_ways_tmp
 	SELECT br.name, br.admin_level, br.relation_id, rm.member_id
 	FROM (_tmp_border_relations br INNER JOIN relation_members rm USING (relation_id))
-	WHERE rm.member_type=2
+	WHERE rm.member_type='W'
 ", $db1);
 
 query("CREATE INDEX idx_tmp_border_ways_tmp_relation_id ON _tmp_border_ways_tmp (relation_id)", $db1, false);

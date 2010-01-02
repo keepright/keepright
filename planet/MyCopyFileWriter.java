@@ -1,5 +1,5 @@
-// License: GPL. Copyright 2007-2008 by Brett Henderson and other contributors.
-//package com.bretth.osmosis.core.pgsql.common;
+// This software is released into the Public Domain.  See copying.txt for details.
+//package org.openstreetmap.osmosis.core.pgsql.common;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -15,10 +15,9 @@ import java.util.logging.Logger;
 
 import org.postgis.Geometry;
 import org.postgis.binary.BinaryWriter;
-import org.postgresql.geometric.PGpoint;
 
-import com.bretth.osmosis.core.OsmosisRuntimeException;
-import com.bretth.osmosis.core.store.Completable;
+import org.openstreetmap.osmosis.core.OsmosisRuntimeException;
+import org.openstreetmap.osmosis.core.lifecycle.Completable;
 
 
 /**
@@ -77,7 +76,7 @@ public class MyCopyFileWriter implements Completable {
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(boolean data) {
+	public void writeField(boolean data) {
 		initialize();
 		
 		try {
@@ -101,7 +100,7 @@ public class MyCopyFileWriter implements Completable {
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(int data) {
+	public void writeField(int data) {
 		initialize();
 		
 		try {
@@ -114,13 +113,14 @@ public class MyCopyFileWriter implements Completable {
 		}
 	}
 	
+	
 	/**
 	 * Writes data to the output file.
 	 * 
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(double data) {
+	public void writeField(double data) {
 		initialize();
 		
 		try {
@@ -140,7 +140,7 @@ public class MyCopyFileWriter implements Completable {
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(long data) {
+	public void writeField(long data) {
 		initialize();
 		
 		try {
@@ -154,7 +154,7 @@ public class MyCopyFileWriter implements Completable {
 	}
 	
 	
-	 /**
+	/**
 	 * Inserts escape sequences needed to make a String suitable for writing to
 	 * a COPY file.
 	 * 
@@ -164,7 +164,7 @@ public class MyCopyFileWriter implements Completable {
 	 */
 	private String escapeString(String data) {
 		StringBuilder result;
-		char dataArray[];
+		char[] dataArray;
 		
 		if (data == null) {
 			return "\\N";
@@ -215,7 +215,7 @@ public class MyCopyFileWriter implements Completable {
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(String data) {
+	public void writeField(String data) {
 		initialize();
 		
 		try {
@@ -235,7 +235,7 @@ public class MyCopyFileWriter implements Completable {
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(Date data) {
+	public void writeField(Date data) {
 		initialize();
 		
 		try {
@@ -255,34 +255,17 @@ public class MyCopyFileWriter implements Completable {
 	 * @param data
 	 *            The data to be written.
 	 */
-	public void writeMyField(PGpoint data) {
+	public void writeField(Geometry data) {
 		initialize();
 		
 		try {
 			separateField();
-			
-			writer.write(data.getValue());
-			
-		} catch (IOException e) {
-			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
-		}
-	}
-	
-	
-	/**
-	 * Writes data to the output file.
-	 * 
-	 * @param data
-	 *            The data to be written.
-	 */
-	public void writeMyField(Geometry data) {
-		initialize();
-		
-		try {
-			separateField();
-			
-			//writer.write(new PGgeometry(data).toString());
-			writer.write(postgisBinaryWriter.writeHexed(data));
+
+		    if (data == null) {
+                writer.write(escapeString(null));
+            } else {	
+			    writer.write(postgisBinaryWriter.writeHexed(data));
+            }
 			
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
@@ -317,7 +300,8 @@ public class MyCopyFileWriter implements Completable {
 			try {
 				outStream = new FileOutputStream(file);
 				
-				writer = new BufferedWriter(new OutputStreamWriter(new BufferedOutputStream(outStream, 65536), "UTF-8"));
+				writer = new BufferedWriter(
+						new OutputStreamWriter(new BufferedOutputStream(outStream, 65536), "UTF-8"));
 				
 				outStream = null;
 				
@@ -343,6 +327,8 @@ public class MyCopyFileWriter implements Completable {
 	 * Flushes all changes to file.
 	 */
 	public void complete() {
+		initialize();
+		
 		try {
 			if (midRecord) {
 				throw new OsmosisRuntimeException("The current record has not been ended.");

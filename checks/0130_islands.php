@@ -229,7 +229,7 @@ query("
 	) OR EXISTS (
 		SELECT rm.member_id
 		FROM relation_members rm
-		WHERE rm.member_type=2 AND rm.member_id=wn.way_id AND rm.relation_ID IN (
+		WHERE rm.member_type='W' AND rm.member_id=wn.way_id AND rm.relation_ID IN (
 			SELECT rt.relation_id
 			FROM relation_tags rt
 			WHERE rt.k='route' AND rt.v='ferry'

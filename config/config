@@ -45,7 +45,7 @@ WEB_DB_NAME="osm_EU"
 PREFIX="/home/haraldk/OSM/keepright/"
 
 # a separate high speed partition preferably
-TMPDIR=$PREFIX"planet"
+TMPDIR="/home/haraldk/OSM/keepright/planet"
 
 # to turn off downloading the planet file and use
 # the old one set this parameter to one
@@ -56,8 +56,10 @@ CHECKSDIR=$PREFIX"checks"
 
 # where to download the complete planet file and where to store it
 PLANETFILE_URL="http://planet.openstreetmap.org/planet-latest.osm.bz2"
-PLANETFILE=$TMPDIR"/planet.osm"
+PLANETFILE="/home/haraldk/OSM/keepright/planet/planet.osm"
 
+# the path of the osmosis calling script -- not the JAR-file!
+OSMOSIS_BIN="/home/haraldk/OSM/osmosis-0.32.1/bin/osmosis"
 
 # this is where the result files will be placed
 # you HAVE TO specify the full path names here,

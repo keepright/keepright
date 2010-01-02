@@ -304,14 +304,14 @@ query("
 	UPDATE _tmp_ev e
 	SET lat=1e7*n.lat, lon=1e7*n.lon
 	FROM relation_members m INNER JOIN nodes n ON m.member_id=n.id
-	WHERE m.relation_id=e.object_id AND m.member_type=1
+	WHERE m.relation_id=e.object_id AND m.member_type='N'
 ", $db1);
 
 query("
 	UPDATE _tmp_ev e
 	SET lat=1e7*wn.lat, lon=1e7*wn.lon
 	FROM relation_members m INNER JOIN way_nodes wn ON m.member_id=wn.way_id
-	WHERE e.lat=0 AND e.lon=0 AND m.relation_id=e.object_id AND m.member_type=2
+	WHERE e.lat=0 AND e.lon=0 AND m.relation_id=e.object_id AND m.member_type='W'
 ", $db1);
 
 $result=query("

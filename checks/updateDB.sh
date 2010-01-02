@@ -204,7 +204,7 @@ for i do	# loop all given parameter values
 		echo "`date` * converting osm file into database dumps"
 		cd "$TMPDIR"
 
-		"$CAT" "$TMPDIR/$FILE" | java -jar osmosis.jar -p pl --read-xml file=/dev/stdin --pl
+		"$CAT" "$TMPDIR/$FILE" | "$OSMOSIS_BIN" --read-xml file=/dev/stdin --pl
 
 		echo "`date` * joining way_nodes and node coordinates"
 		sort "$SORTOPTIONS" -n -k 2 pgimport/way_nodes.txt > pgimport/way_nodes_sorted.txt

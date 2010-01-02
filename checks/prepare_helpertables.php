@@ -36,7 +36,7 @@ do {
 	drop_column('relation_members', 'object_exists', $db1, '', false);
 	add_column('relation_members', 'object_exists', 'boolean', $db1, '', false);
 
-	$member_types=array(1=>'node', 2=>'way', 3=>'relation');
+	$member_types=array('N'=>'node', 'W'=>'way', 'R'=>'relation');
 	// execute similar queries for all three tables to find out
 	// if the specified member exist in the current area
 	foreach($member_types as $k=>$v) {
@@ -45,7 +45,7 @@ do {
 			UPDATE relation_members rm
 			SET object_exists=true
 			FROM {$v}s
-			WHERE rm.member_type=$k AND rm.member_id={$v}s.id
+			WHERE rm.member_type='$k' AND rm.member_id={$v}s.id
 		", $db1, false);
 	}
 

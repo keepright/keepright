@@ -13,13 +13,10 @@ require('config.inc.php');
 require('helpers.inc.php');
 
 
-$osmosis = "JAVACMD_OPTIONS=\"-Djava.io.tmpdir=/media/raid0/planet_new/\" && /media/raid0/planet_new/osmosis-0.32.1/bin/osmosis ";
-
-
 switch ($argv[1]) {
 
 	case '--cut':
-		$cmd="$osmosis --rx {$argv[2]} --tee " . ($argc-3);
+		$cmd="$OSMOSIS_BIN --rx {$argv[2]} --tee " . ($argc-3);
 		for ($i=3;$i<$argc;$i++) {
 			$cmd .= " --bb " . get_bbox_parameters($argv[$i]) . " idTrackerType=BitSet completeWays=yes completeRelations=yes --wx $TMPDIR/{$argv[$i]}.osm ";
 			echo "$cmd\n";
@@ -36,7 +33,7 @@ switch ($argv[1]) {
 
 			init_workingDir($argv[$i]);
 
-			$cmd="$osmosis --rri workingDirectory=$workingDirectory " .
+			$cmd="$OSMOSIS_BIN --rri workingDirectory=$workingDirectory " .
 			" --simplify-change --rx $file.osm --ac --bb " . get_bbox_parameters($argv[$i]) . " idTrackerType=BitSet completeWays=yes completeRelations=yes --wx $file.osm.new ";
 			echo "$cmd\n";
 			system($cmd, $errorlevel);
@@ -58,7 +55,7 @@ function init_workingDir($schema) {
 	if (!is_dir($workingDirectory)) {
 		mkdir($workingDirectory);
 
-		$cmd="$osmosis --rrii workingDirectory=$workingDirectory";
+		$cmd="$OSMOSIS_BIN --rrii workingDirectory=$workingDirectory";
 		echo "$cmd\n";
 		system($cmd, $errorlevel);
 		if ($errorlevel) exit;

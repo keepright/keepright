@@ -111,23 +111,23 @@ function column_exists($table, $column, $db, $schema) {
 
 // will examine meta data to find out if a column of given name
 // already exists and will create one if not
-function add_column($table, $column, $type, $db, $schema='') {
+function add_column($table, $column, $type, $db, $schema='', $debug=true) {
 
 	$sch=get_schema($schema);
 
 	if (!column_exists($table, $column, $db, $sch)) {
-		query("ALTER TABLE $sch.$table ADD COLUMN $column $type", $db);
+		query("ALTER TABLE $sch.$table ADD COLUMN $column $type", $db, $debug);
 	}
 }
 
 // will examine meta data to find out if a column of given name
 // exists and will drop it if if does
-function drop_column($table, $column, $db, $schema='') {
+function drop_column($table, $column, $db, $schema='', $debug=true) {
 
 	$sch=get_schema($schema);
 
 	if (column_exists($table, $column, $db, $sch)) {
-		query("ALTER TABLE $sch.$table DROP COLUMN $column", $db);
+		query("ALTER TABLE $sch.$table DROP COLUMN $column", $db, $debug);
 	}
 }
 
@@ -409,62 +409,6 @@ function drop_postgres_functions($db) {
 }
 
 
-// finds the spot of a relation in the map by retrieving all objects
-// referenced by the relation and its members (which may be relations too)
-// and calculating the center of gravity of all nodes
-// return value is an array like this: return array('lat'=>17, 'lon'=>3);
-function locate_relation_too_slow($id, $db1) {
-	// temp. table for storing members of the relation
-	query("DROP TABLE IF EXISTS _tmp_m", $db1, false);
-	query("
-		CREATE TABLE _tmp_m (
-			member_type smallint NOT NULL,
-			id bigint NOT NULL,
-			PRIMARY KEY(member_type, id)
-		)
-	", $db1, false);
-	add_insert_ignore_rule('_tmp_m', array('member_type', 'id'), $db1);
-
-	// add starting relation
-	query("INSERT INTO _tmp_m (member_type, id) VALUES(3, $id)", $db1, false);
-
-	// recursively find sub-relations and their members referenced by the relation
-	do {
-		$result=query("
-			INSERT INTO _tmp_m (member_type, id)
-			SELECT DISTINCT m.member_type, m.member_id
-			FROM relation_members m INNER JOIN _tmp_m tm ON m.relation_id=tm.id
-			WHERE tm.member_type=3
-		", $db1, false);
-	} while (pg_affected_rows($result)>0);
-
-	// for any way find the nodes it contains
-	$result=query("
-		INSERT INTO _tmp_m (member_type, id)
-		SELECT DISTINCT 1, wn.node_id
-		FROM way_nodes wn INNER JOIN _tmp_m tm ON wn.way_id=tm.id
-		WHERE tm.member_type=2
-	", $db1, false);
-
-	// now we've got a list of nodes. Let's calculate teir coordinates' average
-	$result=query("
-		SELECT SUM(n.lat) AS la, SUM(n.lon) AS lo, COUNT(tm.id) AS cnt
-		FROM _tmp_m tm INNER JOIN nodes n ON n.id=tm.id
-		WHERE tm.member_type=1
-	", $db1, false);
-	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
-
-	if ($row && $row['cnt']<>0)
-		$r = array('lat' => $row['la']/$row['cnt'], 'lon' => $row['lo']/$row['cnt']);
-	else
-		$r = array('lat' => 0, 'lon' => 0);
-
-	pg_free_result($result);
-	query("DROP TABLE IF EXISTS _tmp_m", $db1, false);
-	return $r;
-}
-
-
 // finds the spot of a relation in the map by retrieving the coordinates
 // of the first node if a node is member of the relation,
 // ...of the first way if a way is member
@@ -483,8 +427,8 @@ function locate_relation($id, $db1, $depth=0) {
 	$result=query("
 		SELECT n.lat, n.lon
 		FROM relation_members m INNER JOIN nodes n ON m.member_id=n.id
-		WHERE m.relation_id=$id AND m.member_type=1
-		ORDER BY member_id
+		WHERE m.relation_id=$id AND m.member_type='N'
+		ORDER BY m.sequence_id
 		LIMIT 1
 	", $db1, false);
 	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
@@ -499,8 +443,8 @@ function locate_relation($id, $db1, $depth=0) {
 	$result=query("
 		SELECT wn.lat, wn.lon
 		FROM relation_members m INNER JOIN way_nodes wn ON m.member_id=wn.way_id
-		WHERE m.relation_id=$id AND m.member_type=2
-		ORDER BY member_id, sequence_id
+		WHERE m.relation_id=$id AND m.member_type='W'
+		ORDER BY m.sequence_id, wn.sequence_id
 		LIMIT 1
 	", $db1, false);
 	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);
@@ -516,8 +460,8 @@ function locate_relation($id, $db1, $depth=0) {
 	$result=query("
 		SELECT m.member_id AS id
 		FROM relation_members m
-		WHERE m.relation_id=$id AND m.member_type=3
-		ORDER BY member_id
+		WHERE m.relation_id=$id AND m.member_type='R'
+		ORDER BY m.sequence_id
 		LIMIT 1
 	", $db1, false);
 	$row=pg_fetch_array($result, NULL, PGSQL_ASSOC);

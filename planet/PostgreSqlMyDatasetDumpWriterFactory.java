@@ -1,13 +1,14 @@
-// License: GPL. Copyright 2007-2008 by Brett Henderson and other contributors.
-
-
+// This software is released into the Public Domain.  See copying.txt for details.
+//package org.openstreetmap.osmosis.core.pgsql.v0_6;
 
 import java.io.File;
 
-import com.bretth.osmosis.core.cli.TaskConfiguration;
-import com.bretth.osmosis.core.pipeline.common.TaskManager;
-import com.bretth.osmosis.core.pipeline.common.TaskManagerFactory;
-import com.bretth.osmosis.core.pipeline.v0_5.SinkManager;
+import org.openstreetmap.osmosis.core.pgsql.v0_6.impl.NodeLocationStoreType;
+import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
+import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
+import org.openstreetmap.osmosis.core.pipeline.common.TaskManagerFactory;
+import org.openstreetmap.osmosis.core.pipeline.v0_6.SinkManager;
+
 
 /**
  * The task manager factory for a database dump writer.
@@ -15,8 +16,14 @@ import com.bretth.osmosis.core.pipeline.v0_5.SinkManager;
  * @author Brett Henderson
  */
 public class PostgreSqlMyDatasetDumpWriterFactory extends TaskManagerFactory {
+	private static final String ARG_ENABLE_BBOX_BUILDER = "enableBboxBuilder";
+	private static final String ARG_ENABLE_LINESTRING_BUILDER = "enableLinestringBuilder";
 	private static final String ARG_FILE_NAME = "directory";
+	private static final String ARG_NODE_LOCATION_STORE_TYPE = "nodeLocationStoreType";
+	private static final boolean DEFAULT_ENABLE_BBOX_BUILDER = false;
+	private static final boolean DEFAULT_ENABLE_LINESTRING_BUILDER = false;
 	private static final String DEFAULT_FILE_PREFIX = "pgimport";
+	private static final String DEFAULT_NODE_LOCATION_STORE_TYPE = "InMemory";
 	
 	
 	/**
@@ -26,16 +33,27 @@ public class PostgreSqlMyDatasetDumpWriterFactory extends TaskManagerFactory {
 	protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
 		String filePrefixString;
 		File filePrefix;
+		boolean enableBboxBuilder;
+		boolean enableLinestringBuilder;
+		NodeLocationStoreType storeType;
 		
 		// Get the task arguments.
-		filePrefixString = getStringArgument(taskConfig, ARG_FILE_NAME, DEFAULT_FILE_PREFIX);
+		filePrefixString = getStringArgument(
+				taskConfig, ARG_FILE_NAME, DEFAULT_FILE_PREFIX);
+		enableBboxBuilder = getBooleanArgument(
+				taskConfig, ARG_ENABLE_BBOX_BUILDER, DEFAULT_ENABLE_BBOX_BUILDER);
+		enableLinestringBuilder = getBooleanArgument(
+				taskConfig, ARG_ENABLE_LINESTRING_BUILDER, DEFAULT_ENABLE_LINESTRING_BUILDER);
+		storeType = Enum.valueOf(
+				NodeLocationStoreType.class,
+				getStringArgument(taskConfig, ARG_NODE_LOCATION_STORE_TYPE, DEFAULT_NODE_LOCATION_STORE_TYPE));
 		
 		// Create a file object representing the directory from the file name provided.
 		filePrefix = new File(filePrefixString);
 		
 		return new SinkManager(
 			taskConfig.getId(),
-			new PostgreSqlMyDatasetDumpWriter(filePrefix),
+			new PostgreSqlMyDatasetDumpWriter(filePrefix, enableBboxBuilder, enableLinestringBuilder, storeType),
 			taskConfig.getPipeArgs()
 		);
 	}
