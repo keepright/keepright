@@ -49,7 +49,7 @@ switch ($argv[1]) {
 
 // make sure the osmosis working directory does exist and config file is right
 function init_workingDir($schema) {
-	global $TMPDIR;
+	global $TMPDIR, $OSMOSIS_BIN;
 	$workingDirectory="$TMPDIR/$schema";
 
 	if (!is_dir($workingDirectory)) {
