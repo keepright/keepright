@@ -110,7 +110,9 @@ FTP_PASS="shh!"
 FTP_PATH="path/to/website/"
 
 # this URL will be called to load data into the tables
+# one for remote and one for localhost access
 UPDATE_TABLES_URL="http://website.yourprovider.com/webUpdateServer.php"
+UPDATE_TABLES_URL_LOCAL="http://localhost/path/webUpdateServer.php"
 
 # shared secret for use in updateTables script to prevent anonymous
 # users from emptying your tables. You HAVE TO change this password.
