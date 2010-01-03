@@ -22,6 +22,7 @@ postgresql-8.3-postgis
 postgresql >= 8.3
 postgres-client
 php5-mysql
+php5-pgsql
 mysql-server
 mysql-client
 phpMyAdmin
@@ -42,6 +43,8 @@ You will need both Postgres and MySQL because the checks require GIS functions a
 Using sun-java6-jre is not optional. You need java6 by Sun.
 
 The checks depend on a copy of the OSM database, split up in parts. Using only a subset of the planet file will result in false-positives because ways are cut in two at the border. To avoid this the splitting is done with overlapping borders - the border regions are included in both adjacent dumps. In the end errors in the overlapping area are discarded.
+
+It looks like the osmosis plugin heavily depends on the osmosis version being used. The plugin is tested and works with osmosis_0.32.1 dated december 20th, 2009.
 
 
 THE BIG PICTURE
@@ -123,6 +126,32 @@ osm_XD
 	schema49
 
 Area-specific schemas are re-created on each run from scratch. They may be dropped immediately after each run. Only the public.errors table is persistent.
+
+
+PLANET FILE MANAGEMENT & SQUID
+------------------------------
+
+The whole planet is split up in approximately 70 individual files. All of these files are diff-updated individually. That means you always work with the most recent version of each file but you end up downloading the same diff files over and over. That's where the web proxy squid comes into play: Squid caches all web access. It speeds up your downloads and avoids unnecessary traffic.
+
+Setting up squid is quite easy. On Debian/ubuntu Linuxes do something like this:
+
+> aptitude install squid
+
+change the config file /etc/squid/squid.conf to increase overall cache size to 2GB if you like (default is 100MB which is a little bit small):
+
+cache_dir ufs /var/spool/squid 2000 16 256
+
+restart squid
+>/etc/init.d/squid restart
+
+tell your osmosis:
+add this line to ~/.osmosis:
+
+JAVACMD_OPTIONS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
+
+my ~/.osmosis looks like this:
+JAVACMD_OPTIONS=" -Xmx3000m -d32 -Djava.io.tmpdir=/media/big_harddisk/tmp/ -Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
+
 
 
 SETTING UP LOCAL DATABASES
