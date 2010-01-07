@@ -204,24 +204,25 @@ for i do	# loop all given parameter values
 		echo "`date` * converting osm file into database dumps"
 		cd "$TMPDIR"
 
-		"$CAT" "$TMPDIR/$FILE" | "$OSMOSIS_BIN" --read-xml file=/dev/stdin --pl
+		"$CAT" "$TMPDIR/$FILE" | "$OSMOSIS_BIN" --read-xml file=/dev/stdin --pl directory="$OSMOSIS_OUTPUT_DIRECTORY"
 
+		cd "$OSMOSIS_OUTPUT_DIRECTORY"
 		echo "`date` * joining way_nodes and node coordinates"
-		sort "$SORTOPTIONS" -n -k 2 pgimport/way_nodes.txt > pgimport/way_nodes_sorted.txt
-		rm pgimport/way_nodes.txt
-		sort "$SORTOPTIONS" -n -k 1 pgimport/nodes.txt > pgimport/nodes_sorted.txt
-		rm pgimport/nodes.txt
-		join -t "	" -e NULL -a 1 -1 2 -o 1.1,0,1.3,2.5,2.6,2.7,2.8 pgimport/way_nodes_sorted.txt pgimport/nodes_sorted.txt > pgimport/way_nodes2.txt
-		rm pgimport/way_nodes_sorted.txt
+		sort "$SORTOPTIONS" -n -k 2 way_nodes.txt > way_nodes_sorted.txt
+		rm way_nodes.txt
+		sort "$SORTOPTIONS" -n -k 1 nodes.txt > nodes_sorted.txt
+		rm nodes.txt
+		join -t "	" -e NULL -a 1 -1 2 -o 1.1,0,1.3,2.5,2.6,2.7,2.8 way_nodes_sorted.txt nodes_sorted.txt > way_nodes2.txt
+		rm way_nodes_sorted.txt
 
 		echo "`date` * joining ways with coordinates of first and last node"
-		sort "$SORTOPTIONS" -t "	" -n -k 4 pgimport/ways.txt > pgimport/ways_sorted.txt
-		rm pgimport/ways.txt
-		join -t "	" -e NULL -a 1 -1 4 -o 1.1,1.2,1.3,0,1.5,2.5,2.6,2.7,2.8,1.6 pgimport/ways_sorted.txt pgimport/nodes_sorted.txt > pgimport/ways2.txt
-		sort "$SORTOPTIONS" -t "	" -n -k 5 pgimport/ways2.txt > pgimport/ways_sorted.txt
-		rm pgimport/ways2.txt
-		join -t "	" -e NULL -1 5 -o 1.1,1.2,1.3,1.4,0,1.6,1.7,1.8,1.9,2.5,2.6,2.7,2.8,1.10 pgimport/ways_sorted.txt pgimport/nodes_sorted.txt > pgimport/ways.txt
-		rm pgimport/ways_sorted.txt
+		sort "$SORTOPTIONS" -t "	" -n -k 4 ways.txt > ways_sorted.txt
+		rm ways.txt
+		join -t "	" -e NULL -a 1 -1 4 -o 1.1,1.2,1.3,0,1.5,2.5,2.6,2.7,2.8,1.6 ways_sorted.txt nodes_sorted.txt > ways2.txt
+		sort "$SORTOPTIONS" -t "	" -n -k 5 ways2.txt > ways_sorted.txt
+		rm ways2.txt
+		join -t "	" -e NULL -1 5 -o 1.1,1.2,1.3,1.4,0,1.6,1.7,1.8,1.9,2.5,2.6,2.7,2.8,1.10 ways_sorted.txt nodes_sorted.txt > ways.txt
+		rm ways_sorted.txt
 
 
 		echo "`date` * loading database dumps"

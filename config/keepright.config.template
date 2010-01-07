@@ -67,6 +67,11 @@ PLANETFILE=$TMPDIR"/planet.osm"
 # the path of the osmosis calling script -- not the JAR-file!
 OSMOSIS_BIN="/home/haraldk/OSM/osmosis-0.32.1/bin/osmosis"
 
+# path used for osmosis to store the tab-separated dump files
+# this option is only needed on installations where two hosts
+# share a common planet directory to avoid collisions in the
+# pgimport directory when two instances are running.
+OSMOSIS_OUTPUT_DIRECTORY="/home/haraldk/OSM/keepright/planet/pgimport"
 
 # this is where the result files will be placed
 # you HAVE TO specify the full path names here,
