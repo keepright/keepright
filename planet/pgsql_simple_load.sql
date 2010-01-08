@@ -14,14 +14,14 @@ AXIS["y", NORTH],AUTHORITY["EPSG","900913"]]',
 
 
 -- Import the table data from the data files using the fast COPY method.
-\copy nodes FROM 'pgimport/nodes_sorted.txt' WITH NULL AS 'NULL'
-\copy node_tags FROM 'pgimport/node_tags.txt' WITH NULL AS 'NULL'
-\copy ways FROM 'pgimport/ways.txt' WITH NULL AS 'NULL'
-\copy way_tags FROM 'pgimport/way_tags.txt' WITH NULL AS 'NULL'
-\copy way_nodes FROM 'pgimport/way_nodes2.txt' WITH NULL AS 'NULL'
-\copy relations FROM 'pgimport/relations.txt' WITH NULL AS 'NULL'
-\copy relation_tags FROM 'pgimport/relation_tags.txt' WITH NULL AS 'NULL'
-\copy relation_members FROM 'pgimport/relation_members.txt' WITH NULL AS 'NULL'
+\copy nodes FROM 'nodes_sorted.txt' WITH NULL AS 'NULL'
+\copy node_tags FROM 'node_tags.txt' WITH NULL AS 'NULL'
+\copy ways FROM 'ways.txt' WITH NULL AS 'NULL'
+\copy way_tags FROM 'way_tags.txt' WITH NULL AS 'NULL'
+\copy way_nodes FROM 'way_nodes2.txt' WITH NULL AS 'NULL'
+\copy relations FROM 'relations.txt' WITH NULL AS 'NULL'
+\copy relation_tags FROM 'relation_tags.txt' WITH NULL AS 'NULL'
+\copy relation_members FROM 'relation_members.txt' WITH NULL AS 'NULL'
 
 -- Add the primary keys and indexes back again (except the way bbox index).
 ALTER TABLE ONLY schema_info ADD CONSTRAINT pk_schema_info PRIMARY KEY (version);
