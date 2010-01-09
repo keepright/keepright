@@ -1,1 +1,0 @@
-../checks/config.inc.php

@@ -601,15 +601,6 @@ UPDATE_TABLES_USERNAME="harald.kleiner@web.de"
 UPDATE_TABLES_PASSWD="shhh!"
 
 
-# this is the username you will be using on your local machine
-# for editing keepright source files
-# the admin interface will try to sudo into this user when
-# modifying the config file
-# to make this work, add the following lines to your sudoers file
-# www-data ALL=(haraldk) NOPASSWD: /home/osm/keepright/checks/updateDB.sh
-# www-data ALL=(haraldk) NOPASSWD: /usr/bin/svn
-ADMIN_USERNAME="haraldk"
-
 
 ############################################
 # error types
