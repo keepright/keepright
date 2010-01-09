@@ -169,9 +169,13 @@ These are setup parameters you should set before starting out manually:
 
 >>>Tune database parameters
 edit /etc/postgresql/8.3/main/postgresql.conf and add/modify these parameters:
-shared_buffers = 128MB
+shared_buffers = 1024MB
+work_mem = 128MB
+maintenance_work_mem = 128MB
+wal_buffers = 512kB
 checkpoint_segments = 20
-maintenance_work_mem = 256MB
+max_fsm_pages = 1536000
+effective_cache_size = 512MB
 autovacuum = off
 
 >>>assert the auto-vacuum daemon being shut down
