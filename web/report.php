@@ -57,12 +57,12 @@ mysql_free_result($result);*/
 
 echo '<table style="padding:0.5em; background-color:#f0fff0" width="65%"><tr><td style="border-style:none"><a href="/"><img border=0 src="keepright.png" alt="keep-right logo"></a></td><td style="border-style:none">';
 echo '<select name="ch"><option value="*">all checks</option>';
- 
- 
+
+
 $result=mysqli_query($db1, "SELECT error_type, error_name FROM $error_types_name ORDER BY error_type");
 while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
 	if (!$ch) $ch=$row['error_type'];	// set default
-	echo '<option value="' . $row['error_type'] . '"' . (($row['error_type']>=$ch && $row['error_type']<$ch+10) ? ' selected' : '') . '>' . $row['error_name'] . '</option>';
+	echo '<option value="' . $row['error_type'] . '"' . ($row['error_type']==$ch ? ' selected' : '') . '>' . $row['error_name'] . "</option>\n";
 }
 echo "</select><br>\n";
 if (!is_null($result)) mysqli_free_result($result);
@@ -147,4 +147,4 @@ function mklink($db, $ch, $st, $label) {
 	return '<a href="' . $_SERVER['PHP_SELF'] . '?db=' . $db . '&ch=' . $ch .  '&st=' . $st . '">' . $label . '</a> ';
 }
 
-?> 
+?>
