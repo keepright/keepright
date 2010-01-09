@@ -1,6 +1,5 @@
 <?php
 /*
-
 this script does the complete job of updating the web presentation
 with new data on the webserver
 Call this script from your client pc using webUpdateClient.php
@@ -11,8 +10,6 @@ Call this script from your client pc using webUpdateClient.php
 * load dump files
 * toggle tables (rename error_view to error_view_old and _shadow to error_view)
 * update updated_osm_XX file (date of last site update)
-* update planetfile_date_osm_XX file (date of planet file used during update)
-* create log entry
 * re-open temporarily ignored errors
 */
 
@@ -22,7 +19,7 @@ ini_set('session.gc_maxlifetime', 1800);// 30 minutes as max. session lifetime
 require('webconfig.inc.php');
 require('helpers.inc.php');
 require('BufferedInserter_MySQL.php');
-//echo "db_name is $db_name <br>";
+//echo "db_name is $db_name";
 
 session_start();
 
@@ -52,7 +49,7 @@ if ($_SESSION['authorized'] !== true && !empty($_GET['response']) && !empty($_GE
 	if ($_GET['response'] === md5($_GET['username'] . $_SESSION['challenge'] . $user['password'])) {
 		$_SESSION['authorized']=true;
 		$_SESSION['username']=$_GET['username'];
-		echo "OK welcome!";
+		echo "OK welcome!\n";
 	} else {
 		echo "invalid response\n";
 		$_SESSION['challenge'] = md5(rand(1e5,1e12));	// make a new challenge. People should not be able to have as many tries as they want.
@@ -66,53 +63,52 @@ $schema=addslashes($_GET['schema']);
 // handle commands for logged in users
 if ($_SESSION['authorized']===true) {
 
-/*
-	if (isset($_GET['cmd']) && !permissions($USERS[$_SESSION['username']], $db, $schema)) {
-		die("you are not authorized to access $db.$schema<br>");
-	}
-*/
-	$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+	if ($_GET['cmd'] == 'update') {
 
-	switch ($_GET['cmd']) {
+		if (!permissions($USERS[$_SESSION['username']], $db, $schema)) {
+			die("you are not authorized to access $db.$schema\n");
+		}
 
-		case 'toggle_tables1':
-			toggle_tables1($db1, $schema);
-		break;
-		case 'load_dump':
-			load_dump($db1, escapeshellarg($_GET['filename']), addslashes($_GET['destination']));
-		break;
-		case 'toggle_tables2':
-			toggle_tables2($db1);
-		break;
-		case 'empty_error_types_table':
-			empty_error_types_table($db1);
-		break;
-		case 'reopen_errors':
-			reopen_errors($db1, $schema);
-		break;
-		case 'set_updated_date':
-			write_file($updated_file_name, addslashes($_GET['date']));
-		break;
-		case 'set_planetfile_date':
-			write_file($planetfile_date_file_name, addslashes($_GET['date']));
-		break;
-		case 'logout':
-			// Unset all of the session variables and destroy the session.
-			$_SESSION = array();
-			session_destroy();
-			echo "session closed.";
-		break;
+		$error_view_filename=escapeshellarg($_GET['error_view_filename']);
+		if (!file_exists(substr($error_view_filename, 1, -1))) {
+			echo "$error_view_filename does not exist on web server\n";
+			exit;
+		}
+
+		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
+		toggle_tables1($db1, $schema);
+		load_dump($db1, $error_view_filename, 'error_view');
+		//load_dump($db1, escapeshellarg($_GET['error_types_filename']), 'error_types');
+		toggle_tables2($db1, $schema);
+		empty_error_types_table($db1);
+		reopen_errors($db1, $schema);
+		// set_updated_date
+		write_file($updated_file_name, addslashes($_GET['updated_date']));
+		// set_planetfile_date
+		//write_file($planetfile_date_file_name, addslashes($_GET['planetfile_date']));
+
+		mysqli_close($db1);
 	}
 
-	mysqli_close($db1);
+	if ($_GET['cmd'] == 'logout') {
+		logout();
+	}
 }
 
 
+function logout() {
+	echo "logout.\n";
+	// Unset all of the session variables and destroy the session.
+	global $_SESSION;
+	$_SESSION = array();
+	session_destroy();
+	echo "session closed.\n";
+}
+
 // check if a given db and schema name are found in the users permissions array
 // which is configured in $USERS in webconfig.inc.php
-function permissions($user, $db, $schema){
-
-
+function permissions($user, $db, $schema) {
 
 	if (array_key_exists('%', $user['DB'])) {
 		if (in_array('%', $user['DB']['%'], true))
@@ -132,8 +128,9 @@ function permissions($user, $db, $schema){
 
 // ensure there is an error_view_osmXX_shadow table for inserting records
 function toggle_tables1($db1, $schema){
-	global $error_types_name, $error_view_name, $comments_name, $comments_historic_name;
+	global $error_types_name, $error_view_name, $error_view_old_name, $comments_name, $comments_historic_name;
 
+	echo "setting up table structures and toggling tables\n";
 	query("
 		CREATE TABLE IF NOT EXISTS $comments_name (
 		`schema` varchar(6) NOT NULL DEFAULT '',
@@ -169,7 +166,7 @@ function toggle_tables1($db1, $schema){
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 	query("
-		CREATE TABLE IF NOT EXISTS {$error_view_name}_old (
+		CREATE TABLE IF NOT EXISTS {$error_view_old_name} (
 		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		db_name varchar(50) NOT NULL,
@@ -217,30 +214,20 @@ function toggle_tables1($db1, $schema){
 	// ensure the schema column is added when tables already exist
 	add_column_if_not_exists($db1, $comments_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
 	add_column_if_not_exists($db1, $comments_historic_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, "{$error_view_name}_old", 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
+	add_column_if_not_exists($db1, $error_view_old_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
 	add_column_if_not_exists($db1, $error_view_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
 
-	add_column_if_not_exists($db1, "{$error_view_name}_old", 'object_timestamp', "datetime NOT NULL AFTER last_checked");
+	add_column_if_not_exists($db1, $error_view_old_name, 'object_timestamp', "datetime NOT NULL AFTER last_checked");
 	add_column_if_not_exists($db1, $error_view_name, 'object_timestamp', "datetime NOT NULL AFTER last_checked");
 
 	add_index_if_not_exists($db1, $comments_name, 'schema', '`schema`');
 	add_index_if_not_exists($db1, $comments_historic_name, 'schema', '`schema`');
-	add_index_if_not_exists($db1, "{$error_view_name}_old", 'schema', '`schema`');
+	add_index_if_not_exists($db1, $error_view_old_name, 'schema', '`schema`');
 	add_index_if_not_exists($db1, $error_view_name, 'schema', '`schema`');
 
-	query("RENAME TABLE {$error_view_name}_old TO {$error_view_name}_shadow", $db1, false);
-	query("ALTER TABLE {$error_view_name}_shadow DISABLE KEYS", $db1, false);
-	query("TRUNCATE {$error_view_name}_shadow", $db1, false);
-
-	if ($schema!='') {
-		query("
-			INSERT INTO {$error_view_name}_shadow
-			SELECT * FROM $error_view_name
-			WHERE `schema` NOT LIKE '" . $schema . "'
-		", $db1, false);
-	}
-	// now we have a shadow table containing all records _except_
-	// the ones we want to update
+	query("RENAME TABLE $error_view_old_name TO {$error_view_name}_shadow", $db1);
+	query("ALTER TABLE {$error_view_name}_shadow DISABLE KEYS", $db1);
+	query("TRUNCATE {$error_view_name}_shadow", $db1);
 
 	echo "done.\n";
 }
@@ -295,17 +282,29 @@ function index_exists($db, $table, $keyname) {
 
 
 // switch _shadow table to main table, rename main table to _old
-function toggle_tables2($db1){
-	global $error_view_name;
+function toggle_tables2($db1, $schema){
+	global $error_view_name, $error_view_old_name;
+
+	echo "toggling back tables\n";
+	// now add all records _except_ the ones we just loaded from the dump
+	if (strlen($schema) && $schema!='%') {
+		query("
+			INSERT INTO {$error_view_name}_shadow
+			SELECT * FROM $error_view_name
+			WHERE `schema` NOT IN ($schema)
+		", $db1);
+	}
+
+
 	query("
 		ALTER TABLE {$error_view_name}_shadow ENABLE KEYS;
-	", $db1, false);
+	", $db1);
 	query("
-		RENAME TABLE $error_view_name TO {$error_view_name}_old;
-	", $db1, false);
+		RENAME TABLE $error_view_name TO $error_view_old_name;
+	", $db1);
 	query("
 		RENAME TABLE {$error_view_name}_shadow TO $error_view_name;
-	", $db1, false);
+	", $db1);
 
 	echo "done.\n";
 }
@@ -314,7 +313,7 @@ function empty_error_types_table($db1){
 	global $error_types_name;
 	query("
 		TRUNCATE $error_types_name
-	", $db1, false);
+	", $db1);
 
 	echo "done.\n";
 }
@@ -337,7 +336,6 @@ function write_file($filename, $content) {
 }
 
 
-
 // update temporarily ignored errors to open again
 // if the ignore state was set before the object was edited
 // i.e. if the version of the object after the edit was checked.
@@ -346,10 +344,12 @@ function write_file($filename, $content) {
 // time as they set the state in keepright.
 // do this only if the error is still open in the newest error_view
 function reopen_errors($db1, $schema) {
-global $error_view_name, $comments_name;
+	global $error_view_name, $comments_name;
+
+	echo "reopening errors not solved by this update\n";
 
 	if (strlen($schema) && $schema!=='%') 
-		$s="ev.`schema`=\"$schema\" AND ";
+		$s="ev.`schema` IN ($schema) AND ";
 	else
 		$s="";
 
@@ -361,8 +361,81 @@ global $error_view_name, $comments_name;
 		ev.state<>'cleared' AND
 		c.timestamp<DATE_SUB(ev.object_timestamp, INTERVAL 2 HOUR)
 	";
-
+	query($sql, $db1);
 	echo "\ndone.\n";
+}
+
+
+// load a dump file from the local webspace
+// dump file may be plain text or .bz2 compressed
+// file format has to be tab-separated text
+// just the way you receive from SELECT INTO OUTFILE
+function load_dump($db1, $filename, $destination) {
+	global $db_host, $db_user, $db_pass, $db_name, $error_types_name, $error_view_name;
+
+	switch ($destination) {
+		case "error_types": $tbl=$error_types_name; break;
+		case "error_view": $tbl=$error_view_name . '_shadow'; break;
+		default: die('invalid load dump destination: ' . $destination);
+	}
+	echo "loading dump into $destination\n";
+
+	$fifodir=ini_get('upload_tmp_dir');
+	if (strlen($fifodir)==0) $fifodir=sys_get_temp_dir();
+
+	$fifoname=tempnam($fifodir, 'keepright');
+	echo "creating fifo file $fifoname\n";
+	unlink($fifoname);
+
+	// create a fifo, unzip contents of the dump into fifo
+	// and make mysql read from there to do a LOAD DATA INFILE
+
+	posix_mkfifo($fifoname, 0666) or die("Couldn't create fifo.");
+	echo "reading dump file $filename\n";
+
+	// remember: $filename is shellescaped and has apos around it!
+	if (substr(trim($filename), -5, 4)=='.bz2') {
+		$CAT='bzcat';
+	} else {
+		$CAT='cat';
+	}
+
+	system("($CAT $filename > $fifoname) >/dev/null &");	// must run in the background
+
+
+	system("mysql -h$db_host -u$db_user -p$db_pass -e \"LOAD DATA LOCAL INFILE '$fifoname' INTO TABLE $tbl\" $db_name");
+
+	unlink($fifoname);
+
+
+	// now check if only schemas were inserted that were given in the command line
+
+	if (strlen($schema) && $schema!=='%') {
+
+		$rows = query("SELECT COUNT(error_id) AS x FROM $tbl WHERE `schema` NOT IN ($schema) ", $db, false);
+		while($c = mysqli_fetch_assoc($rows)){
+			if($c['x']>0){
+				echo "you said you wanted to upload errors in schema $schema but you really uploaded errors in other schemas. The procedure stops here. Don't try that again!\n";
+				logout();
+				mysqli_free_result($rows);
+
+				// now rollback all the user has done so far
+				// otherwise he might come back and toggle2 the tables
+				query("TRUNCATE {$error_view_name}_shadow", $db1);
+				query("
+					INSERT INTO {$error_view_name}_shadow
+					SELECT * FROM $error_view_name
+				", $db1);
+				query("
+					RENAME TABLE {$error_view_name}_shadow
+					TO {$error_view_name}_old;
+				", $db1);
+			}
+		}
+		mysqli_free_result($rows);
+	}
+
+	echo "done.\n";
 }
 
 ?>

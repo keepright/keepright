@@ -38,7 +38,7 @@ $USERS = array(
 	'lennard' => array(			// Lennard: Belgium/Netherlands/Luxembourg
 		'password' => 'shhh!',
 		'DB' => array(
-			'osm_EU' => array('osm_XK')
+			'osm_EU' => array('2')
 		)
 	)
 );
