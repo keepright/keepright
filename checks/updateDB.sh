@@ -227,11 +227,6 @@ for i do	# loop all given parameter values
 
 		echo "`date` * loading database dumps"
 		psql -f $TMPDIR"/pgsql_simple_load.sql"
-		cd "$CHECKSDIR"
-
-		PGPASSWORD="shhh!"
-		export PGPASSWORD
-
 
 		cd "$CHECKSDIR"
 		echo "`date` * preparing helper tables and columns"
@@ -248,9 +243,10 @@ for i do	# loop all given parameter values
                         psql -c "DROP SCHEMA IF EXISTS $SCHEMA CASCADE"
                 fi
 
-		cd "$CHECKSDIR"
-		echo "`date` * ready."
+		PGPASSWORD="shhh!"
+		export PGPASSWORD
 
+		echo "`date` * ready."
 	else
 		echo "File $TMPDIR/$FILE unchanged, nothing to do."
 		exit 1
