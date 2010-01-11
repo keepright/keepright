@@ -143,11 +143,11 @@ function ftp_upload($db, $schema) {
 	$ftp_url="ftp://$FTP_USER:$FTP_PASS@$FTP_HOST/$FTP_PATH";
 
 	if ($schema!=='%') $db_id=$schema; else $db_id=$db;
-	$filenames="results/error_view_{$db_id}.txt.bz2 results/error_types_{$db_id}.txt";
+	$filenames="../results/error_view_{$db_id}.txt.bz2 ../results/error_types_{$db_id}.txt";
 
 	// call wput, overwrite files if already existing, dont create directories
 	// upload the error_view dumps and the error_types dump
-	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=results/ $filenames \"$ftp_url\" 2>&1");
+	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ $filenames \"$ftp_url\" 2>&1");
 }
 
 
