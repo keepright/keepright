@@ -111,6 +111,21 @@ query("
 	)
 ", $db1);
 
+// now remove ways that have noexit=yes
+// as they are marked as dead ends of roads intentionally
+// there is a risk of missing dead ended ways if they
+// lack a junction on their entry node. These
+// should be found by the islands check
+query("
+	DELETE FROM _tmp_end_nodes en
+	WHERE EXISTS (
+		SELECT way_id
+		FROM way_tags AS t
+		WHERE t.way_id=en.way_id AND
+			t.k='noexit' AND t.v IN ('yes', 'true', '1')
+	)
+", $db1);
+
 
 // retrieve the x/y values
 query("
