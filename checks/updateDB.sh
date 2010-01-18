@@ -111,7 +111,7 @@ for i do	# loop all given parameter values
 
 	fi
 
-	psql -c "DROP SCHEMA IF EXISTS $SCHEMA CASCADE"
+	psql -c "SET client_min_messages=WARNING; DROP SCHEMA IF EXISTS $SCHEMA CASCADE;"
 	psql -c "CREATE SCHEMA $SCHEMA"
 
 	# Activate GIS; try for postGIS 8.4 and fallback to postGIS 8.3
@@ -240,7 +240,7 @@ for i do	# loop all given parameter values
 
                 if [ "$DROP_SCHEMA" != "0" ]; then
                         echo "dropping schema $SCHEMA"
-                        psql -c "DROP SCHEMA IF EXISTS $SCHEMA CASCADE"
+                        psql -c "SET client_min_messages=WARNING; DROP SCHEMA IF EXISTS $SCHEMA CASCADE;"
                 fi
 
 		PGPASSWORD="shhh!"
