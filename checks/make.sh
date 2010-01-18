@@ -18,6 +18,8 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 	FIRSTRUN=0
 	for i do	# loop all given parameter values
 
+		svn up ../
+
 		case "$i" in
 
 			# Europe
