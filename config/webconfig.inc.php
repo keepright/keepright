@@ -19,6 +19,12 @@ if (!isset($db)) {
 		$db=$db_name;
 	}
 }
+
+// transparently translate CA into US database
+if ($_GET['db']=='osm_CA') $_GET['db']='osm_US';
+if ($db=='osm_CA') $db='osm_US';
+
+
 $error_view_name="error_view_" . $db;
 $error_view_old_name="error_view_" . $db . "_old";
 $error_types_name="error_types_" . $db;

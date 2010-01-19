@@ -31,7 +31,7 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 
 			# US states part 1
 			US1)
-				./updateDB.sh 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 >> make_US1.log 2>&1
+				./updateDB.sh 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 >> make_US1.log 2>&1
 				php export_errors.php --db US >> make_US1.log 2>&1
 				php webUpdateClient.php --remote --db US >> make_US1.log 2>&1
 			;;
@@ -43,13 +43,11 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 				php webUpdateClient.php --remote --db US >> make_US2.log 2>&1
 			;;
 
-			# Canada and Central America
-			CA)
-				./updateDB.sh 20 46 68 >> make_CA.log 2>&1
-				php export_errors.php --db CA >> make_CA.log 2>&1
-				php export_errors.php --db XG >> make_CA.log 2>&1
-				php webUpdateClient.php --remote --db CA >> make_CA.log 2>&1
-				php webUpdateClient.php --remote --db XG >> make_CA.log 2>&1
+			# Central America
+			XG)
+				./updateDB.sh 46 68 >> make_XG.log 2>&1
+				php export_errors.php --db XG >> make_XG.log 2>&1
+				php webUpdateClient.php --remote --db XG >> make_XG.log 2>&1
 			;;
 
 
