@@ -228,6 +228,10 @@ for i do	# loop all given parameter values
 		echo "`date` * loading database dumps"
 		psql -f $TMPDIR"/pgsql_simple_load.sql"
 
+                if [ "$DROP_SCHEMA" != "0" ]; then
+			rm nodes_sorted.txt node_tags.txt relation_members.txt relations.txt relation_tags.txt users.txt way_nodes2.txt ways.txt way_tags.txt
+                fi
+
 		cd "$CHECKSDIR"
 		echo "`date` * preparing helper tables and columns"
 		php prepare_helpertables.php "$i"
