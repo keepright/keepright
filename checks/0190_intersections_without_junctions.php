@@ -13,40 +13,57 @@ to avoid false positives on highways crossing squares, areas are excluded here
 
 
 if (!type_exists($db1, 'type_way_type'))
-	query("CREATE TYPE type_way_type AS ENUM('highway','waterway','riverbank')", $db1);
+	query("CREATE TYPE type_way_type AS ENUM('highway','cycleway','waterway','riverbank')", $db1);
 
 // tmp_ways will contain all highways with their linestring geometry and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
 	CREATE TABLE _tmp_ways (
 	way_id bigint NOT NULL,
-	layer text,
-	way_type type_way_type DEFAULT 'highway'
+	layer text NOT NULL DEFAULT '0',
+	way_type type_way_type NOT NULL
 	)
 ", $db1);
 query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
 
-// find any highway-tagged way
+// find any highway-tagged way that is not a cycleway
 query("
-	INSERT INTO _tmp_ways (way_id, geom)
-	SELECT DISTINCT id, geom
+	INSERT INTO _tmp_ways (way_id, geom, way_type)
+	SELECT DISTINCT id, geom, CAST('highway' AS type_way_type)
 	FROM ways
-	WHERE EXISTS (
+	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.way_id=ways.id
+		WHERE wt.k = 'highway' AND wt.v<>'cycleway' AND wt.way_id=ways.id
 	)
 ", $db1);
 
 query("ALTER TABLE _tmp_ways ADD PRIMARY KEY (way_id);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
+// find any cycleways
+query("
+	INSERT INTO _tmp_ways (way_id, geom, way_type)
+	SELECT DISTINCT id, geom, CAST('cycleway' AS type_way_type)
+	FROM ways
+	WHERE geom IS NOT NULL AND EXISTS (
+		SELECT wt.v
+		FROM way_tags wt
+		WHERE wt.k = 'highway' AND wt.v='cycleway' AND wt.way_id=ways.id
+	)
+	AND NOT EXISTS (
+		SELECT id
+		FROM _tmp_ways tmp
+		WHERE tmp.way_id=ways.id
+	)
+", $db1);
+
 // now add waterways but not riverbanks(docks)
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT DISTINCT id, geom, CAST('waterway' AS type_way_type)
 	FROM ways
-	WHERE EXISTS (
+	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
 		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock') AND wt.way_id=ways.id
@@ -63,7 +80,7 @@ query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT DISTINCT id, geom, CAST('riverbank' AS type_way_type)
 	FROM ways
-	WHERE EXISTS (
+	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
 		WHERE ((wt.k = 'waterway' AND wt.v IN ('riverbank', 'dock')) OR
@@ -88,38 +105,8 @@ query("
 ", $db1);
 
 // fetch layer tag
-query("
-	UPDATE _tmp_ways c
-	SET layer=t.v
-	FROM way_tags t
-	WHERE t.way_id=c.way_id AND t.k='layer'
-", $db1);
+find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
 
-// set default layers:
-// bridges have layer +1 (if no layer tag is given)
-// tunnels have layer -1 (if no layer tag is given)
-// anything else has layer 0 (if no layer tag is given)
-query("
-	UPDATE _tmp_ways c
-	SET layer=1
-	FROM way_tags t
-	WHERE layer IS NULL AND
-	t.way_id=c.way_id AND
-	t.k='bridge'
-", $db1);
-query("
-	UPDATE _tmp_ways c
-	SET layer=-1
-	FROM way_tags t
-	WHERE layer IS NULL AND
-	t.way_id=c.way_id AND
-	t.k='tunnel'
-", $db1);
-query("
-	UPDATE _tmp_ways c
-	SET layer=0
-	WHERE layer IS NULL
-", $db1);
 
 query("CREATE INDEX idx_tmp_ways_layer ON _tmp_ways (layer)", $db1);
 query("CREATE INDEX idx_tmp_ways_way_type ON _tmp_ways (way_type)", $db1);
@@ -139,6 +126,7 @@ query("
 query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
 query("ANALYZE _tmp_xings", $db1);
 
+// remove ways that dont play in this game
 query("
 	DELETE FROM _tmp_xings
 	WHERE NOT EXISTS (
@@ -150,27 +138,37 @@ query("
 
 
 
-
-// ignore crossings/overlappings of a riverbank with the river itself (there are thousands!)
-// ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
-$waterway_exlusion="
-	NOT ((w1.way_type='waterway' AND w2.way_type='riverbank') OR
-	(w1.way_type='riverbank' AND w2.way_type='waterway') OR
-	(w1.way_type='riverbank' AND w2.way_type='riverbank'))
-";
-
+// collect colliding ways here and check if they really are errors afterwards
+query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+query("
+	CREATE TABLE _tmp_error_candidates (
+	way_id1 bigint NOT NULL,
+	way_id2 bigint NOT NULL,
+	geom text NOT NULL,
+	typ1 text NOT NULL,
+	typ2 text NOT NULL,
+	action text NOT NULL
+	)
+", $db1);
 
 // find ways that graphically intersect (i.e. cross or overlap)
 // intersecting is not an error if ways share a common node; this will be checked later
 // check every way with every other way but don't check way A with B AND B with A
 // leads to "w1.way_id<w2.way_id"
-$result=query("
-	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2
+
+// ignore crossings/overlappings of a riverbank with the river itself (there are thousands!)
+// ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
+query("
+	INSERT INTO _tmp_error_candidates
+	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2,
+	CASE WHEN ST_crosses(w1.geom, w2.geom) THEN 'crosses' ELSE 'overlaps' END as action
 	FROM _tmp_ways w1, _tmp_ways w2
 	WHERE w1.layer=w2.layer AND
-		w1.way_id<w2.way_id AND
-		$waterway_exlusion AND
-		ST_crosses(w1.geom, w2.geom)
+		w1.way_id<w2.way_id AND NOT (
+			(w1.way_type='waterway' AND w2.way_type='riverbank') OR
+			(w1.way_type='riverbank' AND w2.way_type='waterway') OR
+			(w1.way_type='riverbank' AND w2.way_type='riverbank')
+		) AND (ST_crosses(w1.geom, w2.geom) OR ST_overlaps(w1.geom, w2.geom))
 ", $db1);
 
 // ST_intersection() may return one of the following geometry types:
@@ -181,6 +179,7 @@ $result=query("
 // GEOMETRYCOLLECTION() if a combination of the above is found
 // This geometry is a container for different sub-geometries of above types.
 
+$result=query("SELECT * FROM _tmp_error_candidates WHERE action='crosses'", $db1);
 while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 
 	$points = get_startingpoints($row['geom']);
@@ -197,9 +196,7 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 					'This {$row['typ1']} intersects the {$row['typ2']} #' || {$row['way_id2']} || ' but there is no junction node', NOW()," . 
 					round(1e7*merc_lon($point[0])) . ',' . round(1e7*merc_lat($point[1])) . ')'
 				, $db2, false);
-
 		}
-
 }
 pg_free_result($result);
 
@@ -209,16 +206,7 @@ pg_free_result($result);
 // that is ways that (partly) use the same sequences of nodes.
 // Such segments lie on top of each other and are not covered
 // by the intersections-test above
-
-$result=query("
-	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2
-	FROM _tmp_ways w1, _tmp_ways w2
-	WHERE w1.layer=w2.layer AND
-		w1.way_id<w2.way_id AND
-		$waterway_exlusion AND
-		ST_overlaps(w1.geom, w2.geom)
-", $db1);
-
+$result=query("SELECT * FROM _tmp_error_candidates WHERE action='overlaps'", $db1);
 while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 
 	$points = get_startingpoints($row['geom']);
@@ -232,16 +220,15 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 			'This {$row['typ1']} overlaps the {$row['typ2']} #' || {$row['way_id2']} || '.', NOW()," .
 			1e7*merc_lon($point[0]) . ',' . 1e7*merc_lat($point[1]) . ')'
 		, $db2, false);
-
 }
 pg_free_result($result);
 
 
+query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_xings", $db1, false);
-
-
 query("DROP TYPE type_way_type", $db1, false);
+
 
 
 
@@ -299,49 +286,59 @@ function connected_near($way_id1, $way_id2, $x, $y, $db) {
 // highway-waterway: 2
 // highway-riverbank: 3
 // waterway-waterway: 4
+// cycleway-cycleway: 5
+// highway-cycleway: 6
+// cycleway-waterway: 7
+// cycleway-riverbank: 8
 // any other: invalid (-1)
 function subtype_number($type1, $type2) {
 
+	// intentionally omitting break statements here because return exits the funtion
 	switch ($type1) {
 		case 'highway':
 			switch ($type2) {
 				case 'highway':
 					return 1;
-				break;
 				case 'waterway':
 					return 2;
-				break;
 				case 'riverbank':
 					return 3;
-				break;
+				case 'cycleway':
+					return 6;
 			}
-		break;
+		case 'cycleway':
+			switch ($type2) {
+				case 'highway':
+					return 6;
+				case 'waterway':
+					return 7;
+				case 'riverbank':
+					return 8;
+				case 'cycleway':
+					return 5;
+			}
 		case 'waterway':
 			switch ($type2) {
 				case 'highway':
 					return 2;
-				break;
 				case 'waterway':
 					return 4;
-				break;
 				case 'riverbank':
 					return -1;
-				break;
+				case 'cycleway':
+					return 7;
 			}
-		break;
 		case 'riverbank':
 			switch ($type2) {
 				case 'highway':
 					return 3;
-				break;
 				case 'waterway':
 					return -1;
-				break;
 				case 'riverbank':
 					return -1;
-				break;
+				case 'cycleway':
+					return 8;
 			}
-		break;
 	}
 	// something terrible must have happened
 	echo "cannot assign an error type to a junction of $type1 and $type2\n";
