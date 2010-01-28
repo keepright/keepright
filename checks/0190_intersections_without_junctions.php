@@ -121,21 +121,10 @@ query("DROP TABLE IF EXISTS _tmp_xings", $db1);
 query("
 	CREATE TABLE _tmp_xings AS
 	SELECT wn1.way_id as way1, wn2.way_id as way2, wn1.x, wn1.y
-	FROM way_nodes wn1 INNER JOIN way_nodes wn2 USING (node_id)
+	FROM (way_nodes wn1 INNER JOIN _tmp_ways w1 ON w1.way_id=wn1.way_id) INNER JOIN (way_nodes wn2 INNER JOIN _tmp_ways w2 ON w2.way_id=wn2.way_id) USING (node_id)
 ", $db1);
 query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
 query("ANALYZE _tmp_xings", $db1);
-
-// remove ways that dont play in this game
-query("
-	DELETE FROM _tmp_xings
-	WHERE NOT EXISTS (
-		SELECT way_id FROM _tmp_ways w1 WHERE w1.way_id=_tmp_xings.way1
-	) OR NOT EXISTS (
-		SELECT way_id FROM _tmp_ways w2 WHERE w2.way_id=_tmp_xings.way2
-	)
-", $db1);
-
 
 
 // collect colliding ways here and check if they really are errors afterwards
