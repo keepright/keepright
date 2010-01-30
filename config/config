@@ -104,11 +104,9 @@ MARGIN="20000"
 
 # test instance
 MAIN_DB_NAME_0="osm_TT"
-MIN_SIZE_0="0"
-LEFT_0="9"
-RIGHT_0="17.5"
-TOP_0="49"
-BOTTOM_0="46.5"
+MIN_SIZE_0="95000"
+URL_0="http://download.geofabrik.de/osm/europe/austria.osm.bz2"
+CAT_0="bzcat"
 
 MAIN_DB_NAME_1="osm_EU"
 MIN_SIZE_1="0"
