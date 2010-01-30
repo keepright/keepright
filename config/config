@@ -776,3 +776,10 @@ CHECK_0290_DESCRIPTION="This check is about turn restrictions defined by relatio
 SUBTYPE_0291_NAME="missing type"
 SUBTYPE_0292_NAME="missing from way"
 SUBTYPE_0293_NAME="missing to way"
+
+
+CHECK_0300_NAME="missing maxspeed"
+CHECK_0300_ENABLED="1"
+CHECK_0300_FILE="0300_maxspeed.php"
+CHECK_0300_CLASS="warning"
+CHECK_0300_DESCRIPTION="maxspeed tags are not mandatory but they are very helpful for successful routing. This check shall help users finding highways lacking the maxspeed tag. Please only add maxspeed tags if the allowed maxspeed differs from the default speed for the given highway!"
