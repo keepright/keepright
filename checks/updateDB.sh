@@ -69,11 +69,11 @@ for i do	# loop all given parameter values
 	SCHEMA="schema$i"
 
 	eval 'CAT=${CAT_'"${i}"'}'		# use plain cat as default (dump files not compressed)
-	if [ !"$CAT" ]; then
+	if [ -z "$CAT" ]; then
 		CAT="cat"
 	fi
 
-	if [ !"$FILE" ]; then			# default file name is "[schema].osm"
+	if [ -z "$FILE" ]; then			# default file name is "[schema].osm"
 		FILE="$i.osm"
 	fi
 
