@@ -28,10 +28,11 @@ query("
 	) AND NOT EXISTS (
 		SELECT way_id
 		FROM way_tags wt
-		WHERE wt.way_id=w.id AND (wt.k='maxspeed' OR
+		WHERE wt.way_id=w.id AND
+		(wt.k='maxspeed' OR
 		(wt.k='junction' AND wt.v='roundabout') OR
-		(wt.k='bridge' AND wt.v IN ('yes', '1', 'true') OR
-		(wt.k='tunnel' AND t.v IN ('yes', '1', 'true')))
+		(wt.k='bridge' AND wt.v IN ('yes', '1', 'true')) OR
+		(wt.k='tunnel' AND wt.v IN ('yes', '1', 'true')))
 	) AND ST_Length(w.geom)>50
 ", $db1);
 
