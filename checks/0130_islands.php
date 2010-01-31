@@ -86,6 +86,7 @@ $islands = array(
 		'Kuala Lumpur, Malaysia' => 5074927,
 		'Baghdad, Iraq' => 4075154,
 		'Damascus, Syria' => 28653226,
+		'Dubai, U.A.E.' => 24151186,
 		'New Delhi, India' => 5873630,
 		'Chelyabinsk, Russia' => 32731560,
 		'Workuta, Russia' => 31838171,
