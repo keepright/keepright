@@ -10,6 +10,7 @@
 * not all members part of the relation
 * more than one relation of same name and admin_level
 * relation not closed-loop
+* a tagged way may not be member of a relation of lower admin_level
 
 about direction of ways:
 it is annoying that member ways of boundary-relations may have
@@ -124,6 +125,12 @@ query("
 
 
 // insert errors trying to avoid duplicates
+// raise an error only if
+// a) the way is a member of a relation and doesn't have boundary tags himself
+// b) the way is not member of a relation
+// i.e. don't complain about tagged ways that are member of a relation because
+// if the way belongs to multiple boundaries on different admin_levels, the
+// way himself will be tagged with the highest admin_level
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked, lat, lon)
 	SELECT $error_type+3,
@@ -134,6 +141,11 @@ query("
 	END AS ot,
 	COALESCE(relation_id, way_id) AS oid, ' The boundary of ' || MIN(name) || ' is not closed-loop.', NOW(), 1e7*n.lat, 1e7*n.lon
 	FROM _tmp_open_parts o INNER JOIN nodes n ON (n.id=o.node_id1 OR n.id=o.node_id2)
+	WHERE relation_id IS NOT NULL OR NOT EXISTS(
+		SELECT tmp.relation_id
+		FROM _tmp_border_ways tmp
+		WHERE tmp.way_id=o.way_id AND tmp.relation_id IS NOT NULL
+	)
 	GROUP BY ot, oid, n.lat, n.lon
 ", $db1);
 
@@ -195,6 +207,27 @@ query("
 	FROM _tmp_evil_nodes nl INNER JOIN _tmp_border_ways b USING (name, admin_level)
 	INNER JOIN nodes n on nl.node_id=n.id
 	GROUP BY ot, oid, n.lat, n.lon
+", $db1);
+
+
+
+// a boundary that is member of relations and itself owns a boundary-tag
+// must have the lowest admin_level of all relations in his own tag
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	SELECT $error_type+5,
+	CAST('way' AS type_object_type) AS ot,
+	b.way_id, 'This boundary-way has admin_level ' || MAX(b.admin_level) || ' but belongs to a relation with lower admin_level (higher priority); it should have the lowest admin_level of all relations', NOW()
+	FROM _tmp_border_ways b
+	WHERE relation_id IS NULL AND CAST(admin_level AS INT)=(SELECT MAX(CAST(tmp1.admin_level AS INT))
+		FROM _tmp_border_ways tmp1
+		WHERE tmp1.way_id=b.way_id AND tmp1.relation_id IS NULL
+	)
+	AND CAST(admin_level AS INT)>(SELECT MIN(CAST(tmp2.admin_level AS INT))
+		FROM _tmp_border_ways tmp2
+		WHERE tmp2.way_id=b.way_id AND tmp2.relation_id IS NOT NULL
+	)
+	GROUP BY b.way_id
 ", $db1);
 
 
