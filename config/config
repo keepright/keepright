@@ -766,6 +766,7 @@ SUBTYPE_0281_NAME="missing name"
 SUBTYPE_0282_NAME="missing admin_level"
 SUBTYPE_0283_NAME="not closed loop"
 SUBTYPE_0284_NAME="splitting boundary"
+SUBTYPE_0285_NAME="admin_level too high"
 
 
 CHECK_0290_NAME="restrictions"
