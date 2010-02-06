@@ -612,7 +612,8 @@ CHECK_0010_DESCRIPTION="Deleted items should not be used in conjunction with not
 CHECK_0020_NAME="multiple nodes on the same spot"
 CHECK_0020_ENABLED="0"
 CHECK_0020_FILE="0020_multiple_nodes_on_same_spot.php"
-CHECK_0020_DESCRIPTION="Try to find nodes that are (almost) on the same spot by snapping in node coordinates to integer multiples of a raster unit."
+CHECK_0020_CLASS="warning"
+CHECK_0020_DESCRIPTION="Try to find nodes that are (almost) on the same spot. Distances less than +/-0.5 Meters are considered zero"
 
 CHECK_0030_NAME="non-closed areas"
 CHECK_0030_ENABLED="1"
