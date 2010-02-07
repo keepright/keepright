@@ -9,6 +9,13 @@ data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
 
+<br><br>
+
+<h4>2009-11-16</h4>
+With today&apos;s update I introduce a new kind of cutting the planet into manageable parts. Checking is done on rectangular parts that overlap at their borders. Errors in the overlapping regions are discarded because they are supposed to come from cutting inconsistencies. So errors at country borders should disappear. Maybe you find some new(?) at my new <a target="_blank" href="planet.jpg">cutting borders</a>. If so please tell me via e9625163 at gmx at. For now this is only valid for Europe, the rest will follow.
+
+<br><br>
+
 <h4>2009-11-16</h4>
 The German errors table is now fixed with a complete run based on yesterday&apos;s planet file. Thank you, Norbert for telling me about the problem!
 

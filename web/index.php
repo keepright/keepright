@@ -35,15 +35,17 @@ Developers have a look at the <a href="http://apps.sourceforge.net/trac/keeprigh
 
 <h3>logfile</h3>
 
+<h4>2010-02-07</h4>
+Introducing warnings<br>
+There are two new checks online that produce more fuzzy results than the other checks do. These are &apos;multiple nodes at the same spot&apos; and &apos;missing maxspeed tag&apos;. Obviously not every of these warnings can or should be fixed. That is why they are turned off by default.<br>
+Please never never change the map just to make keepright happy! Do it only if you know you fix an error. Maybe keepright is wrong. If you think so, please tell me and let me fix keepright.
+
+<br><br>
+
 <h4>2009-12-27</h4>
 After one month without any updates for Northern America I'm back on regular operations now. Delay was caused by troubles with updating planet files with diffs but are solved now with help from the dev mailing list. Thank you, Lennard, Frederik and Brett!<br>
 The floating islands check will consider ways that are part of relations tagged with route=ferry even though the ways themselves don&apos;t have a railway=ferry tag. Thank you, Simon, for the suggestion!<br>
 The almost-junction-check now not only ignores ways tagged with noexit=yes but also those tagged with highway=turning_circle. Thank you, Riccardo, for the suggestion!
-
-<br><br>
-
-<h4>2009-11-16</h4>
-With today&apos;s update I introduce a new kind of cutting the planet into manageable parts. Checking is done on rectangular parts that overlap at their borders. Errors in the overlapping regions are discarded because they are supposed to come from cutting inconsistencies. So errors at country borders should disappear. Maybe you find some new(?) at my new <a target="_blank" href="planet.jpg">cutting borders</a>. If so please tell me via e9625163 at gmx at. For now this is only valid for Europe, the rest will follow.
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
 
