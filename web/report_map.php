@@ -279,7 +279,7 @@ function getURL_checkboxes(includeVariableName) {
 
 <a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
 
-<!-- <a id="rsslink" href="<?php echo $path; ?>export.php">RSS</a><br> --> 
+<!-- <a id="rsslink" href="<?php echo $path; ?>export.php">RSS</a><br> -->
 
 
 
@@ -291,9 +291,9 @@ $error_types=array();
 $subtypes = array();
 
 $result=mysqli_query($db1, "
-	SELECT error_type, error_name
+	SELECT error_type, error_name, error_class
 	FROM $error_types_name
-	ORDER BY error_type
+	ORDER BY error_class, error_type
 ");
 
 while ($row = mysqli_fetch_array($result)) {
@@ -301,7 +301,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$main_type=10*floor($et/10);
 
 	if ($et == $main_type) {	// not a subtype of an error
-		$error_types[$main_type]=$row['error_name'];
+		$error_types[$main_type]=array($row['error_class'], $row['error_name']);
 
 	} else {			// subtype of an error
 		$subtypes[$main_type][$et]=$row['error_name'];
@@ -310,14 +310,20 @@ while ($row = mysqli_fetch_array($result)) {
 mysqli_free_result($result);
 
 
+$class='';
 echo "<ul class='outline'>\n";
-foreach ($error_types as $et=>$en) {
+foreach ($error_types as $et=>$e) {
+
+	if ($class!=$e[0]) {
+		echo "<li><i>" . $e[0] ."s</i></li>";
+		$class=$e[0];
+	}
 
 	echo "<li>";
 	$has_subtypes = is_array($subtypes[$et]);
 	if ($has_subtypes) $subgroup_counter++;
 
-	mkcheckbox($et, $en, $ch, !$has_subtypes, $subgroup_counter);
+	mkcheckbox($et, $e[1], $ch, !$has_subtypes, $subgroup_counter, $class);
 
 	if ($has_subtypes) {
 		echo "<ul><div id='subgroup$subgroup_counter'>";
@@ -385,8 +391,6 @@ echo '<div style="position:absolute; left:20%; top:0; width:79%; height:99%;" id
 // it is also used as target for the comment-update forms
 echo '<iframe style="display:none" id="hiddenIframe" name="hiddenIframe"></iframe>';
 
-// this is used inside myForm.js for building the form target to comment.php
-echo '<div style="display:none" id="dbname" name="dbname">' . $db . '</div>';
 echo "\n</body></html>";
 mysqli_close($db1);
 
@@ -405,14 +409,14 @@ function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign
 
 // draws a checkbox with icon and label for a given error type and error name
 // checks the checkbox if applicable
-function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0) {
+function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0, $class='error') {
 	global $checks_selected;
 	echo "\n\t<img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>\n\t";
 
 	if ($draw_checkbox) {
 		echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
 
-		if ($ch==='0' || in_array($et, $checks_selected)) echo ' checked="checked"';
+		if (($ch==='0' && $class==='error') || in_array($et, $checks_selected)) echo ' checked="checked"';
 
 		echo ">\n\t<label for='ch$et'>$en</label>\n";
 
