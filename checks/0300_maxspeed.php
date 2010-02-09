@@ -30,6 +30,8 @@ query("
 		FROM way_tags wt
 		WHERE wt.way_id=w.id AND
 		(wt.k='maxspeed' OR
+		wt.k='maxspeed:forward' OR
+		wt.k='maxspeed:backward' OR
 		(wt.k='junction' AND wt.v='roundabout') OR
 		(wt.k='bridge' AND wt.v IN ('yes', '1', 'true')) OR
 		(wt.k='tunnel' AND wt.v IN ('yes', '1', 'true')))
