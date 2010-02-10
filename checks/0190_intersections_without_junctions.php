@@ -13,7 +13,7 @@ to avoid false positives on highways crossing squares, areas are excluded here
 
 
 if (!type_exists($db1, 'type_way_type'))
-	query("CREATE TYPE type_way_type AS ENUM('highway','cycleway','waterway','riverbank')", $db1);
+	query("CREATE TYPE type_way_type AS ENUM('highway','cycleway/footpath','waterway','riverbank')", $db1);
 
 // tmp_ways will contain all highways with their linestring geometry and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
@@ -26,7 +26,7 @@ query("
 ", $db1);
 query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
 
-// find any highway-tagged way that is not a cycleway
+// find any highway-tagged way that is not a cycleway/footpath
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT DISTINCT id, geom, CAST('highway' AS type_way_type)
@@ -34,22 +34,23 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.v<>'cycleway' AND wt.way_id=ways.id
+		WHERE wt.k = 'highway' AND wt.v NOT IN ('cycleway', 'footpath')
+		AND wt.way_id=ways.id
 	)
 ", $db1);
 
 query("ALTER TABLE _tmp_ways ADD PRIMARY KEY (way_id);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
-// find any cycleways
+// find any cycleway/footpaths
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
-	SELECT DISTINCT id, geom, CAST('cycleway' AS type_way_type)
+	SELECT DISTINCT id, geom, CAST('cycleway/footpath' AS type_way_type)
 	FROM ways
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.v='cycleway' AND wt.way_id=ways.id
+		WHERE wt.k = 'highway' AND wt.v IN ('cycleway', 'footpath') AND wt.way_id=ways.id
 	)
 	AND NOT EXISTS (
 		SELECT id
@@ -275,10 +276,10 @@ function connected_near($way_id1, $way_id2, $x, $y, $db) {
 // highway-waterway: 2
 // highway-riverbank: 3
 // waterway-waterway: 4
-// cycleway-cycleway: 5
-// highway-cycleway: 6
-// cycleway-waterway: 7
-// cycleway-riverbank: 8
+// cycleway/footpath-cycleway/footpath: 5
+// highway-cycleway/footpath: 6
+// cycleway/footpath-waterway: 7
+// cycleway/footpath-riverbank: 8
 // any other: invalid (-1)
 function subtype_number($type1, $type2) {
 
@@ -292,10 +293,10 @@ function subtype_number($type1, $type2) {
 					return 2;
 				case 'riverbank':
 					return 3;
-				case 'cycleway':
+				case 'cycleway/footpath':
 					return 6;
 			}
-		case 'cycleway':
+		case 'cycleway/footpath':
 			switch ($type2) {
 				case 'highway':
 					return 6;
@@ -303,7 +304,7 @@ function subtype_number($type1, $type2) {
 					return 7;
 				case 'riverbank':
 					return 8;
-				case 'cycleway':
+				case 'cycleway/footpath':
 					return 5;
 			}
 		case 'waterway':
@@ -314,7 +315,7 @@ function subtype_number($type1, $type2) {
 					return 4;
 				case 'riverbank':
 					return -1;
-				case 'cycleway':
+				case 'cycleway/footpath':
 					return 7;
 			}
 		case 'riverbank':
@@ -325,7 +326,7 @@ function subtype_number($type1, $type2) {
 					return -1;
 				case 'riverbank':
 					return -1;
-				case 'cycleway':
+				case 'cycleway/footpath':
 					return 8;
 			}
 	}
