@@ -213,7 +213,7 @@ query("
 	UPDATE _tmp_roundabouts r
 	SET right_hand_country=false
 	FROM _tmp_boundaries b
-	WHERE b.admin_level IN ('1', '2') AND b.name IN ('Anguilla', 'Antigua and Barbuda', 'Australia', 'Bahamas', 'Bangladesh', 'Barbados', 'Bhutan', 'Botswana', 'Brunei', 'Cayman Islands', 'Cyprus', 'Dominica', 'Falkland Islands', 'Fiji', 'Grenada', 'Guernsey', 'Guyana', 'Hong Kong', 'India', 'Indonesia', 'Ireland', 'Isle of Man', 'Jamaica', 'Japan', 'Jersey', 'Kenya', 'Kiribati', 'Lesotho', 'Macau', 'Malawi', 'Malaysia', 'Maldives', 'Malta', 'Mauritius', 'Montserrat', 'Mozambique', 'Namibia', 'Nauru', 'Nepal', 'New Zealand', 'Pakistan', 'Papua New Guinea', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Seychelles', 'Singapore', 'Solomon Islands', 'South Africa', 'Sri Lanka', 'Suriname', 'Swaziland', 'Tanzania', 'Thailand', 'Tonga', 'Trinidad and Tobago', 'Tuvalu', 'Uganda', 'United Kingdom', 'British Virgin Islands', 'U.S. Virgin Islands', 'Virgin Islands', 'Zambia', 'Zimbabwe')
+	WHERE b.admin_level IN ('1', '2') AND b.name IN ('Anguilla', 'Antigua and Barbuda', 'Australia', 'Bahamas', 'Bangladesh', 'Barbados', 'Bhutan', 'Botswana', 'Brunei', 'Cayman Islands', 'Cyprus', 'Dominica', 'Falkland Islands', 'Fiji', 'Grenada', 'Guernsey', 'Guyana', 'Hong Kong', 'India', 'Indonesia', 'Ireland', 'Isle of Man', 'Jamaica', 'Japan', 'Jersey', 'Kenya', 'Kiribati', 'Lesotho', 'Macau', 'Malawi', 'Malaysia', 'Maldives', 'Malta', 'Mauritius', 'Montserrat', 'Mozambique', 'Namibia', 'Nauru', 'Nepal', 'New Zealand', 'Pakistan', 'Papua New Guinea', 'Papua Niugini', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Seychelles', 'Singapore', 'Solomon Islands', 'South Africa', 'Sri Lanka', 'Suriname', 'Swaziland', 'Tanzania', 'Thailand', 'Tonga', 'Trinidad and Tobago', 'Tuvalu', 'Uganda', 'United Kingdom', 'British Virgin Islands', 'U.S. Virgin Islands', 'Virgin Islands', 'Zambia', 'Zimbabwe')
 	AND ST_Within(ST_PointFromText ('POINT(' || r.Cx || ' ' || r.Cy || ')', 4326), b.geom)
 
 ", $db1);
@@ -225,6 +225,52 @@ query("
 	WHERE ST_Within(
 		ST_PointFromText ('POINT(' || r.Cx || ' ' || r.Cy || ')', 4326),
 		ST_GeomFromText ('POLYGON((-200375 6242596, -222639 6372180, 322827 6676758, 389618 7079082, 0 8821377, -2738459 7268959, -200375 6242596))', 4326)
+	)
+", $db1);
+
+// fix boundary of South Africa, Lesotho and Mozambique
+// lat/lon: -20 10, -40 10, -40 40, -20 40, -20 10
+query("
+	UPDATE _tmp_roundabouts r
+	SET right_hand_country=false
+	WHERE ST_Within(
+		ST_PointFromText ('POINT(' || r.Cx || ' ' || r.Cy || ')', 4326),
+		ST_GeomFromText ('POLYGON((1113194 -2258423, 1113194 -4838471, 4452779 -4838471, 4452779 -2258423, 1113194 -2258423))', 4326)
+	)
+", $db1);
+
+// fix boundary of Guyana and Surinam
+// lat/lon: -59.83 8.36, -60.73 7.47, -60.32 6.98, -61.22 6.55, -61.37 5.91, -60.75 5.20, -59.98 5.07, -60.13 4.51, -59.55 3.92, -59.89 2.35, -58.81 1.18, -57.08 1.98, -55.91 1.85, -56.03 2.47, -54.93 2.55, -54.57 2.32, -53.97 3.55, -54.48 4.39, -54.41 5.07, -53.77 6.20, -59.83 8.36,
+query("
+	UPDATE _tmp_roundabouts r
+	SET right_hand_country=false
+	WHERE ST_Within(
+		ST_PointFromText ('POINT(' || r.Cx || ' ' || r.Cy || ')', 4326),
+		ST_GeomFromText ('POLYGON((-6660245 927743, -6760433 828371, -6714792 773750, -6814979 725865, -6831677 654671, -6762659 575788, -6676943 561354, -6693641 499213, -6629076 433794, -6666924 259923, -6546699 130487, -6354117 218981, -6223873 204598, -6237231 273204, -6114780 282059, -6074705 256603, -6007913 392793, -6064686 485903, -6056893 561354, -5985649 686920, -6660245 927743))', 4326)
+	)
+", $db1);
+
+
+// fix boundary of India and Pakistan
+// lat/lon: 61.20 24.18,62.21 26.40,63.16 26.64,63.29 27.19,62.81 27.27,62.81 28.28,61.53 28.86,60.83 29.81,62.54 29.36,66.28 29.85,66.76 31.18,67.68 31.40,69.35 31.85,69.53 33.07,70.23 33.33,69.93 33.95,71.02 33.99,71.59 35.29,71.20 36.01,72.30 36.75,75.29 36.93,78.01 35.29,79.28 32.56,78.45 32.44,78.89 31.40,81.22 30.00,81.66 30.38,86.45 27.89,88.82 27.97,89.00 27.23,89.79 28.12,92.25 27.73,94.71 29.24,95.46 29.07,96.12 29.43,96.56 28.39,97.32 28.21,96.92 27.40,95.08 26.44,95.02 25.71,94.60 25.16,94.73 25.06,94.16 23.84,93.35 25.04,93.17 22.22,92.60 21.96,92.60 21.28,92.25 21.36,92.36 20.23,91.62 3.29,68.91 3.29
+query("
+	UPDATE _tmp_roundabouts r
+	SET right_hand_country=false
+	WHERE ST_Within(
+		ST_PointFromText ('POINT(' || r.Cx || ' ' || r.Cy || ')', 4326),
+		ST_GeomFromText ('POLYGON((6812753 2757862, 6925186 3029714, 7030939 3059413, 7045411 3127710, 6991977 3137673, 6991977 3264082, 6849488 3337220, 6771565 3457913, 6961921 3400601, 7378256 3463020, 7431689 3634029, 7534103 3662547, 7720007 3721091, 7740044 3881285, 7817968 3915712, 7784572 3998228, 7905910 4003573, 7969362 4178676, 7925948 4276875, 8048399 4378750, 8381244 4403679, 8684033 4178676, 8825409 3814052, 8733014 3798289, 8781995 3662547, 9041369 3482189, 9090350 3530883, 9623570 3215130, 9887397 3225157, 9907435 3132691, 9995377 3243977, 10269223 3195098, 10543069 3385361, 10626559 3363802, 10700029 3409499, 10749010 3277922, 10833613 3255282, 10789085 3153877, 10584257 3034660, 10577578 2944677, 10530824 2877250, 10545295 2865023, 10481843 2716659, 10391674 2862579, 10371637 2521808, 10308185 2490751, 10308185 2409796, 10269223 2419301, 10281468 2285529, 10199092 363992, 7671026 363992, 6812753 2757862))', 4326)
+	)
+", $db1);
+
+
+// fix boundary of Thailand and South-East Asia
+// lat/lon: 97.70 9.18,98.80 10.50,98.76 10.63,99.64 11.78,99.11 13.02,99.13 13.84,98.21 14.90,98.23 15.20,98.56 15.37,98.65 16.51,97.33 18.54,97.77 18.58,97.90 19.66,99.04 19.95,100.06 20.38,100.56 20.11,100.43 19.58,101.26 19.49,101.00 17.49,102.12 18.14,102.98 17.93,103.37 18.39,104.03 18.18,104.78 17.39,104.87 16.27,105.51 15.64,105.28 14.20,103.09 14.26,102.38 13.45,102.91 11.56,102.12 10.80,104.92 7.20,119.16 7.73,119.70 3.00,129.30 5.60,141.78 3.51,165.42 -5.88,156.11 -18.73,179.75 -34.75,179.75 -52.00,89.00 -52.00,89.00 15,95.00 14,97.70 9.18
+query("
+	UPDATE _tmp_roundabouts r
+	SET right_hand_country=false
+	WHERE ST_Within(
+		ST_PointFromText ('POINT(' || r.Cx || ' ' || r.Cy || ')', 4326),
+		ST_GeomFromText ('POLYGON((10875914 1019501, 10998366 1167671, 10993913 1182297, 11091874 1311963, 11032875 1452397, 11035101 1545651, 10932687 1666698, 10934914 1701064, 10971649 1720560, 10981668 1851724, 10834726 2087273, 10883707 2091942, 10898178 2218428, 11025082 2252536, 11138628 2303229, 11194288 2271382, 11179816 2209029, 11272212 2198462, 11243269 1965104, 11367946 2040645, 11463681 2016209, 11507096 2069775, 11580567 2045303, 11664056 1953507, 11674075 1824047, 11745319 1751557, 11719716 1586697, 11475926 1593544, 11396889 1501258, 11455889 1287117, 11367946 1201432, 11679641 798267, 13264831 857379, 13324943 331877, 14393610 620217, 15782877 388362, 18414470 -651336, 17378086 -2109460, 20009678 -4105604, 20009678 -6766432, 9907435 -6766432, 9907435 1678148, 10575352 1563886, 10875914 1019501))', 4326)
 	)
 ", $db1);
 
