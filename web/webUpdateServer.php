@@ -79,9 +79,9 @@ if ($_SESSION['authorized']===true) {
 
 		toggle_tables1($db1, $schema);
 		load_dump($db1, $error_view_filename, 'error_view');
+		//empty_error_types_table($db1);
 		//load_dump($db1, escapeshellarg($_GET['error_types_filename']), 'error_types');
 		toggle_tables2($db1, $schema);
-		empty_error_types_table($db1);
 		reopen_errors($db1, $schema);
 		// set_updated_date
 		write_file($updated_file_name, addslashes($_GET['updated_date']));
@@ -225,6 +225,7 @@ function toggle_tables1($db1, $schema){
 	add_index_if_not_exists($db1, $error_view_old_name, 'schema', '`schema`');
 	add_index_if_not_exists($db1, $error_view_name, 'schema', '`schema`');
 
+	query("DROP TABLE IF EXISTS {$error_view_name}_shadow", $db1);
 	query("RENAME TABLE $error_view_old_name TO {$error_view_name}_shadow", $db1);
 	query("ALTER TABLE {$error_view_name}_shadow DISABLE KEYS", $db1);
 	query("TRUNCATE {$error_view_name}_shadow", $db1);
@@ -300,7 +301,13 @@ function toggle_tables2($db1, $schema){
 		ALTER TABLE {$error_view_name}_shadow ENABLE KEYS;
 	", $db1);
 	query("
+		DROP TABLE IF EXISTS $error_view_old_name;
+	", $db1);
+	query("
 		RENAME TABLE $error_view_name TO $error_view_old_name;
+	", $db1);
+	query("
+		DROP TABLE IF EXISTS $error_view_name;
 	", $db1);
 	query("
 		RENAME TABLE {$error_view_name}_shadow TO $error_view_name;
