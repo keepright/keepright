@@ -174,6 +174,7 @@ $islands = array(
 		'Quebec, Canada' => 16229066,
 		'Calgary, Canada' => 5386816,
 		'Santo Domingo, Dominican Republic' => 28118564,
+		'Ile de la Gonave, Haiti' => 49014482,
 		'San Juan, Puerto Rico' => 22231517,
 		'Isla de Vieques' => 22256504,
 		'Virgin Islands 1' => 38291731,
