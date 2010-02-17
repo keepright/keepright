@@ -794,3 +794,9 @@ CHECK_0310_DESCRIPTION="roundabout are always one-way streets directed counter-c
 
 SUBTYPE_0311_NAME="not closed loop"
 SUBTYPE_0312_NAME="wrong direction"
+
+
+CHECK_0320_NAME="*_link-connections"
+CHECK_0320_ENABLED="1"
+CHECK_0320_FILE="0320_highway_link_connections.php"
+CHECK_0320_DESCRIPTION="Any highway tagged as (motorway|trunk|primary|secondary)_link should have at least one connection to a (motorway|trunk|primary|secondary) highway or a _link highway of the same type"
