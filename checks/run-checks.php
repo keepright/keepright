@@ -364,29 +364,6 @@ query("
 		1e7*w.first_node_lat, 1e7*w.first_node_lon
 ", $db1);
 
-/*
-// now find location for relations
-$result=query("
-	SELECT DISTINCT e.error_id, e.error_type, e.object_id, e.state, e.description,
-		e.first_occurrence, e.last_checked
-	FROM public.errors e
-	WHERE e.schema='$schema' AND e.object_type='relation' AND (e.lat IS NULL OR e.lon IS NULL)
-", $db1, false);
-
-while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-	$latlong = locate_relation($row['object_id'], $db3);
-	query("
-		INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
-			state, description, first_occurrence, last_checked, lat, lon)
-		VALUES (${row['error_id']}, '$MAIN_DB_NAME', '$schema', '${row['error_type']}',
-			'relation', ${row['object_id']}, '${row['state']}',
-			'" . pg_escape_string($db1, $row['description']) . "', '${row['first_occurrence']}',
-			'${row['last_checked']}', 1e7*${latlong['lat']}, 1e7*${latlong['lon']})
-	", $db2, false);
-}
-pg_free_result($result);
-*/
-
 
 // finally insert errors on ways/nodes/relations that do have lat/lon values
 query("
@@ -417,7 +394,9 @@ if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
 		e.lon<1e7*$left OR e.lon>1e7*$right)
 	", $db1);
 
-} else echo "boundaries not specified, skip clipping of errors.\n";
+} else {
+	echo "boundaries not specified, skip clipping of errors.\n";
+}
 
 
 
@@ -454,49 +433,36 @@ print_r($jobreport);
 echo "-----------------------\n";
 
 
-/*
-// draw a statistic about error counts
-$result = query("
-	SELECT et.error_type, et.error_name,
-		(SELECT COUNT(*) FROM errors e WHERE 10*FLOOR(e.error_type/10)=et.error_type) as total,
-		(SELECT COUNT(*) FROM errors e WHERE 10*FLOOR(e.error_type/10)=et.error_type AND e.last_checked<>e.first_occurrence and state=CAST('new' AS type_error_state)) as persistent,
-		(SELECT COUNT(*) FROM errors e WHERE 10*FLOOR(e.error_type/10)=et.error_type AND e.last_checked=e.first_occurrence and state=CAST('new' AS type_error_state)) as new,
-		(SELECT COUNT(*) FROM errors e WHERE 10*FLOOR(e.error_type/10)=et.error_type AND state=CAST('cleared' AS type_error_state)) as closed,
-		(SELECT COUNT(*) FROM errors e WHERE 10*FLOOR(e.error_type/10)=et.error_type AND state=CAST('reopened' AS type_error_state)) as reopened
-	FROM error_types AS et
-	ORDER BY et.error_type
-", $db1, false);
-$sumT=$sumP=$sumN=$sumC=$sumR=0;
-echo "<table><tr><th>error type</th><th>total errors</th><th>persistent erros</th><th>new errors</th><th>cleared errors</th><th>reopened errors</th></tr>";
-while ($row=pg_fetch_assoc($result)) {
-	$sumT+=$row['total'];
-	$sumP+=$row['persistent'];
-	$sumN+=$row['new'];
-	$sumC+=$row['closed'];
-	$sumR+=$row['reopened'];
-	echo "<tr><td>{$row['error_name']}</td><td>{$row['total']}</td><td>{$row['persistent']}</td><td>{$row['new']}</td><td>{$row['closed']}</td><td>{$row['reopened']}</td></tr>\n";	
+// dump the number of nodes per sware degree
+$fname=$ERROR_VIEW_FILE .'_nodes_'. $schema . '.txt';
+$f = fopen($fname, 'w');
+
+if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
+	$boundary_clipper="(e.lat>=$bottom AND e.lat<=$top AND
+		e.lon>=$left AND e.lon<=$right)";
+} else {
+	$boundary_clipper='';
 }
-echo "<tr><td>total</td><td>$sumT</td><td>$sumP</td><td>$sumN</td><td>$sumC</td><td>$sumR</td><tr></table>\n";
-pg_free_result($result);
 
+if ($f) {
+	$result = query("
+		SELECT '$schema' AS schema,
+		round(e.lat) AS lat, round(e.lon) AS lon, COUNT(e.id) AS cnt
+		FROM nodes e
+		" . ($boundary_clipper ? "WHERE NOT ($boundary_clipper)" : '') . "
+		GROUP BY round(e.lat), round(e.lon)
+	", $db1);
 
+	while ($row=pg_fetch_assoc($result)) {
+		fwrite($f, $row['schema'] ."\t". $row['lat'] ."\t". $row['lon'] ."\t". $row['cnt'] . "\n");
+	}
+	pg_free_result($result);
+	fclose($f);
 
-/*
-select error_type, state, last_checked>'2009-03-09' as recently, count(error_id)
-from error_view
-group by error_type, state, recently
-order by recently, state, error_type
-*/
+} else {
+	echo "dumping of node counts failed. Cannot open $fname for writing\n";
+}
 
-
-/*
-UPDATE comments_osm_EU inner join error_view_osm_EU using (error_id)
-SET comments_osm_EU.state=null,
-comments_osm_EU.comment=CONCAT("[error still open, 2009-05-26] ", comments_osm_EU.comment)
-WHERE comments_osm_EU.state='ignore_temporarily' AND
-error_view_osm_EU.state<>'cleared' AND
-comments_osm_EU.timestamp<"2009-05-26"
-*/
 
 
 // clean up...
