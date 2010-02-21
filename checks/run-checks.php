@@ -438,8 +438,8 @@ $fname=$ERROR_VIEW_FILE .'_nodes_'. $schema . '.txt';
 $f = fopen($fname, 'w');
 
 if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
-	$boundary_clipper="(e.lat>=$bottom AND e.lat<=$top AND
-		e.lon>=$left AND e.lon<=$right)";
+	$boundary_clipper="e.lat>=$bottom AND e.lat<=$top AND
+		e.lon>=$left AND e.lon<=$right";
 } else {
 	$boundary_clipper='';
 }
@@ -449,7 +449,7 @@ if ($f) {
 		SELECT '$schema' AS schema,
 		round(e.lat) AS lat, round(e.lon) AS lon, COUNT(e.id) AS cnt
 		FROM nodes e
-		" . ($boundary_clipper ? "WHERE NOT ($boundary_clipper)" : '') . "
+		" . ($boundary_clipper ? "WHERE $boundary_clipper " : '') . "
 		GROUP BY round(e.lat), round(e.lon)
 	", $db1);
 
