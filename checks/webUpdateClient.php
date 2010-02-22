@@ -157,7 +157,7 @@ function ftp_upload($db, $schema) {
 // copied from http://de.php.net/manual/de/function.stream-set-timeout.php
 function readHTTP($URL) {
 	// Timeout in seconds
-	$timeout = 300;
+	$timeout = 600;
 	$data='';
 	$URLparts = parse_url($URL);
 
