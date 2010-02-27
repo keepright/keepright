@@ -27,6 +27,7 @@ query("
 query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
 
 // find any highway-tagged way that is not a cycleway/footpath
+// exclude proposed highways as they are intentionally not connected
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT DISTINCT id, geom, CAST('highway' AS type_way_type)
@@ -34,7 +35,7 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.v NOT IN ('cycleway', 'footpath')
+		WHERE wt.k = 'highway' AND wt.v NOT IN ('cycleway', 'footpath', 'proposed')
 		AND wt.way_id=ways.id
 	)
 ", $db1);
