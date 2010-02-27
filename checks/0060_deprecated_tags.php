@@ -18,7 +18,11 @@ $replacement_list = array(
 	array("2009-02-12", "amenity", "signpost", "information=guidepost"),
 	array("2007-07-16", "amenity", "store", "shop=* ", "Shop introduced"),
 	array("2007-07-13", "amenity", "supermarket", "shop=supermarket ", "Shop introduced"),
+	/*
+	// removed at 2010-02-23 because class=free is used for
+	// wlan access points nowadays.
 	array("2006", "class", "*", "highway=* ", "highway introduced"),
+	*/
 	array("2007", "highway", "bridge", "highway=* + bridge=*", "any type of highway can cross a bridge."),
 	array("2008-10-19", "highway", "cattle_grid", "barrier=*", "Their 'concept' better fits in this new key and highway gets a bit uncluttered.(voted)"),
 	array("2008-10-19", "highway", "gate", "barrier=*", "Their 'concept' better fits in this new key and highway gets a bit uncluttered.(voted)"),
