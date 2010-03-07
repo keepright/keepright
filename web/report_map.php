@@ -8,11 +8,18 @@ mysqli_query($db1, "SET SESSION wait_timeout=60");
 
 
 
-$st = htmlentities($_GET['st']);		// comma separated list of error type numbers
-$lat = 1e7*htmlentities($_GET['lat']);		// center of view
-$lon = 1e7*htmlentities($_GET['lon']);
-$zoom = 1*htmlentities($_GET['zoom']);
-$highlight_error_id=1*htmlentities($_GET['error']);
+// first of all take parameters from cookie, if exist
+if ($cookie) {
+	$lon=1e7*$cookie[1];
+	$lat=1e7*$cookie[2];
+	$zoom=$cookie[3];
+}
+
+// second: evaluate URL parameters, overwriting cookie-defaults
+if (isset($_GET['lat'])) $lat = 1e7*htmlentities($_GET['lat']);		// center of view
+if (isset($_GET['lon'])) $lon = 1e7*htmlentities($_GET['lon']);
+if (isset($_GET['zoom'])) $zoom = 1*htmlentities($_GET['zoom']);
+$highlight_error_id=1*htmlentities($_GET['error']);	// error_id and schema name of a specific error the user wants to see
 $highlight_schema=1*htmlentities($_GET['schema']);
 
 // flags for display of ignored/temp.ignored errors. Default is "on"
@@ -23,6 +30,7 @@ $show_ign=$_GET['show_ign']<>'0';
 $show_tmpign=$_GET['show_tmpign']<>'0';
 
 
+// third: requests for a specific error overwrite lat/lon from URL
 if ($highlight_error_id<>0) {
 	// find lat/lon if URL specifies an error id to highlight
 	$lat=0;
@@ -32,7 +40,8 @@ if ($highlight_error_id<>0) {
 		SELECT lat, lon
 		FROM $error_view_name
 		WHERE error_id=" . addslashes($highlight_error_id) ."
-		AND `schema`=" . addslashes($highlight_schema)
+		AND `schema`=" . addslashes($highlight_schema) . "
+		LIMIT 1"
 	);
 
 	while ($row = mysqli_fetch_array($result)) {
@@ -41,25 +50,24 @@ if ($highlight_error_id<>0) {
 		$zoom=17;
 	}
 	mysqli_free_result($result);
-
 }
 
-// default settings: center of Vienna:
+
+// fourth: if none of the above exists, use default settings: center of Vienna:
 if ($lat==0) $lat=482080810;
 if ($lon==0) $lon=163722146;
 if ($zoom==0) $zoom=14;
 
 
-$ch=$_GET["ch"];
+$ch=$_GET["ch"];				// comma separated list of error types to display
 if (!isset($ch)) $ch='0';
 $checks_selected = split(',', $ch);
+if ($cookie) $checks_to_hide = split(',', $cookie[4]); else $checks_to_hide=array();
 //echo "ch=$ch<br>";
 //print_r($checks_selected);
-if (!$st) $st='open';
-
-
-
+//print_r($checks_to_hide);
 ?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><title>keep right!</title>
 
@@ -68,224 +76,43 @@ if (!$st) $st='open';
 
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 
-<script type="text/javascript" src="<?php echo $path; ?>myPermalink.js"></script>
-<script type="text/javascript" src="<?php echo $path; ?>myTextFormat.js"></script>
-<script type="text/javascript" src="<?php echo $path; ?>myText.js"></script>
+<script type="text/javascript" src="myPermalink.js"></script>
+<script type="text/javascript" src="myTextFormat.js"></script>
+<script type="text/javascript" src="myText.js"></script>
+<script type="text/javascript" src="keepright.js"></script>
 
 <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $path; ?>style.css">
-<script type="text/javascript" src="<?php echo $path; ?>outline.js"></script>
-<script type="text/javascript" src="<?php echo $path; ?>tristate-0.9.2.js"></script>
-
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="outline.js"></script>
+<script type="text/javascript" src="tristate-0.9.2.js"></script>
 
 <script type="text/javascript">
 	var lat=<?php echo $lat/1e7; ?>;
 	var lon=<?php echo $lon/1e7; ?>;
 	var zoom=<?php echo $zoom; ?>;
+	var poisURL="<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $path . 'points.php'); ?>";
 	var pois=null;
 	var map=null;
 	var plnk=null;
-
-<?php 	//Initialise the 'map' object ?>
-	function init() {
-		map = new OpenLayers.Map ("map", {
-			controls:[
-				new OpenLayers.Control.Navigation(),
-				new OpenLayers.Control.PanZoomBar(),
-				new OpenLayers.Control.LayerSwitcher(),
-				new OpenLayers.Control.Attribution()],
-
-			maxExtent: new OpenLayers.Bounds(-20037508,-20037508,20037508,20037508),
-			maxResolution: 156543,
-
-			numZoomLevels: 20,
-			units: 'm',
-			projection: new OpenLayers.Projection("EPSG:900913"),
-			displayProjection: new OpenLayers.Projection("EPSG:4326")
-		} );
-
-<?php		// add the mapnik layer ?>
-		var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
-		map.addLayer(layerMapnik);
-
-
-<?php		// add the osmarender layer ?>
-		var layerOsmarender = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
-		map.addLayer(layerOsmarender);
-
-
-<?php		// add the open cycle map layer ?>
-		var layerCycle = new OpenLayers.Layer.OSM.CycleMap("OSM Cycle Map");
-		map.addLayer(layerCycle);
-
-<?php		// add point markers layer. This is not the standard text layer but a derived version! ?>
-		pois = new OpenLayers.Layer.myText("Errors on Nodes", { location:"<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $path . 'points.php'); ?>", projection: new OpenLayers.Projection("EPSG:4326")} );
-		map.addLayer(pois);
-
-
-<?php		// move map center to lat/lon ?>
-		var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-		map.setCenter(lonLat, zoom);
-
-
-		plnk = new OpenLayers.Control.myPermalink();
-		plnk.displayClass="olControlPermalink";
-		map.addControl(plnk);
-
-//		mp = new OpenLayers.Control.MousePosition();
-//		map.addControl(mp);
-
-
-
-
-<?php		// register event that records new lon/lat coordinates in form fields after panning ?>
-		map.events.register("moveend", map, function() {
-			var pos = this.getCenter().clone();
-			var lonlat = pos.transform(this.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
-			document.myform.lat.value=lonlat.lat
-			document.myform.lon.value=lonlat.lon
-			document.myform.zoom.value=this.getZoom();
-
-			var editierlink = document.getElementById('editierlink');
-			editierlink.href="http://www.openstreetmap.org/edit?lat=" + lonlat.lat + "&lon=" + lonlat.lon + "&zoom=" + this.getZoom();
-
-
-/*			var rsslink=document.getElementById('rsslink');
-			var b=this.getExtent();
-			var bbox = b.transform(this.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
-			rsslink.href = '<?php echo $path; ?>export.php?format=rss&' + getURL_checkboxes() + '&left=' + bbox.left + '&bottom=' + bbox.bottom + '&right=' + bbox.right + '&top=' + bbox.top + '&db=' + document.myform.db.value;
-*/
-
-			pois.loadText();		//reload markers after panning
-		});
-	}
-
-<?php 	//Initialise the 'map' object ?>
-	function saveComment(schema, error_id, error_type) {
-		var myfrm = document['errfrm_'+schema+'_'+error_id];
-		repaintIcon(schema, error_id, myfrm.st, error_type);
-		myfrm.submit();
-		closeBubble(schema, error_id);
-	}
-
-	function repaintIcon(schema, error_id, state, error_type) {
-<?php		// state is a reference to the option group inside the bubble's form;
-		// state[0].checked==true means state==none
-		// state[1].checked==true means state==ignore temporarily
-		// state[2].checked==true means state==ignore
-?>
-
-		var feature_id = pois.error_ids[schema][error_id];
-		var i=0;
-		var len=pois.features.length;
-		var feature=null;
-<?php		// find feature's id in list of features ?>
-		while (i<len && feature==null) {
-			if (pois.features[i].id == feature_id) feature=pois.features[i];
-			i++;
-		}
-
-		if (state[0].checked) feature.marker.icon.setUrl("img/zap" + error_type + ".png")
-		else if (state[1].checked) feature.marker.icon.setUrl("img/zapangel.png")
-		else if (state[2].checked) feature.marker.icon.setUrl("img/zapdevil.png");
-	}
-
-<?php	// called as event handler on the cancel button ?>
-	function closeBubble(schema, error_id) {
-		var feature_id = pois.error_ids[schema][error_id];
-
-		var i=0;
-		var len=pois.features.length;
-		var feature=null;
-<?php		// find feature's id in list of features ?>
-		while (i<len && feature==null) {
-			if (pois.features[i].id == feature_id) feature=pois.features[i];
-			i++;
-		}
-<?php		// call event handler as if one had clicked the icon ?>
-		feature.marker.events.triggerEvent("mousedown");
-	}
-
-<?php	// check/uncheck all checkboxes for error type selection ?>
-	function set_checkboxes(new_value) {
-
-<?php		// update all the checkboxes ?>
-		for (var i = 0; i < document.myform.elements.length; ++i) {
-			var el=document.myform.elements[i];
-			if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
-				el.checked=new_value;
-			}
-		}
-
-<?php		// update the images that look like tristated checkboxes
-		// this was stolen from tristate.js, function onCheckboxClick()
-?>
-		for (i = 1; i <= document.myform.number_of_tristate_checkboxes.value; i++) {
-			var imageId = 'tristateBox' + i + '.Img';
-			var fieldAndContainerIds = getFieldAndContainerIds(imageId);
-			var allTheCheckboxes = getAllCheckboxesInContainer(fieldAndContainerIds[1]);
-
-			var triStateBoxField = document.getElementById(fieldAndContainerIds[0]);
-			updateStateAndImage(allTheCheckboxes, triStateBoxField, imageId);
-		}
-
-		plnk.updateLink();
-	}
-
-
-<?php	// reload the error types and the permalink, which includes the error type selection ?>
-	function checkbox_click() {
-		pois.loadText();
-		plnk.updateLink();
-	}
-
-
-<?php	// build the list of error type checkbox states for use in URLs
-	// echo the error_type number for every active checkbox, separated with ','
-	// by default the var.name "ch=" is put in front of the string, this
-	// can be turned off with the optional boolean parameter
- ?>
-function getURL_checkboxes(includeVariableName) {
-	if (includeVariableName === undefined) {
-		includeVariableName = true;
-	}
-
-	if (includeVariableName) {
-		loc="ch=0";
-	} else {
-		loc="0";
-	}
-
-	// append error types for any checked checkbox that is called "ch[0-9]+"
-	for (var i = 0; i < document.myform.elements.length; ++i) {
-		var el=document.myform.elements[i];
-		if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
-			if (el.checked)
-				loc+="," + el.name.substr(2);
-		}
-	}
-	return loc;
-}
-
 </script>
-
-
 </head>
-<body onload="init(); outlineInit();">
+
+<body onload="init(); outlineInit(); updateCookie(); ">
 
 <form name="myform" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
 
 <a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
 
-<!-- <a id="rsslink" href="<?php echo $path; ?>export.php">RSS</a><br> -->
+<!-- <a id="rsslink" href="export.php">RSS</a><br> -->
 
 
 
 <?php
-// echo checkboxes for error types
+//echo "<pre>"; print_r($cookie); echo "</pre>";
 
+// echo checkboxes for error types
 $subgroup_counter=0;
 $error_types=array();
 $subtypes = array();
@@ -377,10 +204,10 @@ You will see up to 100 error markers starting in the center of the map. Please a
 
 
 // print out calling parameters
-//echo "<br>db:$db / check:$ch / state:$st / lat:$lat / lon:$lon / zoom level:$zoom'<br>";
+//echo "<br>db:$db / check:$ch / lat:$lat / lon:$lon / zoom level:$zoom'<br>";
 
 // print out the link pointing to the points table
-//echo "<a href='" . mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $path . 'points.php') . "'>points</a> ";
+//echo "<a href='" . mkurl($db, $ch, $label, $lat, $lon, $zoom, $path . 'points.php') . "'>points</a> ";
 
 
 // the map goes in here:
@@ -397,12 +224,12 @@ mysqli_close($db1);
 
 
 
-function mklink($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
-	return '<a href="' . mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename) . '">' . $label . '</a> ';
+function mklink($db, $ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
+	return '<a href="' . mkurl($db, $ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename) . '">' . $label . '</a> ';
 }
 
-function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
-	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?db=' . $db . '&ch=' . $ch .  '&st=' . $st .  '&lat=' . $lat/1e7 .  '&lon=' . $lon/1e7 .  '&zoom=' . $zoom . '&show_ign=' . $show_ign .  '&show_tmpign=' . $show_tmpign;
+function mkurl($db, $ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
+	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?db=' . $db . '&ch=' . $ch . '&lat=' . $lat/1e7 . '&lon=' . $lon/1e7 . '&zoom=' . $zoom . '&show_ign=' . $show_ign . '&show_tmpign=' . $show_tmpign;
 }
 
 
@@ -410,13 +237,13 @@ function mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign
 // draws a checkbox with icon and label for a given error type and error name
 // checks the checkbox if applicable
 function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0, $class='error') {
-	global $checks_selected;
+	global $checks_selected, $checks_to_hide;
 	echo "\n\t<img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>\n\t";
 
 	if ($draw_checkbox) {
 		echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
 
-		if (($ch==='0' && $class==='error') || in_array($et, $checks_selected)) echo ' checked="checked"';
+		if (($ch==='0' && $class==='error' && !in_array($et, $checks_to_hide)) || in_array($et, $checks_selected)) echo ' checked="checked"';
 
 		echo ">\n\t<label for='ch$et'>$en</label>\n";
 

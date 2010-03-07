@@ -12,11 +12,34 @@ $db_name="osm_EU";
 // $db is a value used for selection rows out of error_view.db_name
 // this allows to have different countries inside one table and select them via URL
 
+
+/*
+cookie parameters: db, lon, lat, zoom, error_types to hide
+for example:
+keepright_cookie = osm_XA|156412246|481387746|11|0,40,50
+
+$cookie = Array (
+	[0] => osm_XA
+	[1] => 156412246
+	[2] => 481387746
+	[3] => 11
+	[4] => 0,40,50
+)
+*/
+
+if (isset($_COOKIE["keepright_cookie"])) {
+	$cookie=explode('|', addslashes($_COOKIE["keepright_cookie"]));
+} else {
+	$cookie=false;
+}
+
+
+// precedence for db parameter: 1: URL, 2: cookie, 3: fixed "osm_EU"
 if (!isset($db)) {
 	if (isset($_GET['db'])) {
 		$db=addslashes($_GET['db']);
 	} else {
-		$db=$db_name;
+		if ($cookie) $db=$cookie[0]; else $db='osm_EU';
 	}
 }
 

@@ -9,6 +9,11 @@ data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
 
+<h4>2009-12-27</h4>
+After one month without any updates for Northern America I'm back on regular operations now. Delay was caused by troubles with updating planet files with diffs but are solved now with help from the dev mailing list. Thank you, Lennard, Frederik and Brett!<br>
+The floating islands check will consider ways that are part of relations tagged with route=ferry even though the ways themselves don&apos;t have a railway=ferry tag. Thank you, Simon, for the suggestion!<br>
+The almost-junction-check now not only ignores ways tagged with noexit=yes but also those tagged with highway=turning_circle. Thank you, Riccardo, for the suggestion!
+
 <br><br>
 
 <h4>2009-11-16</h4>
