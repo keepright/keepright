@@ -98,14 +98,12 @@ if ($cookie) $checks_to_hide = split(',', $cookie[4]); else $checks_to_hide=arra
 </script>
 </head>
 
-<body onload="init(); outlineInit(); updateCookie(); ">
+<body onload="init(); outlineInit(); ">
 
 <form name="myform" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
 
 <a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
-
-<!-- <a id="rsslink" href="export.php">RSS</a><br> -->
 
 
 
@@ -194,6 +192,8 @@ echo "
 <input type='checkbox' id='show_tmpign' name='show_tmpign' value='1' onclick='javascript:checkbox_click();' " . ($show_tmpign ? 'checked="checked"' : '') . "><label for='show_tmpign'>show temp. ignored errors</label><br>
 
 <a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
+<a id='rsslink' href='export.php'>RSS</a> <a id='gpxlink' href='export.php'>GPX</a>
+
 
 <div style='overflow:auto; width:20%'>
 You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Site updated at <b>" . get_updated_date() . "

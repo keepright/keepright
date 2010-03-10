@@ -58,22 +58,15 @@ function init() {
 		document.myform.zoom.value=this.getZoom();
 
 		updateCookie();
+		updateLinks();
 
-		// update edit-in-potlatch-link
-		var editierlink = document.getElementById('editierlink');
-		editierlink.href="http://www.openstreetmap.org/edit?lat=" + lonlat.lat + "&lon=" + lonlat.lon + "&zoom=" + this.getZoom();
-
-
-		// update links for rss/gpx export
-/*
-		var rsslink=document.getElementById('rsslink');
-		var b=this.getExtent();
-		var bbox = b.transform(this.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
-		rsslink.href = 'export.php?format=rss&' + getURL_checkboxes() + '&left=' + bbox.left + '&bottom=' + bbox.bottom + '&right=' + bbox.right + '&top=' + bbox.top + '&db=' + document.myform.db.value;
-*/
 		// reload the error table
 		pois.loadText();
 	});
+
+
+	updateCookie();
+	updateLinks();
 }
 
 
@@ -166,6 +159,34 @@ function updateCookie() {
 		"; expires=" + expiry.toGMTString();
 }
 
+
+// update edit-in-potlatch-link and links for rss/gpx export
+// call this after a pan and after changing checkboxes
+function updateLinks() {
+
+	var pos = map.getCenter().clone();
+	var lonlat = pos.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+
+	// update edit-in-potlatch-link
+	var editierlink = document.getElementById('editierlink');
+	editierlink.href="http://www.openstreetmap.org/edit?lat=" + lonlat.lat + "&lon=" + lonlat.lon + "&zoom=" + map.getZoom();
+
+
+	// update links for rss/gpx export
+	var rsslink=document.getElementById('rsslink');
+	var gpxlink=document.getElementById('gpxlink');
+	var b=map.getExtent();
+	var bbox = b.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+
+	var url = 'export.php?format=';
+	var params = getURL_checkboxes() + '&left=' + bbox.left + '&bottom=' + bbox.bottom + '&right=' + bbox.right + '&top=' + bbox.top + '&db=' + document.myform.db.value;
+
+	rsslink.href = url + 'rss&' + params;
+	gpxlink.href = url + 'gpx&' + params;
+}
+
+
+
 // reload the error types and the permalink,
 // which includes the error type selection
 // after every onClick for error_type checkboxes
@@ -173,6 +194,7 @@ function checkbox_click() {
 	pois.loadText();
 	plnk.updateLink();
 	updateCookie();
+	updateLinks();
 }
 
 
