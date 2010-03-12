@@ -22,10 +22,7 @@ query("CREATE INDEX idx_tmp_ways_way_id ON _tmp_ways (way_id)", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
 
-// leave out intermediate-nodes that don't interest anybody:
-// just these nodes are important, that are used at least twice
-// in way_nodes (aka junctions)
-// select nodes of ways used at least twice
+// now find all nodes belonging to motorways
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
 	CREATE TABLE _tmp_junctions AS
@@ -36,6 +33,24 @@ query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1
 query("ANALYZE _tmp_junctions", $db1);
 
 
+// avoid error markers on endings of motorways where motorways
+// are connected to eg. primary roads intentionally.
+// drop nodes from the list that are part of just one motorway
+// and that are the first or last node of a way
+query("
+	DELETE FROM _tmp_junctions
+	WHERE node_id IN (
+		SELECT j.node_id
+		FROM _tmp_junctions j
+		GROUP BY j.node_id
+		HAVING COUNT(j.way_id)=1
+
+	) AND EXISTS (
+		SELECT w.id
+		FROM _tmp_ways tw INNER JOIN ways w ON (tw.way_id=w.id)
+		WHERE node_id=w.first_node_id OR node_id=w.last_node_id
+	)
+", $db1);
 
 
 query("
