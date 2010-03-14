@@ -214,42 +214,68 @@ $islands = array(
 );
 
 
+// include all ways tagged as highway, route=ferry or railway=platform ( a
+// platform may connect roads in rare cases)
+// include furthermore ways that are part of a route=ferry relation even
+// though the ways themselves are not tagged as ferry
+query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("
+	CREATE TABLE _tmp_ways AS
+	SELECT wt.way_id FROM way_tags wt WHERE (
+		wt.k='highway' OR
+		(wt.k='route' AND wt.v='ferry') OR
+		(wt.k='railway' AND wt.v='platform')
+	)
+
+	UNION
+
+	SELECT rm.member_id
+	FROM relation_members rm
+	WHERE rm.member_type='W' AND rm.relation_ID IN (
+		SELECT rt.relation_id
+		FROM relation_tags rt
+		WHERE rt.k='route' AND rt.v='ferry'
+	)
+", $db1);
+
+query("CREATE INDEX idx_tmp_ways_way_id ON _tmp_ways (way_id)", $db1);
+query("ANALYZE _tmp_ways", $db1);
+
 
 // leave out intermediate-nodes that don't interest anybody:
 // just these nodes are important, that are used at least twice
 // in way_nodes (aka junctions)
 // select nodes of ways (and ferries) used at least twice
-// include all ways tagged as highway, route=ferry or railway=platform ( a
-// platform may connect roads in rare cases)
-// include furthermore ways that are part of a route=ferry relation even
-// though the ways themselves are not tagged as ferry
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
 	CREATE TABLE _tmp_junctions AS
-	SELECT node_id
-	FROM way_nodes wn
-	WHERE EXISTS (
-		SELECT wt.way_id FROM way_tags wt WHERE wt.way_id=wn.way_id AND (
-			wt.k='highway' OR
-			(wt.k='route' AND wt.v='ferry') OR
-			(wt.k='railway' AND wt.v='platform')
-		)
-	) OR EXISTS (
-		SELECT rm.member_id
-		FROM relation_members rm
-		WHERE rm.member_type='W' AND rm.member_id=wn.way_id AND rm.relation_ID IN (
-			SELECT rt.relation_id
-			FROM relation_tags rt
-			WHERE rt.k='route' AND rt.v='ferry'
-		)
-	)
-	GROUP BY node_id
-	HAVING COUNT(DISTINCT way_id)>1
+	SELECT wn.node_id
+	FROM way_nodes wn INNER JOIN _tmp_ways w USING (way_id)
+	GROUP BY wn.node_id
+	HAVING COUNT(DISTINCT wn.way_id)>1
 ", $db1);
-
 
 query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
 query("ANALYZE _tmp_junctions", $db1);
+
+
+// first of all find ways that don't have any connection with
+// any other way. (these ways are not covered by the rest of the algorithm)
+// in _tmp_junctions we only see nodes that are used at least twice
+// not finding a record in _tmp_junctions means the way is a not connected way
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), w.way_id, 'This way is not connected to the rest of the map', NOW()
+	FROM _tmp_ways w
+	WHERE NOT EXISTS (
+
+		SELECT wn.node_id FROM
+		way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
+		WHERE wn.way_id=w.way_id
+	)
+", $db1);
+
+
 
 // this is our optimized (==reduced) version of way_nodes with junctions only
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
@@ -342,6 +368,7 @@ query("
 
 
 
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_nodes", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_island_members", $db1, false);
