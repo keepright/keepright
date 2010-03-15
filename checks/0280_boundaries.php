@@ -58,7 +58,7 @@ query("
 	ELSE
 		CAST('relation' AS type_object_type)
 	END,
-	COALESCE(relation_id, way_id), 'The boundary of ' || name || ' has no admin_level.', NOW()
+	COALESCE(relation_id, way_id), 'The boundary of ' || COALESCE(name, '(no name)') || ' has no admin_level.', NOW()
 	FROM _tmp_border_ways
 	WHERE admin_level IS NULL
 ", $db1);
