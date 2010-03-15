@@ -39,6 +39,7 @@ $false_positives = array(
 	array('land', 'sand'),
 	array('lanes', 'lines'),
 	array('icn_ref', 'lcn_ref', 'lwn_ref', 'loc_ref', 'ncn_ref', 'nwn_ref', 'rcn_ref', 'rwn_ref'),
+	array('icn_name', 'lcn_name', 'lwn_name', 'loc_name', 'ncn_name', 'nwn_name', 'rcn_name', 'rwn_name'),
 	array('j-bar', 't-bar'),
 	array('kebab', 'kebap'),
 	array('left', 'lift'),
@@ -49,6 +50,7 @@ $false_positives = array(
 	array('marked_trail_red', 'marked_trail_ref'),
 	array('maxheight', 'maxweight'),
 	array('next', 'text'),
+	array('note', 'notes'),
 	array('number', 'numbers'),
 	array('power', 'tower'),
 	array('rail', 'trail'),
@@ -69,23 +71,35 @@ $false_positives = array(
 // so you have to properly escape apos!
 // there is already an exception for any 'tiger'-prefixed tag in action so you needn't add one here
 $never_complain_about = "(
+	'addr:housenumber:=',
 	'AND_nosr_r:=',
+	'canvec:uuid:=',
 	'collection_times:=',
+	'bridge_ref:=',
 	'created_by:=',
 	'garmin_type:=',
 	'gns_classification:=',
 	'gns:DSG:=',
 	'gns:MGRS:=',
+	'grades:=',
 	'history:=',
 	'image:=',
+	'massgis:BASE_MAP:=',
+	'massgis:MANAGR_ABR:=',
+	'massgis:OWNER_ABRV:=',
+	'massgis:PROJ_ID:=',
+	'massgis:SOURCE_MAP:=',
 	'maxspeed:=',
 	'opening_hours:=',
 	'nat_ref:=',
+	'nhd-shp:fdate:=',
 	'ref_no:=',
 	'source:=',
 	'source_ref:=',
 	'source_ref:name:=',
-	'strassen-nrw:abs:='
+	'statscan:rbuid:=',
+	'strassen-nrw:abs:=',
+	'website:='
 )";
 
 
