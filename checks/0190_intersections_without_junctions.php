@@ -60,7 +60,7 @@ query("
 	)
 ", $db1);
 
-// now add waterways but not riverbanks(docks)
+// now add waterways but not riverbanks(docks/boatyards)
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT DISTINCT id, geom, CAST('waterway' AS type_way_type)
@@ -68,7 +68,7 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock') AND wt.way_id=ways.id
+		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock', 'boatyard') AND wt.way_id=ways.id
 	)
 	AND NOT EXISTS (
 		SELECT id
@@ -85,7 +85,7 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE ((wt.k = 'waterway' AND wt.v IN ('riverbank', 'dock')) OR
+		WHERE ((wt.k = 'waterway' AND wt.v IN ('riverbank', 'dock', 'boatyard')) OR
 			(wt.k = 'natural' AND wt.v = 'water'))
 			AND wt.way_id=ways.id
 	)
