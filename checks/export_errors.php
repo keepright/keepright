@@ -5,12 +5,12 @@ export errors from public.error_view into a text file
 */
 
 if ($argc<3 || ($argv[1]<>'--db' && $argv[1]<>'--schema')) {
-	echo "Usage: \">php export_errors.php --db EU | --schema 17\"";
+	echo "Usage: \">php export_errors.php --db EU | --schema 17\"\n";
 	echo "will export entries from error_view into a text dump file\n";
 	echo "database credentials are configured in config.";
 	echo "You can choose to export a whole database ";
 	echo "or a single schema.";
-	exit;
+	exit(0);
 }
 
 if ($argv[1]=='--db') {
@@ -27,6 +27,11 @@ require('helpers.inc.php');
 echo "exporting errors for $MAIN_DB_NAME.$dbschema into dumpfile\n";
 
 $db1 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
+
+// terminate if no db connection was established
+if ($db1 === false) {
+	exit(1);
+}
 
 
 $fname=$ERROR_VIEW_FILE .'_'. (isset($schema) ? $schema : $MAIN_DB_NAME) . '.txt';
@@ -56,6 +61,7 @@ if ($f) {
 
 } else {
 	echo "Cannot open error_view file ($filename) for writing";
+	exit(1);
 }
 
 
@@ -88,11 +94,15 @@ if ($f) {
 
 	} else {
 		echo "no error_types table found in any schema. Cannot export error_types.\n";
+		exit(1);
 	}
 
 } else {
 	echo "Cannot open error-types file ($filename) for writing";
+	exit(1);
 }
 
 pg_close($db1);
+
+exit(0);
 ?>
