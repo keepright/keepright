@@ -9,46 +9,28 @@ which resides on your webspace (runs on the server)
 
 steps required for a database update:
 
-1) create or empty error_view_osm_XX_shadow table
+1) create or empty error_view_XX_shadow table
 2) upload bz2 compressed dump files to web space
 3) load dump files into MySQL shadow tables
-4) toggle tables: rename error_view_osm_XX to error_view_osm_XX_old;
-   rename error_view_osm_XX_shadow to error_view_osm_XX
+4) toggle tables: rename error_view_XX to error_view_XX_old;
+   rename error_view_XX_shadow to error_view_XX
 5) re-open errors marked as ingnore-temporarily (use SQL provided
    at the end of run-checks.php)
-6) update file updated_osm_XX with date of last database update
+6) update file updated_XX with date of last database update
 
-this script can update a whole database (i.e. all schemas in one
-error_view_osm_XX table) or just an arbitrary number of schemas
-in one error_view table
 */
+
 
 echo "argc=$argc\n";
 print_r($argv);
 
-if ($argc<3 || ($argv[1]<>'--local' && $argv[1]<>'--remote') || ($argv[2]<>'--db')) {
-	echo "Usage: \"php export_errors.php --local | --remote --db EU [ --schema 17,18,19 ]\"\n";
-	echo "will upload dump files created by export_errors.php to the web server\n";
-	echo "You can choose to upload a whole database\n";
-	echo "or an arbitrary number of schemas.\n";
+if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {
+	echo "Usage: \"php export_errors.php --local | --remote 17 | --export_comments\"\n";
+	echo "will upload dump file 17 created by export_errors.php to the web server\n";
 	exit;
 }
 
-$MAIN_DB_NAME='osm_' . pg_escape_string($argv[3]);
-$schemas='%';		// default if no schemas given
-
-// schema names given?
-if ($argc>=5) {
-	if ($argv[4]=='--schema') {
-		$schemas='';
-		for ($i=5;$i<$argc;$i++) $schemas.=$argv[$i];
-		$schemas=pg_escape_string($schemas);
-
-	} else {
-		echo "unknown parameter '$argv[4]'\n";
-		exit;
-	}
-}
+if ($argv[2]=='--export_comments') $schema=1; else $schema=$argv[2];
 
 require('config.inc.php');
 require('helpers.inc.php');
@@ -67,41 +49,46 @@ switch ($argv[1]) {
 		exit;
 }
 
+if ($argv[2]=='--export_comments') {
+	echo "exporting comments on server\n";
 
-echo "uploading to $URL database $MAIN_DB_NAME schema $schemas\n";
+	$SID=login($URL);
+	//echo "session id is $SID";
+
+	if ($SID) {
+
+		$myURL="$URL?cmd=export_comments&PHPSESSID=$SID";
+
+		echo "$myURL\n";
+		$result = readHTTP($myURL);
+		echo implode("\n", $result);
+
+		logout($URL, $SID);
+	}
+
+} else {
+	echo "uploading to $URL schema $schema\n";
+
+	$SID=login($URL);
+	//echo "session id is $SID";
+
+	if ($SID) {
+		if ($argv[1]=='--remote') ftp_upload($MAIN_DB_NAME, $schema);
+
+		$fname="error_view_$schema.txt.bz2";
 
 
-$SID=login($URL);
-//echo "session id is $SID";
+		$myURL="$URL?schema=$schema&cmd=update&PHPSESSID=$SID" .
+			"&updated_date=" . date("Y-m-d") .
+			"&error_view_filename=$fname";
 
-if ($SID) {
-	if ($argv[1]=='--remote') ftp_upload($MAIN_DB_NAME, $schemas);
+		echo "$myURL\n";
+		$result = readHTTP($myURL);
+		echo implode("\n", $result);
 
-	if ($schemas=='%')
-		$fname="error_view_$MAIN_DB_NAME.txt.bz2";
-	else
-		$fname="error_view_$schemas.txt.bz2";
-
-
-	$myURL="$URL?db=$MAIN_DB_NAME&schema=$schemas&cmd=update&PHPSESSID=$SID" .
-		"&updated_date=" . date("Y-m-d") .
-		"&error_view_filename=$fname";
-
-	echo "$myURL\n";
-	$result = readHTTP($myURL);
-	echo implode("\n", $result);
-
-/*
-	toggle_tables1($URL, $SID, $MAIN_DB_NAME, $schemas);
-	load_dump($URL, $SID, $MAIN_DB_NAME, $schemas);
-	toggle_tables2($URL, $SID, $MAIN_DB_NAME, $schemas);
-
-	reopen_errors($URL, $SID, $MAIN_DB_NAME, $schemas);
-	set_updated_date($URL, $SID, $MAIN_DB_NAME, $schemas, date("Y-m-d"));
-*/
-	logout($URL, $SID);
+		logout($URL, $SID);
+	}
 }
-
 
 
 // establish a session with the server module
@@ -138,12 +125,11 @@ function logout($URL, $SID) {
 
 function ftp_upload($db, $schema) {
 	global $FTP_USER, $FTP_PASS, $FTP_HOST, $FTP_PATH;
-	echo "\n\nuploading dump files------------------------------------\n\n";
+	echo "\n\nuploading dump file-------------------------------------\n\n";
 
 	$ftp_url="ftp://$FTP_USER:$FTP_PASS@$FTP_HOST/$FTP_PATH";
 
-	if ($schema!=='%') $db_id=$schema; else $db_id=$db;
-	$filenames="../results/error_view_{$db_id}.txt.bz2 ../results/error_types_{$db_id}.txt";
+	$filenames="../results/error_view_{$schema}.txt.bz2 ../results/error_types.txt";
 
 	// call wput, overwrite files if already existing, dont create directories
 	// upload the error_view dumps and the error_types dump

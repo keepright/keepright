@@ -9,7 +9,7 @@ Call this script from your client pc using webUpdateClient.php
 * toggle tables (rename _old to _shadow and empty it)
 * load dump files
 * toggle tables (rename error_view to error_view_old and _shadow to error_view)
-* update updated_osm_XX file (date of last site update)
+* update updated_[schema] file (date of last site update)
 * re-open temporarily ignored errors
 */
 
@@ -19,7 +19,6 @@ ini_set('session.gc_maxlifetime', 1800);// 30 minutes as max. session lifetime
 require('webconfig.inc.php');
 require('helpers.inc.php');
 require('BufferedInserter_MySQL.php');
-//echo "db_name is $db_name";
 
 session_start();
 
@@ -65,8 +64,8 @@ if ($_SESSION['authorized']===true) {
 
 	if ($_GET['cmd'] == 'update') {
 
-		if (!permissions($USERS[$_SESSION['username']], $db, $schema)) {
-			die("you are not authorized to access $db.$schema\n");
+		if (!permissions($USERS[$_SESSION['username']], $schema)) {
+			die("you are not authorized to access schema $schema\n");
 		}
 
 		$error_view_filename=escapeshellarg($_GET['error_view_filename']);
@@ -78,16 +77,19 @@ if ($_SESSION['authorized']===true) {
 		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
 		toggle_tables1($db1, $schema);
-		load_dump($db1, $error_view_filename, 'error_view');
-		//empty_error_types_table($db1);
-		//load_dump($db1, escapeshellarg($_GET['error_types_filename']), 'error_types');
+		load_dump($db1, $error_view_filename, 'error_view', $schema);
 		toggle_tables2($db1, $schema);
 		reopen_errors($db1, $schema);
-		// set_updated_date
-		write_file($updated_file_name, addslashes($_GET['updated_date']));
-		// set_planetfile_date
-		//write_file($planetfile_date_file_name, addslashes($_GET['planetfile_date']));
 
+		// set_updated_date
+		write_file("updated_$schema", addslashes($_GET['updated_date']));
+
+		mysqli_close($db1);
+	}
+
+	if ($_GET['cmd'] == 'export_comments') {
+		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+		export_comments($db1);
 		mysqli_close($db1);
 	}
 
@@ -106,29 +108,43 @@ function logout() {
 	echo "session closed.\n";
 }
 
-// check if a given db and schema name are found in the users permissions array
+// check if a given schema name is found in the users permissions array
 // which is configured in $USERS in webconfig.inc.php
-function permissions($user, $db, $schema) {
+function permissions($user, $schema) {
 
-	if (array_key_exists('%', $user['DB'])) {
-		if (in_array('%', $user['DB']['%'], true))
-			return true;			// any schema in any db
-		else
-			return (in_array($schema, $user['DB']['%'], true));	// a given schema in any db
-
-	} else if (array_key_exists($db, $user['DB'])) {
-		if (in_array('%', $user['DB'][$db], true))
-			return true;			// any schema in a given db
-		else
-			return (in_array($schema, $user['DB'][$db], true));	// a given schema in a given db
-
-	} else return false;
+	if (in_array('%', $user['schemata'], true))
+		return true;			// privileges for any schema
+	else
+		return (in_array($schema, $user['schemata'], true));	// a given schema
 }
 
+// create a dump file containing all comments
+function export_comments($db1) {
+	global $comments_name;
+	$fname=$comments_name . '.txt';
+	$f = fopen($fname, 'w');
+
+	if ($f) {
+		$result=query("
+			SELECT `schema`, error_id, state, comment, timestamp
+			FROM $comments_name
+			WHERE `schema` IS NOT NULL AND `schema` != \"\"
+			ORDER BY `schema`, error_id
+		", $db1, false);
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			fwrite($f, $row['schema'] ."\t". $row['error_id'] ."\t". $row['state'] ."\t". strtr($row['comment'], array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) ."\t". $row['timestamp'] . "\n");
+		}
+
+		mysqli_free_result($result);
+		fclose($f);
+		system("bzip2 --force $fname");
+	}
+}
 
 // ensure there is an error_view_osmXX_shadow table for inserting records
 function toggle_tables1($db1, $schema){
-	global $error_types_name, $error_view_name, $error_view_old_name, $comments_name, $comments_historic_name;
+	global $error_types_name, $comments_name, $comments_historic_name;
 
 	echo "setting up table structures and toggling tables\n";
 	query("
@@ -140,8 +156,7 @@ function toggle_tables1($db1, $schema){
 		`timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
 		ip varchar(255) default NULL,
 		user_agent varchar(255) default NULL,
-		KEY `schema` (`schema`),
-		KEY error_id (error_id)
+		UNIQUE schema_error_id (`schema`, error_id)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 	query("
@@ -153,8 +168,7 @@ function toggle_tables1($db1, $schema){
 		`timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
 		ip varchar(255) default NULL,
 		user_agent varchar(255) default NULL,
-		KEY `schema` (`schema`),
-		KEY error_id (error_id)
+		UNIQUE schema_error_id (`schema`, error_id)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 	query("
@@ -166,32 +180,9 @@ function toggle_tables1($db1, $schema){
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 	query("
-		CREATE TABLE IF NOT EXISTS {$error_view_old_name} (
+		CREATE TABLE IF NOT EXISTS error_view_{$schema}_old (
 		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
-		db_name varchar(50) NOT NULL,
-		error_type int(11) NOT NULL,
-		error_name varchar(100) NOT NULL,
-		object_type enum('node','way','relation') NOT NULL,
-		object_id bigint(64) NOT NULL,
-		state enum('new','cleared','ignored','reopened') NOT NULL,
-		description text NOT NULL,
-		first_occurrence datetime NOT NULL,
-		last_checked datetime NOT NULL,
-		lat int(11) NOT NULL,
-		lon int(11) NOT NULL,
-		UNIQUE schema_error_id (`schema`, error_id),
-		KEY lat (lat),
-		KEY lon (lon),
-		KEY error_type (error_type),
-		KEY state (state)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-	", $db1, false);
-	query("
-		CREATE TABLE IF NOT EXISTS $error_view_name (
-		`schema` varchar(6) NOT NULL DEFAULT '',
-		error_id int(11) NOT NULL,
-		db_name varchar(50) NOT NULL,
 		error_type int(11) NOT NULL,
 		error_name varchar(100) NOT NULL,
 		object_type enum('node','way','relation') NOT NULL,
@@ -206,29 +197,35 @@ function toggle_tables1($db1, $schema){
 		UNIQUE schema_error_id (`schema`, error_id),
 		KEY lat (lat),
 		KEY lon (lon),
-		KEY error_type (error_type),
-		KEY state (state)
+		KEY error_type (error_type)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+	", $db1, false);
+	query("
+		CREATE TABLE IF NOT EXISTS error_view_{$schema} (
+		`schema` varchar(6) NOT NULL DEFAULT '',
+		error_id int(11) NOT NULL,
+		error_type int(11) NOT NULL,
+		error_name varchar(100) NOT NULL,
+		object_type enum('node','way','relation') NOT NULL,
+		object_id bigint(64) NOT NULL,
+		state enum('new','cleared','ignored','reopened') NOT NULL,
+		description text NOT NULL,
+		first_occurrence datetime NOT NULL,
+		last_checked datetime NOT NULL,
+		object_timestamp datetime NOT NULL,
+		lat int(11) NOT NULL,
+		lon int(11) NOT NULL,
+		UNIQUE schema_error_id (`schema`, error_id),
+		KEY lat (lat),
+		KEY lon (lon),
+		KEY error_type (error_type)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 
-	// ensure the schema column is added when tables already exist
-	add_column_if_not_exists($db1, $comments_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, $comments_historic_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, $error_view_old_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-	add_column_if_not_exists($db1, $error_view_name, 'schema', "varchar(6) NOT NULL DEFAULT '' FIRST");
-
-	add_column_if_not_exists($db1, $error_view_old_name, 'object_timestamp', "datetime NOT NULL AFTER last_checked");
-	add_column_if_not_exists($db1, $error_view_name, 'object_timestamp', "datetime NOT NULL AFTER last_checked");
-
-	add_index_if_not_exists($db1, $comments_name, 'schema', '`schema`');
-	add_index_if_not_exists($db1, $comments_historic_name, 'schema', '`schema`');
-	add_index_if_not_exists($db1, $error_view_old_name, 'schema', '`schema`');
-	add_index_if_not_exists($db1, $error_view_name, 'schema', '`schema`');
-
-	query("DROP TABLE IF EXISTS {$error_view_name}_shadow", $db1);
-	query("RENAME TABLE $error_view_old_name TO {$error_view_name}_shadow", $db1);
-	query("ALTER TABLE {$error_view_name}_shadow DISABLE KEYS", $db1);
-	query("TRUNCATE {$error_view_name}_shadow", $db1);
+	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
+	query("RENAME TABLE error_view_{$schema}_old TO error_view_{$schema}_shadow", $db1);
+	query("ALTER TABLE error_view_{$schema}_shadow DISABLE KEYS", $db1);
+	query("TRUNCATE error_view_{$schema}_shadow", $db1);
 
 	echo "done.\n";
 }
@@ -284,34 +281,13 @@ function index_exists($db, $table, $keyname) {
 
 // switch _shadow table to main table, rename main table to _old
 function toggle_tables2($db1, $schema){
-	global $error_view_name, $error_view_old_name;
-
 	echo "toggling back tables\n";
-	// now add all records _except_ the ones we just loaded from the dump
-	if (strlen($schema) && $schema!='%') {
-		query("
-			INSERT INTO {$error_view_name}_shadow
-			SELECT * FROM $error_view_name
-			WHERE `schema` NOT IN ($schema)
-		", $db1);
-	}
 
-
-	query("
-		ALTER TABLE {$error_view_name}_shadow ENABLE KEYS;
-	", $db1);
-	query("
-		DROP TABLE IF EXISTS $error_view_old_name;
-	", $db1);
-	query("
-		RENAME TABLE $error_view_name TO $error_view_old_name;
-	", $db1);
-	query("
-		DROP TABLE IF EXISTS $error_view_name;
-	", $db1);
-	query("
-		RENAME TABLE {$error_view_name}_shadow TO $error_view_name;
-	", $db1);
+	query("ALTER TABLE error_view_{$schema}_shadow ENABLE KEYS", $db1);
+	query("DROP TABLE IF EXISTS error_view_{$schema}_old", $db1);
+	query("RENAME TABLE error_view_{$schema} TO error_view_{$schema}_old", $db1);
+	query("DROP TABLE IF EXISTS error_view_{$schema}", $db1);
+	query("RENAME TABLE error_view_{$schema}_shadow TO error_view_{$schema}", $db1);
 
 	echo "done.\n";
 }
@@ -351,20 +327,15 @@ function write_file($filename, $content) {
 // time as they set the state in keepright.
 // do this only if the error is still open in the newest error_view
 function reopen_errors($db1, $schema) {
-	global $error_view_name, $comments_name;
+	global $comments_name;
 
 	echo "reopening errors not solved by this update\n";
 
-	if (strlen($schema) && $schema!=='%') 
-		$s="ev.`schema` IN ($schema) AND ";
-	else
-		$s="";
-
 	$sql="
-		UPDATE $comments_name c inner join $error_view_name ev using (`schema`, error_id)
+		UPDATE $comments_name c inner join error_view_$schema ev using (`schema`, error_id)
 		SET c.state=null,
 		c.comment=CONCAT(\"[error still open, \", CURDATE(), \"] \", c.comment)
-		WHERE $s c.state='ignore_temporarily' AND
+		WHERE ev.`schema`='$schema' AND c.state='ignore_temporarily' AND
 		ev.state<>'cleared' AND
 		c.timestamp<DATE_SUB(ev.object_timestamp, INTERVAL 2 HOUR)
 	";
@@ -377,15 +348,15 @@ function reopen_errors($db1, $schema) {
 // dump file may be plain text or .bz2 compressed
 // file format has to be tab-separated text
 // just the way you receive from SELECT INTO OUTFILE
-function load_dump($db1, $filename, $destination) {
-	global $db_host, $db_user, $db_pass, $db_name, $error_types_name, $error_view_name;
+function load_dump($db1, $filename, $destination, $schema) {
+	global $db_host, $db_user, $db_pass, $db_name, $error_types_name;
 
 	switch ($destination) {
 		case "error_types": $tbl=$error_types_name; break;
-		case "error_view": $tbl=$error_view_name . '_shadow'; break;
+		case "error_view": $tbl="error_view_{$schema}_shadow"; break;
 		default: die('invalid load dump destination: ' . $destination);
 	}
-	echo "loading dump into $destination\n";
+	echo "loading dump into $destination (table name is $tbl)\n";
 
 	$fifodir=ini_get('upload_tmp_dir');
 	if (strlen($fifodir)==0) $fifodir=sys_get_temp_dir();
@@ -409,38 +380,14 @@ function load_dump($db1, $filename, $destination) {
 
 	system("($CAT $filename > $fifoname) >/dev/null &");	// must run in the background
 
-
 	system("mysql -h$db_host -u$db_user -p$db_pass -e \"LOAD DATA LOCAL INFILE '$fifoname' INTO TABLE $tbl\" $db_name");
 
 	unlink($fifoname);
 
-
 	// now check if only schemas were inserted that were given in the command line
+	if ($destination=='error_view')
+		query("DELETE FROM $tbl WHERE `schema` <> '$schema'", $db1, false);
 
-	if (strlen($schema) && $schema!=='%') {
-
-		$rows = query("SELECT COUNT(error_id) AS x FROM $tbl WHERE `schema` NOT IN ($schema) ", $db, false);
-		while($c = mysqli_fetch_assoc($rows)){
-			if($c['x']>0){
-				echo "you said you wanted to upload errors in schema $schema but you really uploaded errors in other schemas. The procedure stops here. Don't try that again!\n";
-				logout();
-				mysqli_free_result($rows);
-
-				// now rollback all the user has done so far
-				// otherwise he might come back and toggle2 the tables
-				query("TRUNCATE {$error_view_name}_shadow", $db1);
-				query("
-					INSERT INTO {$error_view_name}_shadow
-					SELECT * FROM $error_view_name
-				", $db1);
-				query("
-					RENAME TABLE {$error_view_name}_shadow
-					TO {$error_view_name}_old;
-				", $db1);
-			}
-		}
-		mysqli_free_result($rows);
-	}
 
 	echo "done.\n";
 }

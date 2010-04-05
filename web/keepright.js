@@ -151,7 +151,6 @@ function updateCookie() {
 		new OpenLayers.Projection("EPSG:4326"));
 
 	document.cookie = "keepright_cookie=" +
-		document.myform.db.value + '|' +
 		lonlat.lon + "|" +
 		lonlat.lat + "|" +
 		map.getZoom() + '|'
@@ -179,7 +178,7 @@ function updateLinks() {
 	var bbox = b.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
 
 	var url = 'export.php?format=';
-	var params = getURL_checkboxes() + '&left=' + bbox.left + '&bottom=' + bbox.bottom + '&right=' + bbox.right + '&top=' + bbox.top + '&db=' + document.myform.db.value;
+	var params = getURL_checkboxes() + '&left=' + bbox.left + '&bottom=' + bbox.bottom + '&right=' + bbox.right + '&top=' + bbox.top;
 
 	rsslink.href = url + 'rss&' + params;
 	gpxlink.href = url + 'gpx&' + params;

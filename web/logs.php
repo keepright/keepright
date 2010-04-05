@@ -9,6 +9,20 @@ data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
 
+<h4>2010-02-13</h4>
+Another new check slowly appears on the maps these days: The roundabout check. It will complain about roundabouts that are not closed-loop or roundabouts that go the wrong way around. For the latter it is important to know if it is a right or left hand traffic country. I&apos;ve done my best to evaluate country boundaries to do this job but I&apos;m afraid, that is not perfect.
+<br>
+The &apos;multiple nodes at the same spot&apos; check is not yet visible because I simply forgot to enable it. So it will take a few more days until the new warnings pop up. Thank you, Peter, for reminding me!
+
+<br><br>
+
+<h4>2010-02-07</h4>
+Introducing warnings<br>
+There are two new checks online that produce more fuzzy results than the other checks do. These are &apos;multiple nodes at the same spot&apos; and &apos;missing maxspeed tag&apos;. Obviously not every of these warnings can or should be fixed. That is why they are turned off by default.<br>
+Please never never change the map just to make keepright happy! Do it only if you know you fix an error. Maybe keepright is wrong. If you think so, please tell me and let me fix keepright.
+
+<br><br>
+
 <h4>2009-12-27</h4>
 After one month without any updates for Northern America I'm back on regular operations now. Delay was caused by troubles with updating planet files with diffs but are solved now with help from the dev mailing list. Thank you, Lennard, Frederik and Brett!<br>
 The floating islands check will consider ways that are part of relations tagged with route=ferry even though the ways themselves don&apos;t have a railway=ferry tag. Thank you, Simon, for the suggestion!<br>

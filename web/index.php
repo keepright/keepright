@@ -11,21 +11,21 @@ These pages show checks that are run on a local excerpt database filled with OSM
 <br><br>
 
 
-<a href="report_map.php?db=osm_EU&zoom=14&lat=48.20808&lon=16.37221">Data Checks for Europe</a> (Starting point Vienna, Austria)<br>
+<a href="report_map.php?zoom=14&lat=48.20808&lon=16.37221">Data Checks for Europe</a> (Starting point Vienna, Austria)<br>
 
 <a href="http://keepright.x10hosting.com" target="_blank">Australian Keepright partner site</a><br>
 
-<a href="report_map.php?db=osm_XA&zoom=14&lat=30.039&lon=31.25345">Data Checks for Africa</a> (Starting point Cairo, Egypt)<br>
+<a href="report_map.php?zoom=14&lat=30.039&lon=31.25345">Data Checks for Africa</a> (Starting point Cairo, Egypt)<br>
 
-<a href="report_map.php?db=osm_CA&zoom=12&lat=46.79923&lon=-71.19432">Data Checks for Canada</a> (Starting point Québec)<br>
+<a href="report_map.php?zoom=12&lat=46.79923&lon=-71.19432">Data Checks for Canada</a> (Starting point Québec)<br>
 
-<a href="http://keepright.ipax.at/report_map.php?db=osm_US&zoom=12&lat=39.95356&lon=-75.12364">Data Checks for USA</a> (Starting point Philadelphia, PA)<br>
+<a href="report_map.php?zoom=12&lat=39.95356&lon=-75.12364">Data Checks for USA</a> (Starting point Philadelphia, PA)<br>
 
-<a href="report_map.php?db=osm_XG&zoom=11&lat=18.61093&lon=-69.9473">Data Checks for Central America</a> (Starting point Santo Domingo, Republica Dominicana)<br>
+<a href="report_map.php?zoom=11&lat=18.61093&lon=-69.9473">Data Checks for Central America</a> (Starting point Santo Domingo, Republica Dominicana)<br>
 
-<a href="report_map.php?db=osm_XC&zoom=14&lat=-23.58791&lon=-46.65713">Data Checks for South America</a> (Starting point São Paulo, Brazil)<br>
+<a href="report_map.php?zoom=14&lat=-23.58791&lon=-46.65713">Data Checks for South America</a> (Starting point São Paulo, Brazil)<br>
 
-<a href="report_map.php?db=osm_XD&zoom=14&lat=35.68051&lon=139.76404">Data Checks for Asia</a> (Starting point Tokio, Japan)<br>
+<a href="report_map.php?zoom=14&lat=35.68051&lon=139.76404">Data Checks for Asia</a> (Starting point Tokio, Japan)<br>
 <br>
 <a href="report.php">Europe Data Checks as ugly list</a><br>
 
@@ -35,19 +35,17 @@ Developers have a look at the <a href="http://apps.sourceforge.net/trac/keeprigh
 
 <h3>logfile</h3>
 
+<h4>2010-04-05</h4>
+Getting rid of the evil db-parameter<br>
+You may have noticed that you couldn&apos;t pan around the whole world in keepright as you liked. There were invisible boundaries and you always had to take care about the db-parameter in the URLs to be appropriate for the current position.<br>
+This is over now! The db-parameter is gone. So have fun panning around the whole world and fixing errors easier than ever!
+
+<h4>2010-03-15</h4>
+During the next updates you will see an increased number of floating islands errors. This is because up to now the check routine didn&apos;t complain about ways that don&apos;t have a single connection with any other way(!). Sometimes it takes months until you see the most obvious things...
+
 <h4>2010-03-07</h4>
 This is my FOSSGIS-present for you: keepright will remember the position and the error types you selected when you left the site last time (how could you?).
 Just open <a href="http://keepright.ipax.at/report_map.php"> http://keepright.ipax.at/report_map.php</a> without any parameters!
-
-<h4>2010-02-13</h4>
-Another new check slowly appears on the maps these days: The roundabout check. It will complain about roundabouts that are not closed-loop or roundabouts that go the wrong way around. For the latter it is important to know if it is a right or left hand traffic country. I&apos;ve done my best to evaluate country boundaries to do this job but I&apos;m afraid, that is not perfect.
-<br>
-The &apos;multiple nodes at the same spot&apos; check is not yet visible because I simply forgot to enable it. So it will take a few more days until the new warnings pop up. Thank you, Peter, for reminding me!
-
-<h4>2010-02-07</h4>
-Introducing warnings<br>
-There are two new checks online that produce more fuzzy results than the other checks do. These are &apos;multiple nodes at the same spot&apos; and &apos;missing maxspeed tag&apos;. Obviously not every of these warnings can or should be fixed. That is why they are turned off by default.<br>
-Please never never change the map just to make keepright happy! Do it only if you know you fix an error. Maybe keepright is wrong. If you think so, please tell me and let me fix keepright.
 
 <br><br>For archeologists: <a href="logs.php">Old log entries</a> have moved.
 

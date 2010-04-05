@@ -35,17 +35,8 @@ function format_time($t) {
 
 
 // return the date of last site update (depending on db parameter)
-function get_updated_date() {
-	global $updated_file_name;
-
-	return content($updated_file_name);
-}
-
-// return the date of planet file used for the last update (depending on db parameter)
-function get_planetfile_date() {
-	global $planetfile_date_file_name;
-
-	return content($planetfile_date_file_name);
+function get_updated_date($schema) {
+	return content("updated_$schema");
 }
 
 
@@ -57,4 +48,93 @@ function content($filename) {
 		return '';
 }
 
+
+// select all error types where sub-types exist
+// return the list of error types and their names
+function get_subtyped_error_types($db1, $ch) {
+	global $error_types_name;
+
+	$subtyped_array = array();
+	$subtyped_names_array = array();
+
+	$result=mysqli_query($db1, "
+		SELECT 10*floor(et1.error_type/10) AS error_type, error_name
+		FROM $error_types_name et1
+		WHERE EXISTS (
+			SELECT error_type
+			FROM $error_types_name et2
+			WHERE et2.error_type BETWEEN et1.error_type+1 AND et1.error_type+9
+		)
+		AND et1.error_type MOD 10 = 0
+	");
+	while ($row = mysqli_fetch_assoc($result)) {
+		$subtyped_array[] = $row['error_type'];
+		$subtyped_names_array[$row['error_type']] = $row['error_name'];
+	}
+	mysqli_free_result($result);
+
+
+	// add criteria for selecting error types
+	$error_types=explode(',', addslashes($ch));
+	$nonsubtyped='0';
+	$subtyped='0';
+	//print_r($subtyped_errors);
+	// split list of error types into subtyped an non-subtyped ones
+	foreach ($error_types as $error_type) {
+
+		if (is_numeric($error_type)) {
+			if (in_array(10*floor($error_type/10), $subtyped_array))
+				$subtyped.=", $error_type";
+			else
+				$nonsubtyped.=", $error_type";
+		}
+	}
+
+	return array($subtyped, $nonsubtyped, $subtyped_array, $subtyped_names_array);
+}
+
+
+// check out which schemas to query for given coordinates (lat/lon)
+// and return a UNION query with an arbitrary WHERE part
+function error_view_subquery($db1, $lat, $lon, $where='TRUE'){
+
+	// lookup the schemas that have to be queried for the given coordinates
+	$error_view='';
+	$result=mysqli_query($db1, "
+		SELECT `schema` AS s
+		FROM `schemata`
+		WHERE `left_padded`<=$lon/1e7 AND `right_padded`>=$lon/1e7
+			AND `top_padded`>=$lat/1e7 AND `bottom_padded`<=$lat/1e7
+	");
+	while ($row = mysqli_fetch_assoc($result)) {
+
+		$error_view.=' SELECT * FROM error_view_' . $row['s'] .
+			" WHERE $where UNION ALL " ;
+
+	}
+	mysqli_free_result($result);
+	return substr($error_view, 0, -11);
+}
+
+
+
+function find_schema($db1, $lat, $lon) {
+
+	$schema='0';
+
+	$result=mysqli_query($db1, "
+		SELECT `schema` AS s
+		FROM `schemata`
+		WHERE `left`<=$lon/1e7 AND `right`>=$lon/1e7
+			AND `top`>=$lat/1e7 AND `bottom`<=$lat/1e7
+		LIMIT 1
+	");
+	while ($row = mysqli_fetch_assoc($result)) {
+
+		$schema = $row['s'];
+
+	}
+	mysqli_free_result($result);
+	return $schema;
+}
 ?>

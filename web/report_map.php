@@ -7,20 +7,19 @@ $db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 mysqli_query($db1, "SET SESSION wait_timeout=60");
 
 
-
 // first of all take parameters from cookie, if exist
 if ($cookie) {
-	$lon=1e7*$cookie[1];
-	$lat=1e7*$cookie[2];
-	$zoom=$cookie[3];
+	$lon=1e7*$cookie[0];
+	$lat=1e7*$cookie[1];
+	$zoom=$cookie[2];
 }
 
 // second: evaluate URL parameters, overwriting cookie-defaults
 if (isset($_GET['lat'])) $lat = 1e7*htmlentities($_GET['lat']);		// center of view
 if (isset($_GET['lon'])) $lon = 1e7*htmlentities($_GET['lon']);
 if (isset($_GET['zoom'])) $zoom = 1*htmlentities($_GET['zoom']);
-$highlight_error_id=1*htmlentities($_GET['error']);	// error_id and schema name of a specific error the user wants to see
-$highlight_schema=1*htmlentities($_GET['schema']);
+$highlight_error_id=1*addslashes(htmlentities($_GET['error']));	// error_id and schema name of a specific error the user wants to see
+$highlight_schema=1*addslashes(htmlentities($_GET['schema']));
 
 // flags for display of ignored/temp.ignored errors. Default is "on"
 if (!isset($_GET['show_ign'])) $_GET['show_ign']='1';
@@ -38,9 +37,8 @@ if ($highlight_error_id<>0) {
 
 	$result=mysqli_query($db1, "
 		SELECT lat, lon
-		FROM $error_view_name
-		WHERE error_id=" . addslashes($highlight_error_id) ."
-		AND `schema`=" . addslashes($highlight_schema) . "
+		FROM error_view_" . $highlight_schema . "
+		WHERE error_id=" . $highlight_error_id ."
 		LIMIT 1"
 	);
 
@@ -62,7 +60,7 @@ if ($zoom==0) $zoom=14;
 $ch=$_GET["ch"];				// comma separated list of error types to display
 if (!isset($ch)) $ch='0';
 $checks_selected = split(',', $ch);
-if ($cookie) $checks_to_hide = split(',', $cookie[4]); else $checks_to_hide=array();
+if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=array();
 //echo "ch=$ch<br>";
 //print_r($checks_selected);
 //print_r($checks_to_hide);
@@ -91,7 +89,7 @@ if ($cookie) $checks_to_hide = split(',', $cookie[4]); else $checks_to_hide=arra
 	var lat=<?php echo $lat/1e7; ?>;
 	var lon=<?php echo $lon/1e7; ?>;
 	var zoom=<?php echo $zoom; ?>;
-	var poisURL="<?php echo mkurl($db, $ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $path . 'points.php'); ?>";
+	var poisURL="<?php echo mkurl($ch, $st, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $path . 'points.php'); ?>";
 	var pois=null;
 	var map=null;
 	var plnk=null;
@@ -177,7 +175,6 @@ echo "
 <input type='hidden' name='number_of_tristate_checkboxes' value='" . $subgroup_counter . "'>
 <input type='hidden' name='highlight_error_id' value='" . $highlight_error_id . "'>
 <input type='hidden' name='highlight_schema' value='" . $highlight_schema . "'>
-<input type='hidden' name='db' value='" . $db . "'>
 <input type='hidden' name='lat' value='" . $lat/1e7 . "'>
 <input type='hidden' name='lon' value='" . $lon/1e7 . "'>
 <input type='hidden' name='zoom' value='$zoom'>
@@ -196,7 +193,7 @@ echo "
 
 
 <div style='overflow:auto; width:20%'>
-You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Site updated at <b>" . get_updated_date() . "
+You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Site updated at <b>" . get_updated_date(find_schema($db1, $lat, $lon)) . "
 </div>
 
 </div></form>
@@ -204,10 +201,10 @@ You will see up to 100 error markers starting in the center of the map. Please a
 
 
 // print out calling parameters
-//echo "<br>db:$db / check:$ch / lat:$lat / lon:$lon / zoom level:$zoom'<br>";
+//echo "<br>check:$ch / lat:$lat / lon:$lon / zoom level:$zoom'<br>";
 
 // print out the link pointing to the points table
-//echo "<a href='" . mkurl($db, $ch, $label, $lat, $lon, $zoom, $path . 'points.php') . "'>points</a> ";
+//echo "<a href='" . mkurl($ch, $label, $lat, $lon, $zoom, $path . 'points.php') . "'>points</a> ";
 
 
 // the map goes in here:
@@ -224,12 +221,12 @@ mysqli_close($db1);
 
 
 
-function mklink($db, $ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
-	return '<a href="' . mkurl($db, $ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename) . '">' . $label . '</a> ';
+function mklink($ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
+	return '<a href="' . mkurl($ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename) . '">' . $label . '</a> ';
 }
 
-function mkurl($db, $ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
-	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?db=' . $db . '&ch=' . $ch . '&lat=' . $lat/1e7 . '&lon=' . $lon/1e7 . '&zoom=' . $zoom . '&show_ign=' . $show_ign . '&show_tmpign=' . $show_tmpign;
+function mkurl($ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filename="") {
+	return (strlen($filename)>0 ? $filename : $_SERVER['PHP_SELF']) . '?ch=' . $ch . '&lat=' . $lat/1e7 . '&lon=' . $lon/1e7 . '&zoom=' . $zoom . '&show_ign=' . $show_ign . '&show_tmpign=' . $show_tmpign;
 }
 
 

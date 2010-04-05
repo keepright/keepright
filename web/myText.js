@@ -122,7 +122,6 @@ loadText: function() {
 		// rebuild the link for downloading points text file according to current form settings
 		var loc="points.php?lat="+document.myform.lat.value+
 			"&lon="+document.myform.lon.value+
-			"&db="+document.myform.db.value+
 			"&zoom="+document.myform.zoom.value+
 			"&show_ign="+ (document.myform.show_ign.checked ? 1 : 0)+
 			"&show_tmpign="+ (document.myform.show_tmpign.checked ? 1 : 0)+
@@ -247,13 +246,12 @@ parseData: function(ajaxRequest) {
 			'<input type="radio" id="st_'+schema+'_'+error_id+'_i" '+(state=='ignore' ? 'checked="checked"' :'')+' name="st" value="ignore">'+
 			'<label for="st_'+schema+'_'+error_id+'_i">ignore (false-positive)</label>&nbsp;'+
 			'<textarea cols="25" rows="2" name="co">'+comment+'</textarea>'+
-			'<input type="hidden" name="db" value="'+ document.myform.db.value +'">'+
 			'<input type="hidden" name="schema" value="'+schema+'">'+
 			'<input type="hidden" name="id" value="'+error_id+'">'+
 			'<input type="button" value="save" onClick="javascript:saveComment('+schema+', '+error_id+', '+error_type+');">' +
 			'<input type="button" value="cancel" onClick="javascript:closeBubble('+schema+', '+error_id+');">' +
 			'</form><small>please click on the icon to fixate the bubble<br>' +
-			'link to here: error #<a href="report_map.php?db='+document.myform.db.value+'&schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>last edit of this ' + object_type + ': ' + object_timestamp + '</small>';
+			'link to here: error #<a href="report_map.php?schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>last edit of this ' + object_type + ': ' + object_timestamp + '</small>';
 		}
 
 
