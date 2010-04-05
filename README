@@ -137,9 +137,9 @@ Setting up squid is quite easy. On Debian/ubuntu Linuxes do something like this:
 
 > aptitude install squid
 
-change the config file /etc/squid/squid.conf to increase overall cache size to 2GB if you like (default is 100MB which is a little bit small):
+change the config file /etc/squid/squid.conf to increase overall cache size to 400MB if you like (default is 100MB which is a little bit small):
 
-cache_dir ufs /var/spool/squid 2000 16 256
+cache_dir ufs /var/spool/squid 400 16 256
 
 restart squid
 >/etc/init.d/squid restart
