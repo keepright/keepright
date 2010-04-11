@@ -434,7 +434,7 @@ echo "-----------------------\n";
 
 
 // dump the number of nodes per sware degree
-$fname='nodes_'. $schema . '.txt';
+$fname=$RESULTSDIR . '/nodes_'. $schema . '.txt';
 $f = fopen($fname, 'w');
 
 if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
