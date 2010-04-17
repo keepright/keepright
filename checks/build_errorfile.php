@@ -1,0 +1,129 @@
+<?php
+
+$schema=1;
+
+require('config.inc.php');
+require('helpers.inc.php');
+
+
+system ('php webUpdateClient.php --remote --export_comments');
+system ('wget -O ../results/comments.txt.bz2 "http://keepright.ipax.at/comments.txt.bz2"');
+system ('bunzip2 -f ../results/comments.txt.bz2');
+
+
+
+$dst_filename='../results/keepright_errors.txt';
+
+
+if (!$dst=fopen($dst_filename, 'w')) {
+	echo "could not open $dst_filename for writing\n";
+	exit;
+}
+
+
+$co_filename='../results/comments.txt';
+if (!$co=fopen($co_filename, 'r')) {
+	echo "could not open $co_filename for reading\n";
+	exit;
+}
+
+$ev_filenames=glob("../results/error_view_*.txt");
+sort($ev_filenames);
+
+$co_schema=0;
+$co_error_id=0;
+
+
+
+
+fwrite($dst, "schema\terror_id\terror_type\terror_name\tobject_type\tobject_id" .
+	"\tstate\tdescription\tfirst_occurrence\tlast_checked\tobject_timestamp" .
+	"\tlat\tlon\tcomment\tcomment_timestamp\n");
+
+
+foreach ($ev_filenames as $ev_filename) {
+
+	$ev=fopen($ev_filename, 'r');
+	echo "$ev_filename\n";
+	while(!feof($ev)) {
+		$ev_line=trim(fgets($ev));
+		list($ev_schema, $ev_error_id, $error_type, $error_name, $object_type, $object_id, $ev_state, $descr, $fo, $lc, $ot, $lat, $lon) = split("\t", $ev_line);
+
+		while (!feof($co) && ($co_schema<$ev_schema || $co_error_id<$ev_error_id)) {
+			$co_line = trim(fgets($co));
+			list($co_schema, $co_error_id, $co_state, $co_comment, $co_tstamp) = split("\t",  $co_line);
+		}
+		if (feof($co)) {
+			$co_line="";
+			$co_schema=0;
+			$co_error_id=0;
+		}
+
+
+		if ($ev_error_id) {
+
+/*
+			if ($ev_state=='reopened') $ev_state=='new';
+			$lat=$lat/1e7;
+			$lon=$lon/1e7;
+*/
+			fwrite($dst, "$ev_schema\t$ev_error_id\t$error_type\t$error_name\t$object_type\t$object_id");
+
+			if ($ev_schema==$co_schema && $ev_error_id==$co_error_id) {
+
+				if (strlen(trim($co_state))>0) fwrite($dst, "\t$co_state"); else fwrite($dst, "\t$ev_state");
+
+				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\n");
+			} else {
+				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\n");
+			}
+		}
+	}
+	fclose($ev);
+}
+fclose($co);
+
+
+
+system ("bzip2 -c $dst_filename > ${dst_filename}.bz2");
+
+
+// call wput, overwrite files if already existing, dont create directories
+// upload the error_view dumps and the error_types dump
+$ftp_url="ftp://$FTP_USER:$FTP_PASS@$FTP_HOST/$FTP_PATH";
+system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ ${dst_filename}.bz2 \"$ftp_url\" 2>&1");
+
+
+
+/*
+
+schema  error_id        error_type      error_name      object_type     object_id
+state   description     first_occurrence        last_checked    object_timestamp
+lat     lon     comment comment_timestamp
+
+
+DROP TABLE IF EXISTS `keepright_errors`;
+
+CREATE TABLE IF NOT EXISTS `keepright_errors` (
+  `schema` varchar(6) NOT NULL,
+  `error_id` int(11) NOT NULL,
+  `error_type` int(11) NOT NULL,
+  `error_name` varchar(100) NOT NULL,
+  `object_type` enum('node','way','relation') NOT NULL,
+  `object_id` bigint(64) NOT NULL,
+  `state` enum('new','ignore','ignore_temporarily') NOT NULL,
+  `description` text NOT NULL,
+  `first_occurrence` datetime NOT NULL,
+  `last_checked` datetime NOT NULL,
+  `object_timestamp` datetime NOT NULL,
+  `lat` double NOT NULL,
+  `lon` double NOT NULL,
+  `comment` text,
+  `comment_timestamp` datetime
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+LOAD DATA LOCAL INFILE 'keepright_errors.txt' INTO TABLE keepright_errors IGNORE 1 LINES;
+
+*/
+
+?>
