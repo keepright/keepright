@@ -38,14 +38,14 @@ query("
 
 // note ways that have no tags in said view...
 query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked) 
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
 	SELECT $error_type+1, 'way', ways.id, 'This way has no tags', NOW()
 	FROM ways LEFT JOIN tmp_tagged_ways tw USING(id)
 	WHERE tw.id IS NULL
 ", $db1);
 
-// exception: members of multipolygon relations (used in buildings)
-// need not be tagged, especially the inner members
+// exception: members of relations
+// need not be tagged, as long as the relation is tagged
 // these are dropped
 query("
 	DELETE FROM _tmp_errors e
@@ -54,14 +54,9 @@ query("
 		FROM relation_members rm INNER JOIN relation_tags rt ON (rm.relation_id=rt.relation_id)
 		WHERE rm.member_id=e.object_id
 		AND rm.member_type='W'
-		AND rm.member_role in ('inner', 'outer')
-		AND rt.k='type'
-		AND rt.v='multipolygon'
+		AND rt.k IS NOT NULL
 	)
 ", $db1);
-
-
-
 
 
 query("DROP VIEW tmp_tagged_ways", $db1);
