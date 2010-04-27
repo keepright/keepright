@@ -337,7 +337,7 @@ function reopen_errors($db1, $schema) {
 		c.comment=CONCAT(\"[error still open, \", CURDATE(), \"] \", c.comment)
 		WHERE ev.`schema`='$schema' AND c.state='ignore_temporarily' AND
 		ev.state<>'cleared' AND
-		c.timestamp<DATE_SUB(ev.object_timestamp, INTERVAL 2 HOUR)
+		c.timestamp<DATE_ADD(ev.object_timestamp, INTERVAL 2 HOUR)
 	";
 	query($sql, $db1);
 	echo "\ndone.\n";
