@@ -232,6 +232,8 @@ for i do	# loop all given parameter values
 			rm nodes_sorted.txt node_tags.txt relation_members.txt relations.txt relation_tags.txt users.txt way_nodes2.txt ways.txt way_tags.txt
                 fi
 
+		psql -f $TMPDIR"/pgsql_create_index.sql"
+
 		cd "$CHECKSDIR"
 		echo "`date` * preparing helper tables and columns"
 		php prepare_helpertables.php "$i"
