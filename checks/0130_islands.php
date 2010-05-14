@@ -228,7 +228,7 @@ query("
 	SELECT wt.way_id FROM way_tags wt WHERE (
 		wt.k='highway' OR
 		(wt.k='route' AND wt.v='ferry') OR
-		(wt.k='railway' AND wt.v='platform')
+		(wt.k IN ('railway', 'public_transport') AND wt.v='platform')
 	)
 
 	UNION
