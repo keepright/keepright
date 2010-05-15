@@ -85,11 +85,6 @@ query("
 ", $db1, false);
 add_insert_ignore_rule('_tmp_errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
 
-// transforming old-styled errors table; add msgid and txt* columns, drop description
-if (!column_exists('errors', 'msgid', $db1, 'public')) {
-	query("SELECT * INTO public.tmp_errors FROM public.errors", $db1);
-	query("DROP TABLE public.errors", $db1);
-}
 
 // the "real" errors-table. it looks like _tmp_errors with one difference:
 // errors has state information (new, closed , ignored...) and is persistent
@@ -119,14 +114,6 @@ if (!table_exists($db1, 'errors', 'public')) {
 	query("CREATE INDEX idx_errors_object_id ON public.errors (object_id)", $db1);
 	query("CREATE INDEX idx_errors_state ON public.errors (state)", $db1);
 	add_insert_ignore_rule('public.errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
-}
-
-// transforming old-styled errors table; add msgid and txt* columns, drop description
-if (table_exists($db1, 'tmp_errors', 'public')) {
-	query("INSERT INTO public.errors (error_id, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, schema, msgid)
-	SELECT error_id, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, COALESCE(schema, ''), description FROM public.tmp_errors", $db1);
-
-	query("DROP TABLE public.tmp_errors", $db1);
 }
 
 
@@ -294,20 +281,6 @@ if (!table_exists($db1, 'error_view', 'public')) {
 		)
 	", $db1, false);
 }
-
-
-if (!column_exists('error_view', 'msgid', $db1, 'public')) {
-	query("ALTER TABLE public.error_view
-		ADD COLUMN msgid text,
-		ADD COLUMN txt1 text,
-		ADD COLUMN txt2 text,
-		ADD COLUMN txt3 text,
-		ADD COLUMN txt4 text,
-		ADD COLUMN txt5 text
-	", $db1);
-}
-query("ALTER TABLE public.error_view ALTER COLUMN description DROP NOT NULL", $db1);
-
 
 
 // delete anything from this (sub-)database
