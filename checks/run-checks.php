@@ -403,6 +403,7 @@ if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
 // build english description strings
 query("
 	UPDATE public.error_view v SET description=replace(replace(replace(replace(replace(v.msgid, '$1', COALESCE(v.txt1, '')), '$2', COALESCE(v.txt2, '')), '$3', COALESCE(v.txt3, '')), '$4', COALESCE(v.txt4, '')), '$5', COALESCE(v.txt5, ''))
+	WHERE v.schema='$schema'
 ", $db1);
 
 
