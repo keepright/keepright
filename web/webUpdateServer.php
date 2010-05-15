@@ -222,6 +222,15 @@ function toggle_tables1($db1, $schema){
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 
+	foreach (array("error_view_{$schema}_old", "error_view_{$schema}") as $tbl) {
+		add_column_if_not_exists($db1, $tbl, 'msgid', 'TEXT');
+		add_column_if_not_exists($db1, $tbl, 'txt1', 'TEXT');
+		add_column_if_not_exists($db1, $tbl, 'txt2', 'TEXT');
+		add_column_if_not_exists($db1, $tbl, 'txt3', 'TEXT');
+		add_column_if_not_exists($db1, $tbl, 'txt4', 'TEXT');
+		add_column_if_not_exists($db1, $tbl, 'txt5', 'TEXT');
+	}
+
 	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
 	query("RENAME TABLE error_view_{$schema}_old TO error_view_{$schema}_shadow", $db1);
 	query("ALTER TABLE error_view_{$schema}_shadow DISABLE KEYS", $db1);
