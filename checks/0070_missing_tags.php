@@ -13,12 +13,12 @@ $tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_ta
 foreach ($tables as $object_type=>$table) {
 
 	query("
-		INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked) 
-		SELECT $error_type, '$object_type', {$object_type}_id, 'This $object_type has an empty tag: ' || array_to_string(array(
+		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2,   last_checked)
+		SELECT $error_type, '$object_type', {$object_type}_id, 'This $1 has an empty tag: $2', '$object_type', array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM $table AS tmp
 			WHERE tmp.{$object_type}_id=t.{$object_type}_id AND (tmp.k IS NULL or LENGTH(TRIM(tmp.k))=0 OR tmp.v IS NULL or LENGTH(TRIM(tmp.v))=0)
-		), ' and '), NOW()
+		), ', '), NOW()
 
 		FROM $table t
 		WHERE k IS NULL or LENGTH(TRIM(k))=0 OR v IS NULL or LENGTH(TRIM(v))=0
@@ -38,7 +38,7 @@ query("
 
 // note ways that have no tags in said view...
 query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+1, 'way', ways.id, 'This way has no tags', NOW()
 	FROM ways LEFT JOIN tmp_tagged_ways tw USING(id)
 	WHERE tw.id IS NULL

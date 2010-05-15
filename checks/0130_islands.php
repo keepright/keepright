@@ -268,7 +268,7 @@ query("ANALYZE _tmp_junctions", $db1);
 // in _tmp_junctions we only see nodes that are used at least twice
 // not finding a record in _tmp_junctions means the way is a not connected way
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), w.way_id, 'This way is not connected to the rest of the map', NOW()
 	FROM _tmp_ways w
 	WHERE NOT EXISTS (
@@ -364,7 +364,7 @@ do {
 
 // any way that exists in way-temp-table but is not member of any island is an error
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), wn.way_id, 'This way is not connected to the rest of the map', NOW()
 	FROM _tmp_wn wn LEFT JOIN _tmp_ways_found_before w USING (way_id)
 	WHERE w.way_id IS NULL

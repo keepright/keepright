@@ -250,12 +250,12 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 				foreach ($ways as $id) $closed_ways[$id]=true;
 				continue;
 			} else {
-				$bi->insert("$error_type\tway\t{$row['way_id']}\tThis coastline-way is not part of a closed-loop.'\tNOW()\t\\N\t\\N");
+				$bi->insert("$error_type\tway\t{$row['way_id']}\tNOW()\t\\N\t\\N\t\\N\t\\N\tThis coastline-way is not part of a closed-loop\t\\N\t\\N\t\\N");
 			}
 
 		} else {
 			if (!is_closed_loop($row['way_id'], $row['first_node_id'], $row['last_node_id'], $db2)) 
-				$bi->insert("$error_type\tway\t{$row['way_id']}\tThis way is tagged with '$k=$v' and should be closed-loop.\tNOW()\t\\N\t\\N");
+				$bi->insert("$error_type\tway\t{$row['way_id']}\tNOW()\t\\N\t\\N\tThis way is tagged with '$1=$2' and should be closed-loop\t$k\t$v\t\\N\t\\N\t\\N");
 		}
 	}
 	$bi->flush_buffer();
@@ -309,7 +309,7 @@ function is_closed_loop_strict($way_id, $first_node_id, $last_node_id, $db2) {
 
 	if ($found_last_node) {
 
-		//echo "way #$way_id closed!\n"; 
+		//echo "way #$way_id closed!\n";
 		return get_way_list($way_id, $db2);
 	} else {
 
@@ -327,7 +327,7 @@ function get_way_list($way_id, $db2) {
 	$way_ids=array();
 
 	$marker=0;
-	// there may more than one way lead to the destination way 
+	// there may more than one way lead to the destination way
 	// find just one way_id leading to the destination
 	$last_way_id = query_firstval("
 		SELECT DISTINCT m.way_id

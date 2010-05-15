@@ -71,15 +71,25 @@ query("
 	error_type int NOT NULL,
 	object_type public.type_object_type NOT NULL,
 	object_id bigint NOT NULL,
-	description text NOT NULL,
 	last_checked timestamp NOT NULL,
 	lat double precision,
 	lon double precision,
+	msgid text,
+	txt1 text,
+	txt2 text,
+	txt3 text,
+	txt4 text,
+	txt5 text,
 	UNIQUE (error_type, object_type, object_id, lat, lon)
 	)
 ", $db1, false);
 add_insert_ignore_rule('_tmp_errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
 
+// transforming old-styled errors table; add msgid and txt* columns, drop description
+if (!column_exists('errors', 'msgid', $db1, 'public')) {
+	query("SELECT * INTO public.tmp_errors FROM public.errors", $db1);
+	query("DROP TABLE public.errors", $db1);
+}
 
 // the "real" errors-table. it looks like _tmp_errors with one difference:
 // errors has state information (new, closed , ignored...) and is persistent
@@ -91,22 +101,38 @@ if (!table_exists($db1, 'errors', 'public')) {
 		object_type public.type_object_type NOT NULL,
 		object_id bigint NOT NULL,
 		state type_error_state NOT NULL,
-		description text NOT NULL,
 		first_occurrence timestamp NOT NULL,
 		last_checked timestamp NOT NULL,
 		lat double precision,
 		lon double precision,
 		schema VARCHAR(8) NOT NULL DEFAULT '',
+		msgid text,
+		txt1 text,
+		txt2 text,
+		txt3 text,
+		txt4 text,
+		txt5 text,
 		UNIQUE (error_type, object_type, object_id, lat, lon)
 		)
 	", $db1, false);
-	query("CREATE INDEX idx_errors_schema ON public.errors (schema);", $db1);
-	query("CREATE INDEX idx_errors_object_id ON public.errors (object_id);", $db1);
-	query("CREATE INDEX idx_errors_state ON public.errors (state);", $db1);
+	query("CREATE INDEX idx_errors_schema ON public.errors (schema)", $db1);
+	query("CREATE INDEX idx_errors_object_id ON public.errors (object_id)", $db1);
+	query("CREATE INDEX idx_errors_state ON public.errors (state)", $db1);
 	add_insert_ignore_rule('public.errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
 }
+
+// transforming old-styled errors table; add msgid and txt* columns, drop description
+if (table_exists($db1, 'tmp_errors', 'public')) {
+	query("INSERT INTO public.errors (error_id, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, schema, msgid)
+	SELECT error_id, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, COALESCE(schema, ''), description FROM public.tmp_errors", $db1);
+
+	query("DROP TABLE public.tmp_errors", $db1);
+}
+
+
+
 // (re)create table of error type descriptions out of definition-array in config.inc
-query("DROP TABLE IF EXISTS error_types;", $db1, false);
+query("DROP TABLE IF EXISTS error_types", $db1, false);
 query("
 	CREATE TABLE error_types (
 	error_type int NOT NULL,
@@ -193,17 +219,17 @@ $checks_executed.=')';
 // The workaround is to use 'IS NOT DISTINCT FROM' which will return false
 // if one value is not null and return true if both are null
 
-query("CREATE INDEX idx_tmp_errors_object_id ON _tmp_errors (object_id);", $db1);
-query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type);", $db1);
-query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type);", $db1);
-query("CREATE INDEX idx_tmp_errors_latlon ON _tmp_errors (lat, lon);", $db1);
+query("CREATE INDEX idx_tmp_errors_object_id ON _tmp_errors (object_id)", $db1);
+query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type)", $db1);
+query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type)", $db1);
+query("CREATE INDEX idx_tmp_errors_latlon ON _tmp_errors (lat, lon)", $db1);
 
 // update last-checked timestamp for all errors that (still) exist
 // set reopened-state for cleared errors that are now found in _tmp_errors again
 query("
 	UPDATE public.errors AS e
 	SET schema='$schema', last_checked=te.last_checked,
-	description=te.description,
+	msgid=te.msgid, txt1=te.txt1, txt2=te.txt2, txt3=te.txt3, txt4=te.txt4, txt5=te.txt5,
 	state = CAST(CASE e.state WHEN 'cleared' THEN 'reopened' ELSE 'new' END AS type_error_state)
 	FROM _tmp_errors te
 	WHERE e.error_type=te.error_type AND e.object_type=te.object_type AND e.object_id=te.object_id AND e.lat IS NOT DISTINCT FROM te.lat AND e.lon IS NOT DISTINCT FROM te.lon
@@ -222,19 +248,11 @@ query("
 
 // add newly found errors
 query("
-	INSERT INTO public.errors (schema, error_type, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)
-	SELECT '$schema', e.error_type, e.object_type, e.object_id, CAST('new' AS type_error_state), e.description, e.last_checked, e.last_checked, e.lat, e.lon
+	INSERT INTO public.errors (schema, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+	SELECT '$schema', e.error_type, e.object_type, e.object_id, CAST('new' AS type_error_state), e.last_checked, e.last_checked, e.lat, e.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 	FROM _tmp_errors AS e LEFT JOIN public.errors ON (e.error_type=errors.error_type AND e.object_type=errors.object_type AND e.object_id=errors.object_id AND e.lat IS NOT DISTINCT FROM errors.lat AND e.lon IS NOT DISTINCT FROM errors.lon)
 	WHERE public.errors.object_id IS NULL AND ($checks_executed)
 ", $db1);
-
-// clear errors not present in any schema
-// don't need that any more.
-//query("
-//	UPDATE public.errors AS e
-//	SET state = CAST('cleared' AS type_error_state)
-//	WHERE schema='' OR schema IS NULL
-//", $db1);
 
 
 // rebuild the error-view:
@@ -266,17 +284,31 @@ if (!table_exists($db1, 'error_view', 'public')) {
 		last_checked timestamp NOT NULL,
 		object_timestamp timestamp NOT NULL DEFAULT '1970-01-01',
 		lat int NOT NULL,
-		lon int NOT NULL
+		lon int NOT NULL,
+		msgid text,
+		txt1 text,
+		txt2 text,
+		txt3 text,
+		txt4 text,
+		txt5 text
 		)
 	", $db1, false);
 }
 
-if (!index_exists($db1, 'idx_tmp_error_view_schema', 'public')) {
-	query("CREATE INDEX idx_tmp_error_view_schema ON public.error_view (schema);", $db1);
+
+if (!column_exists('error_view', 'msgid', $db1, 'public')) {
+	query("ALTER TABLE public.error_view
+		ADD COLUMN msgid text,
+		ADD COLUMN txt1 text,
+		ADD COLUMN txt2 text,
+		ADD COLUMN txt3 text,
+		ADD COLUMN txt4 text,
+		ADD COLUMN txt5 text
+	", $db1);
 }
-if (!column_exists('error_view', 'object_timestamp', $db1, 'public')) {
-	query("ALTER TABLE public.error_view ADD COLUMN object_timestamp timestamp NOT NULL DEFAULT '1970-01-01'", $db1);
-}
+query("ALTER TABLE public.error_view ALTER COLUMN description DROP NOT NULL", $db1);
+
+
 
 // delete anything from this (sub-)database
 query("
@@ -291,13 +323,13 @@ query("CREATE TABLE _tmp_ev (LIKE public.error_view
 ", $db1, false);
 
 query("
-	INSERT INTO _tmp_ev (error_id, db_name, schema, error_type, object_type, object_id, state, description, first_occurrence, last_checked, lat, lon)
-	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id, e.state, e.description, e.first_occurrence, e.last_checked, 0, 0
+	INSERT INTO _tmp_ev (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id, e.state, e.first_occurrence, e.last_checked, 0, 0, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 	FROM public.errors e
 	WHERE e.schema='$schema' AND e.object_type='relation' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
 ", $db1);
-query("CREATE INDEX idx_tmp_error_view_object_id ON _tmp_ev (object_id);", $db1, false);
-query("CREATE INDEX idx_tmp_error_view_latlon ON _tmp_ev (lat,lon);", $db1, false);
+query("CREATE INDEX idx_tmp_error_view_object_id ON _tmp_ev (object_id)", $db1, false);
+query("CREATE INDEX idx_tmp_error_view_latlon ON _tmp_ev (lat,lon)", $db1, false);
 query("ANALYZE _tmp_ev", $db1, false);
 
 query("
@@ -339,11 +371,10 @@ query("DROP TABLE IF EXISTS _tmp_ev", $db1, false);
 
 // first insert errors on nodes that don't have lat/lon
 query("
-	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
-		state, description, first_occurrence, last_checked, object_timestamp, lat, lon)
+	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 	SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
-		e.state, e.description, e.first_occurrence, e.last_checked, n.tstamp,
-		1e7*n.lat, 1e7*n.lon
+		e.state, e.first_occurrence, e.last_checked, n.tstamp,
+		1e7*n.lat, 1e7*n.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 	FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
 	WHERE e.schema='$schema' AND e.object_type='node' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND n.lat IS NOT NULL AND n.lon IS NOT NULL
@@ -351,31 +382,28 @@ query("
 
 // second insert errors on ways that don't have lat/lon
 query("
-	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
-		state, description, first_occurrence, last_checked, object_timestamp, lat, lon)
+	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 	SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
-		e.state, e.description, e.first_occurrence, e.last_checked, w.tstamp,
-		1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon
+		e.state, e.first_occurrence, e.last_checked, w.tstamp,
+		1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 	FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
 	WHERE e.schema='$schema' AND e.object_type='way' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
 		AND w.first_node_lat IS NOT NULL AND w.first_node_lon IS NOT NULL
 	GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state,
-		e.description, e.first_occurrence, e.last_checked, w.tstamp,
-		1e7*w.first_node_lat, 1e7*w.first_node_lon
+		e.first_occurrence, e.last_checked, w.tstamp,
+		1e7*w.first_node_lat, 1e7*w.first_node_lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 ", $db1);
 
 
 // finally insert errors on ways/nodes/relations that do have lat/lon values
 query("
-	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id,
-		state, description, first_occurrence, last_checked, lat, lon)
+	INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 	SELECT DISTINCT e.error_id, '$MAIN_DB_NAME' as db_name, e.schema, e.error_type,
-		e.object_type, e.object_id, e.state, e.description,
-		e.first_occurrence, e.last_checked, e.lat, e.lon
+		e.object_type, e.object_id, e.state,
+		e.first_occurrence, e.last_checked, e.lat, e.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 	FROM public.errors e
 	WHERE e.schema='$schema' AND state<>'cleared' AND NOT(e.lat IS NULL OR e.lon IS NULL)
 ", $db1);
-
 
 
 
@@ -397,6 +425,12 @@ if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
 } else {
 	echo "boundaries not specified, skip clipping of errors.\n";
 }
+
+
+// build english description strings
+query("
+	UPDATE public.error_view v SET description=replace(replace(replace(replace(replace(v.msgid, '$1', COALESCE(v.txt1, '')), '$2', COALESCE(v.txt2, '')), '$3', COALESCE(v.txt3, '')), '$4', COALESCE(v.txt4, '')), '$5', COALESCE(v.txt5, ''))
+", $db1);
 
 
 
@@ -426,14 +460,14 @@ foreach (array('node', 'way', 'relation') as $item) {
 
 
 // drop temporary table
-//query("DROP TABLE _tmp_errors;", $db1);
+//query("DROP TABLE _tmp_errors", $db1);
 
 echo "-----------------------\n";
 print_r($jobreport);
 echo "-----------------------\n";
 
 
-// dump the number of nodes per sware degree
+// dump the number of nodes per square degree
 $fname=$RESULTSDIR . '/nodes_'. $schema . '.txt';
 $f = fopen($fname, 'w');
 

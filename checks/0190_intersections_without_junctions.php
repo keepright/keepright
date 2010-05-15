@@ -182,9 +182,9 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 			if ($additivum <> -1)
 
 				query("
-					INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lon, lat)
+					INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, txt3, last_checked, lon, lat)
 					VALUES($error_type+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
-					'This {$row['typ1']} intersects the {$row['typ2']} #' || {$row['way_id2']} || ' but there is no junction node', NOW()," . 
+					'This $1 intersects the $2 #$3 but there is no junction node', '{$row['typ1']}', '{$row['typ2']}', '{$row['way_id2']}', NOW()," .
 					round(1e7*merc_lon($point[0])) . ',' . round(1e7*merc_lat($point[1])) . ')'
 				, $db2, false);
 		}
@@ -206,9 +206,9 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 	$additivum = subtype_number($row['typ1'], $row['typ2']);
 	if ($additivum <> -1)
 		query("
-			INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lon, lat) 
+			INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, txt3, last_checked, lon, lat)
 			VALUES($error_type+10+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
-			'This {$row['typ1']} overlaps the {$row['typ2']} #' || {$row['way_id2']} || '.', NOW()," .
+			'This $1 overlaps the $2 #$3', '{$row['typ1']}', '{$row['typ2']}', '{$row['way_id2']}', NOW()," .
 			1e7*merc_lon($point[0]) . ',' . 1e7*merc_lat($point[1]) . ')'
 		, $db2, false);
 }

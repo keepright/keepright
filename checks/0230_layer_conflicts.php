@@ -169,10 +169,9 @@ query("CREATE INDEX idx_tmp_error_candidates_all_intermediate_nodes ON _tmp_erro
 query("ANALYZE _tmp_error_candidates", $db1);
 
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
 	SELECT $error_type + 1,
-	CAST('node' AS type_object_type), node_id, 'This node is a junction of ways on different layers: ' ||
-	group_concat('#' || way_id || '(' || layer || ')'), NOW()
+	CAST('node' AS type_object_type), node_id, 'This node is a junction of ways on different layers: $1', group_concat('#' || way_id || '(' || layer || ')'), NOW()
 	FROM _tmp_error_candidates AS T
 	WHERE all_intermediate_nodes
 	GROUP BY node_id
@@ -195,9 +194,9 @@ query("DROP TABLE IF EXISTS _tmp_highways", $db1);
 // tunnels with positive layer tags.
 
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
 	SELECT $error_type + 2,
-	CAST('way' AS type_object_type), wt1.way_id, 'This ' || wt1.k || ' is tagged with layer ' || wt2.v || '. This need not be an error, but it looks strange.', NOW()
+	CAST('way' AS type_object_type), wt1.way_id, 'This $1 is tagged with layer $2. This need not be an error, but it looks strange', wt1.k, wt2.v, NOW()
 	FROM way_tags wt1 INNER JOIN way_tags wt2 ON wt1.way_id=wt2.way_id
 	WHERE (wt1.k='bridge' AND wt1.v in ('1', 'yes', 'true') AND wt2.k='layer' AND wt2.v in ('-1', '-2', '-3', '-4', '-5'))
 	OR (wt1.k='tunnel' AND wt1.v in ('1', 'yes', 'true') AND wt2.k='layer' AND wt2.v in ('1', '2', '3', '4', '5'))

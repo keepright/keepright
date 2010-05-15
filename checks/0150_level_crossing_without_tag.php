@@ -37,7 +37,7 @@ query("
 // that is tagged as a highway
 // and which (the node) has not the railway=level_crossing tag or railway=crossing
 query("
-        INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
+        INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('node' as type_object_type), r.node_id, 'This crossing of a highway and a railway needs to be tagged as railway=crossing or railway=level_crossing', NOW()
 	FROM _tmp_railways r
 	WHERE EXISTS (

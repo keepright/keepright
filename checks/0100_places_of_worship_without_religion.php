@@ -16,7 +16,7 @@ query("
 ", $db1);
 
 query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked) 
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type, 'node', node_id, 'This node is tagged as place of worship and therefore needs a religion tag', NOW()
 	FROM _tmp_places_of_worship b
 	WHERE NOT EXISTS( SELECT * FROM node_tags nt WHERE nt.node_id=b.node_id AND nt.k IN ('religion', 'denomination') )

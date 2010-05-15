@@ -30,9 +30,9 @@ query("ANALYZE _tmp_restrictions", $db1, false);
 
 // missing or wrong restriction tag
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+1, CAST('relation' AS type_object_type),
-	r.relation_id, 'This turn-restriction has no restriction type.', NOW()
+	r.relation_id, 'This turn-restriction has no restriction type', NOW()
 	FROM _tmp_restrictions r
 	WHERE NOT EXISTS (
 		SELECT v FROM relation_tags t
@@ -40,9 +40,9 @@ query("
 	)
 ", $db1);
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+1, CAST('relation' AS type_object_type),
-	r.relation_id, 'This turn-restriction has no known restriction type.', NOW()
+	r.relation_id, 'This turn-restriction has no known restriction type', NOW()
 	FROM _tmp_restrictions r LEFT JOIN relation_tags t USING (relation_id)
 	WHERE t.k='restriction' AND t.v NOT IN (
 		'no_left_turn','no_right_turn','no_u_turn',
@@ -55,9 +55,9 @@ query("
 // check cardinality of from and to members
 foreach (array(2=>'from', 3=>'to') as $k=>$v) {
 	query("
-		INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+		INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
 		SELECT $error_type+$k, CAST('relation' AS type_object_type),
-		r.relation_id, 'A turn-restriction needs exactly one $v member. This one has ' || COUNT(rm.member_id), NOW()
+		r.relation_id, 'A turn-restriction needs exactly one $1 member. This one has $2', '$v', COUNT(rm.member_id), NOW()
 		FROM _tmp_restrictions r LEFT JOIN (
 			SELECT relation_id, member_id
 			FROM relation_members m
@@ -71,9 +71,9 @@ foreach (array(2=>'from', 3=>'to') as $k=>$v) {
 
 // check that from and to really are ways
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
 	SELECT $error_type+4, CAST('relation' AS type_object_type),
-	r.relation_id, 'From- and To-members of turn restrictions need to be ways. ' || group_concat(m.member_role ||
+	r.relation_id, 'From- and To-members of turn restrictions need to be ways. $1', group_concat(m.member_role ||
 		CASE WHEN m.member_type='N' THEN ' node #' ELSE ' relation #' END
 		|| m.member_id), NOW()
 	FROM _tmp_restrictions r INNER JOIN relation_members m USING (relation_id)
@@ -83,6 +83,7 @@ query("
 
 
 
-//query("DROP TABLE IF EXISTS _tmp_restrictions", $db1);
+
+query("DROP TABLE IF EXISTS _tmp_restrictions", $db1);
 
 ?>

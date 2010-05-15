@@ -85,8 +85,8 @@ query("
 // this query won't return a row for a bridge that doesn't have
 // any neighbour, but that seems to be OK.
 query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
-	SELECT $error_type, CAST('way' AS type_object_type), tn.way_id, 'This bridge does not have a tag in common with its surrounding ways that shows the purpose of this bridge. There should be one of these tags: ' || group_concat(tn.k || '=' || tn.v), NOW()
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
+	SELECT $error_type, CAST('way' AS type_object_type), tn.way_id, 'This bridge does not have a tag in common with its surrounding ways that shows the purpose of this bridge. There should be one of these tags: $1', group_concat(tn.k || '=' || tn.v), NOW()
 	FROM _tmp_neighbour_tags tn LEFT JOIN _tmp_bridge_tags tb USING (way_id, k, v)
 	GROUP BY tn.way_id
 	HAVING EVERY(tb.way_id IS NULL)

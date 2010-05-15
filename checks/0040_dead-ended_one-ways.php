@@ -100,8 +100,8 @@ query("ANALYZE _tmp_one_ways", $db1);
 // find end nodes that are not connected to any other way
 // exclude ring-ways (firstnode==lastnode)
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked, lat, lon)
-	SELECT $error_type, 'way', o.way_id, 'The first node (id ' || o.first_node_id || ') of this one-way is not connected to any other way.', NOW(), 1e7*o.first_node_lat, 1e7*o.first_node_lon
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked, lat, lon)
+	SELECT $error_type, 'way', o.way_id, 'The first node (id $1) of this one-way is not connected to any other way', o.first_node_id, NOW(), 1e7*o.first_node_lat, 1e7*o.first_node_lon
 	FROM _tmp_one_ways o
 	WHERE o.first_node_id<>o.last_node_id AND
 	NOT EXISTS(
@@ -113,8 +113,8 @@ query("
 
 // do the same for the last node of one-ways
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked, lat, lon)
-	SELECT $error_type+1, 'way', o.way_id, 'The last node (id ' || o.last_node_id || ') of this one-way is not connected to any other way.', NOW(), 1e7*o.last_node_lat, 1e7*o.last_node_lon
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked, lat, lon)
+	SELECT $error_type+1, 'way', o.way_id, 'The last node (id $1) of this one-way is not connected to any other way', o.last_node_id, NOW(), 1e7*o.last_node_lat, 1e7*o.last_node_lon
 	FROM _tmp_one_ways o
 	WHERE o.first_node_id<>o.last_node_id AND
 	NOT EXISTS(
@@ -142,8 +142,8 @@ query("
 
 // the following has to be done twice: for 'first' and for 'last' nodes
 $cfg = array(
-	'first'=>'This node cannot be reached, because one-ways only lead away from here.',
-	'last'=>'You cannot escape from this node, because one-ways only lead to here.'
+	'first'=>'This node cannot be reached, because one-ways only lead away from here',
+	'last'=>'You cannot escape from this node, because one-ways only lead to here'
 );
 
 $additivum=2;
@@ -165,7 +165,7 @@ foreach ($cfg as $item=>$msg) {
 	// and there is no other way connected to this junction node
 	// except these one-ways
 	query("
-		INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+		INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 		SELECT $error_type+$additivum, 'node', j.node_id, '$msg', NOW()
 		FROM _tmp_one_way_junctions j
 		WHERE NOT EXISTS (

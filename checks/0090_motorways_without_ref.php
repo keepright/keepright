@@ -18,7 +18,7 @@ query("
 ", $db1);
 
 query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type, 'way', way_id, 'This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref tag', NOW()
 	FROM _tmp_motorways b
 	WHERE NOT EXISTS (

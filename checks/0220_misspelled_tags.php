@@ -135,12 +135,12 @@ $tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_ta
 foreach ($tables as $object_type=>$table) {
 
 	query("
-		INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked) 
-		SELECT $error_type+1, '$object_type', {$object_type}_id, 'The key of this ${object_type}s tag is \"key\": ' || array_to_string(array(
+		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
+		SELECT $error_type+1, '$object_type', {$object_type}_id, 'The key of this $1s tag is ''key'': $2', '${object_type}', array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM $table AS tmp
 			WHERE tmp.{$object_type}_id=t.{$object_type}_id AND (tmp.k='key')
-		), ' and '), NOW()
+		), ', '), NOW()
 
 		FROM $table t
 		WHERE k='key'
@@ -194,7 +194,8 @@ global $error_type, $false_positives, $db1, $db2;
 		CREATE TABLE _tmp_bad_tags(
 			k text NOT NULL,
 			v text,
-			replacement text
+			wrong_tag text,
+			right_tag text
 		)
 	", $db1, false);
 	query("CREATE INDEX idx_tmp_bad_tags ON _tmp_bad_tags (k, v)", $db1, false);
@@ -245,9 +246,9 @@ global $error_type, $false_positives, $db1, $db2;
 			// find all original tags, where the modified tag version is the offending irregular key
 			// different original tags fall into the same modified tag by regexing, this the way back
 			query("
-				INSERT INTO _tmp_bad_tags (k, v, replacement)
+				INSERT INTO _tmp_bad_tags (k, v, wrong_tag, right_tag)
 				SELECT DISTINCT k_orig, v_orig,
-				'\"" . pg_escape_string($db1, $irreg_key) . "\" looks like \"" . pg_escape_string($db1, $reg_keys[1]) . "\"'
+				'\"" . pg_escape_string($db1, $irreg_key) . "\"', '\"" . pg_escape_string($db1, $reg_keys[1]) . "\"'
 				FROM _tmp_tags
 				WHERE keylist[1:$keylen] = ARRAY[" . (strlen($irreg_prefix)>0 ?  "'".str_replace(':', "','", pg_escape_string($db1, $irreg_prefix)) . "'," : '') . " '" . pg_escape_string($db1, $irreg_key) . "']
 			", $db1, false);
@@ -257,9 +258,9 @@ global $error_type, $false_positives, $db1, $db2;
 
 	// now find out the object ids, where bad tags were used
 	query("
-		INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+		INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, txt2, txt3, txt4, txt5, last_checked)
 		SELECT DISTINCT $error_type, CAST('$item' AS type_object_type), t.${item}_id,
-		'This $item is tagged \"' || t.k || '=' || t.v || '\" where ' || bt.replacement, NOW()
+		'This $1 is tagged ''$2=$3'' where $4 looks like $5', '$item', t.k, t.v, bt.wrong_tag, bt.right_tag, NOW()
 		FROM ${item}_tags t INNER JOIN _tmp_bad_tags bt USING (k, v)
 	", $db1);
 

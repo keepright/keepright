@@ -21,20 +21,18 @@ while ($row=pg_fetch_assoc($result)) {
 
 	$way_ids=get_way_ids($row['node_id'], $db2);
 
-	if (!same_layer($way_ids, $db2)) 
+	if (!same_layer($way_ids, $db2))
                 query("
-                        INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
+                        INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
                         VALUES ($error_type, 'node', {$row['node_id']}, 'There are ways in different layers coming together in this railway crossing', NOW())
                 ", $db1, false);
 
-	if (tagged('bridge', $way_ids, $db2) || tagged('tunnel', $way_ids, $db2))	
+	if (tagged('bridge', $way_ids, $db2) || tagged('tunnel', $way_ids, $db2))
 	        query("
-	                INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
-                        VALUES ($error_type, 'node', {$row['node_id']}, 'There are ways tagged as tunnel or bridge coming  together in this railway crossing', NOW()) 
+	                INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
+                        VALUES ($error_type, 'node', {$row['node_id']}, 'There are ways tagged as tunnel or bridge coming together in this railway crossing', NOW())
                 ", $db1, false);
-	                                            
-	                                            
-	
+
 }
 pg_free_result($result);
 
@@ -44,7 +42,7 @@ pg_free_result($result);
 // find all way_ids that are connected to given node
 function get_way_ids($node_id, $db1) {
 	$way_ids=array();
-	
+
 	$result=query("
         	SELECT DISTINCT way_id
                 FROM way_nodes
@@ -52,10 +50,10 @@ function get_way_ids($node_id, $db1) {
 	", $db1, false);
 
 	while ($row=pg_fetch_array($result)) {
-		$way_ids[] = $row[0];        
+		$way_ids[] = $row[0];
 	}
 	pg_free_result($result);
-        return $way_ids;                
+        return $way_ids;
 }
 
 
@@ -68,13 +66,13 @@ function same_layer($way_ids, $db) {
 
         foreach ($way_ids as $way_id) {
                 $temp = get_tag('layer', $way_id, $db);
-      
+
                 // remember new layer value if none is known up to now
                 if ($layer == null && $temp != null) $layer=$temp;
-      
+
                 // return false if another value is found
                 if ($layer != $temp) return false;
-        
+
         }
         return true;
 }
@@ -84,7 +82,7 @@ function same_layer($way_ids, $db) {
 function tagged($key, $way_ids, $db) {
         foreach ($way_ids as $way_id) 
                 if (get_tag($key, $way_id, $db)!==null) return true;
-  
+
         return false;
 }
 

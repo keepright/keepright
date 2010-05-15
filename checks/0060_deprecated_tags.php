@@ -59,12 +59,21 @@ foreach ($replacement_list as $replacement) {
 		$where .= " AND v LIKE '". pg_escape_string($db2, $replacement[2]) . "'";
 	$where .= ")";
 
-	$hint = (strlen(trim($replacement[3]))>1 ? '. Please use ' . trim($replacement[3]) . ' instead!' : '');
+
+	$msgid='This $1 uses deprecated tag $2 = $3';
+
+	if (strlen(trim($replacement[3]))>1) {
+		$msgid .= '. Please use $4 instead!';
+		$repl = trim($replacement[3]);
+	} else {
+		$repl='';
+	}
+
 
 	foreach ($tables as $object_type=>$table) {
 		query("
-			INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
-			SELECT $error_type, '$object_type', {$object_type}_id, 'This $object_type uses deprecated tag ' || k || '=' || v || '$hint', NOW()
+			INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, txt2, txt3, txt4, last_checked)
+			SELECT $error_type, '$object_type', {$object_type}_id, '$msgid', '$object_type', k, v, '$repl', NOW()
 			FROM $table
 			WHERE $where
 		", $db2, false);

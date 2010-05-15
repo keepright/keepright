@@ -63,8 +63,8 @@ query("ANALYZE _tmp_tmp_errors", $db1);
 // let's take the node with biggest node_count. Remember: there could
 // be two node ids with the same number of occurrences, so just pick the larger id one...
 query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked, lat, lon)
-	SELECT $error_type, CAST('way' AS type_object_type), c.way_id, 'This way contains node #' || c.node_id || ' ' || c.node_count || ' times. This may or may not be an error.', NOW(), c.lat, c.lon
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked, lat, lon)
+	SELECT $error_type, CAST('way' AS type_object_type), c.way_id, 'This way contains node #$1 $2 times. This may or may not be an error', c.node_id, c.node_count, NOW(), c.lat, c.lon
 	FROM _tmp_tmp_errors c
 	WHERE node_id=(
 		SELECT MAX(node_id)
@@ -84,14 +84,14 @@ query("DROP TABLE IF EXISTS _tmp_tmp_errors", $db1, false);
 // second part:
 // any way may contain just one node twice. If more than one node is found twice it is considered an error
 query("
-        INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
-	SELECT 1+$error_type, CAST('way' AS type_object_type), c.way_id, 'This way contains more than one node at least twice. Nodes are ' || array_to_string(array(
+        INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
+	SELECT 1+$error_type, CAST('way' AS type_object_type), c.way_id, 'This way contains more than one node at least twice. Nodes are $1. This may or may not be an error', array_to_string(array(
 
 		SELECT '#' || t.node_id
 		FROM _tmp_node_count t
 		WHERE t.way_id=c.way_id
 
-	), ', ') || '. This may or may not be an error.', NOW()
+	), ', '), NOW()
 	FROM _tmp_node_count c
 	GROUP BY c.way_id
 	HAVING COUNT(c.node_id)>1
@@ -101,8 +101,8 @@ query("
 // third part:
 // Any way with only 2 different nodes in it, having one node more than once, is an error.
 query("
-        INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked)
-	SELECT DISTINCT 2+$error_type, CAST('way' AS type_object_type), nc.way_id, 'This way has only two different nodes and contains one of them more than once.', NOW()
+        INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
+	SELECT DISTINCT 2+$error_type, CAST('way' AS type_object_type), nc.way_id, 'This way has only two different nodes and contains one of them more than once', NOW()
 	FROM _tmp_node_count nc
 
 	WHERE EXISTS(

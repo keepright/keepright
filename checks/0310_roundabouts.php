@@ -133,9 +133,9 @@ query("ANALYZE _tmp_roundabout_parts", $db1, false);
 // the first node of the first segment and the last node of the last
 // segment must be the same
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+1, CAST('way' AS type_object_type),
-	first.way_id, 'This way is part of a roundabout but is not closed-loop. (Flares should not be tagged as roundabout.)', NOW()
+	first.way_id, 'This way is part of a roundabout but is not closed-loop. (Flares should not be tagged as roundabout)', NOW()
 	FROM _tmp_roundabout_parts first, _tmp_roundabout_parts last
 	WHERE first.part=last.part AND first.sequence_id = (
 		SELECT MIN(t1.sequence_id)
@@ -278,11 +278,11 @@ query("
 // right_hand_country and clockwise is wrong
 // left_hand_country and counter-clockwise is wrong
 query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+2, CAST('way' AS type_object_type),
 	rp.way_id, 'If this roundabout is in a country with ' ||
 	CASE WHEN right_hand_country THEN 'right' ELSE 'left' END ||
-	'-hand traffic then its orientation goes the wrong way around.', NOW()
+	'-hand traffic then its orientation goes the wrong way around', NOW()
 
 	FROM _tmp_roundabouts r INNER JOIN _tmp_roundabout_parts rp USING (part)
 	WHERE rp.sequence_id=0 AND right_hand_country=clockwise

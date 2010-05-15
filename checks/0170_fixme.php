@@ -11,12 +11,12 @@ $tables=array('node', 'way', 'relation');
 foreach($tables as $table) {
 
 	query("
-		INSERT INTO _tmp_errors(error_type, object_type, object_id, description, last_checked) 
-		SELECT $error_type, '$table', {$table}_id, 'This {$table} is fixme-tagged: ' || array_to_string(array(
+		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
+		SELECT $error_type, '$table', {$table}_id, 'This $1 is fixme-tagged: $2', '$table', array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM {$table}_tags AS tmp
 			WHERE tmp.{$table}_id=t.{$table}_id AND (tmp.k iLIKE '%fixme%' OR tmp.v iLIKE '%fixme%' OR (k='name' AND v='tbd') OR (k='ref' AND v='tbd'))
-		), ' and '), NOW()
+		), ', '), NOW()
 
 		FROM {$table}_tags t
 		WHERE (k iLIKE '%fixme%' OR v iLIKE '%fixme%' OR (k='name' AND v='tbd') OR (k='ref' AND v='tbd'))

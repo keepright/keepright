@@ -168,7 +168,7 @@ while ($row=pg_fetch_array($result)) {
 
 	} else {
 		//echo "way #{$row['nearby_way_id']} is too close\n";
-		$bi->insert("$error_type\tnode\t{$row['node_id']}\tThis node is very close but not connected to way #{$row['nearby_way_id']}\tNOW()\t\\N\t\\N");
+		$bi->insert("$error_type\tnode\t{$row['node_id']}\tNOW()\t\\N\t\\N\tThis node is very close but not connected to way #$1\t{$row['nearby_way_id']}\t\\N\t\\N\t\\N\t\\N");
 
 	}
 	$last_node_id=$row['node_id'];
