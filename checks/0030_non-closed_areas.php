@@ -22,69 +22,75 @@ to its other end-node using equal-tagged ways but not the way itself.
 */
 
 
-	query("DROP TABLE IF EXISTS _tmp_way_tags;", $db1, false);
-	query("
-		CREATE TABLE _tmp_way_tags (
-		id serial NOT NULL,
-		k varchar(255) NOT NULL,
-		v varchar(255) NOT NULL,
-		PRIMARY KEY (id)
-		)
-	", $db1, false);
+// some exceptions that need not always be areas and thus shouldn't be checked:
+$dontcheck = array(
+	'leisure' => 'track'
+);
+
+
+query("DROP TABLE IF EXISTS _tmp_way_tags;", $db1, false);
+query("
+	CREATE TABLE _tmp_way_tags (
+	id serial NOT NULL,
+	k varchar(255) NOT NULL,
+	v varchar(255) NOT NULL,
+	PRIMARY KEY (id)
+	)
+", $db1, false);
 
 
 
-	//open standards-file and extract rules that lead to drawing an area
-	//insert key-value-pairs into tmp table
+//open standards-file and extract rules that lead to drawing an area
+//insert key-value-pairs into tmp table
 
-	$xmlstr=file_get_contents('standard.xml');
-	$xml = new SimpleXMLElement($xmlstr);
+$xmlstr=file_get_contents('standard.xml');
+$xml = new SimpleXMLElement($xmlstr);
 
-	foreach ($xml->xpath('//rule/area') as $area) {
-		//echo "--------------------------------------------\n";
-		//print_r($area);
-		foreach ($area->xpath('..') as $rule) {
-			//print_r($rule);	
-			$k=pg_escape_string($db1, (string) $rule['k']);
-			$v=pg_escape_string($db1, (string) $rule['v']);
-			$values=explode('|', $v);
-			foreach ($values as $dontcare=>$vv) {
-				query("INSERT INTO _tmp_way_tags(k,v) VALUES ('$k', '$vv');", $db1, false);
-			}
-
+foreach ($xml->xpath('//rule/area') as $area) {
+	//echo "--------------------------------------------\n";
+	//print_r($area);
+	foreach ($area->xpath('..') as $rule) {
+		//print_r($rule);	
+		$k=pg_escape_string($db1, (string) $rule['k']);
+		$v=pg_escape_string($db1, (string) $rule['v']);
+		$values=explode('|', $v);
+		foreach ($values as $dontcare=>$vv) if (!($dontcheck[$k]===$vv)) {
+			query("INSERT INTO _tmp_way_tags(k,v) VALUES ('$k', '$vv');", $db1, false);
 		}
 
 	}
 
-
-	// in some key values you have some values explicitly named
-	// and all others are catched with "*". That doesn't bother here,
-	// so delete all explicitly called values as they are included with "*"
-	$result=query("SELECT DISTINCT k FROM _tmp_way_tags WHERE v='*'", $db1, false);
-	while ($row=pg_fetch_array($result)) {
-		query("
-			DELETE FROM _tmp_way_tags
-			WHERE k='" . $row['k'] . "'
-			AND v<>'*'
-		", $db2, false);
-	}
-	pg_free_result($result);
+}
 
 
+// in some key values you have some values explicitly named
+// and all others are catched with "*". That doesn't bother here,
+// so delete all explicitly called values as they are included with "*"
+$result=query("SELECT DISTINCT k FROM _tmp_way_tags WHERE v='*'", $db1, false);
+while ($row=pg_fetch_array($result)) {
+	query("
+		DELETE FROM _tmp_way_tags
+		WHERE k='" . $row['k'] . "'
+		AND v<>'*'
+	", $db2, false);
+}
+pg_free_result($result);
 
-        // this is an exception, that is not drawn as area
-	// this check is also used for finding holes in coastlines
+
+
+// this is an exception, that is not drawn as area
+// this check is also used for finding holes in coastlines
 //	process_tag('natural', 'coastline', true, $db1, $db2, $db4);
 
-	$result = query("
-		SELECT k, v
-		FROM _tmp_way_tags
-	", $db3, false);
+$result = query("
+	SELECT k, v
+	FROM _tmp_way_tags
+", $db3, false);
 
-	while ($row=pg_fetch_array($result)) {
-		process_tag($row['k'], $row['v'], false, $db1, $db2, $db4);
-	}
-	pg_free_result($result);
+while ($row=pg_fetch_array($result)) {
+	process_tag($row['k'], $row['v'], false, $db1, $db2, $db4);
+}
+pg_free_result($result);
 
 
 
