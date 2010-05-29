@@ -266,7 +266,7 @@ if (!table_exists($db1, 'error_view', 'public')) {
 		object_type public.type_object_type NOT NULL,
 		object_id bigint NOT NULL,
 		state type_error_state NOT NULL,
-		description text NOT NULL,
+		description text,
 		first_occurrence timestamp NOT NULL,
 		last_checked timestamp NOT NULL,
 		object_timestamp timestamp NOT NULL DEFAULT '1970-01-01',
