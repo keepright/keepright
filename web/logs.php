@@ -2,12 +2,28 @@
 <html>
   <head>
     <title>data consistency checks for OSM</title>
+    <script type="text/javascript" src="keepright.js"></script>
   </head>
   <body>
 <a href="/"><img border=0 src="keepright.png" alt="keep-right logo"></a>
 data consistency checks for <a href="http://www.openstreetmap.org">OSM</a><hr>
 
 <h2>historic logs</h2>
+
+<?php
+require('webconfig.inc.php');
+require('helpers.inc.php');
+echo '<form name="myform" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
+echo '<div style="position:absolute; top:70px; right:10px;">'; language_selector(); echo '</div>';
+echo "</form>";
+
+echo "<h4>2010-03-15</h4>";
+echo T_gettext("During the next updates you will see an increased number of floating islands errors. This is because up to now the check routine didn&apos;t complain about ways that don&apos;t have a single connection with any other way(!). Sometimes it takes months until you see the most obvious things...");
+
+echo "<h4>2010-03-07</h4>";
+printf(T_gettext("This is my FOSSGIS-present for you: keepright will remember the position and the error types you selected when you left the site last time (how could you?). Just open %s without any parameters!"), "<a href='http://keepright.ipax.at/report_map.php'> http://keepright.ipax.at/report_map.php</a>");
+
+?>
 
 <h4>2010-02-13</h4>
 Another new check slowly appears on the maps these days: The roundabout check. It will complain about roundabouts that are not closed-loop or roundabouts that go the wrong way around. For the latter it is important to know if it is a right or left hand traffic country. I&apos;ve done my best to evaluate country boundaries to do this job but I&apos;m afraid, that is not perfect.

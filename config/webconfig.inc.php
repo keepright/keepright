@@ -12,16 +12,17 @@ $db_name="osm_EU";
 // $db_name is the name of the physical database on the MySQL server for connecting
 
 /*
-cookie parameters: db, lon, lat, zoom, error_types to hide
+cookie parameters: lon, lat, zoom, error_types to hide, language
+cookie content is created in keepright.js/updateCookie()
 for example:
 keepright_cookie = osm_XA|156412246|481387746|11|0,40,50
 
 $cookie = Array (
-	[0] => osm_XA
-	[1] => 156412246
-	[2] => 481387746
-	[3] => 11
-	[4] => 0,40,50
+	[0] => 156412246
+	[1] => 481387746
+	[2] => 11
+	[3] => 0,40,50
+	[4] => de_AT
 )
 */
 
@@ -57,5 +58,21 @@ $baseURL == "http://localhost/kr/"
 $path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
 $baseURL="http://" . $_SERVER['SERVER_NAME'] . $path;
+
+
+// define constants for l10n
+define('PROJECT_DIR', realpath('./'));
+define('LOCALE_DIR', PROJECT_DIR .'/locale');
+define('DEFAULT_LOCALE', 'en_US');
+$locale = (isset($_GET['lang'])) ? $_GET['lang'] :
+	(isset($cookie[4]) ? $cookie[4] : DEFAULT_LOCALE);
+
+require_once('php-gettext/gettext.inc');
+
+T_setlocale(LC_MESSAGES, $locale);
+$domain = 'keepright';
+T_bindtextdomain($domain, LOCALE_DIR);
+T_bind_textdomain_codeset($domain, 'UTF-8');
+T_textdomain($domain);
 
 ?>

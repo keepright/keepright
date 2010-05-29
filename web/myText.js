@@ -125,6 +125,7 @@ loadText: function() {
 			"&zoom="+document.myform.zoom.value+
 			"&show_ign="+ (document.myform.show_ign.checked ? 1 : 0)+
 			"&show_tmpign="+ (document.myform.show_tmpign.checked ? 1 : 0)+
+			"&lang="+document.myform.lang.value+
 			"&"+getURL_checkboxes();
 
 
@@ -233,25 +234,25 @@ parseData: function(ajaxRequest) {
 			data['popupContentHTML'] ='<h5>'+error_name+', '+object_type+' <a href="http://www.openstreetmap.org/browse/'+object_type+'/'+object_id+'"  target="_blank">'+object_id+'</a></h5>'+
 			'<p class="p1">'+description+'</p>'+
 
-			'<p class="p2">edit in <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.01) + '&right=' + (lon-(-0.01)) + '&top=' + (lat-(-0.01)) + '&bottom=' + (lat-0.01) + '&select=' + object_type + object_id + '" target="hiddenIframe" title="JOSM must be running and JOSM\'s remote control plugin must be enabled for this to work!">JOSM</a> ' +
+			'<p class="p2">'+txt4+' <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.01) + '&right=' + (lon-(-0.01)) + '&top=' + (lat-(-0.01)) + '&bottom=' + (lat-0.01) + '&select=' + object_type + object_id + '" target="hiddenIframe" title="'+txt6+'">'+txt5+'</a> ' +
 
-			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">Potlatch</a></p>' +
+			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">'+txt7+'</a></p>' +
 
 			''+
 			'<form class="p3" name="errfrm_'+schema+'_'+error_id+'" target="hiddenIframe" method="get" action="comment.php">' +
 			'<input type="radio" id="st_'+schema+'_'+error_id+'_n" '+(state!='ignore_t' && state!='ignore' ? 'checked="checked"' :'')+' name="st" value="">'+
-			'<label for="st_'+schema+'_'+error_id+'_n">keep this error open</label><br>'+
+			'<label for="st_'+schema+'_'+error_id+'_n">'+txt8+'</label><br>'+
 			'<input type="radio" id="st_'+schema+'_'+error_id+'_t" '+(state=='ignore_t' ? 'checked="checked"' :'')+' name="st" value="ignore_t">'+
-			'<label for="st_'+schema+'_'+error_id+'_t">ignore temporarily (error corrected)</label><br>'+
+			'<label for="st_'+schema+'_'+error_id+'_t">'+txt9+'</label><br>'+
 			'<input type="radio" id="st_'+schema+'_'+error_id+'_i" '+(state=='ignore' ? 'checked="checked"' :'')+' name="st" value="ignore">'+
-			'<label for="st_'+schema+'_'+error_id+'_i">ignore (false-positive)</label>&nbsp;'+
-			'<textarea cols="25" rows="2" name="co">'+comment+'</textarea>'+
+			'<label for="st_'+schema+'_'+error_id+'_i">'+txt10+'</label><br>'+
+			'<span style="white-space:nowrap;"><textarea cols="25" rows="2" name="co">'+comment+'</textarea>'+
 			'<input type="hidden" name="schema" value="'+schema+'">'+
 			'<input type="hidden" name="id" value="'+error_id+'">'+
-			'<input type="button" value="save" onClick="javascript:saveComment('+schema+', '+error_id+', '+error_type+');">' +
-			'<input type="button" value="cancel" onClick="javascript:closeBubble('+schema+', '+error_id+');">' +
-			'</form><small>please click on the icon to fixate the bubble<br>' +
-			'link to here: error #<a href="report_map.php?schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>last edit of this ' + object_type + ': ' + object_timestamp + '</small>';
+			'<input type="button" value="'+txt11+'" onClick="javascript:saveComment('+schema+', '+error_id+', '+error_type+');">' +
+			'<input type="button" value="'+txt12+'" onClick="javascript:closeBubble('+schema+', '+error_id+');">' +
+			'</form><small><br>'+txt13+'</span>' +
+			txt14 + '<a href="report_map.php?schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>' + txt15 + ' ' + object_type + ': ' + object_timestamp + '</small>';
 		}
 
 
@@ -370,7 +371,7 @@ onClickHandler: function (evt) {
 			this.popup=this.createPopup();
 			this.popup.autoSize=false;
 			this.popup.panMapIfOutOfView=false;//document.myform.autopan.checked;
-			this.popup.setSize(new OpenLayers.Size(350, 380));
+			this.popup.setSize(new OpenLayers.Size(380, 380));
 			map.addPopup(this.popup);
 		} else {
 			this.popup.toggle();
@@ -390,7 +391,7 @@ onHOverHandler: function (evt) {
 			this.popup=this.createPopup();
 			this.popup.autoSize=false;
 			this.popup.panMapIfOutOfView=false;//document.myform.autopan.checked;
-			this.popup.setSize(new OpenLayers.Size(350, 380));
+			this.popup.setSize(new OpenLayers.Size(380, 380));
 			map.addPopup(this.popup);
 		} else {
 			this.popup.toggle();

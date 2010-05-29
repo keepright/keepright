@@ -93,6 +93,21 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
 	var pois=null;
 	var map=null;
 	var plnk=null;
+
+<?php 	// these text snippets will be used in myText.js, where the bubbles are created ?>
+	var txt4="<?php echo T_gettext('edit in'); ?>";
+	var txt5="<?php echo T_gettext('JOSM'); ?>";
+	var txt6="<?php echo T_gettext('JOSM must be running and JOSM\'s remote control plugin must be enabled for this to work!'); ?>";
+	var txt7="<?php echo T_gettext('Potlatch'); ?>";
+	var txt8="<?php echo T_gettext('keep this error open'); ?>";
+	var txt9="<?php echo T_gettext('ignore temporarily (error corrected)'); ?>";
+	var txt10="<?php echo T_gettext('ignore (false-positive)'); ?>";
+	var txt11="<?php echo T_gettext('save'); ?>";
+	var txt12="<?php echo T_gettext('cancel'); ?>";
+	var txt13="<?php echo T_gettext('please click on the icon to fixate the bubble'); ?>";
+	var txt14="<?php echo T_gettext('link to here: error #'); ?>";
+	var txt15="<?php echo T_gettext('last edit of this'); ?>";
+
 </script>
 </head>
 
@@ -101,11 +116,11 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
 <form name="myform" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <div style="background-color:#f0fff0; font-size:0.7em; position:absolute; left:0em; width:99%; overflow:hidden; z-index:0;">
 
-<a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a><br>
-
-
-
+<a href="<?php echo $path; ?>"><img border=0 src="keepright.png" height="80px" alt="keep-right logo"></a>&nbsp;
 <?php
+
+language_selector();
+
 //echo "<pre>"; print_r($cookie); echo "</pre>";
 
 // echo checkboxes for error types
@@ -138,7 +153,7 @@ echo "<ul class='outline'>\n";
 foreach ($error_types as $et=>$e) {
 
 	if ($class!=$e[0]) {
-		echo "<li><i>" . $e[0] ."s</i></li>";
+		echo "<li><i>" . T_gettext($e[0] . 's') ."</i></li>";
 		$class=$e[0];
 	}
 
@@ -179,23 +194,23 @@ echo "
 <input type='hidden' name='lon' value='" . $lon/1e7 . "'>
 <input type='hidden' name='zoom' value='$zoom'>
 
-<!-- <input type='checkbox' id='autopan' name='autopan' value='autopan'><label for='autopan'>auto-center bubbles</label><br> -->
+<input type='button' value='" . T_gettext('all') . "' onClick='javascript:set_checkboxes(true); pois.loadText();'>
+<input type='button' value='" . T_gettext('none') . "' onClick='javascript:set_checkboxes(false); pois.loadText();'><br>
 
-<input type='button' value='all' onClick='javascript:set_checkboxes(true); pois.loadText();'>
-<input type='button' value='none' onClick='javascript:set_checkboxes(false); pois.loadText();'><br>
+<input type='checkbox' id='show_ign' name='show_ign' value='1' onclick='javascript:checkbox_click();' " . ($show_ign ? 'checked="checked"' : '') . "><label for='show_ign'>" . T_gettext('show ignored errors') . "</label><br>
 
-<input type='checkbox' id='show_ign' name='show_ign' value='1' onclick='javascript:checkbox_click();' " . ($show_ign ? 'checked="checked"' : '') . "><label for='show_ign'>show ignored errors</label><br>
+<input type='checkbox' id='show_tmpign' name='show_tmpign' value='1' onclick='javascript:checkbox_click();' " . ($show_tmpign ? 'checked="checked"' : '') . "><label for='show_tmpign'>" . T_gettext('show temp. ignored errors') . "</label><br>
 
-<input type='checkbox' id='show_tmpign' name='show_tmpign' value='1' onclick='javascript:checkbox_click();' " . ($show_tmpign ? 'checked="checked"' : '') . "><label for='show_tmpign'>show temp. ignored errors</label><br>
-
-<a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>Edit in Potlatch</a>
+<a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>" . T_gettext('Edit in Potlatch') . "</a>
 <a id='rsslink' href='export.php'>RSS</a> <a id='gpxlink' href='export.php'>GPX</a>
 
 
-<div style='overflow:auto; width:20%'>
-You will see up to 100 error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning. <br>Site updated at <b>" . get_updated_date(find_schema($db1, $lat, $lon)) . "
-</div>
+<div style='overflow:auto; width:20%'>";
+printf(T_gettext('You will see up to %d error markers starting in the center of the map. Please allow a few seconds for the error markers to appear after panning.'), 100) . '<br>';
 
+printf(T_gettext('Site updated at %s'), get_updated_date(find_schema($db1, $lat, $lon)));
+
+echo "<br></div>
 </div></form>
 ";
 
@@ -208,7 +223,7 @@ You will see up to 100 error markers starting in the center of the map. Please a
 
 
 // the map goes in here:
-echo '<div style="position:absolute; left:20%; top:0; width:79%; height:99%;" id="map"></div>' . "\n";
+echo '<div style="position:absolute; left:20%; top:0; width:79%; height:99%;" id="map"></div>';
 
 
 // this is a hidden iframe into which the JOSM-Link is called (remote control plugin)
@@ -242,10 +257,10 @@ function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0, $cl
 
 		if (($ch==='0' && $class==='error' && !in_array($et, $checks_to_hide)) || in_array($et, $checks_selected)) echo ' checked="checked"';
 
-		echo ">\n\t<label for='ch$et'>$en</label>\n";
+		echo ">\n\t<label for='ch$et'>" . T_gettext($en) . "</label>\n";
 
 	} else {
-		echo "<span id='tristateBox$subgroup_counter' style='cursor: default;'>&nbsp; $en</span>\n";
+		echo "<span id='tristateBox$subgroup_counter' style='cursor: default;'>&nbsp; " . T_gettext($en) . "</span>\n";
 	}
 }
 

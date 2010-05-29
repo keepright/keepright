@@ -61,8 +61,15 @@ if ($error_view=='') {
 }
 
 // build SQL for fetching errors
-$sql="SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.object_timestamp, e.description, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment
-FROM ($error_view) e LEFT JOIN $comments_name c USING (`schema`, error_id)
+$sql="SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.object_timestamp, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment";
+
+if ($locale == 'en_US') {
+	$sql .= ', e.description';
+} else {
+	$sql .= ', e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5';
+}
+
+$sql .= " FROM ($error_view) e LEFT JOIN $comments_name c USING (`schema`, error_id)
 WHERE TRUE";
 
 if (!$show_ign) $sql.=' AND (c.state IS NULL OR c.state<>"ignore")';
@@ -90,16 +97,30 @@ while ($row = mysqli_fetch_assoc($result)) {
 			$filenr=$row['error_type'];
 	}
 
+	if ($locale == 'en_US') {
+		// english messages readily found in table
+		$description = $row['description'];
+		$error_name = $row['error_name'];
+		$object_type = $row['object_type'];
+	} else {
+		// other languages: translate message and insert parameters
+		$replacements = array('$1'=>translate($row['txt1']), '$2'=>translate($row['txt2']), '$3'=>translate($row['txt3']), '$4'=>translate($row['txt4']), '$5'=>translate($row['txt5']));
+
+		$description = strtr(T_gettext($row['msgid']), $replacements);
+		$error_name = T_gettext($row['error_name']);
+		$object_type = T_gettext($row['object_type']);
+	}
+
 	echo $row['la'] . "\t" .
 		$row['lo'] . "\t" .
-		$row['error_name'] . "\t" .
+		$error_name . "\t" .
 		$row['error_type'] . "\t" .
-		$row['object_type'] . "\t" . 
-		$row['object_id'] . "\t" . 
-		$row['object_timestamp'] . "\t" . 
-		$row['schema'] . "\t" . 
-		$row['error_id'] . "\t" . 
-		strtr($row['description'], "\t", " ") . "\t" .
+		$object_type . "\t" .
+		$row['object_id'] . "\t" .
+		$row['object_timestamp'] . "\t" .
+		$row['schema'] . "\t" .
+		$row['error_id'] . "\t" .
+		strtr($description, "\t", " ") . "\t" .
 		strtr($row['comment'], array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) . "\t" .
 		strtr($row['state'], array("\t"=>" ", 'ignore_temporarily'=>'ignore_t')) .
 		"\timg/zap" . $filenr . ".png".
@@ -108,5 +129,15 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 mysqli_free_result($result);
 mysqli_close($db1);
+
+
+function translate($txt) {
+	$translatables = array('node', 'way', 'relation');
+
+	if (in_array($txt, $translatables))
+		return T_gettext($txt);
+	else
+		return $txt;
+}
 
 ?>

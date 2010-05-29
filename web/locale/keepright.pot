@@ -1,0 +1,1127 @@
+# KeepRight gettext template file.
+# Copyright (C) 2010 Harald Kleiner
+# This file is distributed under the same license as the keepright! package.
+# Harald Kleiner <keepright@gmx.at>, 2010.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: keepright 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-08 18:12+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+# translations for error messages
+
+msgid "There is more than one node in this spot. Offending node IDs: $1"
+msgstr ""
+
+msgid "This coastline-way is not part of a closed-loop"
+msgstr ""
+
+msgid "This way is tagged with '$1=$2' and should be closed-loop."
+msgstr ""
+
+msgid "The first node (id $1) of this one-way is not connected to any other way"
+msgstr ""
+
+msgid "The last node (id $1) of this one-way is not connected to any other way"
+msgstr ""
+
+msgid "This node cannot be reached, because one-ways only lead away from here"
+msgstr ""
+
+msgid "You cannot escape from this node, because one-ways only lead to here"
+msgstr ""
+
+msgid "This node is very close but not connected to way #$1"
+msgstr ""
+
+#. full mesage: "This way uses deprecated tag highway = viaduct."
+msgid "This $1 uses deprecated tag $2 = $3"
+msgstr ""
+
+#. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
+msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
+msgstr ""
+
+#. full mesage: "This way has an empty tag: name="
+msgid "This $1 has an empty tag: $2"
+msgstr ""
+
+msgid "This way has no tags"
+msgstr ""
+
+msgid "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref tag"
+msgstr ""
+
+msgid "This node is tagged as place of worship and therefore needs a religion tag"
+msgstr ""
+
+msgid "This node is tagged as $1 and therefore needs a name tag"
+msgstr ""
+
+msgid "This node is tagged as $1 and therefore needs a name tag or an operator tag"
+msgstr ""
+
+msgid "This way has no nodes"
+msgstr ""
+
+msgid "This way has just one single node"
+msgstr ""
+
+msgid "This way is not connected to the rest of the map"
+msgstr ""
+
+msgid "This crossing of a highway and a railway needs to be tagged as railway=crossing or railway=level_crossing"
+msgstr ""
+
+msgid "There are ways in different layers coming together in this railway crossing"
+msgstr ""
+
+msgid "There are ways tagged as tunnel or bridge coming together in this railway crossing"
+msgstr ""
+
+#. full mesage: "This way is fixme-tagged: fixme=yes"
+msgid "This $1 is fixme-tagged: $2"
+msgstr ""
+
+msgid "This relation has no type tag, which is mandatory for relations"
+msgstr ""
+
+#. full message: "This highway intersects the waterway #17..."
+msgid "This $1 intersects the $2 #$3 but there is no junction node"
+msgstr ""
+
+#. full message: "This highway intersects the waterway #17"
+msgid "This $1 intersects the $2 #$3"
+msgstr ""
+
+#. full message: "This highway overlaps the waterway #17..."
+msgid "This $1 overlaps the $2 #$3"
+msgstr ""
+
+msgid "This way contains node #$1 $2 times. This may or may not be an error"
+msgstr ""
+
+msgid "This way contains more than one node at least twice. Nodes are $1. This may or may not be an error"
+msgstr ""
+
+msgid "This way has only two different nodes and contains one of them more than once"
+msgstr ""
+
+msgid "The key of this $1s tag is 'key': $2"
+msgstr ""
+
+#. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
+msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
+msgstr ""
+
+#. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
+msgid "This node is a junction of ways on different layers: $1"
+msgstr ""
+
+msgid "If this mini roundabout is in a country with left-hand traffic then it should have a tag 'direction=clockwise'"
+msgstr ""
+
+msgid "If this mini roundabout is in a country with right-hand traffic then it should not have a tag 'direction=clockwise'"
+msgstr ""
+
+msgid "This $1 is tagged with layer $2. This need not be an error, but it looks strange"
+msgstr ""
+
+msgid "This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, service, unclassified or construction"
+msgstr ""
+
+msgid "This boundary has no name"
+msgstr ""
+
+msgid "The boundary of $1 has no admin_level"
+msgstr ""
+
+msgid "The boundary of $1 is not closed-loop"
+msgstr ""
+
+msgid "The boundary of $1 splits here"
+msgstr ""
+
+msgid "This boundary-way has admin_level $1 but belongs to a relation with lower admin_level (higher priority); it should have the lowest admin_level of all relations"
+msgstr ""
+
+msgid "This turn-restriction has no restriction type"
+msgstr ""
+
+msgid "This turn-restriction has no known restriction type"
+msgstr ""
+
+msgid "A turn-restriction needs exactly one $1 member. This one has $2"
+msgstr ""
+
+msgid "From- and To-members of turn restrictions need to be ways. $1"
+msgstr ""
+
+msgid "from- via- and to- members of a turn resctriction need to be connected"
+msgstr ""
+
+msgid "missing maxspeed tag"
+msgstr ""
+
+msgid "This way is part of a roundabout but is not closed-loop. (Flares should not be tagged as roundabout)"
+msgstr ""
+
+msgid "If this roundabout is in a country with right-hand traffic then its orientation goes the wrong way around"
+msgstr ""
+
+msgid "If this roundabout is in a country with left-hand traffic then its orientation goes the wrong way around"
+msgstr ""
+
+msgid "This way is tagged as highway=$1_link but doesnt have a connection to any other $1 or $1_link"
+msgstr ""
+
+msgid ""
+"This bridge does not have a tag in common with its surrounding ways "
+"that shows the purpose of this bridge. There should be one of these tags: $1"
+msgstr ""
+
+#. translations for error type names
+
+
+#. please keep this as short as possible
+msgid "multiple nodes on the same spot"
+msgstr ""
+
+msgid "Try to find nodes that are (almost) on the same spot. Distances less than +/-0.5 Meters are considered zero"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "non-closed areas"
+msgstr ""
+
+msgid "By convention ways tagged with special combinations of key and value pairs are considered to be areas and are drawn as such in the map. Therefore it is necessary that they form closed loops. Non-closed areas are invisible in the map! The standard.xml file is used to determine which key-value-combinations are drawn as areas; any instance of these has to be closed-loop."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "dead-ended one-ways"
+msgstr ""
+
+msgid "Streets tagged as one-way must not be dead-ended (where should all the cars pile at the end of the road?). Nodes where just one-way streets begin (or end) cannot be reached (escaped from). Please note that motorways and motorway_links are considered one-way implicitly, so this check applies."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "almost-junctions"
+msgstr ""
+
+msgid "Streets that have (at least) one unconnected end are examined here. If such an end-node is very close to any other way an error is reported. Unconnected end-nodes should probably be connected to adjacent ways."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "deprecated tags"
+msgstr ""
+
+msgid "As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some tags get replaced by others as new tagging conventions evolve. Consider this as a notice, not as an error. The term 'deprecated' is deprecated; you're free to tag anything the way you like. This is just a hint for new tagging conventions that have evolved in the meantime."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "missing tags"
+msgstr ""
+
+msgid "Ways, nodes and relations should in most cases have at least one tag (besides created_by)"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "motorways without ref"
+msgstr ""
+
+msgid "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are mandatory as they are very important information"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "places of worship without religion"
+msgstr ""
+
+msgid "Churches, mosques and synagogues etc. need an extra religion tag giving info about the religion"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "point of interest without name"
+msgstr ""
+
+msgid "The name tag should be specified for every point of interest as its content gets rendered in the map next to the POI symbol"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "ways without nodes"
+msgstr ""
+
+msgid "Ways that don't consist of at least two nodes don't make much sense as they won't get rendered."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "floating islands"
+msgstr ""
+
+msgid "Any highways drawn on the map should be accessible by car starting anywhere in the world. Ferries and highways (even railway platforms) are included in this check, so almost any island in the sea should be reachable starting from the mainland."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "railway crossings without tag"
+msgstr ""
+
+msgid "(Level)-Crossings of railways and highways should have a common node as junction that is tagged with 'railway=level_crossing' if it is a crossing where larger vehicles can cross or with 'railway=crossing' if it is a crossing just for pedestrians"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "wrongly used railway crossing tag"
+msgstr ""
+
+msgid "Ways that take part in level-crossings of railways and highways have to be on the same layer and should in the normal case be not tagged as bridge or tunnel"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "fixme-tagged items"
+msgstr ""
+
+msgid "Nodes, ways or relations that are tagged with FIXME should be reviewed..."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "relations without type"
+msgstr ""
+
+msgid "Find any relation that has no type tag, wich is mandatory for relations."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "intersections without junctions"
+msgstr ""
+
+msgid "Streets that graphically intersect need a common node that represents the crossing. The only exception are intersections on different layers (eg. bridges or tunnels). Intersections of streets with other objects like waterways or riverbanks should be avoided"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "highway-highway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "highway-waterway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "highway-riverbank"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "waterway-waterway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "cyclew/footp-cyclew/footp"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "highway-cyclew/footp"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "cyclew/footp-waterway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "cyclew/footp-riverbank"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "overlapping ways"
+msgstr ""
+
+msgid "Segments of ways that lie on top of each other (the same nodes connected by different ways in the same order) are a problem for routing software. They happen accidently and are hard to find."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "loopings"
+msgstr ""
+
+msgid "Any way that contains any single node more than twice is considered an error. Any way may contain just one node twice. If more than one node is found twice it is considered an error."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "misspelled tags"
+msgstr ""
+
+msgid "Tags that are used very seldom and almost look like very common tags (only one character difference) are reported as a warning."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "layer conflicts"
+msgstr ""
+
+msgid "Connected ways should be on the same layer. Crossings on intermediate nodes of ways on different layers are obviously wrong. Junctions on end-nodes of ways on different layers are also deprecated, but common practice. So you may ignore this part of the check and switch them off separately. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly if no layer tag is present."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "mixed layers intersections"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "strange layers"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "motorways connected directly"
+msgstr ""
+
+msgid "Motorways should only be connected to other motorways or motorway_links. They should especially not be directly connected to highway=primary or highway=residential roads. Please note: This check may produce false positives on motorways ending in cities but it can be a valuable tool for looking up unwanted connections of motorways and other roads."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "boundaries"
+msgstr ""
+
+msgid "Administrative Boundaries can be expressed either by tagging ways or by adding them to a relation. They should be closed-loop sequences of ways, they must not self-intersect or split and they must have a name and an admin_level."
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "missing name"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing admin_level"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "not closed loop"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "splitting boundary"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "admin_level too high"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "restrictions"
+msgstr ""
+
+msgid "This check is about turn restrictions defined by relations. A turn restriction relation needs a valid type attribute, a way as 'from' member, another way as 'to' member and optionally one or more ways or nodes as via members that need to be connected to 'from' and 'to'"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "missing type"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing from way"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing to way"
+msgstr ""
+
+
+
+
+#. please keep this as short as possible
+msgid "missing maxspeed"
+msgstr ""
+
+msgid "maxspeed tags are not mandatory but they are very helpful for successful routing. This check shall help users finding highways lacking the maxspeed tag. Please only add maxspeed tags if the allowed maxspeed differs from the default speed for the given highway!"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "roundabouts"
+msgstr ""
+
+msgid "roundabout are always one-way streets directed counter-clockwise in right-hand driving countries or clockwise in left-hand driving countries."
+msgstr ""
+
+#. please keep this as short as possible
+msgid "wrong direction"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "*_link-connections"
+msgstr ""
+
+msgid "Any highway tagged as (motorway|trunk|primary|secondary)_link should have at least one connection to a (motorway|trunk|primary|secondary) highway or a _link highway of the same type"
+msgstr ""
+
+
+#. please keep this as short as possible
+msgid "bridge-tags"
+msgstr ""
+
+msgid ""
+"Someone draws a bridge and forgets to tag it as highway... A bridge "
+"should always have one of the 'major' tags that its direct neighbour "
+"ways have. Currently these are: highway, railway, cycleway, waterway, "
+"footway, piste, aerialway, pipeline, building, via_ferrata"
+msgstr ""
+
+
+#. translations for the web pages
+
+#: index.php:9
+msgid "data consistency checks for OSM"
+msgstr ""
+
+#: index.php:11
+msgid "keep-right logo"
+msgstr ""
+
+#: index.php:13
+#, php-format
+msgid "data consistency checks for %sOSM%s"
+msgstr ""
+
+#: index.php:20
+msgid ""
+"These pages show checks that are run on a local excerpt database filled with "
+"OSM data."
+msgstr ""
+
+#: index.php:23
+#, php-format
+msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
+msgstr ""
+
+#: index.php:27
+msgid "Australian Keepright partner site"
+msgstr ""
+
+#: index.php:30
+#, php-format
+msgid "Data Checks for Africa%s (Starting point Cairo, Egypt)"
+msgstr ""
+
+#: index.php:33
+#, php-format
+msgid "Data Checks for Canada%s (Starting point Québec)"
+msgstr ""
+
+#: index.php:36
+#, php-format
+msgid "Data Checks for USA%s (Starting point Philadelphia, PA)"
+msgstr ""
+
+#: index.php:39
+#, php-format
+msgid ""
+"Data Checks for Central America%s (Starting point Santo Domingo, Republica "
+"Dominicana)"
+msgstr ""
+
+#: index.php:42
+#, php-format
+msgid "Data Checks for South America%s (Starting point São Paulo, Brazil)"
+msgstr ""
+
+#: index.php:45
+#, php-format
+msgid "Data Checks for Asia%s (Starting point Tokio, Japan)"
+msgstr ""
+
+#: index.php:47
+msgid "Europe Data Checks as ugly list"
+msgstr ""
+
+#: index.php:49
+#, php-format
+msgid ""
+"Developers have a look at the %ssourceforge%s site providing svn access to "
+"the sources."
+msgstr ""
+
+#: index.php:52
+msgid "logfile"
+msgstr ""
+
+#: index.php:56
+#, php-format
+msgid ""
+"If you want to export errors from Keepright you will want to have a look at "
+"the %sinterfacing guide%s"
+msgstr ""
+
+
+
+#. this will be the news item announcing i18n-capabilities for keepright.
+#. this section should appear in all three languages regardless what language
+#. is chosen. So just add your part in the msgid
+#: index.php:57
+msgid "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!"
+msgstr "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!"
+
+#. this will be the news item announcing i18n-capabilities for keepright.
+#. this section should appear in all three languages regardless what language
+#. is chosen. So just add your part in the msgid
+#: index.php:58
+#, php-format
+msgid "As a start KeepRight may be used in english, german and brazilian portugese. New translations are welcome! The gettext template file is $1right here$2. Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
+msgstr "As a start KeepRight may be used in english, german and brazilian portugese. New translations are welcome! The gettext template file is $1right here$2. Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
+
+
+#: index.php:59
+msgid "Getting rid of the evil db-parameter"
+msgstr ""
+
+#: index.php:60
+msgid ""
+"You may have noticed that you couldn&apos;t pan around the whole world in "
+"keepright as you liked. There were invisible boundaries and you always had "
+"to take care about the db-parameter in the URLs to be appropriate for the "
+"current position.<br>This is over now! The db-parameter is gone. So have fun "
+"panning around the whole world and fixing errors easier than ever!"
+msgstr ""
+
+#: index.php:63
+msgid ""
+"During the next updates you will see an increased number of floating islands "
+"errors. This is because up to now the check routine didn&apos;t complain "
+"about ways that don&apos;t have a single connection with any other way(!). "
+"Sometimes it takes months until you see the most obvious things..."
+msgstr ""
+
+#: index.php:66
+#, php-format
+msgid ""
+"This is my FOSSGIS-present for you: keepright will remember the position and "
+"the error types you selected when you left the site last time (how could "
+"you?). Just open %s without any parameters!"
+msgstr ""
+
+#: index.php:70
+#, php-format
+msgid "For archeologists: %sOld log entries%s have moved."
+msgstr ""
+
+#: index.php:73
+msgid "a few words on the new comment feature"
+msgstr ""
+
+#: index.php:74
+msgid ""
+"Please give a comment that helps me improve the check routines if you find a "
+"false-positive. Don't confuse the comment box with an editing feature. This "
+"is not potlatch! You cannot add missing tags via keepright!"
+msgstr ""
+
+#: index.php:77
+msgid ""
+"Please note that in order to make the JOSM link work, JOSM must already be "
+"running when you hit the JOSM-link. Furthermore you have to enable the &apos;"
+"remote control&apos;-plugin in JOSMs options."
+msgstr ""
+
+#: index.php:79
+msgid "Currently the following checking procedures are implemented"
+msgstr ""
+
+#: index.php:102
+msgid ""
+"If you find an error in my errors lists I would definitely like to hear "
+"about it!"
+msgstr ""
+
+#: index.php:104
+msgid "Impressum"
+msgstr ""
+
+#: index.php:105
+msgid ""
+"This work is done without commercial background, just for my personal "
+"pleasure. I would be very happy if it was helpful for the OSM Project."
+msgstr ""
+
+#: index.php:106
+msgid ""
+"If you like to contact me, my mailbox at the austrian server of gmx is "
+"labelled keepright."
+msgstr ""
+
+#: index.php:106
+msgid ""
+"Please understand that I will not always be able to immediately respond to "
+"your mail on weekdays."
+msgstr ""
+
+#: report_map.php:155
+msgid "errors"
+msgstr ""
+
+#: report_map.php:155
+msgid "warnings"
+msgstr ""
+
+#: report_map.php:182
+msgid "all"
+msgstr ""
+
+#: report_map.php:183
+msgid "none"
+msgstr ""
+
+#: report_map.php:185
+msgid "show ignored errors"
+msgstr ""
+
+#: report_map.php:187
+msgid "show temp. ignored errors"
+msgstr ""
+
+#: report_map.php:189
+msgid "Edit in Potlatch"
+msgstr ""
+
+#: report_map.php:194
+#, php-format
+msgid ""
+"You will see up to %d error markers starting in the center of the map. "
+"Please allow a few seconds for the error markers to appear after panning."
+msgstr ""
+
+#: report_map.php:196
+#, php-format
+msgid "Site updated at %s"
+msgstr ""
+
+
+#: points.php:114
+msgid "node"
+msgstr ""
+
+#: points.php:114
+msgid "way"
+msgstr ""
+
+#: points.php:114
+msgid "relation"
+msgstr ""
+
+#. full message: "edit in JOSM / Potlatch"
+#: myText.js:237
+msgid "edit in"
+msgstr ""
+
+#: myText.js:237
+msgid "JOSM"
+msgstr ""
+
+#: myText.js:237
+msgid "JOSM must be running and JOSM's remote control plugin must be enabled for this to work!"
+msgstr ""
+
+#: myText.js:239
+msgid "Potlatch"
+msgstr ""
+
+#: myText.js:244
+msgid "keep this error open"
+msgstr ""
+
+#: myText.js:246
+msgid "ignore temporarily (error corrected)"
+msgstr ""
+
+#: myText.js:248
+msgid "ignore (false-positive)"
+msgstr ""
+
+#: myText.js:252
+msgid "save"
+msgstr ""
+
+#: myText.js:253
+msgid "cancel"
+msgstr ""
+
+#: myText.js:254
+msgid "please click on the icon to fixate the bubble"
+msgstr ""
+
+#: myText.js:255
+msgid "link to here: error #"
+msgstr ""
+
+#. full message: "last edit of this node: 2009-04-01 5:22"
+#: myText.js:255
+msgid "last edit of this"
+msgstr ""
+
+
+
+
+#: interfacing.php:4
+msgid "interfacing KeepRight"
+msgstr ""
+
+#: interfacing.php:11
+msgid "Interfacing with KeepRight"
+msgstr ""
+
+#: interfacing.php:13
+msgid "You may use KeepRight&apos;s results in a number of ways:"
+msgstr ""
+
+#: interfacing.php:17
+#, php-format
+msgid "by means of the %smap web page%s"
+msgstr ""
+
+#: interfacing.php:18
+#, php-format
+msgid "exporting %sGPX waypoints%s"
+msgstr ""
+
+#: interfacing.php:19
+#, php-format
+msgid "exporting new errors as %sRSS feed%s"
+msgstr ""
+
+#: interfacing.php:20
+#, php-format
+msgid "getting the whole errors %sdump file%s"
+msgstr ""
+
+#: interfacing.php:24
+msgid "exporting GPX waypoints"
+msgstr ""
+
+#: interfacing.php:25 interfacing.php:35 interfacing.php:47
+msgid "Purpose"
+msgstr ""
+
+#: interfacing.php:26
+msgid ""
+"Exporting a section of the map into a GPX-styled list of waypoints for use "
+"with GPS units"
+msgstr ""
+
+#: interfacing.php:28 interfacing.php:38 interfacing.php:50
+msgid "URL format"
+msgstr ""
+
+#: interfacing.php:30
+msgid ""
+"You can specify a list of error types you want to have in the file as well "
+"as a bounding box on the map. This export will return up to 100 waypoints. "
+"This limit could be increased, in case there is demand."
+msgstr ""
+
+#: interfacing.php:31
+msgid ""
+"There is a link on the lower left corner of the map-page pointing to the GPX "
+"service that always includes the current error type selection and view from "
+"the map."
+msgstr ""
+
+#: interfacing.php:34
+msgid "exporting new errors as RSS feed"
+msgstr ""
+
+#: interfacing.php:36
+msgid "Watching a section of the map for newly found errors"
+msgstr ""
+
+#: interfacing.php:41
+msgid ""
+"The URL format is the same as for GPX exports, just the format parameter is "
+"different. The RSS feed will include error entries that were first found "
+"within the last three weeks."
+msgstr ""
+
+#: interfacing.php:42
+msgid ""
+"There is a link on the lower left corner of the map-page pointing to the RSS "
+"service that always includes the current error type selection and view from "
+"the map."
+msgstr ""
+
+#: interfacing.php:46
+msgid "getting the whole dump-file"
+msgstr ""
+
+#: interfacing.php:48
+msgid "Doing something completely different with 10 Millions of errors..."
+msgstr ""
+
+#: interfacing.php:53
+msgid ""
+"This tab-separated file contains all errors currently open for the whole "
+"planet (currently >200MB). It is being updated daily."
+msgstr ""
+
+#: interfacing.php:56
+msgid "Table layout"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:58
+msgid "schema"
+msgstr ""
+
+#: interfacing.php:59
+#, php-format
+msgid ""
+"The schema is an identifier naming a region on the planet. According to the %"
+"splanet splitting map%s the planet is split in rectangular parts to get "
+"roughly equally sized dump files. Consider the schema as a prefix for the "
+"error_id."
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:60
+msgid "error_id"
+msgstr ""
+
+#: interfacing.php:60
+msgid ""
+"A number identifying errors, starting from 1 for each schema. An error_id is "
+"worth nothing if you don&apos;t know the schema!"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:61
+msgid "error_type"
+msgstr ""
+
+#: interfacing.php:61
+msgid ""
+"numeric representation of the type of error. Error types are assigned in "
+"blocks of 10s (20, 30, 40...). They correspond with the name of the script "
+"file doing the checking."
+msgstr ""
+
+#: interfacing.php:62
+msgid ""
+"Error types may be sub-typed (281, 282 etc.). Subtyped error checking "
+"routines test for different aspects related to a single topic (in the "
+"example 280 means &quot;boundaries&quot;, 281 means &quot;missing name[ for "
+"boundaries]&quot; and 282 means &quot;missing admin level[ for boundaries]"
+"&quot;). Subtyped error types are rendered as groups that may be collapsed "
+"on the web site."
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:64
+msgid "error_name"
+msgstr ""
+
+#: interfacing.php:64
+msgid ""
+"textual representation (short name) of the type of error. On sub-typed error "
+"types you may want to prepend the error_name that belongs to the main number "
+"to make the name complete."
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:65
+msgid "object_type"
+msgstr ""
+
+#: interfacing.php:65
+msgid "one of node/way/relation"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:66
+msgid "object_id"
+msgstr ""
+
+#: interfacing.php:66
+msgid "an OSM node_id, way_id or relation_id"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:67
+msgid "state"
+msgstr ""
+
+#: interfacing.php:67
+msgid ""
+"one of new, reopened, ignore_temporarily, ignore. You won&apos;t see any "
+"&apos;cleared&apos; errors because the dump contains active errors only. "
+"Temporarily ignored errors are issues fixed by a user who really hopes to "
+"have fixed it. Temporarily ignored errors will jump back in the &apos;"
+"new&apos; state with the next update if the error isn&apos;t really fixed. "
+"Ignored errors are issues that are simply false positives and should never "
+"come back just because KeepRight is wrong and this exception cannot be "
+"included in the ruleset."
+msgstr ""
+
+#: interfacing.php:68
+msgid ""
+"Errors that were once cleared and come back at some point in time later are "
+"put in the <em>reopened</em> state. Please note that this may happen due to "
+"runtime-errors in the scripts. So you may just consider <em>new</em> and "
+"<em>reopened</em> the same."
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:69
+msgid "description"
+msgstr ""
+
+#: interfacing.php:69
+msgid ""
+"The verbose error message that comes out of the checking routine in English "
+"language. For translating the messages use the next columns"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:70
+msgid "msgid"
+msgstr ""
+
+#: interfacing.php:70
+msgid ""
+"This is the scaffold for the error description where placeholders (\"$i\") "
+"stand in place of the actual values inserted by the concrete error instance. "
+"You may put this scaffold inside a GNU gettext() function to have it "
+"translated. GNU gettext requires  a .po file that holds original and "
+"translated strings. You may use existing .po files from here: "
+msgstr ""
+
+#: interfacing.php:70
+msgid "find the GNU gettext template file here:"
+msgstr ""
+
+#: interfacing.php:71
+msgid ""
+"These bits of text are the contents that have to be inserted in the error "
+"message after translation. txt1 will replace $1, etc."
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:72
+msgid "first_occurrence"
+msgstr ""
+
+#: interfacing.php:72
+msgid "Timestamp (MESZ) of when this error was found the first time"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:73
+msgid "last_checked"
+msgstr ""
+
+#: interfacing.php:73
+msgid ""
+"Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:74
+msgid "object_timestamp"
+msgstr ""
+
+#: interfacing.php:74
+msgid ""
+"Timestamp of the object that was used when checking, as found in the "
+"official planet file."
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:75
+msgid "lat"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:76
+msgid "lon"
+msgstr ""
+
+#: interfacing.php:76
+msgid ""
+"Location on the planet. Coordinates are given in the same projection as "
+"found in the official planet file. Please note that numbers are displayed "
+"as int values. To convert back to real lon/lat you have to divide by 10^7"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:77
+msgid "comment"
+msgstr ""
+
+#: interfacing.php:77
+msgid "User-comment (if any)"
+msgstr ""
+
+#. this is a keyword, you needn't translate it!
+#: interfacing.php:78
+msgid "comment_timestamp"
+msgstr ""
+
+#: interfacing.php:78
+msgid "Timestamp (MESZ) of when the comment was given (if any)"
+msgstr ""
+
+#: interfacing.php:82
+msgid "loading the errors table"
+msgstr ""
+
+#: interfacing.php:85
+msgid "This is the schema definition for use with MySQL databases:"
+msgstr ""
+
+#: interfacing.php:108
+msgid ""
+"Please note that <em>schema</em> is a reserved word in MySQL, so you always "
+"have to quote it like this: `schema`"
+msgstr ""
+
+#: interfacing.php:110
+msgid ""
+"There are two primary keys in this table: a natural one and an artificial "
+"one:"
+msgstr ""
+
+#: interfacing.php:112
+msgid ""
+"The natural primary key consists of error_type, object_type, object_id, lat, "
+"lon. That means one type of error may be found on multiple spots belonging "
+"to one single object (eg. self-intersections of ways)."
+msgstr ""
+
+#: interfacing.php:114
+msgid ""
+"The artificial primary key consists of schema and error_id. It is used just "
+"for simplicity of referencing individual error instances and it is "
+"completely redundant."
+msgstr ""

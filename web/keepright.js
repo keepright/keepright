@@ -143,21 +143,44 @@ function set_checkboxes(new_value) {
 
 
 function updateCookie() {
-	var expiry = new Date();
-	expiry.setYear(expiry.getFullYear() + 10);
-
 	var pos = map.getCenter().clone();
 	var lonlat = pos.transform(map.getProjectionObject(),
 		new OpenLayers.Projection("EPSG:4326"));
 
-	document.cookie = "keepright_cookie=" +
-		lonlat.lon + "|" +
-		lonlat.lat + "|" +
-		map.getZoom() + '|'
-		+ getURL_checkboxes(false, false) +
-		"; expires=" + expiry.toGMTString();
+	setCookie(lonlat.lon, lonlat.lat, map.getZoom(), 
+		getURL_checkboxes(false, false), document.myform.lang.value)
 }
 
+function setCookie(lon, lat, zoom, hiddenChecks, lang) {
+	var expiry = new Date();
+	expiry.setYear(expiry.getFullYear() + 10);
+
+	document.cookie = 'keepright_cookie=' +
+		lon + '|' +
+		lat + '|' +
+		zoom + '|' +
+		hiddenChecks + '|' +
+		lang +
+		'; expires=' + expiry.toGMTString();
+}
+
+
+
+// change lang parameter in cookie, leave all others untouched
+function setLang(lang) {
+	if (document.cookie.length>0) {
+		var parts = document.cookie.split('|');
+		if (parts[4].indexOf(';')>0)
+			parts[4] = lang + parts[4].substr(parts[4].indexOf(';'));
+		else
+			parts[4] = lang
+
+		document.cookie = parts.join('|');
+		//alert(document.cookie);
+	} else {
+		setCookie('', '', '', '', lang)
+	}
+}
 
 // update edit-in-potlatch-link and links for rss/gpx export
 // call this after a pan and after changing checkboxes
