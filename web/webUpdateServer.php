@@ -294,7 +294,11 @@ function toggle_tables2($db1, $schema){
 
 	query("ALTER TABLE error_view_{$schema}_shadow ENABLE KEYS", $db1);
 	query("DROP TABLE IF EXISTS error_view_{$schema}_old", $db1);
-	query("RENAME TABLE error_view_{$schema} TO error_view_{$schema}_old", $db1);
+
+	// uncomment the following line to save old error_view tables
+	// after updating. comment out to save space on the web DB
+	//query("RENAME TABLE error_view_{$schema} TO error_view_{$schema}_old", $db1);
+
 	query("DROP TABLE IF EXISTS error_view_{$schema}", $db1);
 	query("RENAME TABLE error_view_{$schema}_shadow TO error_view_{$schema}", $db1);
 
