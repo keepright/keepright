@@ -107,6 +107,8 @@ OpenLayers.Format.myTextFormat = OpenLayers.Class(OpenLayers.Format, {
                                 attributes['object_timestamp'] = vals[valIndex];
                              else if (columns[valIndex] == 'object_type')
                                 attributes['object_type'] = vals[valIndex];
+                             else if (columns[valIndex] == 'object_type_EN')
+                                attributes['object_type_EN'] = vals[valIndex];
                              else if (columns[valIndex] == 'object_id')
                                 attributes['object_id'] = vals[valIndex];
                              else if (columns[valIndex] == 'comment')

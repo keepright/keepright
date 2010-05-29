@@ -53,7 +53,7 @@ $where.=' AND lon >= ' . ($lon-3e6) . ' AND lon <= ' . ($lon+3e6);
 $error_view = error_view_subquery($db1, $lat, $lon, $where);
 
 
-echo "lat\tlon\terror_name\terror_type\tobject_type\tobject_id\tobject_timestamp\tschema\terror_id\tdescription\tcomment\tstate\ticon\ticonSize\ticonOffset\n";
+echo "lat\tlon\terror_name\terror_type\tobject_type\tobject_type_EN\tobject_id\tobject_timestamp\tschema\terror_id\tdescription\tcomment\tstate\ticon\ticonSize\ticonOffset\n";
 
 if ($error_view=='') {
 	mysqli_close($db1);
@@ -82,7 +82,7 @@ $sql .= ' LIMIT 100';
 
 
 $result=mysqli_query($db1, $sql);
-echo "$sql\n";
+//echo "$sql\n";
 
 while ($row = mysqli_fetch_assoc($result)) {
 
@@ -116,6 +116,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 		$error_name . "\t" .
 		$row['error_type'] . "\t" .
 		$object_type . "\t" .
+		$row['object_type'] . "\t" .
 		$row['object_id'] . "\t" .
 		$row['object_timestamp'] . "\t" .
 		$row['schema'] . "\t" .

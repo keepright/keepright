@@ -223,6 +223,7 @@ parseData: function(ajaxRequest) {
 			var schema=feature.attributes.schema;
 			var error_id=feature.attributes.error_id;
 			var object_type=feature.attributes.object_type;
+			var object_type_EN=feature.attributes.object_type_EN;
 			var object_id=feature.attributes.object_id;
 			var object_timestamp=feature.attributes.object_timestamp;
 			var description=feature.attributes.description;
@@ -231,12 +232,12 @@ parseData: function(ajaxRequest) {
 			var lat=feature.attributes.lat;
 			var lon=feature.attributes.lon;
 
-			data['popupContentHTML'] ='<h5>'+error_name+', '+object_type+' <a href="http://www.openstreetmap.org/browse/'+object_type+'/'+object_id+'"  target="_blank">'+object_id+'</a></h5>'+
+			data['popupContentHTML'] ='<h5>'+error_name+', '+object_type+' <a href="http://www.openstreetmap.org/browse/'+object_type_EN+'/'+object_id+'" target="_blank">'+object_id+'</a></h5>'+
 			'<p class="p1">'+description+'</p>'+
 
-			'<p class="p2">'+txt4+' <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.01) + '&right=' + (lon-(-0.01)) + '&top=' + (lat-(-0.01)) + '&bottom=' + (lat-0.01) + '&select=' + object_type + object_id + '" target="hiddenIframe" title="'+txt6+'">'+txt5+'</a> ' +
+			'<p class="p2">'+txt4+' <a href="http://localhost:8111/load_and_zoom?left=' + (lon-0.001) + '&right=' + (lon-(-0.001)) + '&top=' + (lat-(-0.001)) + '&bottom=' + (lat-0.001) + '&select=' + object_type_EN + object_id + '" target="hiddenIframe" title="'+txt6+'">'+txt5+'</a> ' +
 
-			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type +'='+ object_id + '" target="_blank">'+txt7+'</a></p>' +
+			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18&' + object_type_EN +'='+ object_id + '" target="_blank">'+txt7+'</a></p>' +
 
 			''+
 			'<form class="p3" name="errfrm_'+schema+'_'+error_id+'" target="hiddenIframe" method="get" action="comment.php">' +
