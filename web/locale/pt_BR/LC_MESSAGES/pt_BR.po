@@ -58,6 +58,9 @@ msgstr "Este caminho não possui marcadores."
 msgid "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref tag"
 msgstr "Este caminho está etiquetado como autoestrada, no entanto, ele também precisa da etiqueta ref, nat_ref ou int_ref"
 
+msgid "This $1 is tagged as place of worship and therefore needs a religion tag"
+msgstr "Este $1 está etiquetado como Local de Adoração, no entanto, ele também precisa da etiqueta religion"
+
 msgid "This node is tagged as place of worship and therefore needs a religion tag"
 msgstr "Este nó está etiquetado como Local de Adoração, no entanto, ele também precisa da etiqueta religion"
 

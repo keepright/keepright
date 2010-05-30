@@ -61,7 +61,7 @@ msgstr ""
 msgid "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref tag"
 msgstr ""
 
-msgid "This node is tagged as place of worship and therefore needs a religion tag"
+msgid "This $1 is tagged as place of worship and therefore needs a religion tag"
 msgstr ""
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
