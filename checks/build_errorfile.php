@@ -1,11 +1,19 @@
 <?php
 
+/*
+create the full keepright_errors dump file for download on the web page
+
+the errors dump is a copy of the error_view plus comments given by users
+
+*/
+
 $schema=1;
 
 require('config.inc.php');
 require('helpers.inc.php');
 
 
+// update and download the comments file from the web server
 system ('php webUpdateClient.php --remote --export_comments');
 system ('wget -O ../results/comments.txt.bz2 "http://keepright.ipax.at/comments.txt.bz2"');
 system ('bunzip2 -f ../results/comments.txt.bz2');
@@ -35,19 +43,21 @@ $co_error_id=0;
 
 
 
-
+// header line
 fwrite($dst, "schema\terror_id\terror_type\terror_name\tobject_type\tobject_id" .
 	"\tstate\tdescription\tfirst_occurrence\tlast_checked\tobject_timestamp" .
-	"\tlat\tlon\tcomment\tcomment_timestamp\n");
+	"\tlat\tlon\tcomment\tcomment_timestamp\tmsgid\ttxt1\ttxt2\ttxt3\ttxt4\ttxt5\n");
 
 
+
+// read error_view*.txt files (one for each schema) and dump them
 foreach ($ev_filenames as $ev_filename) {
 
 	$ev=fopen($ev_filename, 'r');
 	echo "$ev_filename\n";
 	while(!feof($ev)) {
 		$ev_line=trim(fgets($ev));
-		list($ev_schema, $ev_error_id, $error_type, $error_name, $object_type, $object_id, $ev_state, $descr, $fo, $lc, $ot, $lat, $lon) = split("\t", $ev_line);
+		list($ev_schema, $ev_error_id, $error_type, $error_name, $object_type, $object_id, $ev_state, $descr, $fo, $lc, $ot, $lat, $lon, $msgid, $txt1, $txt2, $txt3, $txt4, $txt5) = split("\t", $ev_line);
 
 		while (!feof($co) && ($co_schema<$ev_schema || $co_error_id<$ev_error_id)) {
 			$co_line = trim(fgets($co));
@@ -73,9 +83,9 @@ foreach ($ev_filenames as $ev_filename) {
 
 				if (strlen(trim($co_state))>0) fwrite($dst, "\t$co_state"); else fwrite($dst, "\t$ev_state");
 
-				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\n");
+				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5\n");
 			} else {
-				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\n");
+				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5\n");
 			}
 		}
 	}
@@ -99,27 +109,34 @@ system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-di
 
 schema  error_id        error_type      error_name      object_type     object_id
 state   description     first_occurrence        last_checked    object_timestamp
-lat     lon     comment comment_timestamp
+lat     lon     comment comment_timestamp	msgid	txt1	txt2	txt3
+txt4	txt5
 
 
 DROP TABLE IF EXISTS `keepright_errors`;
 
 CREATE TABLE IF NOT EXISTS `keepright_errors` (
-  `schema` varchar(6) NOT NULL,
+  `schema` varchar(6) NOT NULL default '',
   `error_id` int(11) NOT NULL,
   `error_type` int(11) NOT NULL,
   `error_name` varchar(100) NOT NULL,
   `object_type` enum('node','way','relation') NOT NULL,
   `object_id` bigint(64) NOT NULL,
-  `state` enum('new','ignore','ignore_temporarily') NOT NULL,
+  `state` enum('new','reopened','ignore_temporarily','ignore') NOT NULL,
   `description` text NOT NULL,
   `first_occurrence` datetime NOT NULL,
   `last_checked` datetime NOT NULL,
   `object_timestamp` datetime NOT NULL,
-  `lat` double NOT NULL,
-  `lon` double NOT NULL,
+  `lat` int(11) NOT NULL,
+  `lon` int(11) NOT NULL,
   `comment` text,
   `comment_timestamp` datetime
+  `msgid` text,
+  `txt1` text,
+  `txt2` text,
+  `txt3` text,
+  `txt4` text,
+  `txt5` text
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOAD DATA LOCAL INFILE 'keepright_errors.txt' INTO TABLE keepright_errors IGNORE 1 LINES;
