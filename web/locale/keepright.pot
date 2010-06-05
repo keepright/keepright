@@ -580,6 +580,17 @@ msgstr ""
 
 
 
+
+#: index.php:56
+#, php-format
+msgid ""
+"To avoid routing errors like %sthis one%s I changed the check 'highways "
+"connected directly'. It will now complain about any connections of a motorway "
+"with a highway=service or highway=unclassified if it lacks an access=no or "
+"access=private tag or if it is not a service=parking_aisle.<br>I hope you agree "
+"that this inconvenience is necessary. Thank you, Nathan, for telling me about this!"
+msgstr ""
+
 #. this will be the news item announcing i18n-capabilities for keepright.
 #. this section should appear in all three languages regardless what language
 #. is chosen. So just add your part in the msgid

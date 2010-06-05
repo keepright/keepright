@@ -53,13 +53,30 @@ query("
 ", $db1);
 
 
+// it's OK if a motorway is connected with motorway, motorway_link, trunk, construction.
+// it's OK if a motorway is connected with service, unclassified AS LONG AS
+//	the other way has access=no|private OR
+//	the other way is a service=parking_aisle
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, service, unclassified or construction', NOW()
 	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 	WHERE wn.way_id<>j.way_id AND EXISTS (
+
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
-		t.k='highway' AND t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'service', 'unclassified', 'construction')
+		t.k='highway' AND (
+
+			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified')
+
+			OR
+
+			t.v IN ('service', 'unclassified') AND
+			NOT EXISTS (
+				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
+				((t.k='access' AND t.v IN ('no', 'private')) OR
+				(t.k='service' AND t.v='parking_aisle'))
+			)
+		)
 	)
 ", $db1);
 

@@ -51,6 +51,11 @@ printf(T_gettext("Developers have a look at the %ssourceforge%s site providing s
 
 echo '<h3>' . T_gettext('logfile') . '</h3>';
 
+echo "<h4>2010-06-05</h4>";
+printf(T_gettext("To avoid routing errors like %sthis one%s I changed the check 'highways connected directly'. It will now complain about any connections of a motorway with a highway=service or highway=unclassified if it lacks an access=no or access=private tag or if it is not a service=parking_aisle.<br>I hope you agree that this inconvenience is necessary. Thank you, Nathan, for telling me about this!"), "<a target='_new' href='please_turn_left.png'>", '</a>');
+
+
+echo '<br><br>';
 echo "<h4>2010-05-24</h4>";
 echo '<b>' . T_gettext("KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!") . '</b>';
 
