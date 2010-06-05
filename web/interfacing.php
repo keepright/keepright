@@ -13,8 +13,6 @@ require('helpers.inc.php');
 "<a href='http://www.openstreetmap.org'>", "</a>"); ?><hr>
 
 <?php 
-echo "<pre>"; print_r($GLOBALS); echo '</pre>';
-echo "<pre>"; print_r($_REQUEST); echo '</pre>';
 echo '<form name="myform" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
 echo '<div style="position:absolute; top:70px; right:10px;">'; language_selector(); echo '</div>';
 echo "</form>";
@@ -31,6 +29,7 @@ echo "
 	<li>"; printf(T_gettext('getting the whole errors %sdump file%s'), '<a href="#DUMP">', '</a>'); echo "</li>
 </ul>
 ";
+
 echo "
 <a name='GPX'><h3>" . T_gettext('exporting GPX waypoints') . "</h3>
 <b>" . T_gettext('Purpose') . "</b><br>
@@ -73,14 +72,17 @@ echo "
 <li>" . T_gettext('error_id') . "</li>" . T_gettext('A number identifying errors, starting from 1 for each schema. An error_id is worth nothing if you don&apos;t know the schema!') . "
 <li>" . T_gettext('error_type') . "</li>" . T_gettext('numeric representation of the type of error. Error types are assigned in blocks of 10s (20, 30, 40...). They correspond with the name of the script file doing the checking.') . "<br>
 " . T_gettext('Error types may be sub-typed (281, 282 etc.). Subtyped error checking routines test for different aspects related to a single topic (in the example 280 means &quot;boundaries&quot;, 281 means &quot;missing name[ for boundaries]&quot; and 282 means &quot;missing admin level[ for boundaries]&quot;). Subtyped error types are rendered as groups that may be collapsed on the web site.');
+
 echo "
 <li>" . T_gettext('error_name') . "</li>" . T_gettext('textual representation (short name) of the type of error. On sub-typed error types you may want to prepend the error_name that belongs to the main number to make the name complete.') . "
 <li>" . T_gettext('object_type') . "</li>" . T_gettext('one of node/way/relation') . "
 <li>" . T_gettext('object_id') . "</li>" . T_gettext('an OSM node_id, way_id or relation_id') . "
 <li>" . T_gettext('state') . "</li>" . T_gettext('one of new, reopened, ignore_temporarily, ignore. You won&apos;t see any &apos;cleared&apos; errors because the dump contains active errors only. Temporarily ignored errors are issues fixed by a user who really hopes to have fixed it. Temporarily ignored errors will jump back in the &apos;new&apos; state with the next update if the error isn&apos;t really fixed. Ignored errors are issues that are simply false positives and should never come back just because KeepRight is wrong and this exception cannot be included in the ruleset.') . "<br>
-" . T_gettext('Errors that were once cleared and come back at some point in time later are put in the <em>reopened</em> state. Please note that this may happen due to runtime-errors in the scripts. So you may just consider <em>new</em> and <em>reopened</em> the same.'); echo "
+" . T_gettext('Errors that were once cleared and come back at some point in time later are put in the <em>reopened</em> state. Please note that this may happen due to runtime-errors in the scripts. So you may just consider <em>new</em> and <em>reopened</em> the same.'); 
+
+echo "
 <li>" . T_gettext('description') . "</li>" . T_gettext('The verbose error message that comes out of the checking routine in English language. For translating the messages use the next columns') . "
-<li>" . T_gettext('msgid') . "</li>" . T_gettext('This is the scaffold for the error description where placeholders ("$i") stand in place of the actual values inserted by the concrete error instance. You may put this scaffold inside a GNU gettext() function to have it translated. GNU gettext requires  a .po file that holds original and translated strings. You may use existing .po files from here: ') . "<a href='locale/de_AT/LC_MESSAGES/de_AT.po'>de_AT</a> <a href='locale/pt_BR/LC_MESSAGES/pt_BR.po'>pt_BR</a><br>" . T_gettext('find the GNU gettext template file here:') . " <a href='locale/keepright.pot'>keepright.pot</a>
+<li>" . T_gettext('msgid') . "</li>" . T_gettext('This is the scaffold for the error description where placeholders ("$i") stand in place of the actual values inserted by the concrete error instance. You may put this scaffold inside a GNU gettext() function to have it translated. GNU gettext requires  a .po file that holds original and translated strings. You may use existing .po files from here: ') . "<a href='locale/de.po'>de</a> <a href='locale/pt_BR.po'>pt_BR</a><br>" . T_gettext('find the GNU gettext template file here:') . " <a href='locale/keepright.pot'>keepright.pot</a>
 <li>txt1 ... txt5</li>" . T_gettext('These bits of text are the contents that have to be inserted in the error message after translation. txt1 will replace $1, etc.') . "
 <li>" . T_gettext('first_occurrence') . "</li>" . T_gettext('Timestamp (MESZ) of when this error was found the first time') . "
 <li>" . T_gettext('last_checked') . "</li>" . T_gettext('Timestamp (MESZ) of last time this error was (re-)checked by the scripts') . "
@@ -123,8 +125,9 @@ CREATE TABLE IF NOT EXISTS `keepright_errors` (
 
 LOAD DATA LOCAL INFILE 'keepright_errors.txt' INTO TABLE keepright_errors IGNORE 1 LINES;
 </pre>
+<p>";
 
-<p>" . T_gettext('Please note that <em>schema</em> is a reserved word in MySQL, so you always have to quote it like this: `schema`') . "</p>
+echo T_gettext('Please note that <em>schema</em> is a reserved word in MySQL, so you always have to quote it like this: `schema`') . "</p>
 
 <p>" . T_gettext('There are two primary keys in this table: a natural one and an artificial one:') . "<br>
 

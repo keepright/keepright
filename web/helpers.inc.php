@@ -145,7 +145,7 @@ function language_selector() {
 
 	echo '<select name="lang" onchange="setLang(document.myform.lang.value); submit();">';
 	echo '<option value="en_US" ' . ($locale=='en_US' ? 'selected' : '') . '>en_US</option>';
-	echo '<option value="de_AT" ' . ($locale=='de_AT' ? 'selected' : '') . '>de_AT</option>';
+	echo '<option value="de" ' . ($locale=='de' ? 'selected' : '') . '>de</option>';
 	echo '<option value="pt_BR" ' . ($locale=='pt_BR' ? 'selected' : '') . '>pt_BR</option>';
 	echo '</select>';
 }
