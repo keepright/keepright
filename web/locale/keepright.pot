@@ -901,11 +901,6 @@ msgstr ""
 msgid "Table layout"
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:58
-msgid "schema"
-msgstr ""
-
 #: interfacing.php:59
 #, php-format
 msgid ""
@@ -915,20 +910,10 @@ msgid ""
 "error_id."
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:60
-msgid "error_id"
-msgstr ""
-
 #: interfacing.php:60
 msgid ""
 "A number identifying errors, starting from 1 for each schema. An error_id is "
 "worth nothing if you don&apos;t know the schema!"
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:61
-msgid "error_type"
 msgstr ""
 
 #: interfacing.php:61
@@ -948,11 +933,6 @@ msgid ""
 "on the web site."
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:64
-msgid "error_name"
-msgstr ""
-
 #: interfacing.php:64
 msgid ""
 "textual representation (short name) of the type of error. On sub-typed error "
@@ -960,27 +940,12 @@ msgid ""
 "to make the name complete."
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:65
-msgid "object_type"
-msgstr ""
-
 #: interfacing.php:65
 msgid "one of node/way/relation"
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:66
-msgid "object_id"
-msgstr ""
-
 #: interfacing.php:66
 msgid "an OSM node_id, way_id or relation_id"
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:67
-msgid "state"
 msgstr ""
 
 #: interfacing.php:67
@@ -1003,20 +968,10 @@ msgid ""
 "<em>reopened</em> the same."
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:69
-msgid "description"
-msgstr ""
-
 #: interfacing.php:69
 msgid ""
 "The verbose error message that comes out of the checking routine in English "
 "language. For translating the messages use the next columns"
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:70
-msgid "msgid"
 msgstr ""
 
 #: interfacing.php:70
@@ -1038,18 +993,8 @@ msgid ""
 "message after translation. txt1 will replace $1, etc."
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:72
-msgid "first_occurrence"
-msgstr ""
-
 #: interfacing.php:72
 msgid "Timestamp (MESZ) of when this error was found the first time"
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:73
-msgid "last_checked"
 msgstr ""
 
 #: interfacing.php:73
@@ -1057,25 +1002,10 @@ msgid ""
 "Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:74
-msgid "object_timestamp"
-msgstr ""
-
 #: interfacing.php:74
 msgid ""
 "Timestamp of the object that was used when checking, as found in the "
 "official planet file."
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:75
-msgid "lat"
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:76
-msgid "lon"
 msgstr ""
 
 #: interfacing.php:76
@@ -1085,18 +1015,8 @@ msgid ""
 "as int values. To convert back to real lon/lat you have to divide by 10^7"
 msgstr ""
 
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:77
-msgid "comment"
-msgstr ""
-
 #: interfacing.php:77
 msgid "User-comment (if any)"
-msgstr ""
-
-#. this is a keyword, you needn't translate it!
-#: interfacing.php:78
-msgid "comment_timestamp"
 msgstr ""
 
 #: interfacing.php:78
