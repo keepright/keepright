@@ -55,7 +55,7 @@ http://keepright.ipax.at/export.php?format=rss&amp;ch=20,30,311,312&amp;left=-82
 echo "
 <a name='DUMP'><h3>" . T_gettext('getting the whole dump-file') . "</h3>
 <b>" . T_gettext('Purpose') . "</b><br>
-" . T_gettext('Doing something completely different with 10 Millions of errors...') . "
+" . T_gettext('Doing something completely different with 10 millions of errors...') . "
 
 <br><br><b>" . T_gettext('URL format') . "</b><br>
 <a href='http://keepright.ipax.at/keepright_errors.txt.bz2'>http://keepright.ipax.at/keepright_errors.txt.bz2</a>

@@ -135,7 +135,7 @@ query("ANALYZE _tmp_roundabout_parts", $db1, false);
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+1, CAST('way' AS type_object_type),
-	first.way_id, 'This way is part of a roundabout but is not closed-loop. (Flares should not be tagged as roundabout)', NOW()
+	first.way_id, 'This way is part of a roundabout but is not closed-loop. (split carriageways approaching a roundabout should not be tagged as roundabout)', NOW()
 	FROM _tmp_roundabout_parts first, _tmp_roundabout_parts last
 	WHERE first.part=last.part AND first.sequence_id = (
 		SELECT MIN(t1.sequence_id)

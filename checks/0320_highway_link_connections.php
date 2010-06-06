@@ -61,7 +61,7 @@ query("
 // class is an error
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
-	SELECT $error_type, CAST('way' AS type_object_type), way_id, 'This way is tagged as highway=$1_link but doesnt have a connection to any other $1 or $1_link', class, NOW()
+	SELECT $error_type, CAST('way' AS type_object_type), way_id, 'This way is tagged as highway=$1_link but doesn''t have a connection to any other $1 or $1_link', class, NOW()
 	FROM _tmp_ways w
 	WHERE NOT EXISTS (
 		SELECT * FROM _tmp_wn2 t

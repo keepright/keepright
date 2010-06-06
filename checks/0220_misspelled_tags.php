@@ -136,7 +136,7 @@ foreach ($tables as $object_type=>$table) {
 
 	query("
 		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
-		SELECT $error_type+1, '$object_type', {$object_type}_id, 'The key of this $1s tag is ''key'': $2', '${object_type}', array_to_string(array(
+		SELECT $error_type+1, '$object_type', {$object_type}_id, 'The key of this ${object_type}''s tag is ''key'': $2', '${object_type}', array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM $table AS tmp
 			WHERE tmp.{$object_type}_id=t.{$object_type}_id AND (tmp.k='key')

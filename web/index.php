@@ -24,7 +24,7 @@ printf(T_gettext('Data Checks for Europe%s (Starting point Vienna, Austria)'), "
 echo '<br>';
 
 echo "
-<a href='http://keepright.x10hosting.com' target='_blank'>" . T_gettext('Australian Keepright partner site') . "</a><br>";
+<a href='http://keepright.x10hosting.com' target='_blank'>" . T_gettext('Australian KeepRight partner site') . "</a><br>";
 
 echo "<a href='report_map.php?zoom=14&lat=30.039&lon=31.25345'>";
 printf(T_gettext('Data Checks for Africa%s (Starting point Cairo, Egypt)'), "</a>");
@@ -46,7 +46,7 @@ printf(T_gettext('Data Checks for Asia%s (Starting point Tokio, Japan)'), "</a>"
 
 echo "<br><br><a href='report.php'>" . T_gettext('Europe Data Checks as ugly list') . "</a><br><br>";
 
-printf(T_gettext("Developers have a look at the %ssourceforge%s site providing svn access to the sources."), "<a href='http://apps.sourceforge.net/trac/keepright/'>", '</a>');
+printf(T_gettext("Developers have a look at the %sSourceForge%s site providing svn access to the sources."), "<a href='http://apps.sourceforge.net/trac/keepright/'>", '</a>');
 
 
 echo '<h3>' . T_gettext('logfile') . '</h3>';
@@ -65,18 +65,18 @@ array('$1'=>'<a href="locale/keepright.pot">', '$2'=>'</a>')
 );
 
 echo "<h4>2010-04-17</h4>";
-printf(T_gettext("If you want to export errors from Keepright you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
+printf(T_gettext("If you want to export errors from KeepRight you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
 
 echo "<h4>2010-04-05</h4>";
 echo T_gettext("Getting rid of the evil db-parameter") . '<br>' .
-T_gettext("You may have noticed that you couldn&apos;t pan around the whole world in keepright as you liked. There were invisible boundaries and you always had to take care about the db-parameter in the URLs to be appropriate for the current position.<br>This is over now! The db-parameter is gone. So have fun panning around the whole world and fixing errors easier than ever!");
+T_gettext("You may have noticed that you couldn&apos;t pan around the whole world in KeepRight as you liked. There were invisible boundaries and you always had to take care about the db-parameter in the URLs to be appropriate for the current position.<br>This is over now! The db-parameter is gone. So have fun panning around the whole world and fixing errors easier than ever!");
 
 echo '<br><br>';
 printf(T_gettext('For archeologists: %sOld log entries%s have moved.'), "<a href='logs.php'>", '</a>');
 
 
 echo '<br><br><h4>' . T_gettext('a few words on the new comment feature') . '</h4>';
-echo T_gettext("Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not potlatch! You cannot add missing tags via keepright!") . '<br><br>';
+echo T_gettext("Please give a comment that helps me improve the check routines if you find a false-positive. Don't confuse the comment box with an editing feature. This is not Potlatch! You cannot add missing tags via KeepRight!") . '<br><br>';
 
 
 echo T_gettext("Please note that in order to make the JOSM link work, JOSM must already be running when you hit the JOSM-link. Furthermore you have to enable the &apos;remote control&apos;-plugin in JOSMs options.");
@@ -108,7 +108,7 @@ echo T_gettext('If you find an error in my errors lists I would definitely like 
 
 echo '<h3>' . T_gettext('Impressum') . '</h3>';
 echo T_gettext("This work is done without commercial background, just for my personal pleasure. I would be very happy if it was helpful for the OSM Project.") . '<br><br>' .
-T_gettext('If you like to contact me, my mailbox at the austrian server of gmx is labelled keepright.') . '<br>' . T_gettext('Please understand that I will not always be able to immediately respond to your mail on weekdays.');
+T_gettext('If you like to contact me, my mailbox at the austrian server of gmx is labelled KeepRight.') . '<br>' . T_gettext('Please understand that I will not always be able to immediately respond to your mail on weekdays.');
 
 ?>
 </body></html>

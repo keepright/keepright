@@ -1,12 +1,12 @@
 # KeepRight gettext template file.
 # Copyright (C) 2010 Harald Kleiner
-# This file is distributed under the same license as the keepright! package.
+# This file is distributed under the same license as the KeepRight! package.
 # Harald Kleiner <keepright@gmx.at>, 2010.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: keepright 1.0\n"
+"Project-Id-Version: KeepRight 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -116,8 +116,15 @@ msgstr ""
 msgid "This way has only two different nodes and contains one of them more than once"
 msgstr ""
 
-msgid "The key of this $1s tag is 'key': $2"
+msgid "The key of this node's tag is 'key': $2"
 msgstr ""
+
+msgid "The key of this way's tag is 'key': $2"
+msgstr ""
+
+msgid "The key of this relation's tag is 'key': $2"
+msgstr ""
+
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
@@ -172,7 +179,7 @@ msgstr ""
 msgid "missing maxspeed tag"
 msgstr ""
 
-msgid "This way is part of a roundabout but is not closed-loop. (Flares should not be tagged as roundabout)"
+msgid "This way is part of a roundabout but is not closed-loop. (split carriageways approaching a roundabout should not be tagged as roundabout)"
 msgstr ""
 
 msgid "If this roundabout is in a country with right-hand traffic then its orientation goes the wrong way around"
@@ -181,7 +188,7 @@ msgstr ""
 msgid "If this roundabout is in a country with left-hand traffic then its orientation goes the wrong way around"
 msgstr ""
 
-msgid "This way is tagged as highway=$1_link but doesnt have a connection to any other $1 or $1_link"
+msgid "This way is tagged as highway=$1_link but doesn't have a connection to any other $1 or $1_link"
 msgstr ""
 
 msgid ""
@@ -196,7 +203,7 @@ msgstr ""
 msgid "multiple nodes on the same spot"
 msgstr ""
 
-msgid "Try to find nodes that are (almost) on the same spot. Distances less than +/-0.5 Meters are considered zero"
+msgid "Try to find nodes that are (almost) on the same spot. Distances less than +/-0.5 meters are considered zero"
 msgstr ""
 
 
@@ -521,7 +528,7 @@ msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
 msgstr ""
 
 #: index.php:27
-msgid "Australian Keepright partner site"
+msgid "Australian KeepRight partner site"
 msgstr ""
 
 #: index.php:30
@@ -563,7 +570,7 @@ msgstr ""
 #: index.php:49
 #, php-format
 msgid ""
-"Developers have a look at the %ssourceforge%s site providing svn access to "
+"Developers have a look at the %sSourceForge%s site providing svn access to "
 "the sources."
 msgstr ""
 
@@ -574,7 +581,7 @@ msgstr ""
 #: index.php:56
 #, php-format
 msgid ""
-"If you want to export errors from Keepright you will want to have a look at "
+"If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
 msgstr ""
 
@@ -591,14 +598,14 @@ msgid ""
 "that this inconvenience is necessary. Thank you, Nathan, for telling me about this!"
 msgstr ""
 
-#. this will be the news item announcing i18n-capabilities for keepright.
+#. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
 #. is chosen. So just add your part in the msgid
 #: index.php:57
 msgid "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!"
 msgstr "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!"
 
-#. this will be the news item announcing i18n-capabilities for keepright.
+#. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
 #. is chosen. So just add your part in the msgid
 #: index.php:58
@@ -614,7 +621,7 @@ msgstr ""
 #: index.php:60
 msgid ""
 "You may have noticed that you couldn&apos;t pan around the whole world in "
-"keepright as you liked. There were invisible boundaries and you always had "
+"KeepRight as you liked. There were invisible boundaries and you always had "
 "to take care about the db-parameter in the URLs to be appropriate for the "
 "current position.<br>This is over now! The db-parameter is gone. So have fun "
 "panning around the whole world and fixing errors easier than ever!"
@@ -631,7 +638,7 @@ msgstr ""
 #: index.php:66
 #, php-format
 msgid ""
-"This is my FOSSGIS-present for you: keepright will remember the position and "
+"This is my FOSSGIS-present for you: KeepRight will remember the position and "
 "the error types you selected when you left the site last time (how could "
 "you?). Just open %s without any parameters!"
 msgstr ""
@@ -649,7 +656,7 @@ msgstr ""
 msgid ""
 "Please give a comment that helps me improve the check routines if you find a "
 "false-positive. Don't confuse the comment box with an editing feature. This "
-"is not potlatch! You cannot add missing tags via keepright!"
+"is not Potlatch! You cannot add missing tags via KeepRight!"
 msgstr ""
 
 #: index.php:77
@@ -682,7 +689,7 @@ msgstr ""
 #: index.php:106
 msgid ""
 "If you like to contact me, my mailbox at the austrian server of gmx is "
-"labelled keepright."
+"labelled KeepRight."
 msgstr ""
 
 #: index.php:106
@@ -888,7 +895,7 @@ msgid "getting the whole dump-file"
 msgstr ""
 
 #: interfacing.php:48
-msgid "Doing something completely different with 10 Millions of errors..."
+msgid "Doing something completely different with 10 millions of errors..."
 msgstr ""
 
 #: interfacing.php:53

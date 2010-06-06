@@ -21,7 +21,7 @@ echo "<h4>2010-03-15</h4>";
 echo T_gettext("During the next updates you will see an increased number of floating islands errors. This is because up to now the check routine didn&apos;t complain about ways that don&apos;t have a single connection with any other way(!). Sometimes it takes months until you see the most obvious things...");
 
 echo "<h4>2010-03-07</h4>";
-printf(T_gettext("This is my FOSSGIS-present for you: keepright will remember the position and the error types you selected when you left the site last time (how could you?). Just open %s without any parameters!"), "<a href='http://keepright.ipax.at/report_map.php'> http://keepright.ipax.at/report_map.php</a>");
+printf(T_gettext("This is my FOSSGIS-present for you: KeepRight will remember the position and the error types you selected when you left the site last time (how could you?). Just open %s without any parameters!"), "<a href='http://keepright.ipax.at/report_map.php'> http://keepright.ipax.at/report_map.php</a>");
 
 ?>
 
