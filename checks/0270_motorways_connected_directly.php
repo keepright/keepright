@@ -37,18 +37,24 @@ query("ANALYZE _tmp_junctions", $db1);
 // are connected to eg. primary roads intentionally.
 // drop nodes from the list that are part of just one motorway
 // and that are the first or last node of a way
+query("DROP TABLE IF EXISTS _tmp_tmp", $db1);
+query("
+	CREATE TABLE _tmp_tmp AS
+	SELECT j.node_id, MAX(j.way_id) as way_id
+	FROM _tmp_junctions j
+	GROUP BY j.node_id
+	HAVING COUNT(j.way_id)=1
+", $db1);
+query("CREATE INDEX idx_tmp_tmp_node_id ON _tmp_tmp (node_id)", $db1);
+query("CREATE INDEX idx_tmp_tmp_way_id ON _tmp_tmp (way_id)", $db1);
+query("ANALYZE _tmp_tmp", $db1);
+
 query("
 	DELETE FROM _tmp_junctions
 	WHERE node_id IN (
-		SELECT j.node_id
-		FROM _tmp_junctions j
-		GROUP BY j.node_id
-		HAVING COUNT(j.way_id)=1
-
-	) AND EXISTS (
-		SELECT w.id
-		FROM _tmp_ways tw INNER JOIN ways w ON (tw.way_id=w.id)
-		WHERE node_id=w.first_node_id OR node_id=w.last_node_id
+		SELECT tw.node_id
+		FROM _tmp_tmp tw INNER JOIN ways w ON (tw.way_id=w.id)
+		WHERE tw.node_id=w.first_node_id OR tw.node_id=w.last_node_id
 	)
 ", $db1);
 
@@ -82,5 +88,6 @@ query("
 
 
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_tmp", $db1);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 ?>
