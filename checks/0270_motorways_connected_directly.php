@@ -81,8 +81,8 @@ query("
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 				((t.k='access' AND t.v IN ('no', 'private')) OR
-				(t.k='service' AND t.v='parking_aisle')) OR
-				(t.k='highway' AND t.v='rest_area')) OR
+				(t.k='service' AND t.v='parking_aisle') OR
+				(t.k='highway' AND t.v='rest_area'))
 			)
 		)
 	)
