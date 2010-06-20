@@ -144,9 +144,12 @@ function language_selector() {
 	global $locale;
 
 	echo '<select name="lang" onchange="setLang(document.myform.lang.value); submit();">';
-	echo '<option value="en_US" ' . ($locale=='en_US' ? 'selected' : '') . '>en_US</option>';
-	echo '<option value="de" ' . ($locale=='de' ? 'selected' : '') . '>de</option>';
-	echo '<option value="pt_BR" ' . ($locale=='pt_BR' ? 'selected' : '') . '>pt_BR</option>';
+
+	$languages=array('da', 'de', 'es', 'en_US', 'fr', 'nb', 'nl', 'pt_BR');
+
+	foreach ($languages as $lang) {
+		echo "<option value='$lang' " . ($locale==$lang ? 'selected' : '') . ">$lang</option>";
+	}
 	echo '</select>';
 }
 ?>
