@@ -94,6 +94,7 @@ $islands = array(
 		'Tokyo, Japan' => 24039781,
 		'Higashi-Fukuma, Japan' => 31125866,
 		'Sapporo, Japan' => 30705114,
+		'Hiroshima, Japan' => 24818479,
 		'Taipeh, Taiwan' => 48776359,
 		'Singapore' => 49961799,
 		'Medan, Sumatra' => 34337328,
