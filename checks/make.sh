@@ -4,24 +4,34 @@
 #
 
 #
-# call ./make.sh [--loop] [ AllButUSAndAU | US | AU ]
+# call ./make.sh [--loop] [ AllButUSAndAU | US | AU ] [17]
 # to make keepright check one or more databases and upload the results
 # use the parameter --loop to make make.sh run until a file called
 # /tmp/stop_keepright is found.
+# optionally provide a schema name [17] where to start. This is useful
+# for restarting at a given position in the loop
 #
 # call this script out of the checks directory
 
 FIRSTRUN=1
+STARTSCHEMA="$3"
 
 
 # updates one single schema depending on the (global) variable
 # schema containing the name of the schema
 process_schema() {
-	echo "updating schema $schema";
-	svn up ../
-	./updateDB.sh $schema >> make_$schema.log 2>&1
-	php export_errors.php $schema >> make_$schema.log 2>&1
-	php webUpdateClient.php --remote $schema >> make_$schema.log 2>&1 &
+
+	if [ $FIRSTRUN -ne 1 -o "$schema" = "$STARTSCHEMA" ] ; then
+
+		echo "updating schema $schema";
+		FIRSTRUN=0
+
+		svn up ../
+		./updateDB.sh $schema >> make_$schema.log 2>&1
+		php export_errors.php $schema >> make_$schema.log 2>&1
+		php webUpdateClient.php --remote $schema >> make_$schema.log 2>&1 &
+	fi
+
 
 	if [ -f /tmp/stop_keepright ]; then
 		exit;
@@ -33,14 +43,13 @@ process_schema() {
 
 while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ] && [ ! -f /tmp/stop_keepright ] ; } ; do
 
-	FIRSTRUN=0
 	for i do	# loop all given parameter values
 
 		case "$i" in
 
 			AllButUSAndAU)
 
-				for schema in 1 2 3 4 5 6 7 8 9 10 11 13 14 15 18 19 46 68 17 47 48 49
+				for schema in 1 2 3 4 5 6 7 8 9 10 11 13 14 15 18 19 46 68 17 47 48 73 74 75
 				do
 					process_schema
 				done
@@ -64,4 +73,5 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 			;;
 		esac
 	done
+	FIRSTRUN=0
 done
