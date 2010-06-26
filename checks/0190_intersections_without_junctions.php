@@ -119,14 +119,26 @@ query("ANALYZE _tmp_ways", $db1);
 // create a helper table needed by connected_near() function
 // all junctions of ways and the location of junction
 // first include all crossings; remove crossings on ways not interesting
+query("DROP TABLE IF EXISTS _tmp_wn", $db1);
+query("
+	CREATE TABLE _tmp_wn AS
+	SELECT way_nodes.way_id, way_nodes.node_id, way_nodes.x, way_nodes.y
+	FROM way_nodes INNER JOIN _tmp_ways USING (way_id)
+", $db1);
+query("CREATE INDEX idx_tmp_wn_node_id ON _tmp_wn (node_id)", $db1);
+query("ANALYZE _tmp_wn", $db1);
+
 query("DROP TABLE IF EXISTS _tmp_xings", $db1);
 query("
 	CREATE TABLE _tmp_xings AS
 	SELECT wn1.way_id as way1, wn2.way_id as way2, wn1.x, wn1.y
-	FROM (way_nodes wn1 INNER JOIN _tmp_ways w1 ON w1.way_id=wn1.way_id) INNER JOIN (way_nodes wn2 INNER JOIN _tmp_ways w2 ON w2.way_id=wn2.way_id) USING (node_id)
+	FROM _tmp_wn wn1 INNER JOIN _tmp_wn wn2 USING (node_id)
+	WHERE wn1.way_id<wn2.way_id
 ", $db1);
+query("DROP TABLE IF EXISTS _tmp_wn", $db1);
 query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
 query("ANALYZE _tmp_xings", $db1);
+
 
 
 // collect colliding ways here and check if they really are errors afterwards
