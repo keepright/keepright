@@ -152,6 +152,12 @@ msgstr ""
 msgid "The boundary of $1 has no admin_level"
 msgstr ""
 
+msgid ""
+"The boundary of $1 has no valid numeric admin_level. Please do not use "
+"admin levels like for example 6;7. Always tag the lowest admin_level "
+"of all boundaries."
+msgstr ""
+
 msgid "The boundary of $1 is not closed-loop"
 msgstr ""
 

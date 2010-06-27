@@ -52,7 +52,7 @@ query("
 // missing admin_level
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
-	SELECT $error_type+2,
+	SELECT DISTINCT $error_type+2,
 	CASE WHEN relation_id IS NULL THEN
 		CAST('way' AS type_object_type)
 	ELSE
@@ -62,6 +62,22 @@ query("
 	FROM _tmp_border_ways
 	WHERE admin_level IS NULL
 ", $db1);
+
+
+// not a numeric admin_level
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
+	SELECT DISTINCT $error_type+2,
+	CASE WHEN relation_id IS NULL THEN
+		CAST('way' AS type_object_type)
+	ELSE
+		CAST('relation' AS type_object_type)
+	END,
+	COALESCE(relation_id, way_id), 'The boundary of $1 has no valid numeric admin_level. Please do not use admin levels like for example 6;7. Always tag the lowest admin_level of all boundaries.', COALESCE(name, '(no name)'), NOW()
+	FROM _tmp_border_ways
+	WHERE NOT (trim(admin_level) ~ '^[0-9]+$')
+", $db1);
+
 
 
 // non-closed loops
@@ -218,7 +234,8 @@ query("
 	SELECT $error_type+5, CAST('way' AS type_object_type) AS ot,
 	b.way_id, 'This boundary-way has admin_level $1 but belongs to a relation with lower admin_level (higher priority); it should have the lowest admin_level of all relations', MAX(b.admin_level), NOW()
 	FROM _tmp_border_ways b
-	WHERE relation_id IS NULL AND CAST(admin_level AS INT)=(SELECT MAX(CAST(tmp1.admin_level AS INT))
+	WHERE relation_id IS NULL AND TRIM(admin_level) ~ '^[0-9]+$'
+	AND CAST(admin_level AS INT)=(SELECT MAX(CAST(tmp1.admin_level AS INT))
 		FROM _tmp_border_ways tmp1
 		WHERE tmp1.way_id=b.way_id AND tmp1.relation_id IS NULL
 	)
