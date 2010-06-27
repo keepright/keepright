@@ -37,7 +37,7 @@ So we have to live with that...
 // missing name
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
-	SELECT $error_type+1,
+	SELECT DISTINCT $error_type+1,
 	CASE WHEN relation_id IS NULL THEN
 		CAST('way' AS type_object_type)
 	ELSE
