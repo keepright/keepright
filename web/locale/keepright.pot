@@ -597,6 +597,11 @@ msgstr ""
 
 
 
+#: index.php:56
+msgid ""
+"There are a few more languages in the select box now. You can help translating "
+"KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
+msgstr ""
 
 #: index.php:56
 #, php-format
