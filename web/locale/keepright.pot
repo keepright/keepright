@@ -143,7 +143,11 @@ msgstr ""
 msgid "This $1 is tagged with layer $2. This need not be an error, but it looks strange"
 msgstr ""
 
-msgid "This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, service, unclassified or construction"
+msgid ""
+"This node is a junction of a motorway and a highway other than motorway, "
+"motorway_link, trunk or construction. Service or unclassified is only valid "
+"if it has a access=no/private or if it is a service=parking_aisle or "
+"highway=rest_area."
 msgstr ""
 
 msgid "This boundary has no name"
