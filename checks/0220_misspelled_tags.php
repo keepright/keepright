@@ -34,6 +34,7 @@ $false_positives = array(
 	array('email', 'e-mail', 'mail'),
 	array('food', 'foot', 'wood'),
 	array('function', 'junction'),
+	array('game', 'name'),
 	array('garage', 'garages'),
 	array('good', 'wood'),
 	array('hall', 'mall', 'wall'),
