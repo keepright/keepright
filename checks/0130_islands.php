@@ -173,6 +173,7 @@ $islands = array(
 		'New Orleans, LA' => 12689320,	//29.95869, -90.077
 
 		'Mexico City' => 24723212,
+		'Tuxtla Gutierrez, Mexico' => 38049141,
 		'Havanna, Cuba' => 38448366,
 		'Ottawa, Canada' => 23220188,
 		'Quebec, Canada' => 16229066,
