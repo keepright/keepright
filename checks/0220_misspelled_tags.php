@@ -126,7 +126,8 @@ $never_complain_about = "(
 
 $force_irregular = array(
 	'usability:skate:=excelent',
-	'note_'
+	'note_',
+	'Public'
 );
 
 $force_regular = array(
