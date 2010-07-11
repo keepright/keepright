@@ -49,7 +49,7 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 
 			AllButUSAndAU)
 
-				for schema in 1 2 4 5 6 7 8 9 10 11 13 14 15 18 19 46 68 17 47 48 73 74 75
+				for schema in 1 2 70 71 72 4 5 6 7 8 9 10 11 13 14 15 18 19 46 68 17 47 48 73 74 75
 				do
 					process_schema
 				done
