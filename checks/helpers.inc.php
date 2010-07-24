@@ -514,51 +514,6 @@ function find_layer_values($table, $way_id_column, $layer_column, $db) {
 
 
 
-// check if a way/node is immediately connected to another way/node
-// 'immediately' means: without hops. This is no routing algorithm!
-// $obj_type1 and $obj_type2 are either 'N' or 'W' (for 'node' or 'way')
-// $obj_id1 and $obj_id2 specify the appropriate way- or node ids
-// per default the function looks up connectivity in table way_nodes
-// you may provide another table that has a way_id and a node_id column
-function connected_simple($db, $obj_type1, $obj_id1, $obj_type2, $obj_id2, $table='way_nodes') {
-	// both objects are ways; check if they share a common node
-	if ($obj_type1=='W' && $obj_type2=='W')
-		return query_firstval("
-			SELECT COUNT(*)
-			FROM $table wn1 INNER JOIN $table wn2 USING (node_id)
-			WHERE wn1.way_id=$obj_id1 AND wn2.way_id=$obj_id2
-		", $db, false);
-
-	// both objects are nodes; check if they belong to the same way
-	if ($obj_type1=='N' && $obj_type2=='N')
-		return query_firstval("
-			SELECT COUNT(*)
-			FROM $table wn1 INNER JOIN $table wn2 USING (way_id)
-			WHERE wn1.node_id=$obj_id1 AND wn2.node_id=$obj_id2
-		", $db, false);
-
-	// one node and one way; check if the node is member of the way
-	if (($obj_type1=='W' && $obj_type2=='N') || ($obj_type1=='N' && $obj_type2=='W')) {
-
-		if ($obj_type1=='W') {
-			$way_id=$obj_id1;
-			$node_id=$obj_id2;
-		} else {
-			$way_id=$obj_id2;
-			$node_id=$obj_id1;
-		}
-		return query_firstval("
-			SELECT COUNT(*)
-			FROM $table
-			WHERE node_id=$node_id AND way_id=$way_id
-		", $db, false);
-	}
-
-	echo "unknown object types in function connected_simple(): $obj_type1 and $obj_type2\n";
-	return -1;
-}
-
-
 // gets a time value in seconds and writes it in s, min, h
 // according to its amount
 function format_time($t) {
@@ -570,3 +525,4 @@ function format_time($t) {
 		return sprintf("%01.0fh %01.0fm", floor($t/3600), ($t % 3600)/60);	// hours
 }
 ?>
+ 	  	 

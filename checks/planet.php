@@ -21,7 +21,7 @@ switch ($argv[1]) {
 			$cmd .= " --bb " . get_bbox_parameters($argv[$i]) . " idTrackerType=BitSet completeWays=yes completeRelations=yes --wx $TMPDIR/{$argv[$i]}.osm ";
 			echo "$cmd\n";
 			system($cmd, $errorlevel);
-			//if ($errorlevel) exit;
+			if ($errorlevel) exit;
 
 			init_workingDir($argv[$i]);
 		}
@@ -103,3 +103,5 @@ function get_bbox_parameters($schema) {
 }
 
 ?>
+
+ 	  	 
