@@ -2,7 +2,7 @@
 
 
 	query("
-		INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked) 
+		INSERT INTO _tmp_errors (error_type, object_type, object_id, description, last_checked)
 		SELECT $error_type, 'way', w.id, 'There are one or more deleted nodes used in this way.', NOW()
 		FROM (current_way_nodes AS wn INNER JOIN current_nodes AS n ON wn.node_id=n.id) INNER JOIN current_ways AS w ON wn.id=w.id
 		WHERE n.visible<>1 AND w.visible=1;

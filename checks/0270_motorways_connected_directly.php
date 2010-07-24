@@ -57,23 +57,23 @@ query("
 		WHERE tw.node_id=w.first_node_id OR tw.node_id=w.last_node_id
 	)
 ", $db1);
+query("DROP TABLE IF EXISTS _tmp_tmp", $db1);
 
 
-// it's OK if a motorway is connected with motorway, motorway_link, trunk, construction.
+// it's OK if a motorway is connected with motorway, motorway_link, trunk, construction, rest_area or services.
 // it's OK if a motorway is connected with service, unclassified AS LONG AS
 //	the other way has access=no|private OR
-//	the other way is a service=parking_aisle OR
-//	the other way is a highway=rest_area
+//	the other way is a service=parking_aisle
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
-	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk or construction. Service or unclassified is only valid if it has a access=no/private or if it is a service=parking_aisle or highway=rest_area.', NOW()
+	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, services, rest_area or construction. Service or unclassified is only valid if it has a access=no/private or if it is a service=parking_aisle.', NOW()
 	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 	WHERE wn.way_id<>j.way_id AND EXISTS (
 
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND (
 
-			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified')
+			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified', 'rest_area', 'services')
 
 			OR
 
@@ -81,8 +81,7 @@ query("
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 				((t.k='access' AND t.v IN ('no', 'private')) OR
-				(t.k='service' AND t.v='parking_aisle') OR
-				(t.k='highway' AND t.v='rest_area'))
+				(t.k='service' AND t.v='parking_aisle'))
 			)
 		)
 	)
@@ -90,6 +89,5 @@ query("
 
 
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
-query("DROP TABLE IF EXISTS _tmp_tmp", $db1);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 ?>

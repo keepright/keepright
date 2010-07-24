@@ -1,17 +1,11 @@
 ToDo:
 
-
-* check for ways that contain some segments more than once. eg. way #26458524
-  has nodes 289957357, 289957358, 289957359, 289957360, 289957361,
-  289957357, 289957361
-  http://openstreetmap.org/edit?lat=48.23257100588562&lon=16.314874335681896&zoom=18
+--------------------------------------------------------------------
+great ideas for new checks
+--------------------------------------------------------------------
 
 * check for ways where at least 2 nodes in the way are tagged the same way (eg. way #26825583)
 this way should be split up into a paved and an unpaved way-part
-
-* comment found in run-checks.php just before error_view is created:
-// * for relations I don't yet have an idea how to locate them in the map...
-	locate them using its members.
 
 
 * Check 50a:
@@ -25,17 +19,57 @@ and first segment is very short
 
 
 
-
 * multipolygon relations with unclosed ways
 * multipolygon relations with no or more than one way of role=outer
 * Dont complain about unnamed way on highway=* junction=roundabout
 * node inside of area of the same type. For example node with amenity=parking inside of area with amenity=parking. Fix is by either removing the node or by using Relations/Proposed/Label
-* Shops, Car Parks which are not connected by a highway 
+* Shops, Car Parks which are not connected by a highway
 
 
-* objects containing duplicated tags 
+* objects containing duplicated tags
 http://www.openstreetmap.org/api/0.5/way/23950375
 contains name = Haarholzer Straße, name = Haarholzer Straße
+
+
+* dependencies of tags 
+-- bicycle depends on highway
+-- ways tagged with tracktype but not with highway=track (from Johannes Fontaine)
+
+* invalid tagging combinations
+-- ways tagged as highway and waterway
+
+
+
+* (from Ed, 2009-08-18): when junction=roundabout is used, the way must be closed-loop, and must join at least three other ways.
+
+
+Etienne's checks:
+- Places without names
+- Place names in all capitals
+- Roundabouts in the wrong direction (problem for England though, they have their roundabouts in the oposite direction)
+- Altitude missing in natural=peak
+- Incompatible tags: highway and landuse on the same object, but I can propably think of a lot more
+- Route reference in name tag (I suppose this check is highly country dependant)
+- Multiple spaces next to each other in name tag
+- Broken boudaries
+- Self-crossing boundaries
+
+
+* Invalid turn restrictions. Just been told about one which has a from node, to node  and via node, which should be flagged by a validator as being invalid. (from Shaun)
+check numberof and typeof members (1 way from, 1 way to, (1 node | 1+ way via)
+
+
+--------------------------------------------------------------------
+user interface
+--------------------------------------------------------------------
+
+* make layout more beautiful (Hans' suggestion)
+
+* ignore errors by shift-clicking them
+
+--------------------------------------------------------------------
+already done
+--------------------------------------------------------------------
 
 * misspelled tags
 	tags that have levenshtein-distance == 1 to one of well-known tags
@@ -44,5 +78,207 @@ contains name = Haarholzer Straße, name = Haarholzer Straße
 		top 10 keys that suffice for 90% of all records
 
 
-* crossings of highway=motorway with other than highway=motorway-trunk or highway=motorway
+
+* comment found in run-checks.php just before error_view is created:
+// * for relations I don't yet have an idea how to locate them in the map...
+	locate them using its members.
+
+
+* check for ways that contain some segments more than once. eg. way #26458524
+  has nodes 289957357, 289957358, 289957359, 289957360, 289957361,
+  289957357, 289957361
+  http://openstreetmap.org/edit?lat=48.23257100588562&lon=16.314874335681896&zoom=18
+
+
+* allow excluding of temp.ignored and false-positive errors
+
+
+* crossings of highway=motorway with other than highway=motorway_link
 especially with highway=residential
+
+* subtyped check's checkboxes are not modified by "all" and "none" buttons
+
+* RSS and GPX export
+
+* remember state of error_type checkboxes in a cookie
+
+* check boundaries for holes and correct tagging
+
+* use boundaries to determine country names and use that for determining right-hand or left-hand traffic (directions of roundabouts)
+
+
+--------------------------------------------------------------------
+scratch
+--------------------------------------------------------------------
+
+merge multiple osm dump files into one:
+osmosis --rx 1.osm --rx 2.osm --rx 3.osm --merge --merge --wx merged.osm
+
+split a planet file into parts:
+java -Xmx1048m -jar /media/raid0/planet_new/osmosis.jar --read-xml europe.osm --tee 2 \
+  --bounding-box left=-30 top=90 right=1.8 bottom=50 --write-xml 1.osm \
+  --bounding-box left=1.8 top=90 right=51.4 bottom=55 --write-xml 2.osm
+
+
+
+
+find indexes used less than 50 times:
+
+SELECT idx_stat.relname AS tabelle, indexrelname AS index_name, idx_stat.idx_scan AS index_nutzung
+FROM pg_stat_user_indexes AS idx_stat JOIN pg_indexes ON indexrelname=indexname JOIN pg_stat_user_tables AS tab_stat ON idx_stat.relname=tab_stat.relname
+WHERE idx_stat.idx_scan<50 AND indexdef !~* 'unique'
+ORDER BY idx_stat.relname, indexrelname
+
+
+Left-hand-driving countries
+
+Anguilla
+Antigua and Barbuda
+Australia
+Bahamas
+Bangladesh
+Barbados
+Bhutan
+Botswana
+Brunei
+Cayman Islands
+Cyprus
+Dominica
+Falkland Islands
+Fiji
+Grenada
+Guernsey
+Guyana
+Hong Kong
+India
+Indonesia
+Ireland
+Isle of Man
+Jamaica
+Japan
+Jersey
+Kenya
+Kiribati
+Lesotho
+Macau
+Malawi
+Malaysia
+Maldives
+Malta
+Mauritius
+Montserrat
+Mozambique
+Namibia
+Nauru
+Nepal
+New Zealand
+Pakistan
+Papua New Guinea
+Saint Kitts and Nevis
+Saint Lucia
+Saint Vincent and the Grenadines
+Seychelles
+Singapore
+Solomon Islands
+South Africa
+Sri Lanka
+Suriname
+Swaziland
+Tanzania
+Thailand
+Tonga
+Trinidad and Tobago
+Tuvalu
+Uganda
+United Kingdom
+British Virgin Islands
+Virgin Islands
+Zambia
+Zimbabwe
+
+
+
+SELECT `schema`, `error_type`, `error_name`, la, lo, count(error_id) as cnt FROM `error_view`
+group by `schema`, `error_type`, `error_name`, la, lo
+
+SELECT `schema`, `error_type`, `error_name`, round(`lat`/1e7) as la, round(`lon`/1e7) as lo, count(error_id) as cnt FROM `error_view`
+group by `schema`, `error_type`, `error_name`, round(`lat`/1e7), round(`lon`/1e7)
+
+
+
+
+
+xgettext -kT_gettext --from-code utf-8 index.php report_map.php
+
+
+
+
+--- 280
+
+// multiple relations for identically-named boundaries
+// this is only an error, if the relations are closly-located
+// There may be villages with identical name but there may not
+// be two villages with identical name located less than x km
+// apart.
+/*$result=query("
+	SELECT DISTINCT x.name, x.admin_level, x.relation_id
+	FROM _tmp_border_ways x INNER JOIN (
+		SELECT t.name, t.admin_level
+		FROM _tmp_border_ways t
+		GROUP BY t.name, t.admin_level
+		HAVING COUNT(DISTINCT t.relation_id)>1
+	) tmp USING (name, admin_level)
+", $db1);
+
+
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+pg_free_result($result);
+*/
+
+
+--- 290
+
+
+// check that from and all the vias and to are connected
+
+$result1=query("
+	SELECT relation_id FROM _tmp_restrictions
+", $db1, false);
+
+while ($row1=pg_fetch_array($result1, NULL, PGSQL_ASSOC)) {
+
+	$result2=query("
+		SELECT member_id, member_role, member_type
+		FROM relation_members
+		WHERE relation_id=" . $row1['relation_id'] ."
+		AND member_role IN ('from', 'to', 'via')
+		ORDER BY sequence_id
+	", $db2, false);
+
+	$first=true;
+	$last_member_id=0;
+	$last_member_type=0;
+
+	while ($row2=pg_fetch_array($result2, NULL, PGSQL_ASSOC)) {
+		if (!$first && !connected_simple($db3, 
+			$last_member_type, $last_member_id,
+			$row2['member_type'], $row2['member_id'])) {
+
+			query("
+				INSERT INTO _tmp_errors (error_type, object_type,
+				object_id, msgid, last_checked)
+				VALUES($error_type+4, CAST('relation' AS type_object_type),
+				" . $row1['relation_id'] .", 'from- via- and to- members of a turn resctriction need to be connected', NOW())
+			", $db1);
+
+		}
+
+		$last_member_id=$row2['member_id'];
+		$last_member_type=$row2['member_type'];
+		$first=false;
+
+	}
+	pg_free_result($result2);
+
+}
+pg_free_result($result1);
