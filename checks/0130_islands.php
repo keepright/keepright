@@ -48,6 +48,7 @@ $islands = array(
 		'Budapest, Hungaria' => 34923072,
 		'Reykjavik, Iceland' => 22529614,
 		'Roma, Italy' => 28604181,
+		'Pula, Istria' => 28004142,
 		'Riga, Latvia' => 38788862,
 		'Vilnius, Lithuania' => 4914187,
 		'Amsterdam, Netherlands' => 7382660,
