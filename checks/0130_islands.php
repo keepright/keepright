@@ -217,7 +217,8 @@ $islands = array(
 
 
 // include all ways tagged as highway (but exclude emergency_access_points),
-// route=ferry or railway=platform (a platform may connect roads in rare cases)
+// route=ferry or railway=platform (a platform may connect roads in rare cases),
+// don't forget about parking spaces as they can connect roads in some cases.
 // include furthermore ways that are part of a route=ferry relation even
 // though the ways themselves are not tagged as ferry
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
@@ -226,6 +227,7 @@ query("
 	SELECT wt.way_id FROM way_tags wt WHERE (
 		(wt.k='highway' AND wt.v<>'emergency_access_point') OR
 		(wt.k='route' AND wt.v='ferry') OR
+		(wt.k='amenity' AND wt.v='parking') OR
 		(wt.k IN ('railway', 'public_transport') AND wt.v='platform')
 	)
 
