@@ -4,7 +4,7 @@
 
 <!--these are plugins we require. Usualy only org.openstreetmap.osmosis.core.plugin.Core will be required.-->
 <requires>
-	<import plugin-id="org.openstreetmap.osmosis.core.plugin.Core" plugin-version="0.32.1" reverse-lookup="false"/>
+	<import plugin-id="org.openstreetmap.osmosis.core.plugin.Core" plugin-version="0.36" reverse-lookup="false"/>
 </requires>
 
 

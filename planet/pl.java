@@ -23,13 +23,13 @@ some of the changes include:
 compile this with classpath pointing to osmosis.jar, postgis.jar and postgresql.jar:
 
 cd /home/haraldk/OSM/keepright/planet
-javac -cp "/home/haraldk/OSM/osmosis-0.32.1/osmosis.jar:/home/haraldk/OSM/osmosis-0.32.1/lib/compile/postgis-1.3.2.jar:/home/haraldk/OSM/osmosis-0.32.1/lib/compile/postgresql-8.3-603.jdbc4.jar:." *.java
 
+javac -cp "/home/haraldk/OSM/osmosis/package/lib/runtime/osmosis-core-0.37-SNAPSHOT.jar:/home/haraldk/OSM/osmosis/package/lib/runtime/postgis-jdbc-1.3.3.jar:/home/haraldk/OSM/osmosis/package/lib/runtime/postgresql-8.4-701.jdbc4.jar:/home/haraldk/OSM/osmosis/package/lib/runtime/osmosis-pgsnapshot-0.37-SNAPSHOT.jar:." *.java
 
 copy resulting .class files into osmosis.jar using your favourite zip program (!)
 
 run with
- ~/OSM/osmosis-0.32.1/bin/osmosis -p pl --read-xml file=planet.osm --pl
+ ~/OSM/osmosis-0.36/bin/osmosis -p pl --read-xml file=planet.osm --pl
 
 */
 

@@ -19,11 +19,10 @@ import org.openstreetmap.osmosis.core.domain.v0_6.Tag;
 import org.openstreetmap.osmosis.core.domain.v0_6.Way;
 import org.openstreetmap.osmosis.core.domain.v0_6.WayNode;
 import org.openstreetmap.osmosis.core.lifecycle.CompletableContainer;
-//import org.openstreetmap.osmosis.core.pgsql.common.CopyFileWriter;
-import org.openstreetmap.osmosis.core.pgsql.common.PointBuilder;
-import org.openstreetmap.osmosis.core.pgsql.v0_6.impl.MemberTypeValueMapper;
-import org.openstreetmap.osmosis.core.pgsql.v0_6.impl.NodeLocationStoreType;
-import org.openstreetmap.osmosis.core.pgsql.v0_6.impl.WayGeometryBuilder;
+import org.openstreetmap.osmosis.pgsnapshot.common.PointBuilder;
+import org.openstreetmap.osmosis.pgsnapshot.v0_6.impl.MemberTypeValueMapper;
+import org.openstreetmap.osmosis.pgsnapshot.common.NodeLocationStoreType;
+import org.openstreetmap.osmosis.pgsnapshot.v0_6.impl.WayGeometryBuilder;
 import org.openstreetmap.osmosis.core.task.v0_6.Sink;
 
 
@@ -34,7 +33,7 @@ import org.openstreetmap.osmosis.core.task.v0_6.Sink;
  * @author Brett Henderson
  */
 public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
-	
+
 	private static final String USER_SUFFIX = "users.txt";
 	private static final String NODE_SUFFIX = "nodes.txt";
 	private static final String NODE_TAG_SUFFIX = "node_tags.txt";
@@ -44,8 +43,8 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 	private static final String RELATION_SUFFIX = "relations.txt";
 	private static final String RELATION_TAG_SUFFIX = "relation_tags.txt";
 	private static final String RELATION_MEMBER_SUFFIX = "relation_members.txt";
-	
-	
+
+
 	private boolean enableBboxBuilder;
 	private boolean enableLinestringBuilder;
 	private WayGeometryBuilder wayGeometryBuilder;
@@ -63,8 +62,8 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 	private PointBuilder pointBuilder;
 	private Mercator merc;
 	private Set<Integer> userSet;
-	
-	
+
+
 	/**
 	 * Creates a new instance.
 	 * 
@@ -88,9 +87,9 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 			boolean enableLinestringBuilder, NodeLocationStoreType storeType) {
 		this.enableBboxBuilder = enableBboxBuilder;
 		this.enableLinestringBuilder = enableLinestringBuilder;
-		
+
 		//writerContainer = new CompletableContainer();
-		
+
 		userWriter = new MyCopyFileWriter(new File(filePrefix, USER_SUFFIX));
 		nodeWriter = new MyCopyFileWriter(new File(filePrefix, NODE_SUFFIX));
 		nodeTagWriter = new MyCopyFileWriter(new File(filePrefix, NODE_TAG_SUFFIX));
@@ -100,22 +99,22 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 		relationWriter = new MyCopyFileWriter(new File(filePrefix, RELATION_SUFFIX));
 		relationTagWriter = new MyCopyFileWriter(new File(filePrefix, RELATION_TAG_SUFFIX));
 		relationMemberWriter = new MyCopyFileWriter(new File(filePrefix, RELATION_MEMBER_SUFFIX));
-		
+
 		pointBuilder = new PointBuilder();
 		merc = new Mercator();
 		wayGeometryBuilder = new WayGeometryBuilder(storeType);
 		memberTypeValueMapper = new MemberTypeValueMapper();
-		
+
 		userSet = new HashSet<Integer>();
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void process(EntityContainer entityContainer) {
 		OsmUser user;
-		
+
 		// Write a user entry if the user doesn't already exist.
 		user = entityContainer.getEntity().getUser();
 		if (!user.equals(OsmUser.NONE)) {
@@ -123,24 +122,24 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 				userWriter.writeField(user.getId());
 				userWriter.writeField(user.getName());
 				userWriter.endRecord();
-				
+
 				userSet.add(user.getId());
 			}
 		}
-		
+
 		// Process the entity itself.
 		entityContainer.process(this);
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void process(BoundContainer boundContainer) {
 		// Do nothing.
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -150,9 +149,9 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 		double y;
 		double lat;
 		double lon;
-		
+
 		node = nodeContainer.getEntity();
-		
+
 		nodeWriter.writeField(String.format("%010d", node.getId()));
 		nodeWriter.writeField(node.getUser().getId());
 		nodeWriter.writeField(node.getTimestamp());
@@ -166,20 +165,20 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 		nodeWriter.writeField(x);
 		nodeWriter.writeField(y);
 		nodeWriter.endRecord();
-		
+
 		for (Tag tag : node.getTags()) {
 			nodeTagWriter.writeField(node.getId());
 			nodeTagWriter.writeField(tag.getKey());
 			nodeTagWriter.writeField(tag.getValue());
 			nodeTagWriter.endRecord();
 		}
-		
+
 		if (enableBboxBuilder || enableLinestringBuilder) {
 			wayGeometryBuilder.addNodeLocation(node);
 		}
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -187,9 +186,9 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 		Way way;
 		long sequenceId;
 		long last_node_id;
-		
+
 		way = wayContainer.getEntity();
-		
+
 		// Ignore ways with a single node because they can't be loaded into postgis.
 		// doesn't apply to data consistency checks!
 		//if (way.getWayNodes().size() > 1) {
@@ -202,7 +201,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 			if (enableLinestringBuilder) {
 				wayWriter.writeField(wayGeometryBuilder.createWayLinestring(way));
 			}
-			
+
 			for (Tag tag : way.getTags()) {
 				wayTagWriter.writeField(way.getId());
 				wayTagWriter.writeField(tag.getKey());
@@ -231,29 +230,29 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 			wayWriter.endRecord();
 		//}
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void process(RelationContainer relationContainer) {
 		Relation relation;
 		int memberSequenceId;
-		
+
 		relation = relationContainer.getEntity();
-		
+
 		relationWriter.writeField(relation.getId());
 		relationWriter.writeField(relation.getUser().getId());
 		relationWriter.writeField(relation.getTimestamp());
 		relationWriter.endRecord();
-		
+
 		for (Tag tag : relation.getTags()) {
 			relationTagWriter.writeField(relation.getId());
 			relationTagWriter.writeField(tag.getKey());
 			relationTagWriter.writeField(tag.getValue());
 			relationTagWriter.endRecord();
 		}
-		
+
 		memberSequenceId = 0;
 		for (RelationMember member : relation.getMembers()) {
 			relationMemberWriter.writeField(relation.getId());
@@ -264,8 +263,8 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 			relationMemberWriter.endRecord();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes any buffered data to the database and commits. 
 	 */
@@ -280,8 +279,8 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 		relationTagWriter.complete();
 		relationMemberWriter.complete();
 	}
-	
-	
+
+
 	/**
 	 * Releases all database resources.
 	 */

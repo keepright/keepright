@@ -3,7 +3,8 @@
 
 import java.io.File;
 
-import org.openstreetmap.osmosis.core.pgsql.v0_6.impl.NodeLocationStoreType;
+import org.openstreetmap.osmosis.pgsnapshot.common.NodeLocationStoreType;
+//import org.openstreetmap.osmosis.core.pgsql.v0_6.impl.NodeLocationStoreType;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManagerFactory;
@@ -12,7 +13,7 @@ import org.openstreetmap.osmosis.core.pipeline.v0_6.SinkManager;
 
 /**
  * The task manager factory for a database dump writer.
- * 
+ *
  * @author Brett Henderson
  */
 public class PostgreSqlMyDatasetDumpWriterFactory extends TaskManagerFactory {
@@ -24,8 +25,8 @@ public class PostgreSqlMyDatasetDumpWriterFactory extends TaskManagerFactory {
 	private static final boolean DEFAULT_ENABLE_LINESTRING_BUILDER = false;
 	private static final String DEFAULT_FILE_PREFIX = "pgimport";
 	private static final String DEFAULT_NODE_LOCATION_STORE_TYPE = "InMemory";
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -36,7 +37,7 @@ public class PostgreSqlMyDatasetDumpWriterFactory extends TaskManagerFactory {
 		boolean enableBboxBuilder;
 		boolean enableLinestringBuilder;
 		NodeLocationStoreType storeType;
-		
+
 		// Get the task arguments.
 		filePrefixString = getStringArgument(
 				taskConfig, ARG_FILE_NAME, DEFAULT_FILE_PREFIX);
@@ -47,10 +48,10 @@ public class PostgreSqlMyDatasetDumpWriterFactory extends TaskManagerFactory {
 		storeType = Enum.valueOf(
 				NodeLocationStoreType.class,
 				getStringArgument(taskConfig, ARG_NODE_LOCATION_STORE_TYPE, DEFAULT_NODE_LOCATION_STORE_TYPE));
-		
+
 		// Create a file object representing the directory from the file name provided.
 		filePrefix = new File(filePrefixString);
-		
+
 		return new SinkManager(
 			taskConfig.getId(),
 			new PostgreSqlMyDatasetDumpWriter(filePrefix, enableBboxBuilder, enableLinestringBuilder, storeType),
