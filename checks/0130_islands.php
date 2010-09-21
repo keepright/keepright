@@ -267,6 +267,8 @@ query("ANALYZE _tmp_junctions", $db1);
 // any other way. (these ways are not covered by the rest of the algorithm)
 // in _tmp_junctions we only see nodes that are used at least twice
 // not finding a record in _tmp_junctions means the way is a not connected way
+
+// don't complain about amenity=parking ways; they are included here only for connecting highways
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), w.way_id, 'This way is not connected to the rest of the map', NOW()
@@ -276,6 +278,12 @@ query("
 		SELECT wn.node_id FROM
 		way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 		WHERE wn.way_id=w.way_id
+	) AND NOT EXISTS (
+
+		SELECT wt.way_id FROM way_tags wt WHERE (
+			wt.way_id=wn.way_id AND
+			wt.k='amenity' AND wt.v='parking'
+		)
 	)
 ", $db1);
 
@@ -363,11 +371,18 @@ do {
 
 
 // any way that exists in way-temp-table but is not member of any island is an error
+// don't complain about amenity=parking ways; they are included here only for connecting highways
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), wn.way_id, 'This way is not connected to the rest of the map', NOW()
 	FROM _tmp_wn wn LEFT JOIN _tmp_ways_found_before w USING (way_id)
-	WHERE w.way_id IS NULL
+	WHERE w.way_id IS NULL AND NOT EXISTS (
+
+		SELECT wt.way_id FROM way_tags wt WHERE (
+			wt.way_id=wn.way_id AND
+			wt.k='amenity' AND wt.v='parking'
+		)
+	)
 ", $db1);
 
 
