@@ -1,208 +1,192 @@
 # KeepRight gettext template file.
 # Copyright (C) 2010 Harald Kleiner
-# This file is distributed under the same license as the keepright! package.
+# This file is distributed under the same license as the KeepRight! package.
 # Harald Kleiner <keepright@gmx.at>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: keepright 1.0\n"
+"Project-Id-Version: KeepRight 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-08-22 19:15+0000\n"
-"Last-Translator: Daniel Bossert <Unknown>\n"
-"Language-Team: Austrian <>\n"
+"PO-Revision-Date: 2010-09-10 13:32+0000\n"
+"Last-Translator: Aidas Kasparas <Unknown>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-08-23 04:21+0000\n"
+"X-Launchpad-Export-Date: 2010-09-11 05:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 # translations for error messages
 msgid "There is more than one node in this spot. Offending node IDs: $1"
-msgstr "An dieser Stelle befinden sich mehrere Punkte: $1"
+msgstr "Šiame taške yra daugiau nei vienas mazgas. Papildomo mazgo ID: $1"
 
 msgid "This coastline-way is not part of a closed-loop"
-msgstr "Diese Küstenlinie ist nicht Teil einer geschlossenen Linie"
+msgstr "Šis krantą aprašantis kelias nėra uždaro ciklo dalis"
 
 msgid "This way is tagged with '$1=$2' and should be closed-loop."
-msgstr ""
-"Dieser way ist als '$1=$2' getaggt und sollte daher geschlossen sein."
+msgstr "Šis kelias, turintis atributus '$1=$2', turi būti uždaras ciklas"
 
 msgid ""
 "The first node (id $1) of this one-way is not connected to any other way"
 msgstr ""
-"Der erste Punkt (id $1) dieser Einbahn-Straße hat keine Verbindung zu "
-"weiteren Straßen"
+"Pirmas mazgas (id $1) šiame vienos krypties kelyje nėra sujungtas su jokiu "
+"kitu keliu"
 
 msgid ""
 "The last node (id $1) of this one-way is not connected to any other way"
 msgstr ""
-"Der letzte Punkt (id $1) dieser Einbahn-Straße hat keine Verbindung zu "
-"weiteren Straßen"
+"Paskutinis mazgas (id $1) šiame vienos krypties kelyje nėra sujungtas su "
+"jokiu kitu keliu"
 
 msgid ""
 "This node cannot be reached, because one-ways only lead away from here"
 msgstr ""
-"Dieser Punkt ist nicht erreichbar, weil ausschließlich Einbahnen von hier "
-"weg führen"
+"Šis mazgas negali būti pasiektas, nes vienos krypties keliai tikrai veda iš "
+"šio taško"
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
 msgstr ""
-"Aus diesem Punkt gibt es kein Entkommen, weil hier ausschließlich Einbahnen "
-"her führen"
+"Neįmanoma pabėgti iš šio mazgo, nes vienos krypties keliai tik atveda čia"
 
 msgid "This node is very close but not connected to way #$1"
-msgstr ""
-"Dieser Punkt ist dem way #$1 sehr nahe, sie sind aber nicht verbunden."
+msgstr "Šis mazgas yra labai arti, tačiau neprijungtas prie kelio #$1"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct."
 msgid "This $1 uses deprecated tag $2 = $3"
-msgstr "Dieser $1 ist mit einem veralteten Tag markiert: $2 = $3"
+msgstr "Šis $1 naudoja naikintiną žymę $2 = $3"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
 msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
-msgstr ""
-"Dieser $1 ist mit einem veralteten Tag markiert: $2 = $3. Verwende "
-"stattdessen besser $4!"
+msgstr "Šis $1 naudoja naikintiną žymę $2 = $3. Prašome naudoti $4!"
 
 #. full mesage: "This way has an empty tag: name="
 msgid "This $1 has an empty tag: $2"
-msgstr "Dieser $1 hat ein leeres Tag: $2"
+msgstr "Šis $1 turi tuščią žymę $2"
 
 msgid "This way has no tags"
-msgstr "Diese Linie hat keine Tags"
+msgstr "Šis kelias neturi žymių"
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
 "tag"
 msgstr ""
-"Diese Straße ist als Autobahn getaggt, hat aber kein ref, nat_ref oder "
-"int_ref Tag."
+"Šis kelias yra pažymėtas kaip greitkelis todėl reikalauja ref, nat_ref arba "
+"int_ref žymių"
 
 msgid ""
 "This $1 is tagged as place of worship and therefore needs a religion tag"
 msgstr ""
-"Dieser $1 ist als Anbetungshaus gekennzeichnet, es fehlt aber ein Tag, das "
-"die Religion angibt."
+"Šis $1 yra pažymėtas kaip maldos vieta todėl reikalauja religion žymės"
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
-msgstr ""
-"Dieser Punkt ist als $1 gekennzeichnet; er sollte auch ein name-Tag erhalten."
+msgstr "Šis mazgas pažymėtas kaip $1 todėl reikalauja name žymės"
 
 msgid ""
 "This node is tagged as $1 and therefore needs a name tag or an operator tag"
 msgstr ""
-"Dieser Punkt ist als $1 gekennzeichnet; er sollte auch ein name-Tag oder ein "
-"operator-Tag erhalten."
+"Šis mazgas pažymetas kaip $1 todėl reikalauja name arba operator žymės"
 
 msgid "This way has no nodes"
-msgstr "Dieser way hat keine Punkte (nodes)"
+msgstr "Šis kelias neturi mazgų"
 
 msgid "This way has just one single node"
-msgstr "Dieser way hat nur einen einzigen node"
+msgstr "Šis kelias turi tik vieną mazgą"
 
 msgid "This way is not connected to the rest of the map"
-msgstr "Diese Straße ist nicht mit dem Rest der Karte verbunden"
+msgstr "Šis kelias nėra prijungtas prie likusio žemėlapio"
 
 msgid ""
 "This crossing of a highway and a railway needs to be tagged as "
 "railway=crossing or railway=level_crossing"
 msgstr ""
-"Diese Kreuzung einer Straße und einer Eisenbahn sollte als railway=crossing "
-"oder railway=level_crossing getaggt werden"
+"Šis kelio ir geležinkelio susikirtimas turi būti pažymėtas kaip "
+"railway=crossing arba railway=level_crossing"
 
 msgid ""
 "There are ways in different layers coming together in this railway crossing"
 msgstr ""
-"An dieser Eisenbahnkreuzung treffen sich Strecken auf unterschiedlichen "
-"Layern"
+"Šiame geležinkelių susikirtime keliai ateina iš skirtingų sluoksnių (layers)"
 
 msgid ""
 "There are ways tagged as tunnel or bridge coming together in this railway "
 "crossing"
 msgstr ""
-"An dieser Eisenbahnkreuzung treffen sich Strecken, die als Brücke oder "
-"Tunnel getaggt sind."
+"Šiame geležinkelių susikirtime sueina tunnel ir bridge pažymėti keliai"
 
 #. full mesage: "This way is fixme-tagged: fixme=yes"
 msgid "This $1 is fixme-tagged: $2"
-msgstr "Dieser $1 hat ein fixme-Tag: $2"
+msgstr "Šis $1 yra pažymėtas kaip taisytinas: $2"
 
 msgid "This relation has no type tag, which is mandatory for relations"
-msgstr ""
-"Diese Relation hat kein type-Tag. Das type-Tag ist bei Relationen Pflicht"
+msgstr "Sąryšiai privalo turėti type žymę, šis jos neturi"
 
 #. full message: "This highway intersects the waterway #17..."
 msgid "This $1 intersects the $2 #$3 but there is no junction node"
-msgstr ""
-"Dieser $1 schneidet den $2 #$3 aber es gibt keinen gemeinsamen "
-"Verbindungspunkt"
+msgstr "Šis $1 ir $2 #$3 kertasi, tačiau nėra sankirtos mazgo"
 
 #. full message: "This highway intersects the waterway #17"
 msgid "This $1 intersects the $2 #$3"
-msgstr "Dieser $1 schneidet den $2 #$3"
+msgstr "Šis $1 ir $2 #$3 kertasi"
 
 #. full message: "This highway overlaps the waterway #17..."
 msgid "This $1 overlaps the $2 #$3"
-msgstr "Dieser $1 überdeckt den $2 #$3"
+msgstr "Šis $1 ir $2 #$3 persidengia"
 
 msgid "This way contains node #$1 $2 times. This may or may not be an error"
 msgstr ""
-"In dieser Linie ist der node #$1 $2 mal enthalten. Das kann ein Fehler sein, "
-"muß aber nicht"
+"Mazgas #$1 šiame kelyje kartojasi $2 kartus. Tai gali būti klaida, bet gali "
+"ir nebūti"
 
 msgid ""
 "This way contains more than one node at least twice. Nodes are $1. This may "
 "or may not be an error"
 msgstr ""
-"In dieser Linie sind mehrere nodes öfter als ein mal enthalten. Es sind "
-"folgende nodes: $1. Das kann ein Fehler sein, muß aber nicht"
+"Šis kelias turi bent kelis mazgus bent po du kartus. Mazgai yra $1. Tai gali "
+"būti klaida, bet gali ir nebūti"
 
 msgid ""
 "This way has only two different nodes and contains one of them more than once"
 msgstr ""
-"Diese Linie enthält nur zwei verschiedene Punkte, aber wenigstens einen "
-"davon mehrfach"
+"Šiame kelyje yra vos du mazgai ir bent vienas iš jų yra įtrauktas daugiau "
+"nei kartą"
 
 msgid "The key of this node's tag is 'key': $2"
-msgstr "Dieser Punkt hat 'key' als Schlüssel in einem Tag: $2"
+msgstr "Šio mazgo žymė yra 'key': $2"
 
 msgid "The key of this way's tag is 'key': $2"
-msgstr "Diese Linie hat 'key' als Schlüssel in einem Tag: $2"
+msgstr "Šio kelio žymė yra 'key': $2"
 
 msgid "The key of this relation's tag is 'key': $2"
-msgstr "Dieser Relation hat 'key' als Schlüssel in einem Tag: $2"
+msgstr "Šio sąryšio žymė yra 'key': $2"
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
-msgstr ""
-"Dieser $1 ist mit '$2=$3' getaggt. Mit dem Teil $4 könnte auch $5 gemeint "
-"sein"
+msgstr "Šis $1 yra pažymėtas '$2=$3', kur $4 panašu į $5"
 
 #. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
 msgid "This node is a junction of ways on different layers: $1"
-msgstr "In diesem Punkt treffen sich Linien auf unterschiedlichen Layern: $1"
+msgstr "Šiame mazge susikerta skirtingų sluoksnių keliai: $1"
 
 msgid ""
 "If this mini roundabout is in a country with left-hand traffic then it "
 "should have a tag 'direction=clockwise'"
 msgstr ""
-"Wenn sich dieser Mini-Kreisverkehr in einem Land mit Linksverkehr befindet, "
-"dann sollte er ein 'direction=clockwise'-Tag besitzen"
+"Jei ši maža žiedinė sankryža yra šalyje su kairės pusės judėjimu, tai jai "
+"reikalinga žymė 'direction=clockwise'"
 
 msgid ""
 "If this mini roundabout is in a country with right-hand traffic then it "
 "should not have a tag 'direction=clockwise'"
 msgstr ""
-"Wenn sich dieser Mini-Kreisverkehr in einem Land mit Rechtsverkehr befindet, "
-"dann sollte er kein 'direction=clockwise'-Tag besitzen"
+"Jei ši maža žiedinė sankryža yra šalyje su dešinės pusės judėjimu, tai jai "
+"reikalinga žymė 'direction=clockwise'"
 
 msgid ""
 "This $1 is tagged with layer $2. This need not be an error, but it looks "
 "strange"
 msgstr ""
-"Dieser $1 ist mit layer $2 markiert. Das muß kein Fehler sein, es sieht aber "
-"seltsam aus"
+"Šis $1 yra pažymėtas lygyje $2. Tai nebūtinai klaida, bet atrodo įtartinai"
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
@@ -210,121 +194,112 @@ msgid ""
 "unclassified is only valid if it has a access=no/private or if it is a "
 "service=parking_aisle."
 msgstr ""
-"Dieser Knoten ist eine Verbindung zwischen einer Autobahn und _keines_ von "
-"folgendem: Autobahn/-auffahrt/autobahnähnliches/Service/Autohof/neu "
-"erstellte. Service oder unklassifizert ist nur gültig, wenn "
-"access=no/private oder service=parking_aisle."
+"Šiame taške susijungia motorway svarbos kelias ir kelias, kitoks nei "
+"motorway, motorway_link, trunk, services, rest_area arba construction. "
+"Service ir unclassified yra tinkami tik jei jie turi access=no/private žymę "
+"arba yra pažymėti kaip service=parking_aisle."
 
 msgid "This boundary has no name"
-msgstr "Diese Grenze hat keinen Namen"
+msgstr "Ši riba neturi pavadinimo"
 
 msgid "The boundary of $1 has no admin_level"
-msgstr "Die Grenze von $1 hat keinen Rang (admin_level)"
+msgstr "Ši $1 riba neturi admin_level"
 
 msgid ""
 "The boundary of $1 has no valid numeric admin_level. Please do not use admin "
 "levels like for example 6;7. Always tag the lowest admin_level of all "
 "boundaries."
 msgstr ""
-"Die Grenze von $1 hat keinen numerischen Rang (admin_level). Ränge wie z.B. "
-"\"6;7\" sollen nicht verwendet werden. Es soll immer der niedrigste "
-"admin_level aller Grenzen getaggt werden."
+"$1 riba neturi skaitmeninio admin_level. Prašome nenaudoti kelių "
+"administracinių lygių vienoje vietoje (pvz., 6;7). Administracinius lygius "
+"visoms riboms reikia nurodyti mažiausius tinkančius."
 
 msgid "The boundary of $1 is not closed-loop"
-msgstr "Die Grenze von $1 ist keine geschlossene Linie"
+msgstr "$1 riba nėra uždaras ciklas"
 
 msgid "The boundary of $1 splits here"
-msgstr "Die Grenze von $1 teilt sich hier auf"
+msgstr "$1 riba šioje vietoje nutrūksta"
 
 msgid ""
 "This boundary-way has admin_level $1 but belongs to a relation with lower "
 "admin_level (higher priority); it should have the lowest admin_level of all "
 "relations"
 msgstr ""
-"Dieses Grenz-Stück (way) hat den Rang (admin_level) $1, ist aber Teil einer "
-"Relation, die einen höheren Rang (niedrigeren admin_level) hat. Ein Grenz-"
-"Stück sollte immerden höchsten Rang (kleinsten admin_level) aller Relationen "
-"haben, in denen es Mitglied ist."
+"Ši riba turi priskirtą admin_level $1, tačiau priklauso sąryšiui su mažesniu "
+"admin_level (aukštesnio prioriteto); riba turėtų turėti mažiausią "
+"admin_level iš visų sąrašių, kuriems priklauso"
 
 msgid "This turn-restriction has no restriction type"
-msgstr ""
-"Bei diesem Abbiege-Verbot ist die Art des Verbots nicht angegeben "
-"(restriction type)"
+msgstr "Šis posūkių ribojimas neturi apribojimo tipo"
 
 msgid "This turn-restriction has no known restriction type"
-msgstr ""
-"Dieses Abbiege-Verbot hat keine übliche Verbots-Art (restriction type)"
+msgstr "Šis posūkių ribojimas yra nežinomo tipo"
 
 msgid "A turn-restriction needs exactly one $1 member. This one has $2"
-msgstr "Ein Abbiege-Verbot muß genau einen $1-Partner. Diese hat $2"
+msgstr ""
+"Posūkių ribojimas reikalauja vieno ir tik vieno $1 nario. Šis turi $2"
 
 msgid "From- and To-members of turn restrictions need to be ways. $1"
-msgstr ""
-"Von(from)- und Nach(to)-Partner bei einem Abbiege-Verbot müssen Linien "
-"(Straßen) sein. $1"
+msgstr "From ir To posūkių ribojimo sąryšio nariai turi būti keliai. $1"
 
 msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
-msgstr ""
-"Von(from)- und Nach(to)-Partner bei einem Abbiege-Verbot müssen miteinander "
-"verbunden sein"
+msgstr "from, via ir to nariai posūkių ribojimo sąryšyje turi jungtis"
 
 msgid "missing maxspeed tag"
-msgstr ""
-"hier gibt es keine Angabe zur erlaubten Höchstgeschwindigkeit (maxspeed-Tag)"
+msgstr "praleista maxspeed žymė"
 
 msgid ""
 "This way is part of a roundabout but is not closed-loop. (split carriageways "
 "approaching a roundabout should not be tagged as roundabout)"
 msgstr ""
-"Dieser Kreisverkehr ist nicht in sich geschlossen. (Aufgetrennte Ein- und "
-"Ausfahrts-Fahrbahnen sollen nicht als Kreisverkehr (roundabout) getaggt "
-"werden)"
+"Šis kelias pažymėtas kaip žiedinės sankryžos dalis, tačiau nėra uždaras "
+"ciklas (atskiros važiuojamosios dalys, vedančios į žiedinę sankryža neturėtų "
+"būti žymimos kaip roundabout)"
 
 msgid ""
 "If this roundabout is in a country with right-hand traffic then its "
 "orientation goes the wrong way around"
 msgstr ""
-"Wenn sich dieser Kreisverkehr in einem Land mit Rechtsverkehr befindet, dann "
-"ist er mit falschem Drehsinn eingezeichnet"
+"Jei ši žiedinė sankryža yra šalyje su eismu dešine puse, tai jos kryptis "
+"pažymėta neteisingai"
 
 msgid ""
 "If this roundabout is in a country with left-hand traffic then its "
 "orientation goes the wrong way around"
 msgstr ""
-"Wenn sich dieser Kreisverkehr in einem Land mit Linksverkehr befindet, dann "
-"ist er mit falschem Drehsinn eingezeichnet"
+"Jei ši žiedinė sankryža yra šalyje su eismu kaire puse, tai jos kryptis "
+"pažymėta neteisingai"
 
 msgid ""
 "This way is tagged as highway=$1_link but doesn't have a connection to any "
 "other $1 or $1_link"
 msgstr ""
-"Diese Straße ist getaggt mit highway=$1_link, hat aber keine Verbindung zu "
-"anderen $1 oder $1_link Straßen"
+"Šis kelias pažymėtas kaip highway=$1_link, tačiau nesijungia nei su kitu $1, "
+"nei su $1_link"
 
 msgid ""
 "This bridge does not have a tag in common with its surrounding ways that "
 "shows the purpose of this bridge. There should be one of these tags: $1"
 msgstr ""
-"Diese Brücke hat kein Tag gemeinsam mit ihren Nachbarn, aus dem der Zweck "
-"der Brücke hervorgeht. Vermutlich fehlt eines dieser Tags: $1"
+"Šis tiltas neturi bendrų žymių su aplinkiniais keliais, kurie parodytų šio "
+"tilto tikslą. Turėtų būti bent viena iš šių žymių: $1"
 
-# translations for error type names
 #. translations for error type names
 #. please keep this as short as possible
 msgid "multiple nodes on the same spot"
-msgstr "mehrere Punkte an einem Fleck"
+msgstr "keletas mazgų toje pačioje vietoje"
 
 msgid ""
 "Try to find nodes that are (almost) on the same spot. Distances less than +/-"
 "0.5 meters are considered zero"
 msgstr ""
-"Sucht nach Punkten (nodes), sie sich (fast) am selben Platz befinden. "
-"Abstände kleiner als +/- 0,5 Meter werden als 0 interpretiert"
+"Pabandykite surasti mazgus, kurie yra (beveik) toje pačioje vietoje. "
+"Atstumai mažesni nei +/-0,5 metro yra suprantami kaip nulis"
 
 #. please keep this as short as possible
 msgid "non-closed areas"
-msgstr "offene Ränder"
+msgstr "neuždaros sritys"
 
 msgid ""
 "By convention ways tagged with special combinations of key and value pairs "
@@ -333,15 +308,16 @@ msgid ""
 "map! The standard.xml file is used to determine which key-value-combinations "
 "are drawn as areas; any instance of these has to be closed-loop."
 msgstr ""
-"Manche Tags bewirken, daß das betreffende Objekt als Fläche in der Karte "
-"gezeichnet wird. Damit das funktioniert, müssen solche Objekte in sich "
-"geschlossen sein. Flächen mit offenem Rand sind in der Karte unsichtbar! Aus "
-"der Datei standard.xml wird entnommen, welche Tags für Flächen stehen; "
-"solche Dinge müssen geschlossene Ränder haben."
+"Pagal susitarimą keliai, pažymėti specialiomis rakto ir reikšmės poromis, "
+"yra laikomi sritimis bei taip braižomi žemėlapiuose. Todėl būtina, kad jie "
+"sudarytų uždarus ciklus. Neuždaros sritys ant žemėlapių nesimato! "
+"standard.xml failas yra naudojamas nustatyti, kurios rakto ir reikšmės "
+"kombinacijos braižomos kaip sritys; bet kuri tokia kombinacija turi būti "
+"uždaras ciklas."
 
 #. please keep this as short as possible
 msgid "dead-ended one-ways"
-msgstr "Einbahn-Sackgassen"
+msgstr "vienkryptis akligatvis"
 
 msgid ""
 "Streets tagged as one-way must not be dead-ended (where should all the cars "
@@ -349,29 +325,28 @@ msgid ""
 "end) cannot be reached (escaped from). Please note that motorways and "
 "motorway_links are considered one-way implicitly, so this check applies."
 msgstr ""
-"Einbahnstraßen dürfen auf keinen Fall als Sackgasse enden (wo sollte man "
-"auch die Autos am Ende der Straße hinstapeln?). Punkte, an denen "
-"ausschließlich Einbahnen beginnen (oder enden) können nie erreicht (bzw. "
-"verlassen) werden. Bitte zu beachten, daß Autobahnen und Autobahnzubringer "
-"automatisch als Einbahn betrachtet werden; auch für die gilt dieser Check."
+"Vienos krypties gatvės neturi būti akligatviai (kurgi pasidės visi "
+"automobiliai gatvės galė?). Mazgai, kuri prasideda (pasibaigia) vienkryptės "
+"gatvės negali būti pasiekti (neįmanoma iš jų pasprukti). Atkreipkite dėmesį, "
+"kad motorway ir motorway_link yra laikomi vienos krypties keliais, todėl šis "
+"tikrinimas taikomas ir jiems."
 
 #. please keep this as short as possible
 msgid "almost-junctions"
-msgstr "beinahe-Verbindungen"
+msgstr "beveik sankryža"
 
 msgid ""
 "Streets that have (at least) one unconnected end are examined here. If such "
 "an end-node is very close to any other way an error is reported. Unconnected "
 "end-nodes should probably be connected to adjacent ways."
 msgstr ""
-"Hier geht es um nicht verbundene Enden von Straßen. Wenn so ein Endknoten "
-"sehr nahe bei einer anderen Straße liegt, gibt es einen Fehler. Nicht "
-"verbundene Endpunkte sollten wahrscheinlich mit dem nächstgelegenen Weg "
-"verbunden werden."
+"Gatvės, turinčios (bent vieną) neprijungtą galą yra tikrinamos šiame teste. "
+"Jei toks galas yra labai arti kito kelio, rodoma ši klaida. Neprijungti "
+"pabaigos taškai tikriausiai turėtų būti prijungti prie gretimų kelių."
 
 #. please keep this as short as possible
 msgid "deprecated tags"
-msgstr "unbeliebte Tags"
+msgstr "naikintina žymė"
 
 msgid ""
 "As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some "
@@ -380,71 +355,69 @@ msgid ""
 "free to tag anything the way you like. This is just a hint for new tagging "
 "conventions that have evolved in the meantime."
 msgstr ""
-"Auf der Wiki-Seite "
-"http://wiki.openstreetmap.org/index.php/Deprecated_features werden Tags "
-"gelistet, die inzwischen durch andere Tags ersetzt wurden. Betrachte dies "
-"als Hinweis und nicht als Fehler. Der Begriff 'unbeliebt' ist unbeliebt; Du "
-"darfst alles taggen, wie Du willst. Es soll lediglich ein Hinweis auf neue "
-"Tagging-Konventionen sein, die sich inzwischen entwickelt haben."
+"Kaip matoma iš http://wiki.openstreetmap.org/index.php/Deprecated_features "
+"kai kurios žymės yra keičiamos kitomis atsirandant naujiems žymėjimo "
+"susitarimams. Tai ne klaida, o tik pranešimas, kad yra kitoks žymėjimo "
+"susitarimas. Jūs esate laisvas žymėti kaip tinkamas."
 
 #. please keep this as short as possible
 msgid "missing tags"
-msgstr "fehlende Tags"
+msgstr "praleista žymė"
 
 msgid ""
 "Ways, nodes and relations should in most cases have at least one tag "
 "(besides created_by)"
 msgstr ""
-"Punkte, Linien oder Relationen sollten in den meisten Fällen wenigstens ein "
-"Tag (abgesehen von created_by) haben."
+"Keliai, mazgai ir sąryšiai dažniausiai turi turėti bent vieną žymę "
+"(neskaitant created_by)"
 
 #. please keep this as short as possible
 msgid "motorways without ref"
-msgstr "Autobahnen ohne ref"
+msgstr "greitkeliai be ref"
 
 msgid ""
 "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
 "mandatory as they are very important information"
 msgstr ""
-"Im ref-Tag wird der offizielle Name (e.g. 'A 10') von Autobahnen abgelegt. "
-"Das Tag ist Pflicht, weil die ref besonders wichtig ist."
+"ref žymė dokumentuoja greiktelio numerį (t.y. 'A 1'). Ši žymė privaloma, nes "
+"neša labai svarbią informaciją"
 
 #. please keep this as short as possible
 msgid "places of worship without religion"
-msgstr "Anbetungshäuser ohne Religion"
+msgstr "maldos vieta be religijos"
 
 msgid ""
 "Churches, mosques and synagogues etc. need an extra religion tag giving info "
 "about the religion"
 msgstr ""
-"Kirchen, Moscheen, Synagogen etc. sollten mit Hilfe des religion-Tags den "
-"Namen der betreffenden Religion verzeichnet haben."
+"Bažnyčios, mečetės, sinagogos ir t.t. reikalauja religion žymės, nurodančios "
+"religiją"
 
 #. please keep this as short as possible
 msgid "point of interest without name"
-msgstr "Interessanter Ort (POI) ohne Name"
+msgstr "lankytina vieta be pavadinimo"
 
 msgid ""
 "The name tag should be specified for every point of interest as its content "
 "gets rendered in the map next to the POI symbol"
 msgstr ""
-"Jeder interessante Ort (point of interest, POI) sollte ein name-Tag haben, "
-"weil der Name in der Karte neben dem Symbol eingezeichnet wird."
+"name žymė reikalinga kiekvienai lankytinai vietai, nes šios žymės reikšmė "
+"yra rodoma žemėlapyje prie vietos žymės"
 
 #. please keep this as short as possible
 msgid "ways without nodes"
-msgstr "Linien ohne Punkte"
+msgstr "keliai be mazgų"
 
 msgid ""
 "Ways that don't consist of at least two nodes don't make much sense as they "
 "won't get rendered."
 msgstr ""
-"Linien mit weniger als zwei Punkten sind eher sinnlos, weil sie nicht "
-"gezeichnet werden können."
+"Keliai, neturinys bent dviejų mazgų neturi prasmės, nes jų negalima "
+"pavaizduoti žemėlapyje."
 
 #. please keep this as short as possible
 msgid "floating islands"
-msgstr "schwimmende Inseln"
+msgstr "neprijungtos salos"
 
 msgid ""
 "Any highways drawn on the map should be accessible by car starting anywhere "
@@ -452,14 +425,14 @@ msgid ""
 "this check, so almost any island in the sea should be reachable starting "
 "from the mainland."
 msgstr ""
-"Jede Straße auf der Karte sollte von jedem anderen Punkt der Welt aus "
-"erreichbar sein. Fähren und Straßen (sogar Bahnsteige) werden "
-"berücksichtigt, es sollten also auch die meisten Inseln vom Festland aus "
-"erreichbar sein."
+"Kelias, esantis žemėlapyje turi būti pasiekiamas automobiliu iš bet kurios "
+"vietos pasaulyje. Keltai ir keliai (netgi geležinkelio platformos) yra "
+"įtraukti į šį testą, taigi beveik bet kuri sala jūroje turėtų būti "
+"pasiekiama iš žemyno."
 
 #. please keep this as short as possible
 msgid "railway crossings without tag"
-msgstr "Eisenbahnkreuzung ohne Tag"
+msgstr "geležinkelio pervaža be žymės"
 
 msgid ""
 "(Level)-Crossings of railways and highways should have a common node as "
@@ -467,46 +440,42 @@ msgid ""
 "where larger vehicles can cross or with 'railway=crossing' if it is a "
 "crossing just for pedestrians"
 msgstr ""
-"Bei Eisenbahnübergängen sollte es immer einen gemeinsamen Punkt zwischen "
-"Straße und Eisenbahn geben, der als 'railway=level_crossing' getaggt ist, "
-"wenn es ein Übergang für Fahrzeuge ist bzw. mit 'railway=crossing', wenn es "
-"nur ein Übergang für Fußgänger ist."
+"(Vieno lygio) geležinkelio pervažos turi turėti bendrą kelio ir geležinkelio "
+"tašką, pažymėtą railway=level_crossing, jei toje vietoje automobiliai gali "
+"pervažiuoti geležinkelį ir railway=crossing, jei jis skirtas tik pėstiesiems"
 
 #. please keep this as short as possible
 msgid "wrongly used railway crossing tag"
-msgstr "falsch verwendetes Eisenbahnkreuzungs-Tag"
+msgstr "neteisinga geležinkelio pervaža"
 
 msgid ""
 "Ways that take part in level-crossings of railways and highways have to be "
 "on the same layer and should in the normal case be not tagged as bridge or "
 "tunnel"
 msgstr ""
-"Straßen und Eisenbahnlinien, die sich in einem Eisenbahnübergang treffen, "
-"müssen sich auf demselben Layer befinden und dürfen normalerweise weder als "
-"Brücke oder Tunnel markiert sein."
+"Keliai, sudarantys geležinkelio pervažą turi būti tame pačiame sluoksnyje ir "
+"nebūti pažymėti kaip bridge arba tunnel"
 
 #. please keep this as short as possible
 msgid "fixme-tagged items"
-msgstr "Korrekturhinweis (fixme)"
+msgstr "fixme žymos"
 
 msgid ""
 "Nodes, ways or relations that are tagged with FIXME should be reviewed..."
-msgstr ""
-"Punkte, Linien oder Relationen mit einem 'fixme'-Tag sind nicht komplett und "
-"sollten geprüft werden."
+msgstr "Mazgus, kelius ir sąryšius, pažymėtus FIXME reikėtų peržiūrėti..."
 
 #. please keep this as short as possible
 msgid "relations without type"
-msgstr "Relationen ohne Typ"
+msgstr "sąryšiai be tipo"
 
 msgid ""
 "Find any relation that has no type tag, wich is mandatory for relations."
 msgstr ""
-"Jede Relation benötigt ein type-Tag, das die Art der Relation angibt."
+"type žymė sąryšiams yra būtina, čia pateikiami sąryšiai be šios žymės"
 
 #. please keep this as short as possible
 msgid "intersections without junctions"
-msgstr "nicht verbundene Schnittpunkte"
+msgstr "susikirtimai be bendro mazgo"
 
 msgid ""
 "Streets that graphically intersect need a common node that represents the "
@@ -514,83 +483,83 @@ msgid ""
 "bridges or tunnels). Intersections of streets with other objects like "
 "waterways or riverbanks should be avoided"
 msgstr ""
-"Straßen brauchen einen gemeinsamen Punkt als Kreuzung, wenn sie sich "
-"graphisch schneiden. Dies gilt nicht für Überschneidungen von Straßen auf "
-"unterschiedlichen Layern (Brücken oder Tunnels). Schnitte zwischen Straßen "
-"und anderen Objekte (z.B. Gewässer) sollen grundsätzlich vermieden werden."
+"Gatvės, kurios grafiškai susikerta reikalauja bendro mazgo, žyminčio "
+"susikirtimo taška. Vienintelė išimtis -- skirtingų lygių sankryžos (t.y. "
+"tiltai, tuneliai ir viadukai). Gatvių susikirtimai su kitais objektais, "
+"tokiais kaip vandens keliai, upių krantai ir pan. turėtų būti vengiami."
 
 #. please keep this as short as possible
 msgid "highway-highway"
-msgstr "Straße-Straße"
+msgstr "kelias-kelias"
 
 #. please keep this as short as possible
 msgid "highway-waterway"
-msgstr "Straße-Gewässer"
+msgstr "kelias-vanduo"
 
 #. please keep this as short as possible
 msgid "highway-riverbank"
-msgstr "Straße-Ufer"
+msgstr "kelias-upės krantas"
 
 #. please keep this as short as possible
 msgid "waterway-waterway"
-msgstr "Gewässer-Gewässer"
+msgstr "vanduo-vanduo"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-cyclew/footp"
-msgstr "Fuß/Radweg-Fuß/Radweg"
+msgstr "dvirat/pėsti su tokiu pat"
 
 #. please keep this as short as possible
 msgid "highway-cyclew/footp"
-msgstr "Straße-Fuß/Radweg"
+msgstr "kelias-dviračiai/pėsti"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-waterway"
-msgstr "Fuß/Radweg-Gewässer"
+msgstr "dviračiai ar pėsti su vandeniu"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-riverbank"
-msgstr "Fuß/Radweg-Ufer"
+msgstr "dviračiai ar pėsti su upės krantu"
 
 #. please keep this as short as possible
 msgid "overlapping ways"
-msgstr "überlagerte Linien"
+msgstr "persidengiantys keliai"
 
 msgid ""
 "Segments of ways that lie on top of each other (the same nodes connected by "
 "different ways in the same order) are a problem for routing software. They "
 "happen accidently and are hard to find."
 msgstr ""
-"Straßenzüge, die übereinander liegen (dieselbe Folge von nodes ist Teil "
-"unterschiedlicher ways) sind ein großes Problem für Routing-Software. Dieser "
-"Check soll dabei helfen, diese schwer auffindbaren Fehler zu beheben."
+"Kelio segmentai, esantys vienas virš kito (tie patys mazgai, ta pačia tvarka "
+"sudarantys skirtingus kelius) yra didelė problema kelio paieškos programoms. "
+"Paprastai atsiranda netyčia ir labai sunkiai randami."
 
 #. please keep this as short as possible
 msgid "loopings"
-msgstr "Schleifen"
+msgstr "užsicikinimai"
 
 msgid ""
 "Any way that contains any single node more than twice is considered an "
 "error. Any way may contain just one node twice. If more than one node is "
 "found twice it is considered an error."
 msgstr ""
-"Ein bestimmter Punkt darf in einem Linienzug höchstens zwei mal vorkommen. "
-"Wenn es mehr als einen node gibt, der mehrfach vorkommt, ist das ein Fehler."
+"Kelias, turintis bet kurį mazga daugiau nei du kartus yra laikomas "
+"klaidingu. Kelias du kartus gali turėti tik vieną mazga. Jei daugiau nei "
+"vienas mazgas randamas du kartus, tai laikoma klaida."
 
 #. please keep this as short as possible
 msgid "misspelled tags"
-msgstr "Tippfehler"
+msgstr "klaidinos žymės"
 
 msgid ""
 "Tags that are used very seldom and almost look like very common tags (only "
 "one character difference) are reported as a warning."
 msgstr ""
-"Wenn ein Tag selten vorkommt und einem häufig verwendeten sehr ähnlich ist "
-"(nur ein Buchstabe unterscheidet sich) handelt es sich vermutlich um einen "
-"Tippfehler."
+"Žymės, kurios naudojamos labai retai ir atrodo labai panašios į populiarias "
+"žymės (skiriasi vos viena raidė) yra rodomos kaip perspėjimai."
 
 #. please keep this as short as possible
 msgid "layer conflicts"
-msgstr "unterschiedliche Layer"
+msgstr "sluoksnių klaida"
 
 msgid ""
 "Connected ways should be on the same layer. Crossings on intermediate nodes "
@@ -600,25 +569,25 @@ msgid ""
 "note that bridges are set to layer +1, and tunnels to -1, anything else to "
 "layer 0 implicitly if no layer tag is present."
 msgstr ""
-"Miteinander verbundene Linien sollten sich im selben Layer befinden. "
-"Schneiden sich zwei Linien an Nicht-Endpunkten, so ist das jedenfalls ein "
-"Fehler. Verbindungen von Linien unterschiedlicher Layer an deren Endknoten "
-"sind nicht günstig, aber in der Praxis häufig anzutreffen. Daher kann man "
-"diesen Teil des Checks separat ausblenden. Für Brücken wird in diesem Check "
-"der Layer +1 angenommen, für Tunnels -1 und für alle anderen Straßen wird "
-"als Layer 0 angenommen, wenn es kein layer-Tag gibt."
+"Sujungti keliai turėtų būti viename sluoksnyje. Susikirtimai negaliniuose "
+"kelių, esančių skirtinguose sluoksniuose, taškuose yra aiškiai neteisingi. "
+"Sankryžos skirtinguose sluoksniuose esančių kelių galiniuose taškuose taip "
+"pat neteiktinos, tačiau dažnai naudojamos. Todėl jas galima ignoruoti ir "
+"išjungti atskirai. Atkreipkite dėmesį, kad jei sluoksnis nenurodomas layer "
+"žyme, tiltam priskiriamas +1, o tuneliams -1 sluoksnis, visa kita turi "
+"sluoksnį 0."
 
 #. please keep this as short as possible
 msgid "mixed layers intersections"
-msgstr "unterschiedliche Layer in Kreuzung"
+msgstr "sankryžos skirtinguose sluoksniuose"
 
 #. please keep this as short as possible
 msgid "strange layers"
-msgstr "seltsamer Layer-Wert"
+msgstr "keisti sluoksniai"
 
 #. please keep this as short as possible
 msgid "motorways connected directly"
-msgstr "direkte Autobahn-Verbindungen"
+msgstr "tiesiogiai sujungti greitkeliai"
 
 msgid ""
 "Motorways should only be connected to other motorways or motorway_links. "
@@ -627,16 +596,15 @@ msgid ""
 "positives on motorways ending in cities but it can be a valuable tool for "
 "looking up unwanted connections of motorways and other roads."
 msgstr ""
-"Autobahnen (motorways) sollten ausschließlich mit anderen Autobahnen bzw. "
-"Autobahnzubringern (motorway_link) verbunden sein. Insbesondere sollten "
-"Autobahnen nicht mit normalen Straßen (highway=primary oder "
-"highway=residential) verbunden sein. Dies gilt nicht an Stellen, wo z.B. "
-"Autobahnen im Stadtgebiet enden. Der Check ist aber trotzdem hilfreich, um "
-"unerwünschte Verbindungen zwischen Autobahnen und anderen Straßen zu finden."
+"Motorway turi jungtis tik su kitais motorway arba motorway_link. Jie "
+"neturėtų tiesiogiai jungtis su highway=primary arba highway=residential "
+"keliais. Atkreipkite dėmesį: šis testas gali sudirbti neteisingai tose "
+"vietose, kur greitkelis baigiasi mieste, tačiau jis yra vertingas "
+"instrumentas norint rasti neteisingus greitkelių ir kitų kelių susikirtimus."
 
 #. please keep this as short as possible
 msgid "boundaries"
-msgstr "Grenzen"
+msgstr "ribos"
 
 msgid ""
 "Administrative Boundaries can be expressed either by tagging ways or by "
@@ -644,34 +612,33 @@ msgid ""
 "they must not self-intersect or split and they must have a name and an "
 "admin_level."
 msgstr ""
-"Grenzen werden entweder durch Tags auf den beteiligten Linienzügen oder als "
-"Relation dargestellt. Es sollten immer geschlossene Linienzüge sein, sie "
-"dürfen sich nicht selbst schneiden oder teilen und jede Grenze braucht einen "
-"Namen und einen Rang (admin_level)."
+"Administracinės ribos gali būti išreikštos arba pažymint kelius, arba "
+"pridedant juos į sąryšius. Ribos turi būti uždari ciklai, neturi susikirsti "
+"su savimi ar nutrūkti, taip pat turi turėti name ir admin_level žymas."
 
 #. please keep this as short as possible
 msgid "missing name"
-msgstr "Name fehlt"
+msgstr "praleistas pavadinimas"
 
 #. please keep this as short as possible
 msgid "missing admin_level"
-msgstr "Rang (admin_level) fehlt"
+msgstr "praleistas admin_level"
 
 #. please keep this as short as possible
 msgid "not closed loop"
-msgstr "nicht geschlossen"
+msgstr "neuždaras ciklas"
 
 #. please keep this as short as possible
 msgid "splitting boundary"
-msgstr "Verlauf teilt sich"
+msgstr "ribos trūkis"
 
 #. please keep this as short as possible
 msgid "admin_level too high"
-msgstr "Rang (admin_level) zu gering"
+msgstr "per didelis admin_level"
 
 #. please keep this as short as possible
 msgid "restrictions"
-msgstr "Abbiegeverbote"
+msgstr "ribojimai"
 
 msgid ""
 "This check is about turn restrictions defined by relations. A turn "
@@ -679,26 +646,26 @@ msgid ""
 "another way as 'to' member and optionally one or more ways or nodes as via "
 "members that need to be connected to 'from' and 'to'"
 msgstr ""
-"Hier geht es um Abbiegeverbote, die durch Relationen dargestellt werden. Zu "
-"solch einer Relation gehört ein gültiger Typ, eine Straße als 'von' (from), "
-"eine andere Straße als 'nach' (to) und eventuell einer oder mehrere Punkte "
-"als 'via', die alle mit den 'von' und 'nach'-Straßen verbunden sein müssen."
+"Šis testas tikrina posūkių ribojimus aprašytus sąryšiais. Posūkių ribojimo "
+"sąryšis turi turėti teisingą type atributą, kelia kaip „from“ narį, kitą "
+"kelią kaip „to“ narį ir gali turėti vieną ar daugiau mazgų ar kelių kaip "
+"„via“ narius, kurie reikalingi sujungti „from“ ir „to“"
 
 #. please keep this as short as possible
 msgid "missing type"
-msgstr "fehlernder Type"
+msgstr "praleistas tipas"
 
 #. please keep this as short as possible
 msgid "missing from way"
-msgstr "fehlender 'von' (from)"
+msgstr "nėra from kelio"
 
 #. please keep this as short as possible
 msgid "missing to way"
-msgstr "fehlender 'nach' (to)"
+msgstr "nėra to kelio"
 
 #. please keep this as short as possible
 msgid "missing maxspeed"
-msgstr "keine Geschwindigkeitsangabe"
+msgstr "nėra maxspeed"
 
 msgid ""
 "maxspeed tags are not mandatory but they are very helpful for successful "
@@ -706,45 +673,43 @@ msgid ""
 "tag. Please only add maxspeed tags if the allowed maxspeed differs from the "
 "default speed for the given highway!"
 msgstr ""
-"Die Angabe zur erlaubten Höchstgeschwindigkeit (maxspeed-Tag) ist nicht "
-"Pflicht, wäre aber für ein erfolgreiches Routing sehr hilfreich. Dieser "
-"Check soll dabei helfen, wichtige Straßen zu finden, die kein maxspeed-Tag "
-"haben. Ein maxspeed-Tag soll nur dann hinzugefügt werden, wenn die erlaubte "
-"Geschwindigkeit von der üblichen Geschwindigkeit für diese Art von Straße "
-"abweicht."
+"maxspeed žymos nėra privalomos, tačiau jos labai padeda kelio radimo "
+"programoms. Šis testas turėtų padėti rasti greitkelius, neturinčius maxspeed "
+"žymos. Prašome maxspeed žymas pridėti tik tuo atveju, jei leidžiamas "
+"didžiausias greitis skiriasi nuo įprastinės tokiam keliui reikšmės!"
 
 #. please keep this as short as possible
 msgid "roundabouts"
-msgstr "Kreisverkehre"
+msgstr "žiedinės sankryžos"
 
 msgid ""
 "roundabout are always one-way streets directed counter-clockwise in right-"
 "hand driving countries or clockwise in left-hand driving countries."
 msgstr ""
-"Kreisverkehre sind immer Einbahnen, die in Ländern mit Rechtsverkehr gegen "
-"den Uhrzeigersinn ausgerichtet sind (im Uhrzeigersinn für Linksverkehr)."
+"žiedinės sankryžos visada yra vienpusiai keliai einantys prieš laikrodžio "
+"rodyklę dešinės pusės eismo šalyse ir pagal laikrodžio rodyklę kairės eismo "
+"pusės šalyse."
 
 #. please keep this as short as possible
 msgid "wrong direction"
-msgstr "falscher Drehsinn"
+msgstr "neteisinga kryptis"
 
 #. please keep this as short as possible
 msgid "*_link-connections"
-msgstr "Zubringer-Verbindungen"
+msgstr "*_link sujungimai"
 
 msgid ""
 "Any highway tagged as (motorway|trunk|primary|secondary)_link should have at "
 "least one connection to a (motorway|trunk|primary|secondary) highway or a "
 "_link highway of the same type"
 msgstr ""
-"Straßen, die als (motorway|trunk|primary|secondary)_link markiert sind, "
-"sollten wenigstens eine Verbindung zu einer "
-"(motorway|trunk|primary|secondary) Straße oder einem Zubringer des gleichen "
-"Typs haben."
+"Kiekvienas kelias, pažymėtas kaip (motorway|trunk|primary|secondary)_link "
+"turi turėti bent vieną jungtį su (motorway|trunk|primary|secondary) arba "
+"atitinkamo lygio _link keliu"
 
 #. please keep this as short as possible
 msgid "bridge-tags"
-msgstr "Brücken-Tags"
+msgstr "tilto žymės"
 
 msgid ""
 "Someone draws a bridge and forgets to tag it as highway... A bridge should "
@@ -752,58 +717,56 @@ msgid ""
 "Currently these are: highway, railway, cycleway, waterway, footway, piste, "
 "aerialway, pipeline, building, via_ferrata"
 msgstr ""
-"Jemand zeichnet eine Brücke und vergißt auf das highway-Tag... Eine Brücke "
-"sollte immer eines der 'wichtigen' Tags haben, das auch die jeweiligen "
-"Nachbarn haben. Damit sind folgende Tags gemeint: highway, railway, "
-"cycleway, waterway, footway, piste, aerialway, pipeline, building, "
-"via_ferrata"
+"Kai kas nubraižo tiltą ir pamiršta pažymėti jį kaip kelią... Tiltas visada "
+"turi turėti bent vieną iš „pagrindiniu“ žymių, kurias greta esantys keliai "
+"turi. Tai gali būti: highway, railway, cycleway, waterway, footway, piste, "
+"aerialway, pipeline, building, via_ferrata"
 
-# translations for the web pages
 #. translations for the web pages
 #: index.php:9
 msgid "data consistency checks for OSM"
-msgstr "Plausichecks für OSM-Daten"
+msgstr "duomenų teisingumo patikrinimas OSM"
 
 #: index.php:11
 msgid "keep-right logo"
-msgstr "keep-right Logo"
+msgstr "keep-right logo"
 
 #: index.php:13
 #, php-format
 msgid "data consistency checks for %sOSM%s"
-msgstr "Plausichecks für %sOSM%s"
+msgstr "duomenų teisingumo patikrinmas %sOSM%s"
 
 #: index.php:20
 msgid ""
 "These pages show checks that are run on a local excerpt database filled with "
 "OSM data."
 msgstr ""
-"Diese Seiten stellen Ergebnisse von Prüfungen dar, die an lokalen "
-"Datenbankausschnitten der OSM-Daten durchgeführt wurden"
+"Šie puslapiai rodo testus, kurie naudojami patikrinti vietinei OSM duomenų "
+"kopijai."
 
 #: index.php:23
 #, php-format
 msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
-msgstr "Checks für Europa%s (Startpunkt Wien, Österreich)"
+msgstr "Duomenų patikrinimas Europai%s (Pradinis taškas Viena, Ausrija)"
 
 #: index.php:27
 msgid "Australian KeepRight partner site"
-msgstr "Partnersite KeepRight Australien"
+msgstr "Australijos KeepRight partneriai"
 
 #: index.php:30
 #, php-format
 msgid "Data Checks for Africa%s (Starting point Cairo, Egypt)"
-msgstr "Checks für Africa%s (Startpunkt Kairo, Ägypten"
+msgstr "Duomenų patikrinimas Afrikai%s (Pradinis taškas Kaire, Egiptas)"
 
 #: index.php:33
 #, php-format
 msgid "Data Checks for Canada%s (Starting point Québec)"
-msgstr "Checks für Kanada%s (Startpunkt Québec)"
+msgstr "Duomenų patikrinimas Kanadoje%s (Pradinis taškas Kvebeke)"
 
 #: index.php:36
 #, php-format
 msgid "Data Checks for USA%s (Starting point Philadelphia, PA)"
-msgstr "Checks für die USA%s (Startpunkt, Philadelphia, PA)"
+msgstr "Duomenų patikrinimas JAV%s (Pradinis taškas Filadelfijoje, PA)"
 
 #: index.php:39
 #, php-format
@@ -811,22 +774,23 @@ msgid ""
 "Data Checks for Central America%s (Starting point Santo Domingo, Republica "
 "Dominicana)"
 msgstr ""
-"Checks für Mittelamerika%s (Startpunkt Santo Domingo, Dominikanische "
-"Republik)"
+"Duomenų patikrinimas Centrinei Amerikai%s (Pradinis taškas Santo Domingo, "
+"Dominikos Respublika)"
 
 #: index.php:42
 #, php-format
 msgid "Data Checks for South America%s (Starting point São Paulo, Brazil)"
-msgstr "Checks für Südamerika%s (Startpunkt São Paulo, Brasilien)"
+msgstr ""
+"Duomenų patikrinimas Pietų Amerikai%s (Pradinis taškas San Paulo, Brazilija)"
 
 #: index.php:45
 #, php-format
 msgid "Data Checks for Asia%s (Starting point Tokio, Japan)"
-msgstr "Checks für Asien%s (Startpunkt Tokio, Japan)"
+msgstr "Duomenų patikrinimas Azijai%s (Pradinis taškas Tokijas, Japonija)"
 
 #: index.php:47
 msgid "Europe Data Checks as ugly list"
-msgstr "Checks für Europa als häßliche Liste"
+msgstr "Europos duomenų patikrinimas kaip nepagražintas sąrašas"
 
 #: index.php:49
 #, php-format
@@ -834,12 +798,12 @@ msgid ""
 "Developers have a look at the %sSourceForge%s site providing svn access to "
 "the sources."
 msgstr ""
-"Entwickler mögen bitte einen Blick auf meine %sSourceForge%s site werfen, um "
-"Einblick in den Quellcode via svn zu erhalten."
+"Vystytojai žiūrėkite į %sSourceForge%s, kur galima rasti SVN priėjimą prie "
+"išeities tekstų."
 
 #: index.php:52
 msgid "logfile"
-msgstr "Protokoll"
+msgstr "žurnalas"
 
 #: index.php:56
 #, php-format
@@ -847,17 +811,15 @@ msgid ""
 "If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
 msgstr ""
-"Zum Exportieren der Fehlermeldungen von KeepRight gibt es eine eigene "
-"%sAnleitung%s"
 
 #: index.php:56
 msgid ""
 "There are a few more languages in the select box now. You can help "
 "translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
 msgstr ""
-"In der Auswahlliste gibt es ein paar neue Sprachen. Du kannst dabei helfen, "
-"KeepRight zu übersetzen. Dazu wurde eine %slaunchpad site%s eingerichtet. "
-"Danke an alle, die mithelfen!"
+"Dabar pasirinkimo lauke yra keletas papildomų kalbų. Jūs taip pat galite "
+"padėti versdami KeepRight %slaunchpad svetainėje%s. Dėkui visiems jau "
+"padėjusiems!"
 
 #: index.php:56
 #, php-format
@@ -869,14 +831,6 @@ msgid ""
 "service=parking_aisle.<br>I hope you agree that this inconvenience is "
 "necessary. Thank you, Nathan, for telling me about this!"
 msgstr ""
-"Ich habe den Check 'direkte Autobahn-Verbindungen' geändert, um "
-"Routingfehler wie %sdiesen hier%s zu verhindern. Der Check wird sich ab "
-"jetzt über alle Verbindungen zwischen einer Autobahn und einem "
-"highway=service oder highway=unclassified beschweren, wenn dort kein "
-"access=no oder access=private ist oder wenn es kein Parkplatz "
-"(service=parking_aisle) ist.<br>Ich bitte um Verständnis für die aus meiner "
-"Sicht nötigen Unannehmlichkeiten. Besten Dank an Nathan, der mich darauf "
-"hingewiesen hat!"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -886,7 +840,7 @@ msgid ""
 "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
 "se tornou multilíngue!"
 msgstr ""
-"KeepRight wird mehrsprachig! - KeepRight becomes multilingual! - O KeepRight "
+"KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
 "se tornou multilíngue!"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
@@ -905,20 +859,19 @@ msgid ""
 "vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
 "Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
 msgstr ""
-"Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem "
-"Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt "
-"es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>As a "
-"start KeepRight may be used in english, german and brazilian portugese. New "
-"translations are welcome! The gettext template file is $1right here$2. "
-"Special thanks go to Rodrigo for this great idea!<br><br>Como início, o "
-"KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas "
-"traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem "
-"aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande "
-"ideia!"
+"As a start KeepRight may be used in english, german and brazilian portugese. "
+"New translations are welcome! The gettext template file is $1right here$2. "
+"Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es "
+"KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere "
+"Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank "
+"an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode "
+"ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem "
+"vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
+"Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
 
 #: index.php:59
 msgid "Getting rid of the evil db-parameter"
-msgstr "Den bösartigen db-Parameter loswerden"
+msgstr ""
 
 #: index.php:60
 msgid ""
@@ -928,12 +881,6 @@ msgid ""
 "current position.<br>This is over now! The db-parameter is gone. So have fun "
 "panning around the whole world and fixing errors easier than ever!"
 msgstr ""
-"Vielleicht ist Dir schon aufgefallen, daß man in KeepRight nicht beliebig "
-"umherfahren konnte, weil unsichtbare Grenzen Fehlermarker verschwinden "
-"ließen. Man mußte immer den passenden db-Parameter in der Adresse stehen "
-"haben, um passend zur aktuellen Position Fehlermarker zu erhalten. Das ist "
-"jetzt vorbei! Den db-Parameter gibt es nicht mehr. Viel Spaß beim Umrunden "
-"der ganzen Welt und einfacheren Fehler-Korrigieren!"
 
 #: index.php:63
 msgid ""
@@ -942,10 +889,6 @@ msgid ""
 "about ways that don&apos;t have a single connection with any other way(!). "
 "Sometimes it takes months until you see the most obvious things..."
 msgstr ""
-"Im Zuge der nächsten Updates wird sich die Anzahl der Insel-Fehler erhöhen. "
-"Bisher hat sich die Checkroutine nicht über Straßen beschwert, die keine "
-"einzige Verbindung zu anderen Straßen haben(!) Manchmal dauert es Monate, "
-"bis man das Offensichtlichste erkennt..."
 
 #: index.php:66
 #, php-format
@@ -954,18 +897,15 @@ msgid ""
 "the error types you selected when you left the site last time (how could "
 "you?). Just open %s without any parameters!"
 msgstr ""
-"Hier mein FOSSGIS-Geschenk: KeepRight merkt sich ab sofort den Ort und die "
-"Fehlerkategorien, wie sie beim letzten Verlassen der Site (wie konntest Du "
-"nur?) eingestellt waren. Lade einfach %s ohne Parameter!"
 
 #: index.php:70
 #, php-format
 msgid "For archeologists: %sOld log entries%s have moved."
-msgstr "Für Archäologen: %salte Logbuch-Einträge%s wurden ausgelagert"
+msgstr ""
 
 #: index.php:73
 msgid "a few words on the new comment feature"
-msgstr "Ein paar Worte zur Kommentar-Funktion:"
+msgstr ""
 
 #: index.php:74
 msgid ""
@@ -973,10 +913,6 @@ msgid ""
 "false-positive. Don't confuse the comment box with an editing feature. This "
 "is not Potlatch! You cannot add missing tags via KeepRight!"
 msgstr ""
-"Gib mir einen Hinweis, damit ich Fehlalarme in den Checkroutinen abstellen "
-"kann. Verwechsle die Kommentar-Funktion bitte nicht mit einer Bearbeitungs-"
-"Funktion. Dies ist nicht Potlatch! Du kannst keine fehlenden Tags über "
-"KeepRight ergänzen!"
 
 #: index.php:77
 msgid ""
@@ -984,78 +920,70 @@ msgid ""
 "running when you hit the JOSM-link. Furthermore you have to enable the "
 "&apos;remote control&apos;-plugin in JOSMs options."
 msgstr ""
-"Damit die JOSM-Links funktionieren, muß JOSM bereits gestartet sein. "
-"Außerdem muß das 'remote control'-Plugin in den JOSM-Einstellungen aktiviert "
-"sein."
 
 #: index.php:79
 msgid "Currently the following checking procedures are implemented"
-msgstr "Momentan sind folgende Checkroutinen vorhanden"
+msgstr "Šiuo metu yra naudojamas tokios tikrinimo procedūros"
 
 #: index.php:102
 msgid ""
 "If you find an error in my errors lists I would definitely like to hear "
 "about it!"
 msgstr ""
-"Wenn Du einen Fehler in den Fehlerlisten findest, würde mich das brennend "
-"interessieren!"
 
 #: index.php:104
 msgid "Impressum"
-msgstr "Impressum"
+msgstr ""
 
 #: index.php:105
 msgid ""
 "This work is done without commercial background, just for my personal "
 "pleasure. I would be very happy if it was helpful for the OSM Project."
 msgstr ""
-"Ich mache dies ohne finanziellen Zweck und ausschließlich zu meinem "
-"persönlichen Vergnügen. Wenn es dem OSM-Projekt hilft, würde mich das sehr "
-"freuen."
 
 #: index.php:106
 msgid ""
 "If you like to contact me, my mailbox at the austrian server of gmx is "
 "labelled KeepRight."
 msgstr ""
-"Solltest Du mich kontaktieren wollen, ich habe ein Mailkonto beim "
-"Österreichischen Ableger von GMX mit der Aufschrift KeepRight."
+"Jei norite susisiekti su autoriumi, jo pašto dėžutė yra austriškame gmx "
+"serveryje ir vadinasi KeepRight."
 
 #: index.php:106
 msgid ""
 "Please understand that I will not always be able to immediately respond to "
 "your mail on weekdays."
 msgstr ""
-"Ich ersuche um Verständnis dafür, daß ich vor allem unter der Woche nicht "
-"immer sofort auf Mails antworten kann."
+"Prašome suprasti, kad aš ne visada galėsiu nedelsdamas atsakyti į jūsų "
+"laiškus darbo dienomis."
 
 #: report_map.php:155
 msgid "errors"
-msgstr "Fehler"
+msgstr "klaidos"
 
 #: report_map.php:155
 msgid "warnings"
-msgstr "Warnungen"
+msgstr "perspėjimai"
 
 #: report_map.php:182
 msgid "all"
-msgstr "alle"
+msgstr "viskas"
 
 #: report_map.php:183
 msgid "none"
-msgstr "keine"
+msgstr "nieko"
 
 #: report_map.php:185
 msgid "show ignored errors"
-msgstr "ignorierte Fehler zeigen"
+msgstr "rodyk ignoruojamas kaidas"
 
 #: report_map.php:187
 msgid "show temp. ignored errors"
-msgstr "vorübergehend Ignorierte zeigen"
+msgstr "rodyk laikinai ignoruojamas klaidas"
 
 #: report_map.php:189
 msgid "Edit in Potlatch"
-msgstr "mit Potlatch bearbeiten"
+msgstr "Redaguoti Potlach'u"
 
 #: report_map.php:194
 #, php-format
@@ -1063,31 +991,30 @@ msgid ""
 "You will see up to %d error markers starting in the center of the map. "
 "Please allow a few seconds for the error markers to appear after panning."
 msgstr ""
-"Die Karte zeigt bis zu %d Fehlermarker an, beginnend in der Mitte des "
-"Ausschnittes. Nach dem Verschieben der Karte kann es einige Sekunden dauern, "
-"bis die Marker erscheinen."
+"Jūs matysite iki %d klaidų žymių, pradedant žemėlapio centre.Palaukite "
+"kelias sekundes po kiekvieno žemėlapio pakeitimo, kol klaidų žymės užsikraus."
 
 #: report_map.php:196
 #, php-format
 msgid "Site updated at %s"
-msgstr "Letztes Update am %s"
+msgstr "Duomenys atnaujinti %s"
 
 #: points.php:114
 msgid "node"
-msgstr "Node"
+msgstr "mazgas"
 
 #: points.php:114
 msgid "way"
-msgstr "Way"
+msgstr "kelias"
 
 #: points.php:114
 msgid "relation"
-msgstr "Relation"
+msgstr "sąryšis"
 
 #. full message: "edit in JOSM / Potlatch"
 #: myText.js:237
 msgid "edit in"
-msgstr "bearbeiten mit"
+msgstr "redaguoti"
 
 #: myText.js:237
 msgid "JOSM"
@@ -1098,8 +1025,8 @@ msgid ""
 "JOSM must be running and JOSM's remote control plugin must be enabled for "
 "this to work!"
 msgstr ""
-"JOSM muß gestartet sein und das remote control-Plugin muß aktiv sein, damit "
-"das funktioniert!"
+"JOSM'as turi būti paleistas ir JOSM'o nuotolinio valdymo įskiepis turi būti "
+"įjungtas, kad šitai veiktų!"
 
 #: myText.js:239
 msgid "Potlatch"
@@ -1107,91 +1034,88 @@ msgstr "Potlatch"
 
 #: myText.js:244
 msgid "keep this error open"
-msgstr "offen lassen"
+msgstr "Palikti šią klaidą atvirą"
 
 #: myText.js:246
 msgid "ignore temporarily (error corrected)"
-msgstr "vorübergehend ignorieren"
+msgstr "laikinai ignoruoti (klaida ištaisyta)"
 
 #: myText.js:248
 msgid "ignore (false-positive)"
-msgstr "ignorieren (kein Fehler)"
+msgstr "ignoruoti (neteisinga klaida)"
 
 #: myText.js:252
 msgid "save"
-msgstr "speichern"
+msgstr "saugoti"
 
 #: myText.js:253
 msgid "cancel"
-msgstr "abbrechen"
+msgstr "atšaukti"
 
 #: myText.js:254
 msgid "please click on the icon to fixate the bubble"
-msgstr ""
-"bitte auf das Symbol auf der Karte klicken, um die Sprechblase offen zu "
-"halten"
+msgstr "pranešimo fiksavimui spustelkite ant ikonos"
 
 #: myText.js:255
 msgid "link to here: error #"
-msgstr "Link hierher: Fehler #"
+msgstr "nuoroda čia: error #"
 
 #. full message: "last edit of this node: 2009-04-01 5:22"
 #: myText.js:255
 msgid "last edit of this"
-msgstr "Stand von diesem"
+msgstr "paskutinis keitimas"
 
 #: interfacing.php:4
 msgid "interfacing KeepRight"
-msgstr "KeepRight anzapfen"
+msgstr ""
 
 #: interfacing.php:11
 msgid "Interfacing with KeepRight"
-msgstr "mit KeepRight arbeiten"
+msgstr ""
 
 #: interfacing.php:13
 msgid "You may use KeepRight&apos;s results in a number of ways:"
-msgstr ""
-"Die Ergebnisse von KeepRight können auf verschiedene Arten verwendet werden:"
+msgstr "KeepRight'o rezultatus galima naudoti keliais būdais:"
 
 #: interfacing.php:17
 #, php-format
 msgid "by means of the %smap web page%s"
-msgstr "über die %sWebsite%s"
+msgstr "žiūrėti %sžemėlapio puslapiuose%s"
 
 #: interfacing.php:18
 #, php-format
 msgid "exporting %sGPX waypoints%s"
-msgstr "als %sGPX-Export%s"
+msgstr ""
 
 #: interfacing.php:19
 #, php-format
 msgid "exporting new errors as %sRSS feed%s"
-msgstr "neue Fehler als %sRSS-Feed%s abbonieren"
+msgstr "eksportuoti naujas klaidas kaip %sRSS srautą%s"
 
 #: interfacing.php:20
 #, php-format
 msgid "getting the whole errors %sdump file%s"
-msgstr "das gesamte %sDumpfile%s herunterladen"
+msgstr ""
 
 #: interfacing.php:24
 msgid "exporting GPX waypoints"
-msgstr "GPX-Wegpunkte exportieren"
+msgstr "eksportuojami GPX kelio taškai"
 
 #: interfacing.php:25 interfacing.php:35 interfacing.php:47
 msgid "Purpose"
-msgstr "Zweck"
+msgstr ""
 
 #: interfacing.php:26
 msgid ""
 "Exporting a section of the map into a GPX-styled list of waypoints for use "
 "with GPS units"
 msgstr ""
-"Die Fehler in einem Kartenausschnitt als Liste von Wegpunkten in Form einer "
-"GPX-Datei herunterladen, um sie in einem GPS-Gerät einzublenden"
+"Eksportuojama žemėlapio dalis į GPX tipo kelio taškų sąrašą naudojimui GPS "
+"įrenginiuose"
 
 #: interfacing.php:28 interfacing.php:38 interfacing.php:50
 msgid "URL format"
-msgstr "URL-Format"
+msgstr "URL formatas"
 
 #: interfacing.php:30
 msgid ""
@@ -1199,9 +1123,9 @@ msgid ""
 "as a bounding box on the map. This export will return up to 100 waypoints. "
 "This limit could be increased, in case there is demand."
 msgstr ""
-"Man kann eine Liste der gewünschten Fehlerarten und den Ausschnitt auf der "
-"Karte angeben. Der Export enthält bis zu 100 Wegpunkte. Dieses Limit könnte "
-"ich erhöhen, wenn Bedarf besteht."
+"Jūs galite nurodyti klaidų, kurias norite gauti faile, tipus, o taip pat "
+"apibrėžiantį žemėlapį stačiakampį. Šis eksportas duos iki 100 žemėlapio "
+"taškų. Ši riba gali būti padidinta, jei bus poreikis."
 
 #: interfacing.php:31
 msgid ""
@@ -1209,16 +1133,16 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
-"Links unterhalb der Karte gibt es eine Verknüpfung zum GPX-Export, die stets "
-"die aktuelle Auswahl an Fehlertypen und den aktuellen Ausschnitt enthält."
+"Apatiniame kairiajame žemėlapio kampe yra nuoroda į GPX tarnybą, kuri visada "
+"parodys dabartinę žemėlapio vietą su dabar pasirinktais klaidų tipais."
 
 #: interfacing.php:34
 msgid "exporting new errors as RSS feed"
-msgstr "Neue Fehler als RSS-Feed abonnieren"
+msgstr "eksportuojamos naujos klaidos kaip RSS srautas"
 
 #: interfacing.php:36
 msgid "Watching a section of the map for newly found errors"
-msgstr "Einen Kartenausschnitt auf neu aufgetretene Fehler beobachten"
+msgstr ""
 
 #: interfacing.php:41
 msgid ""
@@ -1226,9 +1150,6 @@ msgid ""
 "different. The RSS feed will include error entries that were first found "
 "within the last three weeks."
 msgstr ""
-"Das URL-Format ist dasselbe wie beim GPX-Export, nur der format-Parameter "
-"ist anders. Der RSS-Feed liefert Fehlereinträge, die innerhalb der "
-"vergangenen drei Wochen neu aufgetreten sind."
 
 #: interfacing.php:42
 msgid ""
@@ -1236,28 +1157,26 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
-"Links unterhalb der Karte gibt es eine Verknüpfung zum RSS-Feed, die stets "
-"die aktuelle Auswahl an Fehlertypen und den aktuellen Ausschnitt enthält."
 
 #: interfacing.php:46
 msgid "getting the whole dump-file"
-msgstr "das gesamte Fehler-Dumpfile herunterladen"
+msgstr "gaunamas pilnas klaidų failas"
 
 #: interfacing.php:48
 msgid "Doing something completely different with 10 millions of errors..."
-msgstr "etwas völlig anderes mit 10 Millionen Fehlern anstellen..."
+msgstr ""
 
 #: interfacing.php:53
 msgid ""
 "This tab-separated file contains all errors currently open for the whole "
 "planet (currently >200MB). It is being updated daily."
 msgstr ""
-"Diese tabgetrennte Textdatei enthält alle Fehlerdatensätze, die weltweit "
-"gerade offen sind (aktuell >200MB). Es wird täglich aktualisiert."
+"Šis tab-skiriamas failas saugo visas šiuo metu visoje planetoje aptiktas "
+"klaidas (šiuo metu >200MB). Jis yra atnaujinamas kasdien."
 
 #: interfacing.php:56
 msgid "Table layout"
-msgstr "Tabellenstruktur"
+msgstr "Lentelės išdėstymas"
 
 #: interfacing.php:59
 #, php-format
@@ -1267,18 +1186,14 @@ msgid ""
 "roughly equally sized dump files. Consider the schema as a prefix for the "
 "error_id."
 msgstr ""
-"Der Schema-Name bezeichnet ein Gebiet auf dem Planeten. Entsprechend dem "
-"%sAufteilungsplan%s wurde die Erde in rechteckige Teile eingeteilt, so daß "
-"sich etwa gleich große osm-Dateien ergeben. Der Schema-Name ist ein Prefix "
-"für die error_id."
 
 #: interfacing.php:60
 msgid ""
 "A number identifying errors, starting from 1 for each schema. An error_id is "
 "worth nothing if you don&apos;t know the schema!"
 msgstr ""
-"Laufende Nummer für Fehlerdatensätze, beginnend bei 1 für jedes Schema. Eine "
-"error_id alleine sagt nichts aus, wenn nicht auch das schema angegeben ist!"
+"Skaičius, nurodantis klaidą, pradedant 1 kiekvienai schemai. Nežinant "
+"schemos error_id yra bevertis!"
 
 #: interfacing.php:61
 msgid ""
@@ -1286,9 +1201,8 @@ msgid ""
 "blocks of 10s (20, 30, 40...). They correspond with the name of the script "
 "file doing the checking."
 msgstr ""
-"Numerischer Bezeichner für die Art des Fehlers. Die Nummern werden in "
-"Zehnerblöcken vergeben und korrespondieren mit dem Namen der jeweils "
-"zuständigen Script-Datei."
+"skaitmeninė klaidos tipo išraiška. Klaidų tipai yra skiriami blokais po 10 "
+"(20, 30, 40...). Jie atitinka tikrinimus darančio failo vardą."
 
 #: interfacing.php:62
 msgid ""
@@ -1299,11 +1213,11 @@ msgid ""
 "boundaries]&quot;). Subtyped error types are rendered as groups that may be "
 "collapsed on the web site."
 msgstr ""
-"Fehlertypen können Unternummern haben (z.B. 281. 282). Fehlertypen mit "
-"Unternummern behandeln unterschiedliche Aspekte eines gemeinsamen Themas. Im "
-"Beispiel steht 280 für 'Grenzen', 281 für '[Grenzen] ohne Namen' und 282 für "
-"'[Grenzen] ohne Rang'. Unter-Typen werden auf der Website als ausklappbare "
-"Gruppe dargestellt."
+"Klaidų tipai gali turėti subtipus (281, 282, etc). Subtipuotos tikrinimo "
+"procedūros tikrina skirtingus vienos temos aspektus (pvz., 280 yra „ribos“, "
+"281 &mdash; „praleistas vardas [ribos]“, o 282 &mdash; „praleistas [ribos] "
+"administracinis lygis“). Subtipuotos klaidos svetainėje yra vaizduojamos "
+"grupėmis, kurios gali būti sutrauktos."
 
 #: interfacing.php:64
 msgid ""
@@ -1311,17 +1225,17 @@ msgid ""
 "types you may want to prepend the error_name that belongs to the main number "
 "to make the name complete."
 msgstr ""
-"Kurzbezeichnung der Art des Fehlers. Bei Fehlertypen mit Unternummern kann "
-"es sinnvoll sein, den Namen der Hauptnummer voran zu stellen, damit sich "
-"eine vollständige Bezeichnung ergibt."
+"tekstinė klaidos išraiška (trumpas vardas). Subtipuotose klaidose galite "
+"norėti prieš pavadinimą įterpti pagrindinio numerio trumpą vardą, kad "
+"gautųsi pilnas klaidos pavadinimas."
 
 #: interfacing.php:65
 msgid "one of node/way/relation"
-msgstr "entweder node oder way oder relation"
+msgstr "vienas iš mazgo/kelio/sąryšio"
 
 #: interfacing.php:66
 msgid "an OSM node_id, way_id or relation_id"
-msgstr "die Objektnummer. Eine OSM node_id, way_id oder eine relation_id"
+msgstr "OSM node_id, way_id ar relation_id"
 
 #: interfacing.php:67
 msgid ""
@@ -1334,15 +1248,6 @@ msgid ""
 "never come back just because KeepRight is wrong and this exception cannot be "
 "included in the ruleset."
 msgstr ""
-"Zustand des Fehlers (new, reopened, ignore_temporarily oder ignore). "
-"Erledigte Fehler werden im Dumpfile nicht dargestellt. \n"
-"ignore_temporarily bedeutet, daß ein Benutzer einen Fehler korrigiert haben "
-"will und ihn kennzeichnet, damit nicht andere sich damit befassen müssen. "
-"Sollte der Fehler nach dem nächsten Update noch immer aktiv sein, wird der "
-"Status auf new zurückgesetzt.\n"
-"ignore bedeutet, daß es sich um einen falschpositiven Eintrag handelt. Also "
-"eine Ausnahme, die sich nicht sinnvoll in den Regelsätzen von KeepRight "
-"abfangen läßt."
 
 #: interfacing.php:68
 msgid ""
@@ -1351,18 +1256,18 @@ msgid ""
 "runtime-errors in the scripts. So you may just consider <em>new</em> and "
 "<em>reopened</em> the same."
 msgstr ""
-"Fehler, die bereits erledigt waren, aber später wieder auftauchen, werden in "
-"den <em>reopened</em>-Zustand versetzt. Leider kann das auch durch "
-"Laufzeitfehler in den Scripten passieren; der Einfachheit halber "
-"unterscheidet man daher nicht zwischen <em>new</em> und <em>reopened</em>."
+"Klaidos, kurios kažkada buvo ištaisytos, bet vėliau vėl atsirado yra "
+"pervedamos į „reopened“ būseną. Atkreipkite dėmesį, kad tai gali atsitikti "
+"dėl vykdymo klaidų skriptuose. Todėl laikykite „new“ ir „reopened“ tokiomis "
+"pačiomis."
 
 #: interfacing.php:69
 msgid ""
 "The verbose error message that comes out of the checking routine in English "
 "language. For translating the messages use the next columns"
 msgstr ""
-"Die ausführliche Beschreibung des Fehlers in englischer Sprache. Eine "
-"übersetzbare Version der Fehlermeldung findet sich in den folgenden Spalten."
+"Pilnas pranešimas apie klaidą, kuris gaunamas tikrinimo procedūroje Anglų "
+"kalba. Pranešimo vertimui naudokite tolimesnius stulpelius"
 
 #: interfacing.php:70
 msgid ""
@@ -1372,44 +1277,34 @@ msgid ""
 "translated. GNU gettext requires  a .po file that holds original and "
 "translated strings. You may use existing .po files from here: "
 msgstr ""
-"Das Gerüst der Fehlermeldung, wobei Platzhalter an jenen Stellen stehen, wo "
-"individuelle Werte für den aktuellen Fehler eingefügt werden. Dieses "
-"Meldungsgerüst kann mit Hilfe von GNU gettext() übersetzt werden. GNU "
-"gettext benötigt dazu eine Sprachdatei (.po), in der die englischen und die "
-"übersetzten Texte stehen. Es gibt bereits .po-Dateien: "
 
 #: interfacing.php:70
 msgid "find the GNU gettext template file here:"
-msgstr "Die GNU gettext-Vorlagendatei liegt hier:"
+msgstr "GNU gettext šablonas yra čia:"
 
 #: interfacing.php:71
 msgid ""
 "These bits of text are the contents that have to be inserted in the error "
 "message after translation. txt1 will replace $1, etc."
 msgstr ""
-"Diese Textteile werden nach dem Übersetzen in die Fehlermeldungen "
-"eingesetzt. txt1 ersetzt $1 etc."
+"Šie teksto gabaliukai yra turinys, kuris bus įterptas į klaidos pranešimą. "
+"txt1 pakeis $1, etc"
 
 #: interfacing.php:72
 msgid "Timestamp (MESZ) of when this error was found the first time"
-msgstr ""
-"Datum und Uhrzeit (MESZ) von wann dieser Fehler zum ersten Mal aufgetreten "
-"ist."
+msgstr "Laikas (MESZ) kada ši klaida buvo pirmą kartą rasta"
 
 #: interfacing.php:73
 msgid ""
 "Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
 msgstr ""
-"Datum und Uhrzeit (MESZ) von wann der Fehler zum letzten Mal vom Programm "
-"überbrüft wurde"
 
 #: interfacing.php:74
 msgid ""
 "Timestamp of the object that was used when checking, as found in the "
 "official planet file."
 msgstr ""
-"Datum und Uhrzeit des Objektes (letzte Änderung), das bei der letzten "
-"Überprüfung verwendet wurde. Die Zeitzone entspricht der im planet-File."
+"Tikrinamo objekto versiją nusakantis laikas iš oficialaus planetos failo."
 
 #: interfacing.php:76
 msgid ""
@@ -1417,44 +1312,38 @@ msgid ""
 "found in the official planet file. Please note that numbers are displayed as "
 "int values. To convert back to real lon/lat you have to divide by 10^7"
 msgstr ""
-"Ort auf dem Planeten. Die Projektion entspricht jener im offiziellen planet-"
-"File. Allerdings sind die Koordinaten als ganze Zahlen dargestellt. Um sie "
-"in \"echte\" Längen- und Breitengrade zu wandeln, müssen sie durch 10^7 "
-"dividiert werden."
+"Vieta planetoje. Koordinatės tokios pat, kaip naudojamos oficialiame "
+"planetos faile. Atkreipkite dėmesį, kad skaičiai yra naudojami sveikosiomis "
+"reikšmėmis. Norint paversti atgal į ilgumą ir platumą reikia padalinti iš "
+"10^7"
 
 #: interfacing.php:77
 msgid "User-comment (if any)"
-msgstr "Kommentar von Usern (falls vorhanden)"
+msgstr "Vartotojų komentarai (jei yra)"
 
 #: interfacing.php:78
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
-msgstr ""
-"Datum und Uhrzeit (MESZ) von wann der Kommentar abgegeben wurde (falls "
-"vorhanden)"
+msgstr "Komentaro pateikimo laikas (MESZ)"
 
 #: interfacing.php:82
 msgid "loading the errors table"
-msgstr "Die Fehlertabelle einlesen"
+msgstr ""
 
 #: interfacing.php:85
 msgid "This is the schema definition for use with MySQL databases:"
-msgstr "Tabellendefinition für MySQL-Datenbanken:"
+msgstr "Tai schemos aprašymas naudojimui su MySQL duomenų baze:"
 
 #: interfacing.php:108
 msgid ""
 "Please note that <em>schema</em> is a reserved word in MySQL, so you always "
 "have to quote it like this: `schema`"
 msgstr ""
-"Bitte zu beachten, daß <em>schema</em> ein reserviertes Wort in MySQL ist. "
-"Man muß es daher immer quoten: `schema`"
 
 #: interfacing.php:110
 msgid ""
 "There are two primary keys in this table: a natural one and an artificial "
 "one:"
 msgstr ""
-"Die Tabelle hat zwei Primärschlüssel: einen natürlichen und einen "
-"künstlichen:"
 
 #: interfacing.php:112
 msgid ""
@@ -1462,9 +1351,6 @@ msgid ""
 "lon. That means one type of error may be found on multiple spots belonging "
 "to one single object (eg. self-intersections of ways)."
 msgstr ""
-"Der Natürliche besteht aus error_type, object_type, object_id, lat und lon. "
-"Das bedeutet, daß eine bestimmte Fehlerart auf ein und demselben Objekt "
-"mehrmals auftreten kann (z.B. bei Linien, die sich selbst schneiden)."
 
 #: interfacing.php:114
 msgid ""
@@ -1472,108 +1358,3 @@ msgid ""
 "for simplicity of referencing individual error instances and it is "
 "completely redundant."
 msgstr ""
-"Der künstliche Primärschlüssel besteht aus schema und error_id. Er wird "
-"ausschließlich dafür verwendet, Fehler einfacher adressieren zu können und "
-"ist ansonsten komplett unnötig."
-
-#~ msgid ""
-#~ "This node is tagged as place of worship and therefore needs a religion tag"
-#~ msgstr ""
-#~ "Dieser Punkt ist als Anbetungshaus gekennzeichnet, es fehlt aber ein Tag, "
-#~ "das die Religion angibt."
-
-#~ msgid "The key of this $1s tag is 'key': $2"
-#~ msgstr "Der Schlüssel dieses $1s Tag ist 'key': $2"
-
-#~ msgid ""
-#~ "This node is a junction of a motorway and a highway other than motorway, "
-#~ "motorway_link, trunk, service, unclassified or construction"
-#~ msgstr ""
-#~ "In diesem Punkt kommt eine Autobahn (motorway) und eine andere Straße "
-#~ "zusammen, die keine gleichrangige Straße ist (motorway_link, trunk, service, "
-#~ "unclassified oder construction)"
-
-#~ msgid ""
-#~ "This way is part of a roundabout but is not closed-loop. (Flares should not "
-#~ "be tagged as roundabout)"
-#~ msgstr ""
-#~ "Dieser Kreisverkehr ist nicht in sich geschlossen. (Aufgetrennte Ein- und "
-#~ "Ausfahrts-Fahrbahnen sollen nicht als Kreisverkehr (roundabout) getaggt "
-#~ "werden)"
-
-#~ msgid ""
-#~ "This way is tagged as highway=$1_link but doesnt have a connection to any "
-#~ "other $1 or $1_link"
-#~ msgstr ""
-#~ "Diese Straße ist getaggt mit highway=$1_link, hat aber keine Verbindung zu "
-#~ "anderen $1 oder $1_link Straßen"
-
-#~ msgid ""
-#~ "Try to find nodes that are (almost) on the same spot. Distances less than +/-"
-#~ "0.5 Meters are considered zero"
-#~ msgstr ""
-#~ "Sucht nach Punkten (nodes), sie sich (fast) am selben Platz befinden. "
-#~ "Abstände kleiner als +/- 0,5 Meter werden als 0 interpretiert"
-
-#~ msgid "Australian Keepright partner site"
-#~ msgstr "Partnersite Keepright Australien"
-
-#, php-format
-#~ msgid ""
-#~ "Developers have a look at the %ssourceforge%s site providing svn access to "
-#~ "the sources."
-#~ msgstr ""
-#~ "Entwickler mögen bitte einen Blick auf meine %ssourceforge%s site werfen, um "
-#~ "Einblick in den Quellcode via svn zu erhalten."
-
-#, php-format
-#~ msgid ""
-#~ "If you want to export errors from Keepright you will want to have a look at "
-#~ "the %sinterfacing guide%s"
-#~ msgstr ""
-#~ "Zum Exportieren der Fehlermeldungen von Keepright gibt es eine eigene "
-#~ "%sAnleitung%s"
-
-#~ msgid ""
-#~ "You may have noticed that you couldn&apos;t pan around the whole world in "
-#~ "keepright as you liked. There were invisible boundaries and you always had "
-#~ "to take care about the db-parameter in the URLs to be appropriate for the "
-#~ "current position.<br>This is over now! The db-parameter is gone. So have fun "
-#~ "panning around the whole world and fixing errors easier than ever!"
-#~ msgstr ""
-#~ "Vielleicht ist Dir schon aufgefallen, daß man in Keepright nicht beliebig "
-#~ "umherfahren konnte, weil unsichtbare Grenzen Fehlermarker verschwinden "
-#~ "ließen. Man mußte immer den passenden db-Parameter in der Adresse stehen "
-#~ "haben, um passend zur aktuellen Position Fehlermarker zu erhalten. Das ist "
-#~ "jetzt vorbei! Den db-Parameter gibt es nicht mehr. Viel Spaß beim Umrunden "
-#~ "der ganzen Welt und einfacheren Fehler-Korrigieren!"
-
-#, php-format
-#~ msgid ""
-#~ "This is my FOSSGIS-present for you: keepright will remember the position and "
-#~ "the error types you selected when you left the site last time (how could "
-#~ "you?). Just open %s without any parameters!"
-#~ msgstr ""
-#~ "Hier mein FOSSGIS-Geschenk: keepright merkt sich ab sofort den Ort und die "
-#~ "Fehlerkategorien, wie sie beim letzten Verlassen der Site (wie konntest Du "
-#~ "nur?) eingestellt waren. Lade einfach %s ohne Parameter!"
-
-#~ msgid ""
-#~ "Please give a comment that helps me improve the check routines if you find a "
-#~ "false-positive. Don't confuse the comment box with an editing feature. This "
-#~ "is not potlatch! You cannot add missing tags via keepright!"
-#~ msgstr ""
-#~ "Gib mir einen Hinweis, damit ich Fehlalarme in den Checkroutinen abstellen "
-#~ "kann. Verwechsle die Kommentar-Funktion bitte nicht mit einer Bearbeitungs-"
-#~ "Funktion. Dies ist nicht Potlatch! Du kannst keine fehlenden Tags über "
-#~ "keepright ergänzen!"
-
-#~ msgid ""
-#~ "If you like to contact me, my mailbox at the austrian server of gmx is "
-#~ "labelled keepright."
-#~ msgstr ""
-#~ "Solltest Du mich kontaktieren wollen, ich habe ein Mailkonto beim "
-#~ "Österreichischen Ableger von GMX mit der Aufschrift keepright."
-
-#~ msgid "Doing something completely different with 10 Millions of errors..."
-#~ msgstr "etwas völlig anderes mit 10 Millionen Fehlern anstellen..."
