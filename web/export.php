@@ -117,7 +117,7 @@ if ($_GET['format'] == 'rss') {
 		else
 			$title='';
 
-		echo "\t<wpt lon=\"" . $row['lo'] . "\" lat=\"" . $row['la'] . "\"> <desc><![CDATA[" . $title . $row['error_name'] . ': ' . $row['description'] . "]]></desc><extensions><id>" . $row['error_id'] . "</id></extensions></wpt>\n";
+		echo "\t<wpt lon=\"" . $row['lo'] . "\" lat=\"" . $row['la'] . "\"> <desc><![CDATA[" . $title . $row['error_name'] . ': ' . $row['description'] . "]]></desc><extensions><schema>" . $row['schema'] . "</schema><id>" . $row['error_id'] . "</id></extensions></wpt>\n";
 	}
 
 	echo "</gpx>";
