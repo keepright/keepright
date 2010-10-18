@@ -198,8 +198,8 @@ query("
 	SELECT $error_type + 2,
 	CAST('way' AS type_object_type), wt1.way_id, 'This $1 is tagged with layer $2. This need not be an error, but it looks strange', wt1.k, wt2.v, NOW()
 	FROM way_tags wt1 INNER JOIN way_tags wt2 ON wt1.way_id=wt2.way_id
-	WHERE (wt1.k='bridge' AND wt1.v in ('1', 'yes', 'true') AND wt2.k='layer' AND wt2.v in ('-1', '-2', '-3', '-4', '-5'))
-	OR (wt1.k='tunnel' AND wt1.v in ('1', 'yes', 'true') AND wt2.k='layer' AND wt2.v in ('1', '2', '3', '4', '5'))
+	WHERE (wt1.k='bridge' AND wt1.v NOT IN ('no', 'false', '0') AND wt2.k='layer' AND wt2.v in ('-1', '-2', '-3', '-4', '-5'))
+	OR (wt1.k='tunnel' AND wt1.v NOT IN ('no', 'false', '0') AND wt2.k='layer' AND wt2.v in ('1', '2', '3', '4', '5'))
 
 ", $db1);
 

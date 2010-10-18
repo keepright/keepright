@@ -33,8 +33,8 @@ query("
 		wt.k='maxspeed:forward' OR
 		wt.k='maxspeed:backward' OR
 		(wt.k='junction' AND wt.v='roundabout') OR
-		(wt.k='bridge' AND wt.v IN ('yes', '1', 'true')) OR
-		(wt.k='tunnel' AND wt.v IN ('yes', '1', 'true')))
+		(wt.k='bridge' AND wt.v NOT IN ('no', 'false', '0')) OR
+		(wt.k='tunnel' AND wt.v NOT IN ('no', 'false', '0')))
 	) AND ST_Length(w.geom)>50
 ", $db1);
 

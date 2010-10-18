@@ -493,14 +493,14 @@ function find_layer_values($table, $way_id_column, $layer_column, $db) {
 		SET $layer_column='1'
 		FROM way_tags t
 		WHERE t.way_id=c.$way_id_column AND
-		t.k='bridge' AND t.v IN ('yes', '1', 'true')
+		t.k='bridge' AND t.v NOT IN ('no', 'false', '0')
 	", $db);
 	query("
 		UPDATE $table c
 		SET $layer_column='-1'
 		FROM way_tags t
 		WHERE t.way_id=c.$way_id_column AND
-		t.k='tunnel' AND t.v IN ('yes', '1', 'true')
+		t.k='tunnel' AND t.v NOT IN ('no', 'false', '0')
 	", $db);
 
 	// fetch layer tag and overwrite defaults
@@ -524,5 +524,5 @@ function format_time($t) {
 	} else
 		return sprintf("%01.0fh %01.0fm", floor($t/3600), ($t % 3600)/60);	// hours
 }
+
 ?>
- 	  	 
