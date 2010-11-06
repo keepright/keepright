@@ -78,6 +78,9 @@ $false_positives = array(
 // so you have to properly escape apos!
 // there is already an exception for any 'tiger'-prefixed tag in action so you needn't add one here
 $never_complain_about = "(
+	'addr:alternatenumber:=',
+	'addr:conscriptionnumber:=',
+	'addr:full:=',
 	'addr:housenumber:=',
 	'AND_nosr_r:=',
 	'canvec:uuid:=',
