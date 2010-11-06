@@ -281,7 +281,7 @@ query("
 	) AND NOT EXISTS (
 
 		SELECT wt.way_id FROM way_tags wt WHERE (
-			wt.way_id=wn.way_id AND
+			wt.way_id=w.way_id AND
 			wt.k='amenity' AND wt.v='parking'
 		)
 	)
