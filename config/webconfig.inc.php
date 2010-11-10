@@ -26,25 +26,21 @@ $cookie = Array (
 )
 */
 
-if (isset($_COOKIE["keepright_cookie"])) {
-	$cookie=explode('|', addslashes($_COOKIE["keepright_cookie"]));
+if (isset($_COOKIE['keepright_cookie'])) {
+	$cookie=explode('|', addslashes($_COOKIE['keepright_cookie']));
 } else {
 	$cookie=false;
 }
 
 
-$error_types_name="error_types";
-$comments_name="comments";
-$comments_historic_name="comments_historic";
+$error_types_name='error_types';
+$comments_name='comments';
+$comments_historic_name='comments_historic';
 
 $USERS = array(
 	'harald.kleiner@web.de' => array(	// super guru has access to all DBs
 		'password' => 'shhh!',
 		'schemata' => array('%')
-	),
-	'lennard' => array(			// Lennard: Belgium/Netherlands/Luxembourg
-		'password' => 'shhh!',
-		'schemata' => array('1', '2')
 	)
 );
 
@@ -57,13 +53,13 @@ $baseURL == "http://localhost/kr/"
 */
 $path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 $path = $path_parts['dirname'] . ($path_parts['dirname'] == '/' ? '' : '/');
-$baseURL="http://" . $_SERVER['SERVER_NAME'] . $path;
+$baseURL='http://' . $_SERVER['SERVER_NAME'] . $path;
 
 
 // define constants for l10n
 define('PROJECT_DIR', realpath('./'));
 define('LOCALE_DIR', PROJECT_DIR .'/locale');
-define('DEFAULT_LOCALE', 'en_US');
+define('DEFAULT_LOCALE', 'en');
 $locale = (isset($_GET['lang'])) ? $_GET['lang'] :
 	(isset($cookie[4]) ? $cookie[4] : DEFAULT_LOCALE);
 
