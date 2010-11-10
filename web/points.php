@@ -63,7 +63,7 @@ if ($error_view=='') {
 // build SQL for fetching errors
 $sql="SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.object_timestamp, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment";
 
-if ($locale == 'en_US') {
+if ($locale == 'en') {
 	$sql .= ', e.description';
 } else {
 	$sql .= ', e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5';
@@ -97,7 +97,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 			$filenr=$row['error_type'];
 	}
 
-	if ($locale == 'en_US') {
+	if ($locale == 'en') {
 		// english messages readily found in table
 		$description = $row['description'];
 		$error_name = $row['error_name'];
