@@ -196,12 +196,15 @@ global $error_type, $false_positives, $db1, $db2;
 	// Searching for differences on numbers in values makes no sense.
 	// regex matches numbers plus optionally some characters if they are followed by another number
 	// need to remember the key and value as it once was to be able to find the keys later on
+
+	// please note that "dollar quoting" ($$some string$$) is used to separate the regex strings
+	// in order to avoid duplicating backslashes. This is PostgreSQL syntax.
 	query("
 		INSERT INTO _tmp_tags(k, keylist, v, k_orig, v_orig, tag_count)
 		SELECT k, regexp_split_to_array(k, ':') || ARRAY['=', v, ''], v, k_orig, v_orig, COUNT(id) as tag_count
 		FROM (
-			SELECT regexp_replace(k, '[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*', '', 'g') AS k,
-			regexp_replace(v, '[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*', '0', 'g') AS v,
+			SELECT regexp_replace(k, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '', 'g') AS k,
+			regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '0', 'g') AS v,
 			T.k AS k_orig, T.v as v_orig, ${item}_id AS id
 			FROM ${item}_tags T
 		) AS tags
