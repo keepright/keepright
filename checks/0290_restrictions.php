@@ -84,6 +84,8 @@ query("
 
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_restrictions", $db1);
 
 ?>

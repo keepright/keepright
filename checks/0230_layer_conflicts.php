@@ -179,6 +179,8 @@ query("
 
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);

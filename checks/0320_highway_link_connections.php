@@ -70,6 +70,8 @@ query("
 ", $db1);
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("DROP TABLE IF EXISTS _tmp_wn", $db1);
 query("DROP TABLE IF EXISTS _tmp_wn2", $db1);

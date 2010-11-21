@@ -289,6 +289,8 @@ query("
 ", $db1);
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_roundabouts", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_roundabout_parts", $db1, false);
 query("DROP SEQUENCE IF EXISTS _tmp_rcounter", $db1, false);

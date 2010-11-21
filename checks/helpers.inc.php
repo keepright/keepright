@@ -525,4 +525,72 @@ function format_time($t) {
 		return sprintf("%01.0fh %01.0fm", floor($t/3600), ($t % 3600)/60);	// hours
 }
 
+
+
+function print_index_usage($db) {
+	global $schema;
+
+	$result=query("SELECT idstat.relname AS tblname, indexrelname AS idxname,
+		idstat.idx_scan AS times_used,
+		pg_size_pretty(pg_relation_size(idstat.relid)) AS tblsize, pg_size_pretty(pg_relation_size(indexrelid)) AS idxsize,
+		n_tup_upd + n_tup_ins + n_tup_del as writes
+
+		FROM pg_stat_user_indexes AS idstat JOIN pg_indexes ON
+			(indexrelname = indexname AND idstat.schemaname = pg_indexes.schemaname)
+		JOIN pg_stat_user_tables AS tabstat ON idstat.relid = tabstat.relid
+
+		WHERE indexdef !~* 'unique' AND
+		idstat.schemaname='schema$schema'
+		ORDER BY idstat.relname, indexrelname;
+	", $db, false);
+
+	echo "index usage:\n\n";
+	print_pg_result($result);
+	pg_free_result($result);
+}
+
+
+
+
+// print contents of a psql-resultset to the console
+// don't forget to pg_free_result your resultset afterwards!
+function print_pg_result($result) {
+
+	$colnum = pg_num_fields($result);
+	$rownum = pg_num_rows($result);
+	$colwidths=array();
+	$colnames=array();
+	$fmtstrings=array();
+
+	// determine names of columns
+	for ($col=0; $col<$colnum; $col++) {
+		$colnames[$col]=pg_field_name($result, $col);
+		$colwidths[$col]=strlen($colnames[$col]);
+	}
+
+	// determine widths of columns
+	for ($col=0; $col<$colnum; $col++)
+		for ($row=0; $row<$rownum; $row++) {
+			$width = pg_field_prtlen($result, $row, $col);
+			if ($colwidths[$col] < $width)
+				$colwidths[$col] = $width;
+		}
+
+	// echo header line
+	for ($col=0; $col<$colnum; $col++) {
+		// format content left aligned
+		$fmtstrings[$col] = '|%-' . $colwidths[$col] . 's';
+		printf($fmtstrings[$col], $colnames[$col]);
+	}
+	echo "|\n";
+
+	// echo data
+	while ($row=pg_fetch_array($result, NULL, PGSQL_NUM)) {
+
+		for ($col=0; $col<$colnum; $col++)
+			printf($fmtstrings[$col], $row[$col]);
+		echo "|\n";
+	}
+}
+
 ?>

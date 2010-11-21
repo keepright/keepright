@@ -369,6 +369,8 @@ global $never_complain_about, $force_irregular, $force_regular;
 }
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_tags", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_keys", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_bad_tags", $db1, false);

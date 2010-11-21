@@ -387,6 +387,8 @@ query("
 
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_nodes", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);

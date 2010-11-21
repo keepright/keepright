@@ -227,6 +227,8 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 pg_free_result($result);
 
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_xings", $db1, false);

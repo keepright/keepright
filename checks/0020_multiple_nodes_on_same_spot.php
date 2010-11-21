@@ -40,6 +40,8 @@ query("
 	GROUP BY d.lon, d.lat
 ", $db1);
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_node_dupes", $db1, false);
 
 

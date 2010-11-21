@@ -268,6 +268,8 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	pg_free_result($result);
 }
 
+print_index_usage($db1);
+
 query("DROP TABLE IF EXISTS _tmp_way_nodes;", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_way_nodes2;", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_way_nodes3;", $db1, false);
