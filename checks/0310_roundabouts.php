@@ -7,6 +7,7 @@
 
 in wrong direction
 not closed loop
+not enough roads connected (normally 3)
 */
 
 
@@ -289,10 +290,51 @@ query("
 ", $db1);
 
 
+
+
+
+
+
+query("DROP TABLE IF EXISTS _tmp_roundabout_nodes", $db1, false);
+query("
+	CREATE TABLE _tmp_roundabout_nodes AS
+	SELECT DISTINCT rp.part, wn.node_id
+	FROM _tmp_roundabout_parts rp INNER JOIN way_nodes wn USING (way_id)
+", $db1);
+
+
+
+// find nodes belonging to roundabout_parts.
+// find any way connected to these nodes that isn't part of the roundabout
+// they have to be at least three.
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
+	SELECT $error_type+3, CAST('way' AS type_object_type),
+	MIN(way_id), 'This roundabout has only ' || er.cnt || ' other roads connected. Roundabouts typically have three.', er.cnt, NOW()
+	FROM (
+
+		SELECT rn.part, COUNT(wn.way_id) as cnt
+		FROM _tmp_roundabout_nodes rn INNER JOIN way_nodes wn USING (node_id)
+		WHERE wn.way_id NOT IN (
+			SELECT DISTINCT way_id
+			FROM _tmp_roundabout_parts tmp
+			WHERE tmp.part=rn.part
+		)
+		GROUP BY rn.part
+		HAVING COUNT(wn.way_id)<3
+
+	) AS er INNER JOIN _tmp_roundabout_parts USING (part)
+	GROUP BY er.part, er.cnt
+", $db1);
+
+
+
+
 print_index_usage($db1);
 
 query("DROP TABLE IF EXISTS _tmp_roundabouts", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_roundabout_parts", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_roundabout_nodes", $db1, false);
 query("DROP SEQUENCE IF EXISTS _tmp_rcounter", $db1, false);
 
 ?>

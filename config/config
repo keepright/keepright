@@ -839,6 +839,7 @@ CHECK_0310_DESCRIPTION="roundabout are always one-way streets directed counter-c
 
 SUBTYPE_0311_NAME="not closed loop"
 SUBTYPE_0312_NAME="wrong direction"
+SUBTYPE_0313_NAME="faintly connected"
 
 
 CHECK_0320_NAME="*_link-connections"
