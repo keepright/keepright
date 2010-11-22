@@ -490,6 +490,10 @@ msgstr ""
 msgid "wrong direction"
 msgstr ""
 
+#. please keep this as short as possible
+msgid "faintly connected"
+msgstr ""
+
 
 #. please keep this as short as possible
 msgid "*_link-connections"
