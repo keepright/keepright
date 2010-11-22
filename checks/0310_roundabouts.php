@@ -310,7 +310,7 @@ query("
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
 	SELECT $error_type+3, CAST('way' AS type_object_type),
-	MIN(way_id), 'This roundabout has only ' || er.cnt || ' other roads connected. Roundabouts typically have three.', er.cnt, NOW()
+	MIN(way_id), 'This roundabout has only $1 other roads connected. Roundabouts typically have three.', er.cnt, NOW()
 	FROM (
 
 		SELECT rn.part, COUNT(wn.way_id) as cnt
