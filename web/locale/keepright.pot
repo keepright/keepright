@@ -515,6 +515,25 @@ msgid ""
 msgstr ""
 
 
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr ""
+
+msgid ""
+"To help applications choose the best matching language they should "
+"know the language used for the name tag. It is therefore necessary "
+"to provide a name:XX tag with the same content as found in the name "
+"tag where XX specifies the language used for the name tag."
+msgstr ""
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' "
+"where XX shows the language of its name ''$2''."
+msgstr ""
+
+
+
 #. translations for the web pages
 
 #: index.php:9

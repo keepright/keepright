@@ -853,3 +853,9 @@ CHECK_0350_ENABLED="1"
 CHECK_0350_FILE="0350_bridges.php"
 CHECK_0350_DESCRIPTION="Someone draws a bridge and forgets to tag it as highway... A bridge should always have one of the 'major' tags that its direct neighbour ways have. Currently these are: highway, railway, cycleway, waterway, footway, piste, aerialway, pipeline, building, via_ferrata"
 
+
+CHECK_0360_NAME="language unknown"
+CHECK_0360_ENABLED="1"
+CHECK_0360_FILE="0360_language_unknown.php"
+CHECK_0360_CLASS="warning"
+CHECK_0360_DESCRIPTION="To help applications choose the best matching language they should know the language used for the name tag. It is therefore necessary to provide a name:XX tag with the same content as found in the name tag where XX specifies the language used for the name tag."
