@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-06-13 17:08+0000\n"
+"PO-Revision-Date: 2010-10-23 18:45+0000\n"
 "Last-Translator: Skippern <Unknown>\n"
 "Language-Team: Norwegian Bokmal <nb@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-06-14 03:53+0000\n"
+"X-Launchpad-Export-Date: 2010-11-28 19:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 msgid "There is more than one node in this spot. Offending node IDs: $1"
@@ -24,7 +24,7 @@ msgid "This coastline-way is not part of a closed-loop"
 msgstr "Denne kystlinjen er ikke en del av en sluttet ring"
 
 msgid "This way is tagged with '$1=$2' and should be closed-loop."
-msgstr ""
+msgstr "Denne veien er merket som '$1=$2' og skulle hvert en sluttet ring"
 
 msgid ""
 "The first node (id $1) of this one-way is not connected to any other way"
@@ -189,16 +189,22 @@ msgstr ""
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
-"motorway_link, trunk, service, unclassified or construction"
+"motorway_link, trunk, services, rest_area or construction. Service or "
+"unclassified is only valid if it has a access=no/private or if it is a "
+"service=parking_aisle."
 msgstr ""
-"Denne noden er et kryss med en motorvei og en annen vei som ikke er "
-"motorway, motoway_link, trunk, service, unclassified eller construction"
 
 msgid "This boundary has no name"
 msgstr "Denne grensen har ikke noe navn"
 
 msgid "The boundary of $1 has no admin_level"
 msgstr "Grensen til $1 har ikke noe admin_level"
+
+msgid ""
+"The boundary of $1 has no valid numeric admin_level. Please do not use admin "
+"levels like for example 6;7. Always tag the lowest admin_level of all "
+"boundaries."
+msgstr ""
 
 msgid "The boundary of $1 is not closed-loop"
 msgstr "Grensen til $1 er ikke en sluttet ring"
@@ -279,7 +285,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "non-closed areas"
-msgstr ""
+msgstr "ikke sluttet område"
 
 msgid ""
 "By convention ways tagged with special combinations of key and value pairs "
@@ -394,7 +400,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "railway crossings without tag"
-msgstr ""
+msgstr "jernbaneovergang uten merke"
 
 msgid ""
 "(Level)-Crossings of railways and highways should have a common node as "
@@ -618,6 +624,10 @@ msgid "wrong direction"
 msgstr "feil retning"
 
 #. please keep this as short as possible
+msgid "faintly connected"
+msgstr ""
+
+#. please keep this as short as possible
 msgid "*_link-connections"
 msgstr "*_link koblinger"
 
@@ -636,6 +646,23 @@ msgid ""
 "always have one of the 'major' tags that its direct neighbour ways have. "
 "Currently these are: highway, railway, cycleway, waterway, footway, piste, "
 "aerialway, pipeline, building, via_ferrata"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr ""
+
+msgid ""
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
+msgstr ""
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
 msgstr ""
 
 #. translations for the web pages
@@ -724,6 +751,12 @@ msgid ""
 msgstr ""
 
 #: index.php:56
+msgid ""
+"There are a few more languages in the select box now. You can help "
+"translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
+msgstr ""
+
+#: index.php:56
 #, php-format
 msgid ""
 "To avoid routing errors like %sthis one%s I changed the check 'highways "
@@ -742,6 +775,8 @@ msgid ""
 "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
 "se tornou multilíngue!"
 msgstr ""
+"KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
+"se tornou multilíngue! - KeepRight blir flerspråklig!"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -850,7 +885,7 @@ msgstr "feil"
 
 #: report_map.php:155
 msgid "warnings"
-msgstr ""
+msgstr "advarsler"
 
 #: report_map.php:182
 msgid "all"
@@ -870,7 +905,7 @@ msgstr ""
 
 #: report_map.php:189
 msgid "Edit in Potlatch"
-msgstr ""
+msgstr "Rediger med Potlatch"
 
 #: report_map.php:194
 #, php-format
@@ -899,7 +934,7 @@ msgstr "relasjon"
 #. full message: "edit in JOSM / Potlatch"
 #: myText.js:237
 msgid "edit in"
-msgstr ""
+msgstr "rediger med"
 
 #: myText.js:237
 msgid "JOSM"
@@ -910,6 +945,8 @@ msgid ""
 "JOSM must be running and JOSM's remote control plugin must be enabled for "
 "this to work!"
 msgstr ""
+"JOSM må være started og JOSM's fjernstyringsplugin må være aktivt for at "
+"dette skal virke!"
 
 #: myText.js:239
 msgid "Potlatch"
@@ -917,7 +954,7 @@ msgstr "Potlatch"
 
 #: myText.js:244
 msgid "keep this error open"
-msgstr ""
+msgstr "hold denne feilen åpen"
 
 #: myText.js:246
 msgid "ignore temporarily (error corrected)"
@@ -1207,3 +1244,10 @@ msgid ""
 "for simplicity of referencing individual error instances and it is "
 "completely redundant."
 msgstr ""
+
+#~ msgid ""
+#~ "This node is a junction of a motorway and a highway other than motorway, "
+#~ "motorway_link, trunk, service, unclassified or construction"
+#~ msgstr ""
+#~ "Denne noden er et kryss med en motorvei og en annen vei som ikke er "
+#~ "motorway, motoway_link, trunk, service, unclassified eller construction"

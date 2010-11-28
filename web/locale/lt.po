@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: KeepRight 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-09-10 13:32+0000\n"
+"PO-Revision-Date: 2010-10-19 09:46+0000\n"
 "Last-Translator: Aidas Kasparas <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-09-11 05:08+0000\n"
+"X-Launchpad-Export-Date: 2010-11-28 19:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 # translations for error messages
@@ -326,7 +326,7 @@ msgid ""
 "motorway_links are considered one-way implicitly, so this check applies."
 msgstr ""
 "Vienos krypties gatvės neturi būti akligatviai (kurgi pasidės visi "
-"automobiliai gatvės galė?). Mazgai, kuri prasideda (pasibaigia) vienkryptės "
+"automobiliai gatvės gale?). Mazgai, kur prasideda (pasibaigia) vienkryptės "
 "gatvės negali būti pasiekti (neįmanoma iš jų pasprukti). Atkreipkite dėmesį, "
 "kad motorway ir motorway_link yra laikomi vienos krypties keliais, todėl šis "
 "tikrinimas taikomas ir jiems."
@@ -483,8 +483,8 @@ msgid ""
 "bridges or tunnels). Intersections of streets with other objects like "
 "waterways or riverbanks should be avoided"
 msgstr ""
-"Gatvės, kurios grafiškai susikerta reikalauja bendro mazgo, žyminčio "
-"susikirtimo taška. Vienintelė išimtis -- skirtingų lygių sankryžos (t.y. "
+"Gatvės, kurios grafiškai susikerta, reikalauja bendro mazgo, žyminčio "
+"susikirtimo tašką. Vienintelė išimtis -- skirtingų lygių sankryžos (t.y. "
 "tiltai, tuneliai ir viadukai). Gatvių susikirtimai su kitais objektais, "
 "tokiais kaip vandens keliai, upių krantai ir pan. turėtų būti vengiami."
 
@@ -548,7 +548,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "misspelled tags"
-msgstr "klaidinos žymės"
+msgstr "žymės su klaidomis"
 
 msgid ""
 "Tags that are used very seldom and almost look like very common tags (only "
@@ -695,6 +695,10 @@ msgid "wrong direction"
 msgstr "neteisinga kryptis"
 
 #. please keep this as short as possible
+msgid "faintly connected"
+msgstr ""
+
+#. please keep this as short as possible
 msgid "*_link-connections"
 msgstr "*_link sujungimai"
 
@@ -721,6 +725,23 @@ msgstr ""
 "turi turėti bent vieną iš „pagrindiniu“ žymių, kurias greta esantys keliai "
 "turi. Tai gali būti: highway, railway, cycleway, waterway, footway, piste, "
 "aerialway, pipeline, building, via_ferrata"
+
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr ""
+
+msgid ""
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
+msgstr ""
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
+msgstr ""
 
 #. translations for the web pages
 #: index.php:9
@@ -811,6 +832,8 @@ msgid ""
 "If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
 msgstr ""
+"Jei norite eksportuoti klaidas iš KeepRight, tikriausiai jus sudomins "
+"%sąveikos vadovas%s"
 
 #: index.php:56
 msgid ""
@@ -831,6 +854,12 @@ msgid ""
 "service=parking_aisle.<br>I hope you agree that this inconvenience is "
 "necessary. Thank you, Nathan, for telling me about this!"
 msgstr ""
+"Vengdamas maršrutų parinkimo klaidų, tokių %skaip ši%s, aš pakeičiau "
+"tikrinimą „tiesiogiai sujungti greitkeliai“. Dabar jis atrinks visus "
+"greitkelių susijungimus su highway=service arba highway=unclassified, jei "
+"pastarieji neturi access=no arba access=private žymų, arba tai nėra "
+"service=parking_aisle.<br>Viliuosi, kad jūs sutiksite, jog tai būtinas "
+"nepatogumas. Dėkui Nathan'ui, kad pasakė apie šią problemą."
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -871,7 +900,7 @@ msgstr ""
 
 #: index.php:59
 msgid "Getting rid of the evil db-parameter"
-msgstr ""
+msgstr "Atsikratome nereikalingo db-parameter"
 
 #: index.php:60
 msgid ""
@@ -881,6 +910,11 @@ msgid ""
 "current position.<br>This is over now! The db-parameter is gone. So have fun "
 "panning around the whole world and fixing errors easier than ever!"
 msgstr ""
+"Jūs tikriausiai pastebėjote, kad nebegalite pamatyti viso pasaulio "
+"KeepReight'e, kaip mėgote anksčiau. Yra nematomos ribos ir jūs visada turite "
+"pasirūpinti, kad db-parameter URL'e atitiktų esamą žemėlapio "
+"poziciją.<br>Tai baigėsi! db-parameter nebėra. Taigi, žiūrėkite visą pasaulį "
+"ir taisykite klaidas dar lengviau nei kada nors!"
 
 #: index.php:63
 msgid ""
@@ -889,6 +923,10 @@ msgid ""
 "about ways that don&apos;t have a single connection with any other way(!). "
 "Sometimes it takes months until you see the most obvious things..."
 msgstr ""
+"Artimiausiuose atnaujinimuose jūs matysite didelį plaukiojančių salų tipo "
+"klaidų pagausėjimą. Taip atsitiks dėl to, kad iki šiol tikrinimo procedūra "
+"nerasdavo kelių, kurie neturi nei vieno sujungimo su kitais keliais(!). "
+"Kartais reikia mėnesių, kol pastebi akivaizdžiausius dalykus."
 
 #: index.php:66
 #, php-format
@@ -897,15 +935,18 @@ msgid ""
 "the error types you selected when you left the site last time (how could "
 "you?). Just open %s without any parameters!"
 msgstr ""
+"Tai mano FOSSGIS dovana jums: KeepRight prisimins poziciją ir pasirinktus "
+"klaidų tipus, buvusius jums paliekant svetainę (kaip jūs drįsot?). Tiesiog "
+"atidarykite %s be parametrų!"
 
 #: index.php:70
 #, php-format
 msgid "For archeologists: %sOld log entries%s have moved."
-msgstr ""
+msgstr "Archeologams: %sSeni žurnalo įrašai%s buvo perkelti."
 
 #: index.php:73
 msgid "a few words on the new comment feature"
-msgstr ""
+msgstr "Keli žodžiai apie naują komentavimo funkciją"
 
 #: index.php:74
 msgid ""
@@ -913,6 +954,10 @@ msgid ""
 "false-positive. Don't confuse the comment box with an editing feature. This "
 "is not Potlatch! You cannot add missing tags via KeepRight!"
 msgstr ""
+"Radę false-positive palikite prasmingą komentarą (angliškai), kuris padėtų "
+"tobulinti tikrinimo procedūras. Komentarų laukas nėra skirtas žemėlapio "
+"redagavimui. Tai ne Potlatch! KeepRight neturi funkcijos, kuri leistų "
+"pridėti trūkstamas žymes."
 
 #: index.php:77
 msgid ""
@@ -920,6 +965,9 @@ msgid ""
 "running when you hit the JOSM-link. Furthermore you have to enable the "
 "&apos;remote control&apos;-plugin in JOSMs options."
 msgstr ""
+"Atkreipkite dėmesį, kad tam, jog JOSM nuoroda veiktų, paspaudimo ant jos "
+"metu JOSM turi būti paleistas. Be to, „remote control“ įskiepis turi būti "
+"įjungtas JOSM'o nustatymuose."
 
 #: index.php:79
 msgid "Currently the following checking procedures are implemented"
@@ -930,16 +978,20 @@ msgid ""
 "If you find an error in my errors lists I would definitely like to hear "
 "about it!"
 msgstr ""
+"Jei jūs rasite klaidų mano klaidų sąrašuose, aš tikrai noriu gauti apie tai "
+"informaciją!"
 
 #: index.php:104
 msgid "Impressum"
-msgstr ""
+msgstr "Impressum"
 
 #: index.php:105
 msgid ""
 "This work is done without commercial background, just for my personal "
 "pleasure. I would be very happy if it was helpful for the OSM Project."
 msgstr ""
+"Šis projektas yra vykdomas be komercinio pagrindo, tik mano asmeniniam "
+"malonumui. Man būtų malonu, jei jis padėtų OSM projektui."
 
 #: index.php:106
 msgid ""
@@ -1067,11 +1119,11 @@ msgstr "paskutinis keitimas"
 
 #: interfacing.php:4
 msgid "interfacing KeepRight"
-msgstr ""
+msgstr "KeepRight sąsaja"
 
 #: interfacing.php:11
 msgid "Interfacing with KeepRight"
-msgstr ""
+msgstr "KeepRight sąsaja"
 
 #: interfacing.php:13
 msgid "You may use KeepRight&apos;s results in a number of ways:"
@@ -1085,7 +1137,7 @@ msgstr "žiūrėti %sžemėlapio puslapiuose%s"
 #: interfacing.php:18
 #, php-format
 msgid "exporting %sGPX waypoints%s"
-msgstr ""
+msgstr "eksportuoti %sGPX kelio taškus%s"
 
 #: interfacing.php:19
 #, php-format
@@ -1095,7 +1147,7 @@ msgstr "eksportuoti naujas klaidas kaip %sRSS srautą%s"
 #: interfacing.php:20
 #, php-format
 msgid "getting the whole errors %sdump file%s"
-msgstr ""
+msgstr "gauti klaidas kaip %sklaidų sąrašą%s"
 
 #: interfacing.php:24
 msgid "exporting GPX waypoints"
@@ -1103,7 +1155,7 @@ msgstr "eksportuojami GPX kelio taškai"
 
 #: interfacing.php:25 interfacing.php:35 interfacing.php:47
 msgid "Purpose"
-msgstr ""
+msgstr "Paskirtis"
 
 #: interfacing.php:26
 msgid ""
@@ -1142,7 +1194,7 @@ msgstr "eksportuojamos naujos klaidos kaip RSS srautas"
 
 #: interfacing.php:36
 msgid "Watching a section of the map for newly found errors"
-msgstr ""
+msgstr "Stebima žemėlapio dalis su neseniai rastomis klaidomis"
 
 #: interfacing.php:41
 msgid ""
@@ -1150,6 +1202,9 @@ msgid ""
 "different. The RSS feed will include error entries that were first found "
 "within the last three weeks."
 msgstr ""
+"URL formatas yra toks pat, kaip GPX eksportams, skiriasi tik format "
+"parametras. RSS srautas turės įrašus apie klaidas, kurios pirmą kartą buvo "
+"rastos per paskutines tris savaites."
 
 #: interfacing.php:42
 msgid ""
@@ -1157,6 +1212,9 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
+"Apatiniame dešiniajame žemėlapio kampe yra nuoroda, rodanti į RSS srautą, "
+"kuris visada turi tą patį klaidų tipų pasirinkimą, kuris naudojamas ir "
+"žemėlapyje."
 
 #: interfacing.php:46
 msgid "getting the whole dump-file"
@@ -1164,7 +1222,7 @@ msgstr "gaunamas pilnas klaidų failas"
 
 #: interfacing.php:48
 msgid "Doing something completely different with 10 millions of errors..."
-msgstr ""
+msgstr "Daryti ką nors kitą su 10 milijonų klaidų..."
 
 #: interfacing.php:53
 msgid ""
@@ -1186,6 +1244,9 @@ msgid ""
 "roughly equally sized dump files. Consider the schema as a prefix for the "
 "error_id."
 msgstr ""
+"Schema yra žymuo, įvardinantis planetos regioną. Pagal %splanetos padalinimo "
+"žemėlapį%s planeta yra padalinta į stačiakampes dalis, kurios duoda daugmaž "
+"vienodo dydžio duomenų failus. Laikykite schemą kaip error_id prefixą."
 
 #: interfacing.php:60
 msgid ""
@@ -1248,6 +1309,14 @@ msgid ""
 "never come back just because KeepRight is wrong and this exception cannot be "
 "included in the ruleset."
 msgstr ""
+"vienas iš new, reopened, ignore_temporarily, ignore. Čia nerasite „cleared“ "
+"klaidų, nes pateikiamos tik aktyvios klaidos. Laikinai ignoruojamos klaidos "
+"yra ištaisytos problemos, kurias vartotojai tikisi iš tiesų ištaisę. "
+"Laikinai ignoruojamos klaidos vėl pereis į „new“ būseną kito atnaujinimo "
+"metu, jei ji iš tiesų nėra ištaisyta. Ignoruojamos klaidos yra tiesiog "
+"neteisingai nustatytos (false-positive), kurios niekada neturi sugrįžti, nes "
+"KeepRight neteisingai jas aptiko ir ši klaida negali būti įvertinta "
+"tikrinimo procedūrose."
 
 #: interfacing.php:68
 msgid ""
@@ -1277,6 +1346,11 @@ msgid ""
 "translated. GNU gettext requires  a .po file that holds original and "
 "translated strings. You may use existing .po files from here: "
 msgstr ""
+"Tai klaidos aprašymų karkasas, kur vietos žymės (\"$i\") nurodo vietą, kur "
+"konkrečios reikšmės turi būti įterptos norint gauti konkretų klaidos "
+"pranešimą. Jūs galite atiduoti šį karkasą GNU gettext() funkcijai, kuri jį "
+"išvers. GNU gettext reikalauja .po failų, kurie turi pradinius tekstus ir "
+"vertimo eilutes. Galite naudoti jau esančius .po failus iš čia: "
 
 #: interfacing.php:70
 msgid "find the GNU gettext template file here:"
@@ -1298,6 +1372,7 @@ msgstr "Laikas (MESZ) kada ši klaida buvo pirmą kartą rasta"
 msgid ""
 "Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
 msgstr ""
+"Laikas (MESZ), kada šią klaidą paskutinį kartą (per)tikrino procedūros"
 
 #: interfacing.php:74
 msgid ""
@@ -1327,7 +1402,7 @@ msgstr "Komentaro pateikimo laikas (MESZ)"
 
 #: interfacing.php:82
 msgid "loading the errors table"
-msgstr ""
+msgstr "užkraunama klaidų lentelė"
 
 #: interfacing.php:85
 msgid "This is the schema definition for use with MySQL databases:"
@@ -1338,12 +1413,14 @@ msgid ""
 "Please note that <em>schema</em> is a reserved word in MySQL, so you always "
 "have to quote it like this: `schema`"
 msgstr ""
+"Atkreipkite dėmesį, kad <em>schema</em> yra MySQL rezervuotas žodis, todėl "
+"visada turi būti rašomas kabutėse: `schema`"
 
 #: interfacing.php:110
 msgid ""
 "There are two primary keys in this table: a natural one and an artificial "
 "one:"
-msgstr ""
+msgstr "Šioje lentelėje yra du pirminiai raktai: natūralusis ir dirbtinis:"
 
 #: interfacing.php:112
 msgid ""
@@ -1351,6 +1428,10 @@ msgid ""
 "lon. That means one type of error may be found on multiple spots belonging "
 "to one single object (eg. self-intersections of ways)."
 msgstr ""
+"Natūralusis pirminis raktas susideda iš error_type, object_type, object_id, "
+"lat, lon. Tai reiškia, kad vieno tipo klaidos gali būti rastos keliose "
+"vietose, priklausančiose tam pačiam objektui (pvz., su savimi "
+"besikertančiuose keliuose)."
 
 #: interfacing.php:114
 msgid ""
@@ -1358,3 +1439,5 @@ msgid ""
 "for simplicity of referencing individual error instances and it is "
 "completely redundant."
 msgstr ""
+"Dirbtinis pirminis raktas susideda iš schema ir error_id. Jis yra naudojamas "
+"norint supaprastinti nuorodas į konkrečias klaidas ir yra visai nebūtinas."

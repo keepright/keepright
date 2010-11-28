@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: keepright 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-08-22 19:15+0000\n"
-"Last-Translator: Daniel Bossert <Unknown>\n"
+"PO-Revision-Date: 2010-11-28 19:04+0000\n"
+"Last-Translator: e9625163 <Unknown>\n"
 "Language-Team: Austrian <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-08-23 04:21+0000\n"
+"X-Launchpad-Export-Date: 2010-11-28 19:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 # translations for error messages
@@ -729,6 +729,10 @@ msgid "wrong direction"
 msgstr "falscher Drehsinn"
 
 #. please keep this as short as possible
+msgid "faintly connected"
+msgstr "wenige Verbindungen"
+
+#. please keep this as short as possible
 msgid "*_link-connections"
 msgstr "Zubringer-Verbindungen"
 
@@ -757,6 +761,30 @@ msgstr ""
 "Nachbarn haben. Damit sind folgende Tags gemeint: highway, railway, "
 "cycleway, waterway, footway, piste, aerialway, pipeline, building, "
 "via_ferrata"
+
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr "welche Sprache?"
+
+msgid ""
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
+msgstr ""
+"Damit Anwendungen die richtige Sprache auswählen können, müssen sie die im "
+"name-Tag verwendete Sprache erkennen. Zu diesem Zweck muß es ein "
+"zusätzliches Tag in der Form name:XX geben, das denselben Inhalt wie das "
+"name-Tag hat. Aus dem Sprachkürzel XX läßt sich so die Sprache des Namens "
+"ablesen."
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
+msgstr ""
+"Dieser $1 sollte ein zusätzliches Tag der Form ''name:XX=$2'' haben, wobei "
+"XX die Sprache des Namens ''$2'' angibt."
 
 # translations for the web pages
 #. translations for the web pages

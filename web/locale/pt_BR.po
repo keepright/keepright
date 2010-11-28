@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: keepright 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-07-26 11:36+0000\n"
+"PO-Revision-Date: 2010-10-07 03:12+0000\n"
 "Last-Translator: Rodrigo de Avila <rodrigo@avila.net.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-07-27 04:23+0000\n"
+"X-Launchpad-Export-Date: 2010-11-28 19:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 # translations for error messages
@@ -728,6 +728,10 @@ msgid "wrong direction"
 msgstr "direção errada"
 
 #. please keep this as short as possible
+msgid "faintly connected"
+msgstr ""
+
+#. please keep this as short as possible
 msgid "*_link-connections"
 msgstr "conexões com *_link"
 
@@ -756,6 +760,23 @@ msgstr ""
 "os caminhos vizinhos a ele. Atualmente, estas etiquetas são: highway, "
 "railway, cycleway, waterway, footway, piste, aerialway, pipeline, building, "
 "via_ferrata"
+
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr ""
+
+msgid ""
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
+msgstr ""
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
+msgstr ""
 
 #. translations for the web pages
 #: index.php:9

@@ -8,17 +8,17 @@ msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-08-19 12:28+0000\n"
+"PO-Revision-Date: 2010-11-02 09:55+0000\n"
 "Last-Translator: Emilien Klein <emilien+ubuntu@klein.st>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-08-20 04:05+0000\n"
+"X-Launchpad-Export-Date: 2010-11-28 19:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 msgid "There is more than one node in this spot. Offending node IDs: $1"
-msgstr "Il y a plus d'un nœud à cet endroit. Nœud en question : $1"
+msgstr "Il y a plus d'un nœud à cet endroit. Nœuds en conflit: $1"
 
 msgid "This coastline-way is not part of a closed-loop"
 msgstr "Ce chemin de littoral ne fait pas partie d'une boucle fermée"
@@ -39,13 +39,13 @@ msgstr ""
 msgid ""
 "This node cannot be reached, because one-ways only lead away from here"
 msgstr ""
-"Ce nœud ne peut pas être atteint car le sens unique s'éloigne uniquement de "
-"ce point"
+"Ce nœud ne peut être atteint car il n'est relié qu'à des voies en sens "
+"unique s'en éloignant"
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
 msgstr ""
-"On ne peut pas s'échapper de ce nœud car le sens unique mène uniquement à ce "
-"point"
+"On ne peut quitter ce point car il n'est relié qu'à des voies en sens unique "
+"y conduisant"
 
 msgid "This node is very close but not connected to way #$1"
 msgstr "Ce nœud est très près mais pas connecté au chemin #$1"
@@ -101,7 +101,7 @@ msgid ""
 "This crossing of a highway and a railway needs to be tagged as "
 "railway=crossing or railway=level_crossing"
 msgstr ""
-"Ce passage de route ou de chemin de fer doit être tagué en tant que "
+"Cette intersection de route et de voie ferrée doit être balisée en tant que "
 "railway=crossing ou railway=level_crossing"
 
 msgid ""
@@ -164,7 +164,7 @@ msgstr "La clé du tag de cette relation est 'key': $2"
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
-msgstr "Ce $1 est tagué '$2=$3' ou $4 ressemble à $5"
+msgstr "Ce $1 est tagué '$2=$3', ou $4 ressemble à $5"
 
 #. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
 msgid "This node is a junction of ways on different layers: $1"
@@ -233,15 +233,15 @@ msgstr ""
 "admin_level le plus bas de toutes les relations"
 
 msgid "This turn-restriction has no restriction type"
-msgstr "Cette restriction de manœuvres n'a pas de type de restriction"
+msgstr "Cette interdiction de tourner n'a pas de balise restriction"
 
 msgid "This turn-restriction has no known restriction type"
-msgstr "Cette restriction de manœuvres n'a pas de type de restriction connu"
+msgstr "Cette interdiction de tourner a une balise restriction inconnue"
 
 msgid "A turn-restriction needs exactly one $1 member. This one has $2"
 msgstr ""
-"Une restriction de manœuvres a besoin d'exactement un membre $1. Celle-ci a "
-"$2"
+"Une interdiction de tourner a besoin d'exactement un membre $1. Celle-ci en "
+"a $2"
 
 msgid "From- and To-members of turn restrictions need to be ways. $1"
 msgstr ""
@@ -722,6 +722,10 @@ msgid "wrong direction"
 msgstr "Direction incorrecte"
 
 #. please keep this as short as possible
+msgid "faintly connected"
+msgstr ""
+
+#. please keep this as short as possible
 msgid "*_link-connections"
 msgstr "Connexions *_link"
 
@@ -748,6 +752,23 @@ msgstr ""
 "toujours avoir une des balises \"principales\" qu'un des chemins du coin "
 "possède. En ce moment, ces balises sont : highway, railway, cycleway, "
 "waterway, footway, piste, aerialway, pipeline, building, via_ferrata"
+
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr ""
+
+msgid ""
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
+msgstr ""
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
+msgstr ""
 
 #. translations for the web pages
 #: index.php:9
