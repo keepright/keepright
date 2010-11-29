@@ -60,20 +60,72 @@ query("
 query("DROP TABLE IF EXISTS _tmp_tmp", $db1);
 
 
-// it's OK if a motorway is connected with motorway, motorway_link, trunk, construction, rest_area or services.
+
+
+
+// isolate any highway=service and highway=unclassified ways
+// that lack an access tag
+query("DROP TABLE IF EXISTS _tmp_service", $db1);
+query("
+	CREATE TABLE _tmp_service AS
+	SELECT j.node_id, wn.way_id
+	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
+	WHERE wn.way_id<>j.way_id AND EXISTS (
+
+		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
+		t.k='highway' AND
+			t.v IN ('service', 'unclassified') AND
+			NOT EXISTS (
+				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
+				((t.k='access' AND t.v IN ('no', 'private')) OR
+				(t.k='service' AND t.v='parking_aisle'))
+			)
+	)
+", $db1);
+
+
+// drop any highway=service and highway=unclassified ways that come close
+// (100 meters) to an amenity found at motorway resting areas, i.e.
+// parking, fuel, restaurant or toilets (these are never connected with ways).
+// This one only looks at the first piece of way connected to the motorway,
+// no connections are followed
+query("
+	DELETE FROM _tmp_junctions
+	WHERE node_id IN (
+
+		SELECT s.node_id
+		FROM _tmp_service s INNER JOIN ways w1 ON s.way_id=w1.id,
+			ways w2 INNER JOIN way_tags wt ON w2.id=wt.way_id
+		WHERE ST_DWithin(w1.geom, w2.geom, 100) AND
+			wt.k='amenity' AND wt.v IN ('parking', 'fuel', 'restaurant', 'toilets')
+
+		UNION
+
+		SELECT s.node_id
+		FROM _tmp_service s INNER JOIN ways w1 ON s.way_id=w1.id,
+			nodes n INNER JOIN node_tags nt ON n.id=nt.node_id
+		WHERE ST_DWithin(w1.geom, n.geom, 100) AND
+			nt.k='amenity' AND nt.v IN ('parking', 'fuel', 'restaurant', 'toilets')
+	)
+", $db1);
+
+
+
+
+// it's OK if a motorway is connected with motorway, motorway_link, trunk, construction, or rest_area.
 // it's OK if a motorway is connected with service, unclassified AS LONG AS
 //	the other way has access=no|private OR
 //	the other way is a service=parking_aisle
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
-	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, services, rest_area or construction. Service or unclassified is only valid if it has a access=no/private or if it is a service=parking_aisle.', NOW()
+	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, rest_area or construction. Service or unclassified is only valid if it has access=no/private or if it is a service=parking_aisle.', NOW()
 	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 	WHERE wn.way_id<>j.way_id AND EXISTS (
 
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND (
 
-			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified', 'rest_area', 'services')
+			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified', 'rest_area')
 
 			OR
 
@@ -88,6 +140,7 @@ query("
 ", $db1);
 
 
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
-query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_service", $db1);
 ?>
