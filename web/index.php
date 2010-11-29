@@ -47,9 +47,19 @@ printf(T_gettext('Data Checks for Asia%s (Starting point Tokio, Japan)'), "</a>"
 echo "<br><br><a href='report.php'>" . T_gettext('Europe Data Checks as ugly list') . "</a><br><br>";
 
 printf(T_gettext("Developers have a look at the %sSourceForge%s site providing svn access to the sources."), "<a href='http://apps.sourceforge.net/trac/keepright/'>", '</a>');
+echo "<br>";
+printf(T_gettext("If you want to export errors from KeepRight you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
 
 
 echo '<h3>' . T_gettext('logfile') . '</h3>';
+
+echo "<h4>2010-11-29</h4>";
+echo T_gettext("You'll notice some improvements on two checks and one completely new one 
+coming up during the next days:<br> <em>faintly connected roundabouts</em> is a new sub-check for the roundabout check that will complain about roundabouts with less than three connections to other roads. This need not be an error, but at least it is questionable 
+what faintly connected roundabouts are built for<br> <em>language unknown</em> is a new warning-type check that tries to improve localization by complaining about name tags where the language code cannot be deferred from other tags. Thank you, Ed, for the idea!<br> 
+<em>motorways connected directly</em>-check had many false positives at rest areas (these are service highways that intentionally don't have an access restriction). I eliminated these using a heuristic method: service roads are OK if they lead to a parking area, a fuel station, a toilet or a restaurant. BTW: highway=services is something completely different and should not be used on ways. Thank you, Johan, for making me think about the problem again!") . '<br>';
+
+
 
 echo "<h4>2010-06-20</h4>";
 printf(T_gettext("There are a few more languages in the select box now. You can help translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"), "<a target='_new' href='https://translations.launchpad.net/keepright'>", '</a>');
@@ -58,21 +68,6 @@ echo "<h4>2010-06-08</h4>";
 printf(T_gettext("To avoid routing errors like %sthis one%s I changed the check 'highways connected directly'. It will now complain about any connections of a motorway with a highway=service or highway=unclassified if it lacks an access=no or access=private tag or if it is not a service=parking_aisle.<br>I hope you agree that this inconvenience is necessary. Thank you, Nathan, for telling me about this!"), "<a target='_new' href='please_turn_left.png'>", '</a>');
 
 
-echo '<br><br>';
-echo "<h4>2010-05-24</h4>";
-echo '<b>' . T_gettext("KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!") . '</b>';
-
-echo '<br>' . strtr(T_gettext(
-"As a start KeepRight may be used in english, german and brazilian portugese. New translations are welcome! The gettext template file is $1right here$2. Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"),
-array('$1'=>'<a href="locale/keepright.pot">', '$2'=>'</a>')
-);
-
-echo "<h4>2010-04-17</h4>";
-printf(T_gettext("If you want to export errors from KeepRight you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
-
-echo "<h4>2010-04-05</h4>";
-echo T_gettext("Getting rid of the evil db-parameter") . '<br>' .
-T_gettext("You may have noticed that you couldn&apos;t pan around the whole world in KeepRight as you liked. There were invisible boundaries and you always had to take care about the db-parameter in the URLs to be appropriate for the current position.<br>This is over now! The db-parameter is gone. So have fun panning around the whole world and fixing errors easier than ever!");
 
 echo '<br><br>';
 printf(T_gettext('For archeologists: %sOld log entries%s have moved.'), "<a href='logs.php'>", '</a>');

@@ -620,6 +620,28 @@ msgstr ""
 
 
 
+
+#, php-format
+msgid ""
+"You'll notice some improvements on two checks and one completely new one "
+"coming up during the next days:<br> "
+"<em>faintly connected roundabouts</em> is a new sub-check for the roundabout check "
+"that will complain about roundabouts with less than three connections to "
+"other roads. This need not be an error, but at least it is questionable "
+"what faintly connected roundabouts are built for<br> "
+"<em>language unknown</em> is a new warning-type check that tries to improve "
+"localization by complaining about name tags where the language code cannot "
+"be deferred from other tags. Thank you, Ed, for the idea!<br> "
+"<em>motorways connected directly</em>-check had many false positives "
+"at rest areas (these are service highways that intentionally don't have an "
+"access restriction). I eliminated these using a heuristic method: "
+"service roads are OK if they lead to a parking area, a fuel station, a toilet "
+"or a restaurant. BTW: highway=services is something completely different "
+"and should not be used on ways. Thank you, Johan, for making me think about "
+"the problem again!"
+msgstr ""
+
+
 #: index.php:56
 msgid ""
 "There are a few more languages in the select box now. You can help translating "

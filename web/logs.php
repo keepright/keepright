@@ -17,6 +17,23 @@ echo '<form name="myform" method="get" action="' . $_SERVER['PHP_SELF'] . '">';
 echo '<div style="position:absolute; top:70px; right:10px;">'; language_selector(); echo '</div>';
 echo "</form>";
 
+echo '<br><br>';
+echo "<h4>2010-05-24</h4>";
+echo '<b>' . T_gettext("KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!") . '</b>';
+
+echo '<br>' . strtr(T_gettext(
+"As a start KeepRight may be used in english, german and brazilian portugese. New translations are welcome! The gettext template file is $1right here$2. Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"),
+array('$1'=>'<a href="locale/keepright.pot">', '$2'=>'</a>')
+);
+
+echo "<h4>2010-04-17</h4>";
+printf(T_gettext("If you want to export errors from KeepRight you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
+
+echo "<h4>2010-04-05</h4>";
+echo T_gettext("Getting rid of the evil db-parameter") . '<br>' .
+T_gettext("You may have noticed that you couldn&apos;t pan around the whole world in KeepRight as you liked. There were invisible boundaries and you always had to take care about the db-parameter in the URLs to be appropriate for the current position.<br>This is over now! The db-parameter is gone. So have fun panning around the whole world and fixing errors easier than ever!");
+
+
 echo "<h4>2010-03-15</h4>";
 echo T_gettext("During the next updates you will see an increased number of floating islands errors. This is because up to now the check routine didn&apos;t complain about ways that don&apos;t have a single connection with any other way(!). Sometimes it takes months until you see the most obvious things...");
 
