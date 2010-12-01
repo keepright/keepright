@@ -228,6 +228,7 @@ query("
 		(wt.k='highway' AND wt.v<>'emergency_access_point') OR
 		(wt.k='route' AND wt.v='ferry') OR
 		(wt.k='man_made' AND wt.v='pier') OR
+		(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
 		(wt.k='amenity' AND wt.v='parking') OR
 		(wt.k IN ('railway', 'public_transport') AND wt.v='platform')
 	)
@@ -270,6 +271,8 @@ query("ANALYZE _tmp_junctions", $db1);
 // not finding a record in _tmp_junctions means the way is a not connected way
 
 // don't complain about amenity=parking ways or piers; they are included here only for connecting highways
+// the same is valid for ways on airports (aeroway = taxiway|runway|apron)
+
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), w.way_id, 'This way is not connected to the rest of the map', NOW()
@@ -284,6 +287,7 @@ query("
 		SELECT wt.way_id FROM way_tags wt WHERE (
 			wt.way_id=w.way_id AND (
 				(wt.k='man_made' AND wt.v='pier') OR
+				(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
 				(wt.k='amenity' AND wt.v='parking')
 			)
 		)
@@ -384,6 +388,7 @@ query("
 		SELECT wt.way_id FROM way_tags wt WHERE (
 			wt.way_id=w.way_id AND (
 				(wt.k='man_made' AND wt.v='pier') OR
+				(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
 				(wt.k='amenity' AND wt.v='parking')
 			)
 		)
