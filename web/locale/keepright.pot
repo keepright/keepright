@@ -1,8 +1,3 @@
-# KeepRight gettext template file.
-# Copyright (C) 2010 Harald Kleiner
-# This file is distributed under the same license as the KeepRight! package.
-# Harald Kleiner <keepright@gmx.at>, 2010.
-#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -15,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
+"X-Launchpad-Export-Date: 2010-12-01 20:40+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 # translations for error messages
-
 msgid "There is more than one node in this spot. Offending node IDs: $1"
 msgstr ""
 
@@ -28,13 +23,16 @@ msgstr ""
 msgid "This way is tagged with '$1=$2' and should be closed-loop."
 msgstr ""
 
-msgid "The first node (id $1) of this one-way is not connected to any other way"
+msgid ""
+"The first node (id $1) of this one-way is not connected to any other way"
 msgstr ""
 
-msgid "The last node (id $1) of this one-way is not connected to any other way"
+msgid ""
+"The last node (id $1) of this one-way is not connected to any other way"
 msgstr ""
 
-msgid "This node cannot be reached, because one-ways only lead away from here"
+msgid ""
+"This node cannot be reached, because one-ways only lead away from here"
 msgstr ""
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
@@ -58,16 +56,20 @@ msgstr ""
 msgid "This way has no tags"
 msgstr ""
 
-msgid "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref tag"
+msgid ""
+"This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
+"tag"
 msgstr ""
 
-msgid "This $1 is tagged as place of worship and therefore needs a religion tag"
+msgid ""
+"This $1 is tagged as place of worship and therefore needs a religion tag"
 msgstr ""
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
 msgstr ""
 
-msgid "This node is tagged as $1 and therefore needs a name tag or an operator tag"
+msgid ""
+"This node is tagged as $1 and therefore needs a name tag or an operator tag"
 msgstr ""
 
 msgid "This way has no nodes"
@@ -79,13 +81,18 @@ msgstr ""
 msgid "This way is not connected to the rest of the map"
 msgstr ""
 
-msgid "This crossing of a highway and a railway needs to be tagged as railway=crossing or railway=level_crossing"
+msgid ""
+"This crossing of a highway and a railway needs to be tagged as "
+"railway=crossing or railway=level_crossing"
 msgstr ""
 
-msgid "There are ways in different layers coming together in this railway crossing"
+msgid ""
+"There are ways in different layers coming together in this railway crossing"
 msgstr ""
 
-msgid "There are ways tagged as tunnel or bridge coming together in this railway crossing"
+msgid ""
+"There are ways tagged as tunnel or bridge coming together in this railway "
+"crossing"
 msgstr ""
 
 #. full mesage: "This way is fixme-tagged: fixme=yes"
@@ -110,10 +117,13 @@ msgstr ""
 msgid "This way contains node #$1 $2 times. This may or may not be an error"
 msgstr ""
 
-msgid "This way contains more than one node at least twice. Nodes are $1. This may or may not be an error"
+msgid ""
+"This way contains more than one node at least twice. Nodes are $1. This may "
+"or may not be an error"
 msgstr ""
 
-msgid "This way has only two different nodes and contains one of them more than once"
+msgid ""
+"This way has only two different nodes and contains one of them more than once"
 msgstr ""
 
 msgid "The key of this node's tag is 'key': $2"
@@ -125,7 +135,6 @@ msgstr ""
 msgid "The key of this relation's tag is 'key': $2"
 msgstr ""
 
-
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
 msgstr ""
@@ -134,20 +143,25 @@ msgstr ""
 msgid "This node is a junction of ways on different layers: $1"
 msgstr ""
 
-msgid "If this mini roundabout is in a country with left-hand traffic then it should have a tag 'direction=clockwise'"
+msgid ""
+"If this mini roundabout is in a country with left-hand traffic then it "
+"should have a tag 'direction=clockwise'"
 msgstr ""
 
-msgid "If this mini roundabout is in a country with right-hand traffic then it should not have a tag 'direction=clockwise'"
+msgid ""
+"If this mini roundabout is in a country with right-hand traffic then it "
+"should not have a tag 'direction=clockwise'"
 msgstr ""
 
-msgid "This $1 is tagged with layer $2. This need not be an error, but it looks strange"
+msgid ""
+"This $1 is tagged with layer $2. This need not be an error, but it looks "
+"strange"
 msgstr ""
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
-"motorway_link, trunk, rest_area or construction. "
-"Service or unclassified is only valid if it has access=no/private "
-"or if it is a service=parking_aisle."
+"motorway_link, trunk, rest_area or construction. Service or unclassified is "
+"only valid if it has access=no/private or if it is a service=parking_aisle."
 msgstr ""
 
 msgid "This boundary has no name"
@@ -157,9 +171,9 @@ msgid "The boundary of $1 has no admin_level"
 msgstr ""
 
 msgid ""
-"The boundary of $1 has no valid numeric admin_level. Please do not use "
-"admin levels like for example 6;7. Always tag the lowest admin_level "
-"of all boundaries."
+"The boundary of $1 has no valid numeric admin_level. Please do not use admin "
+"levels like for example 6;7. Always tag the lowest admin_level of all "
+"boundaries."
 msgstr ""
 
 msgid "The boundary of $1 is not closed-loop"
@@ -168,7 +182,10 @@ msgstr ""
 msgid "The boundary of $1 splits here"
 msgstr ""
 
-msgid "This boundary-way has admin_level $1 but belongs to a relation with lower admin_level (higher priority); it should have the lowest admin_level of all relations"
+msgid ""
+"This boundary-way has admin_level $1 but belongs to a relation with lower "
+"admin_level (higher priority); it should have the lowest admin_level of all "
+"relations"
 msgstr ""
 
 msgid "This turn-restriction has no restriction type"
@@ -183,159 +200,196 @@ msgstr ""
 msgid "From- and To-members of turn restrictions need to be ways. $1"
 msgstr ""
 
-msgid "from- via- and to- members of a turn resctriction need to be connected"
+msgid ""
+"from- via- and to- members of a turn resctriction need to be connected"
 msgstr ""
 
 msgid "missing maxspeed tag"
 msgstr ""
 
-msgid "This way is part of a roundabout but is not closed-loop. (split carriageways approaching a roundabout should not be tagged as roundabout)"
-msgstr ""
-
-msgid "If this roundabout is in a country with right-hand traffic then its orientation goes the wrong way around"
-msgstr ""
-
-msgid "If this roundabout is in a country with left-hand traffic then its orientation goes the wrong way around"
-msgstr ""
-
-msgid "This way is tagged as highway=$1_link but doesn't have a connection to any other $1 or $1_link"
+msgid ""
+"This way is part of a roundabout but is not closed-loop. (split carriageways "
+"approaching a roundabout should not be tagged as roundabout)"
 msgstr ""
 
 msgid ""
-"This bridge does not have a tag in common with its surrounding ways "
-"that shows the purpose of this bridge. There should be one of these tags: $1"
+"If this roundabout is in a country with right-hand traffic then its "
+"orientation goes the wrong way around"
+msgstr ""
+
+msgid ""
+"If this roundabout is in a country with left-hand traffic then its "
+"orientation goes the wrong way around"
+msgstr ""
+
+msgid ""
+"This way is tagged as highway=$1_link but doesn't have a connection to any "
+"other $1 or $1_link"
+msgstr ""
+
+msgid ""
+"This bridge does not have a tag in common with its surrounding ways that "
+"shows the purpose of this bridge. There should be one of these tags: $1"
 msgstr ""
 
 #. translations for error type names
-
-
 #. please keep this as short as possible
 msgid "multiple nodes on the same spot"
 msgstr ""
 
-msgid "Try to find nodes that are (almost) on the same spot. Distances less than +/-0.5 meters are considered zero"
+msgid ""
+"Try to find nodes that are (almost) on the same spot. Distances less than +/-"
+"0.5 meters are considered zero"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "non-closed areas"
 msgstr ""
 
-msgid "By convention ways tagged with special combinations of key and value pairs are considered to be areas and are drawn as such in the map. Therefore it is necessary that they form closed loops. Non-closed areas are invisible in the map! The standard.xml file is used to determine which key-value-combinations are drawn as areas; any instance of these has to be closed-loop."
+msgid ""
+"By convention ways tagged with special combinations of key and value pairs "
+"are considered to be areas and are drawn as such in the map. Therefore it is "
+"necessary that they form closed loops. Non-closed areas are invisible in the "
+"map! The standard.xml file is used to determine which key-value-combinations "
+"are drawn as areas; any instance of these has to be closed-loop."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "dead-ended one-ways"
 msgstr ""
 
-msgid "Streets tagged as one-way must not be dead-ended (where should all the cars pile at the end of the road?). Nodes where just one-way streets begin (or end) cannot be reached (escaped from). Please note that motorways and motorway_links are considered one-way implicitly, so this check applies."
+msgid ""
+"Streets tagged as one-way must not be dead-ended (where should all the cars "
+"pile at the end of the road?). Nodes where just one-way streets begin (or "
+"end) cannot be reached (escaped from). Please note that motorways and "
+"motorway_links are considered one-way implicitly, so this check applies."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "almost-junctions"
 msgstr ""
 
-msgid "Streets that have (at least) one unconnected end are examined here. If such an end-node is very close to any other way an error is reported. Unconnected end-nodes should probably be connected to adjacent ways."
+msgid ""
+"Streets that have (at least) one unconnected end are examined here. If such "
+"an end-node is very close to any other way an error is reported. Unconnected "
+"end-nodes should probably be connected to adjacent ways."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "deprecated tags"
 msgstr ""
 
-msgid "As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some tags get replaced by others as new tagging conventions evolve. Consider this as a notice, not as an error. The term 'deprecated' is deprecated; you're free to tag anything the way you like. This is just a hint for new tagging conventions that have evolved in the meantime."
+msgid ""
+"As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some "
+"tags get replaced by others as new tagging conventions evolve. Consider this "
+"as a notice, not as an error. The term 'deprecated' is deprecated; you're "
+"free to tag anything the way you like. This is just a hint for new tagging "
+"conventions that have evolved in the meantime."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "missing tags"
 msgstr ""
 
-msgid "Ways, nodes and relations should in most cases have at least one tag (besides created_by)"
+msgid ""
+"Ways, nodes and relations should in most cases have at least one tag "
+"(besides created_by)"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "motorways without ref"
 msgstr ""
 
-msgid "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are mandatory as they are very important information"
+msgid ""
+"The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
+"mandatory as they are very important information"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "places of worship without religion"
 msgstr ""
 
-msgid "Churches, mosques and synagogues etc. need an extra religion tag giving info about the religion"
+msgid ""
+"Churches, mosques and synagogues etc. need an extra religion tag giving info "
+"about the religion"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "point of interest without name"
 msgstr ""
 
-msgid "The name tag should be specified for every point of interest as its content gets rendered in the map next to the POI symbol"
+msgid ""
+"The name tag should be specified for every point of interest as its content "
+"gets rendered in the map next to the POI symbol"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "ways without nodes"
 msgstr ""
 
-msgid "Ways that don't consist of at least two nodes don't make much sense as they won't get rendered."
+msgid ""
+"Ways that don't consist of at least two nodes don't make much sense as they "
+"won't get rendered."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "floating islands"
 msgstr ""
 
-msgid "Any highways drawn on the map should be accessible by car starting anywhere in the world. Ferries and highways (even railway platforms) are included in this check, so almost any island in the sea should be reachable starting from the mainland."
+msgid ""
+"Any highways drawn on the map should be accessible by car starting anywhere "
+"in the world. Ferries and highways (even railway platforms) are included in "
+"this check, so almost any island in the sea should be reachable starting "
+"from the mainland."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "railway crossings without tag"
 msgstr ""
 
-msgid "(Level)-Crossings of railways and highways should have a common node as junction that is tagged with 'railway=level_crossing' if it is a crossing where larger vehicles can cross or with 'railway=crossing' if it is a crossing just for pedestrians"
+msgid ""
+"(Level)-Crossings of railways and highways should have a common node as "
+"junction that is tagged with 'railway=level_crossing' if it is a crossing "
+"where larger vehicles can cross or with 'railway=crossing' if it is a "
+"crossing just for pedestrians"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "wrongly used railway crossing tag"
 msgstr ""
 
-msgid "Ways that take part in level-crossings of railways and highways have to be on the same layer and should in the normal case be not tagged as bridge or tunnel"
+msgid ""
+"Ways that take part in level-crossings of railways and highways have to be "
+"on the same layer and should in the normal case be not tagged as bridge or "
+"tunnel"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "fixme-tagged items"
 msgstr ""
 
-msgid "Nodes, ways or relations that are tagged with FIXME should be reviewed..."
+msgid ""
+"Nodes, ways or relations that are tagged with FIXME should be reviewed..."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "relations without type"
 msgstr ""
 
-msgid "Find any relation that has no type tag, wich is mandatory for relations."
+msgid ""
+"Find any relation that has no type tag, wich is mandatory for relations."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "intersections without junctions"
 msgstr ""
 
-msgid "Streets that graphically intersect need a common node that represents the crossing. The only exception are intersections on different layers (eg. bridges or tunnels). Intersections of streets with other objects like waterways or riverbanks should be avoided"
+msgid ""
+"Streets that graphically intersect need a common node that represents the "
+"crossing. The only exception are intersections on different layers (eg. "
+"bridges or tunnels). Intersections of streets with other objects like "
+"waterways or riverbanks should be avoided"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "highway-highway"
@@ -369,38 +423,47 @@ msgstr ""
 msgid "cyclew/footp-riverbank"
 msgstr ""
 
-
 #. please keep this as short as possible
 msgid "overlapping ways"
 msgstr ""
 
-msgid "Segments of ways that lie on top of each other (the same nodes connected by different ways in the same order) are a problem for routing software. They happen accidently and are hard to find."
+msgid ""
+"Segments of ways that lie on top of each other (the same nodes connected by "
+"different ways in the same order) are a problem for routing software. They "
+"happen accidently and are hard to find."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "loopings"
 msgstr ""
 
-msgid "Any way that contains any single node more than twice is considered an error. Any way may contain just one node twice. If more than one node is found twice it is considered an error."
+msgid ""
+"Any way that contains any single node more than twice is considered an "
+"error. Any way may contain just one node twice. If more than one node is "
+"found twice it is considered an error."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "misspelled tags"
 msgstr ""
 
-msgid "Tags that are used very seldom and almost look like very common tags (only one character difference) are reported as a warning."
+msgid ""
+"Tags that are used very seldom and almost look like very common tags (only "
+"one character difference) are reported as a warning."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "layer conflicts"
 msgstr ""
 
-msgid "Connected ways should be on the same layer. Crossings on intermediate nodes of ways on different layers are obviously wrong. Junctions on end-nodes of ways on different layers are also deprecated, but common practice. So you may ignore this part of the check and switch them off separately. Please note that bridges are set to layer +1, and tunnels to -1, anything else to layer 0 implicitly if no layer tag is present."
+msgid ""
+"Connected ways should be on the same layer. Crossings on intermediate nodes "
+"of ways on different layers are obviously wrong. Junctions on end-nodes of "
+"ways on different layers are also deprecated, but common practice. So you "
+"may ignore this part of the check and switch them off separately. Please "
+"note that bridges are set to layer +1, and tunnels to -1, anything else to "
+"layer 0 implicitly if no layer tag is present."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "mixed layers intersections"
@@ -410,22 +473,28 @@ msgstr ""
 msgid "strange layers"
 msgstr ""
 
-
 #. please keep this as short as possible
 msgid "motorways connected directly"
 msgstr ""
 
-msgid "Motorways should only be connected to other motorways or motorway_links. They should especially not be directly connected to highway=primary or highway=residential roads. Please note: This check may produce false positives on motorways ending in cities but it can be a valuable tool for looking up unwanted connections of motorways and other roads."
+msgid ""
+"Motorways should only be connected to other motorways or motorway_links. "
+"They should especially not be directly connected to highway=primary or "
+"highway=residential roads. Please note: This check may produce false "
+"positives on motorways ending in cities but it can be a valuable tool for "
+"looking up unwanted connections of motorways and other roads."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "boundaries"
 msgstr ""
 
-msgid "Administrative Boundaries can be expressed either by tagging ways or by adding them to a relation. They should be closed-loop sequences of ways, they must not self-intersect or split and they must have a name and an admin_level."
+msgid ""
+"Administrative Boundaries can be expressed either by tagging ways or by "
+"adding them to a relation. They should be closed-loop sequences of ways, "
+"they must not self-intersect or split and they must have a name and an "
+"admin_level."
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "missing name"
@@ -447,14 +516,16 @@ msgstr ""
 msgid "admin_level too high"
 msgstr ""
 
-
 #. please keep this as short as possible
 msgid "restrictions"
 msgstr ""
 
-msgid "This check is about turn restrictions defined by relations. A turn restriction relation needs a valid type attribute, a way as 'from' member, another way as 'to' member and optionally one or more ways or nodes as via members that need to be connected to 'from' and 'to'"
+msgid ""
+"This check is about turn restrictions defined by relations. A turn "
+"restriction relation needs a valid type attribute, a way as 'from' member, "
+"another way as 'to' member and optionally one or more ways or nodes as via "
+"members that need to be connected to 'from' and 'to'"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "missing type"
@@ -468,22 +539,24 @@ msgstr ""
 msgid "missing to way"
 msgstr ""
 
-
-
-
 #. please keep this as short as possible
 msgid "missing maxspeed"
 msgstr ""
 
-msgid "maxspeed tags are not mandatory but they are very helpful for successful routing. This check shall help users finding highways lacking the maxspeed tag. Please only add maxspeed tags if the allowed maxspeed differs from the default speed for the given highway!"
+msgid ""
+"maxspeed tags are not mandatory but they are very helpful for successful "
+"routing. This check shall help users finding highways lacking the maxspeed "
+"tag. Please only add maxspeed tags if the allowed maxspeed differs from the "
+"default speed for the given highway!"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "roundabouts"
 msgstr ""
 
-msgid "roundabout are always one-way streets directed counter-clockwise in right-hand driving countries or clockwise in left-hand driving countries."
+msgid ""
+"roundabout are always one-way streets directed counter-clockwise in right-"
+"hand driving countries or clockwise in left-hand driving countries."
 msgstr ""
 
 #. please keep this as short as possible
@@ -494,48 +567,45 @@ msgstr ""
 msgid "faintly connected"
 msgstr ""
 
-
 #. please keep this as short as possible
 msgid "*_link-connections"
 msgstr ""
 
-msgid "Any highway tagged as (motorway|trunk|primary|secondary)_link should have at least one connection to a (motorway|trunk|primary|secondary) highway or a _link highway of the same type"
+msgid ""
+"Any highway tagged as (motorway|trunk|primary|secondary)_link should have at "
+"least one connection to a (motorway|trunk|primary|secondary) highway or a "
+"_link highway of the same type"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "bridge-tags"
 msgstr ""
 
 msgid ""
-"Someone draws a bridge and forgets to tag it as highway... A bridge "
-"should always have one of the 'major' tags that its direct neighbour "
-"ways have. Currently these are: highway, railway, cycleway, waterway, "
-"footway, piste, aerialway, pipeline, building, via_ferrata"
+"Someone draws a bridge and forgets to tag it as highway... A bridge should "
+"always have one of the 'major' tags that its direct neighbour ways have. "
+"Currently these are: highway, railway, cycleway, waterway, footway, piste, "
+"aerialway, pipeline, building, via_ferrata"
 msgstr ""
-
 
 #. please keep this as short as possible
 msgid "language unknown"
 msgstr ""
 
 msgid ""
-"To help applications choose the best matching language they should "
-"know the language used for the name tag. It is therefore necessary "
-"to provide a name:XX tag with the same content as found in the name "
-"tag where XX specifies the language used for the name tag."
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
 msgstr ""
 
 #. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
 msgid ""
-"It would be nice if this $1 had an additional tag ''name:XX=$2'' "
-"where XX shows the language of its name ''$2''."
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
 msgstr ""
 
-
-
 #. translations for the web pages
-
 #: index.php:9
 msgid "data consistency checks for OSM"
 msgstr ""
@@ -618,61 +688,67 @@ msgid ""
 "the %sinterfacing guide%s"
 msgstr ""
 
-
-
-
 #, php-format
 msgid ""
 "You'll notice some improvements on two checks and one completely new one "
-"coming up during the next days:<br> "
-"<em>faintly connected roundabouts</em> is a new sub-check for the roundabout check "
-"that will complain about roundabouts with less than three connections to "
-"other roads. This need not be an error, but at least it is questionable "
-"what faintly connected roundabouts are built for<br> "
-"<em>language unknown</em> is a new warning-type check that tries to improve "
-"localization by complaining about name tags where the language code cannot "
-"be deferred from other tags. Thank you, Ed, for the idea!<br> "
-"<em>motorways connected directly</em>-check had many false positives "
-"at rest areas (these are service highways that intentionally don't have an "
-"access restriction). I eliminated these using a heuristic method: "
-"service roads are OK if they lead to a parking area, a fuel station, a toilet "
-"or a restaurant. BTW: highway=services is something completely different "
-"and should not be used on ways. Thank you, Johan, for making me think about "
-"the problem again!"
+"coming up during the next days:<br> <em>faintly connected roundabouts</em> "
+"is a new sub-check for the roundabout check that will complain about "
+"roundabouts with less than three connections to other roads. This need not "
+"be an error, but at least it is questionable what faintly connected "
+"roundabouts are built for<br> <em>language unknown</em> is a new warning-"
+"type check that tries to improve localization by complaining about name tags "
+"where the language code cannot be deferred from other tags. Thank you, Ed, "
+"for the idea!<br> <em>motorways connected directly</em>-check had many false "
+"positives at rest areas (these are service highways that intentionally don't "
+"have an access restriction). I eliminated these using a heuristic method: "
+"service roads are OK if they lead to a parking area, a fuel station, a "
+"toilet or a restaurant. BTW: highway=services is something completely "
+"different and should not be used on ways. Thank you, Johan, for making me "
+"think about the problem again!"
 msgstr ""
-
 
 #: index.php:56
 msgid ""
-"There are a few more languages in the select box now. You can help translating "
-"KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
+"There are a few more languages in the select box now. You can help "
+"translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
 msgstr ""
 
 #: index.php:56
 #, php-format
 msgid ""
 "To avoid routing errors like %sthis one%s I changed the check 'highways "
-"connected directly'. It will now complain about any connections of a motorway "
-"with a highway=service or highway=unclassified if it lacks an access=no or "
-"access=private tag or if it is not a service=parking_aisle.<br>I hope you agree "
-"that this inconvenience is necessary. Thank you, Nathan, for telling me about this!"
+"connected directly'. It will now complain about any connections of a "
+"motorway with a highway=service or highway=unclassified if it lacks an "
+"access=no or access=private tag or if it is not a "
+"service=parking_aisle.<br>I hope you agree that this inconvenience is "
+"necessary. Thank you, Nathan, for telling me about this!"
 msgstr ""
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
 #. is chosen. So just add your part in the msgid
 #: index.php:57
-msgid "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!"
-msgstr "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight se tornou multilíngue!"
+msgid ""
+"KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
+"se tornou multilíngue!"
+msgstr ""
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
 #. is chosen. So just add your part in the msgid
 #: index.php:58
 #, php-format
-msgid "As a start KeepRight may be used in english, german and brazilian portugese. New translations are welcome! The gettext template file is $1right here$2. Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
-msgstr "As a start KeepRight may be used in english, german and brazilian portugese. New translations are welcome! The gettext template file is $1right here$2. Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
-
+msgid ""
+"As a start KeepRight may be used in english, german and brazilian portugese. "
+"New translations are welcome! The gettext template file is $1right here$2. "
+"Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es "
+"KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere "
+"Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank "
+"an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode "
+"ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem "
+"vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
+"Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
+msgstr ""
 
 #: index.php:59
 msgid "Getting rid of the evil db-parameter"
@@ -722,8 +798,8 @@ msgstr ""
 #: index.php:77
 msgid ""
 "Please note that in order to make the JOSM link work, JOSM must already be "
-"running when you hit the JOSM-link. Furthermore you have to enable the &apos;"
-"remote control&apos;-plugin in JOSMs options."
+"running when you hit the JOSM-link. Furthermore you have to enable the "
+"&apos;remote control&apos;-plugin in JOSMs options."
 msgstr ""
 
 #: index.php:79
@@ -798,7 +874,6 @@ msgstr ""
 msgid "Site updated at %s"
 msgstr ""
 
-
 #: points.php:114
 msgid "node"
 msgstr ""
@@ -821,7 +896,9 @@ msgid "JOSM"
 msgstr ""
 
 #: myText.js:237
-msgid "JOSM must be running and JOSM's remote control plugin must be enabled for this to work!"
+msgid ""
+"JOSM must be running and JOSM's remote control plugin must be enabled for "
+"this to work!"
 msgstr ""
 
 #: myText.js:239
@@ -860,9 +937,6 @@ msgstr ""
 #: myText.js:255
 msgid "last edit of this"
 msgstr ""
-
-
-
 
 #: interfacing.php:4
 msgid "interfacing KeepRight"
@@ -971,8 +1045,8 @@ msgstr ""
 #: interfacing.php:59
 #, php-format
 msgid ""
-"The schema is an identifier naming a region on the planet. According to the %"
-"splanet splitting map%s the planet is split in rectangular parts to get "
+"The schema is an identifier naming a region on the planet. According to the "
+"%splanet splitting map%s the planet is split in rectangular parts to get "
 "roughly equally sized dump files. Consider the schema as a prefix for the "
 "error_id."
 msgstr ""
@@ -995,9 +1069,9 @@ msgid ""
 "Error types may be sub-typed (281, 282 etc.). Subtyped error checking "
 "routines test for different aspects related to a single topic (in the "
 "example 280 means &quot;boundaries&quot;, 281 means &quot;missing name[ for "
-"boundaries]&quot; and 282 means &quot;missing admin level[ for boundaries]"
-"&quot;). Subtyped error types are rendered as groups that may be collapsed "
-"on the web site."
+"boundaries]&quot; and 282 means &quot;missing admin level[ for "
+"boundaries]&quot;). Subtyped error types are rendered as groups that may be "
+"collapsed on the web site."
 msgstr ""
 
 #: interfacing.php:64
@@ -1020,10 +1094,10 @@ msgid ""
 "one of new, reopened, ignore_temporarily, ignore. You won&apos;t see any "
 "&apos;cleared&apos; errors because the dump contains active errors only. "
 "Temporarily ignored errors are issues fixed by a user who really hopes to "
-"have fixed it. Temporarily ignored errors will jump back in the &apos;"
-"new&apos; state with the next update if the error isn&apos;t really fixed. "
-"Ignored errors are issues that are simply false positives and should never "
-"come back just because KeepRight is wrong and this exception cannot be "
+"have fixed it. Temporarily ignored errors will jump back in the "
+"&apos;new&apos; state with the next update if the error isn&apos;t really "
+"fixed. Ignored errors are issues that are simply false positives and should "
+"never come back just because KeepRight is wrong and this exception cannot be "
 "included in the ruleset."
 msgstr ""
 
@@ -1078,8 +1152,8 @@ msgstr ""
 #: interfacing.php:76
 msgid ""
 "Location on the planet. Coordinates are given in the same projection as "
-"found in the official planet file. Please note that numbers are displayed "
-"as int values. To convert back to real lon/lat you have to divide by 10^7"
+"found in the official planet file. Please note that numbers are displayed as "
+"int values. To convert back to real lon/lat you have to divide by 10^7"
 msgstr ""
 
 #: interfacing.php:77
