@@ -7,7 +7,7 @@ find any way/node/relation that is tagged with FIXME anywhere in key or value
 
 $tables=array('node', 'way', 'relation');
 // execute similar queries for all three *_tags tables
-// according to the Wiki 'fixme' is valid as well as 'FIXME' so we search case sensitive here
+// according to the Wiki 'fixme' is valid as well as 'FIXME' so we search case insensitive here
 foreach($tables as $table) {
 
 	query("
