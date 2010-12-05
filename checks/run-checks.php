@@ -34,14 +34,16 @@ $db6 = pg_pconnect($connectstring, PGSQL_CONNECT_FORCE_NEW);
 
 
 // first of all: check if the tables are populated
-if (!(query_firstval('SELECT COUNT(*) FROM nodes', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM ways', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM relations', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM node_tags', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM way_tags', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM relation_tags', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM relation_members', $db1, false)>0 &&
-	query_firstval('SELECT COUNT(*) FROM way_nodes', $db1, false)>0)) {
+// it is enough to know if at least one row is there so avoid an expensive seq-scan
+// for a COUNT(*) with this weird syntax:
+if (!(query_firstval('SELECT COUNT(*) FROM (SELECT id FROM nodes LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT id FROM ways LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT id FROM relations LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT node_id FROM node_tags LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT way_id FROM way_tags LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT relation_id FROM relation_tags LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT relation_id FROM relation_members LIMIT 1) AS x', $db1, false)>0 &&
+	query_firstval('SELECT COUNT(*) FROM (SELECT way_id FROM way_nodes LIMIT 1) AS x', $db1, false)>0)) {
 
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!\n";
 		echo "!!!! A L E R T\n";
