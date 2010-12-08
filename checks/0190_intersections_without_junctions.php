@@ -30,7 +30,7 @@ query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $d
 // exclude proposed and construction highways as they are intentionally not connected
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
-	SELECT DISTINCT id, geom, CAST('highway' AS type_way_type)
+	SELECT id, geom, CAST('highway' AS type_way_type)
 	FROM ways
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
@@ -46,7 +46,7 @@ query("ANALYZE _tmp_ways", $db1);
 // find any cycleway/footpaths
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
-	SELECT DISTINCT id, geom, CAST('cycleway/footpath' AS type_way_type)
+	SELECT id, geom, CAST('cycleway/footpath' AS type_way_type)
 	FROM ways
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
@@ -63,7 +63,7 @@ query("
 // now add waterways but not riverbanks(docks/boatyards)
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
-	SELECT DISTINCT id, geom, CAST('waterway' AS type_way_type)
+	SELECT id, geom, CAST('waterway' AS type_way_type)
 	FROM ways
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
@@ -80,7 +80,7 @@ query("
 // finally add riverbanks
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
-	SELECT DISTINCT id, geom, CAST('riverbank' AS type_way_type)
+	SELECT id, geom, CAST('riverbank' AS type_way_type)
 	FROM ways
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
