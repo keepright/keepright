@@ -57,6 +57,12 @@ KEEP_OSM="0"
 # activate on productive systems only
 DROP_SCHEMA="0"
 
+# set this option to "1" if you want the old planet files
+# to be removed after each run to save hard disk space
+# if set to "0" you will have planet files 0.osm (current)
+# plus 0.osm.old (the version before current)
+DROP_OLD_PLANETFILE="0"
+
 # this is where the check scripts reside
 CHECKSDIR=$PREFIX"checks"
 

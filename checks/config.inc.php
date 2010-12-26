@@ -8,6 +8,9 @@ $db_params=array();
 parse_config_vars('config');
 
 // for calling from shell, find config in HOME directory
+// please ensure that in your php.ini you should have
+// variables_order = "EGPCS" # (ENV, GET, POST, COOKIE, SESSION)
+// in order to access $_ENV
 parse_config_vars($_ENV["HOME"] . '/keepright.config');
 
 // for calling from the admin interface. There is no suitable HOME variable (the script is run by the apache user), instead there is a symlink pointing to keepright.config
@@ -27,7 +30,8 @@ function parse_config_vars($filename) {
 		'FTP_HOST', 'FTP_USER', 'FTP_PASS', 'FTP_PATH',
 		'UPDATE_TABLES_URL', 'UPDATE_TABLES_URL_LOCAL',
 		'UPDATE_TABLES_USERNAME', 'UPDATE_TABLES_PASSWD',
-		'ADMIN_USERNAME', 'CREATE_COMPRESSED_DUMPS', 'TMPDIR', 'MARGIN');
+		'ADMIN_USERNAME', 'CREATE_COMPRESSED_DUMPS', 'TMPDIR', 'MARGIN',
+		'DROP_OLD_PLANETFILE');
 
 	$check_parts = array('NAME', 'ENABLED', 'DESCRIPTION', 'FILE');
 	$db_parts = array('URL', 'FILE', 'MAIN_DB_NAME', 'MAIN_SCHEMA_NAME', 'CAT', 'MIN_SIZE', 'LEFT', 'TOP', 'RIGHT', 'BOTTOM');

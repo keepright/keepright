@@ -40,7 +40,14 @@ switch ($argv[1]) {
 			if ($errorlevel) exit;
 
 			if (file_exists("$file.osm.old")) unlink("$file.osm.old");
-			rename("$file.osm", "$file.osm.old");
+
+			if ($DROP_OLD_PLANETFILE=="0") {
+				// keep old file
+				rename("$file.osm", "$file.osm.old");
+			} else {
+				// kill old file
+				unlink("$file.osm");
+			}
 			rename("$file.osm.new", "$file.osm");
 		}
 	break;
@@ -103,5 +110,3 @@ function get_bbox_parameters($schema) {
 }
 
 ?>
-
- 	  	 
