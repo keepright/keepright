@@ -17,40 +17,7 @@ If (and only if) nodes on the same lat/lon coordinates have unique ele values
 then no error is raised. This can happen at towers for example
 */
 
-/*
-query("DROP TABLE IF EXISTS _tmp_node_dupes", $db1, false);
-query("
-	CREATE TABLE _tmp_node_dupes (
-		lon double precision NOT NULL,
-		lat double precision NOT NULL
-	)
-", $db1, false);
 
-query("
-	INSERT INTO _tmp_node_dupes (lon, lat)
-	SELECT lon, lat
-	FROM nodes n
-	GROUP BY lon, lat
-	HAVING COUNT(id)>1
-", $db1);
-
-query("CREATE INDEX idx_tmp_node_dupes_xy ON _tmp_node_dupes (lon,lat)", $db1, false);
-query("ANALYZE _tmp_node_dupes", $db1, false);
-
-
-query("
-	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
-	SELECT $error_type, 'node', MIN(n.id), 'There is more than one node in this spot. Offending node IDs: $1', group_concat('#' || n.id), NOW()
-	FROM nodes n INNER JOIN _tmp_node_dupes d ON n.lon=d.lon AND n.lat=d.lat
-	GROUP BY d.lon, d.lat
-", $db1);
-
-print_index_usage($db1);
-
-query("DROP TABLE IF EXISTS _tmp_node_dupes", $db1, false);
-
-
-*/
 query("DROP TABLE IF EXISTS _tmp_elevations", $db1, false);
 query("
 	CREATE TABLE _tmp_elevations (
@@ -59,7 +26,6 @@ query("
 		ele text
 	)
 ", $db1, false);
-
 
 // consider up to one ele value per node id
 // don't let the check stumble on nodes with multiple tags
