@@ -13,6 +13,27 @@
 #
 # call this script out of the checks directory
 
+
+# read keepright config files
+USERCONFIG=$HOME/keepright.config
+
+# first: import config file shipped with keepright
+. ../config/config
+
+# second: import user's config file
+. $USERCONFIG
+
+
+PGHOST="$MAIN_DB_HOST"
+export PGHOST
+
+PGUSER="$MAIN_DB_USER"
+export PGUSER
+
+PGPASSWORD="$MAIN_DB_PASS"
+export PGPASSWORD
+
+
 FIRSTRUN=1
 STARTSCHEMA="$3"
 
@@ -54,6 +75,12 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 					process_schema
 				done
 
+				pg_dump --table=errors osm_EU > "$RESULTSDIR/osm_EU.errors.sql"
+				pg_dump --table=errors osm_XA > "$RESULTSDIR/osm_XA.errors.sql"
+				pg_dump --table=errors osm_XC > "$RESULTSDIR/osm_XC.errors.sql"
+				pg_dump --table=errors osm_XD > "$RESULTSDIR/osm_XD.errors.sql"
+				pg_dump --table=errors osm_XG > "$RESULTSDIR/osm_XG.errors.sql"
+
 			;;
 			US)
 
@@ -62,6 +89,8 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 					process_schema
 				done
 
+				pg_dump --table=errors osm_US > "$RESULTSDIR/osm_US.errors.sql"
+
 			;;
 			AU)
 
@@ -69,6 +98,8 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 				do
 					process_schema
 				done
+
+				pg_dump --table=errors osm_AU > "$RESULTSDIR/osm_AU.errors.sql"
 
 			;;
 		esac
