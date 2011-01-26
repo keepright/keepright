@@ -26,6 +26,7 @@ any way that now is not member of the list of found ways is an island (not conne
 $islands = array(
 	'europe' => array(
 		'Kufstein, Austria' => 4433559,
+		'Vösendorf, Austria' => 51103634,
 		'Ponta Delgada, Azores' => 26644602,
 		'Bruxelles, Belgium' => 15371932,
 		'Minsk, Belarus' => 25455453,
@@ -54,6 +55,7 @@ $islands = array(
 		'Amsterdam, Netherlands' => 7382660,
 		'Oslo, Norway' => 4394237,
 		'Warszawa, Poland' => 4990561,
+		'Bucharest, Romania' => 23485603,
 		'Madrid, Spain' => 4680727,
 		'Palma de Majorca' => 32694069,
 		'Majorca' => 5123287,
