@@ -2,6 +2,8 @@
 
 /*
 find any way/node/relation that is tagged with FIXME anywhere in key or value
+
+highway=road implies FIXME according to the wiki
 */
 
 
@@ -15,11 +17,23 @@ foreach($tables as $table) {
 		SELECT $error_type, '$table', {$table}_id, 'This $1 is fixme-tagged: $2', '$table', array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM {$table}_tags AS tmp
-			WHERE tmp.{$table}_id=t.{$table}_id AND (tmp.k iLIKE '%fixme%' OR tmp.v iLIKE '%fixme%' OR (k='name' AND v='tbd') OR (k='ref' AND v='tbd'))
+			WHERE tmp.{$table}_id=t.{$table}_id AND (
+				tmp.k iLIKE '%fixme%' OR
+				tmp.v iLIKE '%fixme%' OR
+				(tmp.k='name' AND tmp.v='tbd') OR
+				(tmp.k='ref' AND tmp.v='tbd') OR
+				(tmp.k='highway' AND tmp.v='road')
+			)
 		), ', '), NOW()
 
 		FROM {$table}_tags t
-		WHERE (k iLIKE '%fixme%' OR v iLIKE '%fixme%' OR (k='name' AND v='tbd') OR (k='ref' AND v='tbd'))
+		WHERE (
+			k iLIKE '%fixme%' OR
+			v iLIKE '%fixme%' OR
+			(k='name' AND v='tbd') OR
+			(k='ref' AND v='tbd') OR
+			(k='highway' AND v='road')
+		)
 		GROUP BY {$table}_id
 	", $db1);
 
