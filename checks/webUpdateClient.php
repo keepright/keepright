@@ -18,6 +18,10 @@ steps required for a database update:
    at the end of run-checks.php)
 6) update file updated_XX with date of last database update
 
+in case this script doesn't work check your php.ini file on the web server:
+session.use_only_cookies should not be set to 1 (the default) because
+this script won't accept any cookies
+
 */
 
 
@@ -30,7 +34,7 @@ if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {
 	exit;
 }
 
-if ($argv[2]=='--export_comments') $schema=1; else $schema=$argv[2];
+if ($argv[2]=='--export_comments') $schema=2; else $schema=$argv[2];
 
 require('config.inc.php');
 require('helpers.inc.php');
@@ -99,13 +103,13 @@ function login($URL) {
 
 	// call the server script to receive the session id and challenge
 	$result1 = readHTTP($URL);
-	echo implode("\n", $result1);
+	echo "result:\n" . implode("\n", $result1) . "\n(end of result)	\n";
 
 	$response=md5($UPDATE_TABLES_USERNAME . trim($result1[1]) . $UPDATE_TABLES_PASSWD);
 
 	// now respond...
 	$result2 = readHTTP("$URL?username=$UPDATE_TABLES_USERNAME&response=$response&PHPSESSID=" . trim($result1[2]));
-	echo implode("\n", $result2);
+	echo "result:\n" . implode("\n", $result2) . "\n(end of result)	\n";
 
 	if (trim($result2[0])=="OK welcome!") {
 		echo "session id is " . trim($result1[2]) . "\n";
@@ -161,7 +165,7 @@ function readHTTP($URL) {
 		while ((!feof($fp)) && (!$info['timed_out'])) {
 			$data .= fgets($fp, 4096);
 			$info = stream_get_meta_data($fp);
-			ob_flush;
+			ob_flush();
 			flush();
 		}
 

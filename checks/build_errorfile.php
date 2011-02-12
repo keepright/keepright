@@ -7,7 +7,7 @@ the errors dump is a copy of the error_view plus comments given by users
 
 */
 
-$schema=1;
+$schema=2;
 
 require('config.inc.php');
 require('helpers.inc.php');
