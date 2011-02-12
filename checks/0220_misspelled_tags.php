@@ -132,12 +132,14 @@ $never_complain_about = "(
 // please note the special notation!
 
 $force_irregular = array(
+	'brand:=tamoil',
 	'usability:skate:=excelent',
 	'note_',
 	'Public'
 );
 
 $force_regular = array(
+	'brand:=Tamoil',
 	'usability:skate:=excellent'
 );
 
