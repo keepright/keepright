@@ -193,10 +193,18 @@ while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 			$additivum = subtype_number($row['typ1'], $row['typ2']);
 			if ($additivum <> -1)
 
+				// the second sentence "but there is no junction node" is only valid for
+				// intersections of objects of the same kind: e.g. highway-highway
+				// but not highway-waterway. It were contraproductive if the error message
+				// led someone to add a junction node between a waterway and a highway
+				// instead of adding a bridge
+
 				query("
 					INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, txt3, last_checked, lon, lat)
 					VALUES($error_type+$additivum, CAST('way' AS type_object_type), {$row['way_id1']},
-					'This $1 intersects the $2 #$3 but there is no junction node', '{$row['typ1']}', '{$row['typ2']}', '{$row['way_id2']}', NOW()," .
+					'This $1 intersects the $2 #$3' ||
+					CASE WHEN $additivum IN(1, 4, 5, 6) THEN ' but there is no junction node' ELSE '' END,
+					'{$row['typ1']}', '{$row['typ2']}', '{$row['way_id2']}', NOW()," .
 					round(1e7*merc_lon($point[0])) . ',' . round(1e7*merc_lat($point[1])) . ')'
 				, $db2, false);
 		}
