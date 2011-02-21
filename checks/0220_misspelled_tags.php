@@ -22,6 +22,7 @@ $false_positives = array(
 	array('AND_a', 'AND_c', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_r', 'AND_w'),
 	array('AND_nosr_p', 'AND_nosr_r'),
 	array('area', 'arena'),
+	array('beach', 'bench'),
 	array('block', 'lock'),
 	array('biking', 'hiking'),
 	array('Birke', 'Birne'),
@@ -84,17 +85,23 @@ $never_complain_about = "(
 	'addr:conscriptionnumber:=',
 	'addr:full:=',
 	'addr:housenumber:=',
+	'aims-id:=',
 	'AND_nosr_r:=',
+	'AND_a_nosr_r:=',
+	'atm_ref:=',
 	'canvec:uuid:=',
 	'collection_times:=',
 	'bridge_ref:=',
 	'bus_routes:=',
 	'created_by:=',
 	'distance:=',
+	'FDOT_ref:=',
 	'garmin_type:=',
 	'gns_classification:=',
 	'gns:category:=',
+	'gns:dsg:=',
 	'gns:DSG:=',
+	'GNS:dsg_code:=',
 	'gns:MGRS:=',
 	'grades:=',
 	'history:=',
@@ -110,18 +117,25 @@ $never_complain_about = "(
 	'massgis:SOURCE_MAP:=',
 	'maxspeed:=',
 	'MGRS:=',
+	'MP_TYPE:=',
 	'opening_hours:=',
+	'power_rating:=',
+	'phone:=',
 	'nat_ref:=',
 	'nhd-shp:fdate:=',
+	'OCUPANTES:=',
 	'osak:identifier:=',
-	'ref_no:=',
+	'PFM:garmin_type:=',
 	'ref:isil:=',
+	'ref_no:=',
+	'ref_num:=',
 	'route_ref:=',
 	'source:=',
 	'source_ref:=',
 	'source_ref:name:=',
 	'statscan:rbuid:=',
 	'strassen-nrw:abs:=',
+	'UNIDAD_MAN:=',
 	'website:='
 )";
 
@@ -132,15 +146,18 @@ $never_complain_about = "(
 // please note the special notation!
 
 $force_irregular = array(
-	'brand:=tamoil',
 	'usability:skate:=excelent',
 	'note_',
 	'Public'
 );
 
 $force_regular = array(
+	'brand:=Esso',
+	'brand:=Shell',
 	'brand:=Tamoil',
-	'usability:skate:=excellent'
+	'brand:=Total',
+	'usability:skate:=excellent',
+	'geometry_source_type:=Walking Papers/Misson GPS'
 );
 
 
