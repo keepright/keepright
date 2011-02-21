@@ -193,12 +193,13 @@ query("
 	CREATE TABLE _tmp_roundabouts AS
 	SELECT rp.part, SUM(wn.y)/COUNT(wn.node_id) AS Cy,
 		SUM(wn.x)/COUNT(wn.node_id) AS Cx, false AS clockwise,
-	true AS right_hand_country
+	true AS right_hand_country, false as mini_roundabout
 	FROM _tmp_roundabout_parts rp INNER JOIN way_nodes wn USING (way_id)
 	GROUP BY rp.part
 ", $db1);
 
 
+// determine direction of roundabout
 query("
 	UPDATE _tmp_roundabouts r
 	SET clockwise=true
@@ -207,6 +208,31 @@ query("
 	AND (wn1.x-r.Cx)*(wn2.y-r.Cy) - (wn1.y-r.Cy)*(wn2.x-r.Cx) < 0
 ", $db1);
 
+
+// add mini_roundabouts.
+// direction can be clockwise or anticlockwise. anticlockwise is default and needn't be tagged
+query("
+	INSERT INTO _tmp_roundabouts (part, Cx, Cy, clockwise, right_hand_country, mini_roundabout)
+	SELECT -1*n.id, n.x, n.y,
+		EXISTS (
+			SELECT nt.node_id
+			FROM node_tags nt
+			WHERE nt.node_id=n.id AND k='direction' AND v='clockwise'
+		),
+		true, true
+
+	FROM nodes n
+	WHERE id IN (
+		SELECT node_id
+		FROM node_tags nt
+		WHERE k='highway' AND v='mini_roundabout'
+	)
+", $db1);
+
+
+
+
+// determine traffic mode of country
 
 // watch out! all geoms are in x/y coordinates, not lat/lon!
 // these countries are left-hand-driving countries
@@ -231,7 +257,7 @@ query("
 
 // fix boundary of south African countries from South Africa up to Kenya
 // lat/lon: -17 10, -40 10, -40 40, -20 40, -15.5 41.75, -1.9 41.75, -0.9 41, 2.76 40.95, 3.9 41.9, 3.9 41.1, 4.2 40.7, 3.8 39.9, 3.37 39.5, 3.55 38.1, 4.43 36.78, 4.43 36, 4.6 35.86, 4.56 34.4, 3.73 33.53, 3.47 30.9, 2.41 30.72, 2.06 31.29, 0.79 29.97, -1.41 29.58, -1.45 30.06, -1.1 30.41, -1.67 30.8, -2.41 30.81, -2.46 30.54, -2.95 30.46, -3.16 30.81, -4.52 29.67, -6.27 29.45, -8.28 30.72, -8.58 28.94, -9.32 28.46, -10.75 28.63, -11.61 28.28, -12.43 29.02, -12.47 29.46, -12.13 29.78, -13.37 29.78, -13.41 29.03, -11.96 27.36, -11.65 25.29, -11.22 25.29, -11.44 24.32, -11.1 24.32, -10.92 23.97, -13.03 23.93, -13.07 21.95, -16.25 21.95, -17.69 23.4, -18.07 20.94, -17.86 18.83, -17.44 18.35, -17.48 13.91, -17.06 13.38, -17 10
-query("
+ query("
 	UPDATE _tmp_roundabouts r
 	SET right_hand_country=false
 	WHERE ST_Within(
@@ -276,9 +302,12 @@ query("
 	)
 ", $db1);
 
+// create error records
 
 // right_hand_country and clockwise is wrong
 // left_hand_country and counter-clockwise is wrong
+
+// first for large roundabouts
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+2, CAST('way' AS type_object_type),
@@ -287,9 +316,19 @@ query("
 	'-hand traffic then its orientation goes the wrong way around', NOW()
 
 	FROM _tmp_roundabouts r INNER JOIN _tmp_roundabout_parts rp USING (part)
-	WHERE rp.sequence_id=0 AND right_hand_country=clockwise
+	WHERE rp.sequence_id=0 AND right_hand_country=clockwise AND NOT mini_roundabout
 ", $db1);
 
+// second for mini_roundabouts
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
+	SELECT $error_type+2, CAST('node' AS type_object_type),
+	-1*r.part, 'If this mini_roundabout is in a country with ' ||
+	CASE WHEN right_hand_country THEN 'right' ELSE 'left' END ||
+	'-hand traffic then its orientation goes the wrong way around', NOW()
+	FROM _tmp_roundabouts r
+	WHERE right_hand_country=clockwise AND mini_roundabout
+", $db1);
 
 
 
