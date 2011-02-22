@@ -170,12 +170,16 @@ function setCookie(lon, lat, zoom, hiddenChecks, lang) {
 function setLang(lang) {
 	if (document.cookie.length>0) {
 		var parts = document.cookie.split('|');
-		if (parts[4].indexOf(';')>0)
-			parts[4] = lang + parts[4].substr(parts[4].indexOf(';'));
-		else
-			parts[4] = lang
+		if (parts.length>=4) {
+			if (parts[4].indexOf(';')>0)
+				parts[4] = lang + parts[4].substr(parts[4].indexOf(';'));
+			else
+				parts[4] = lang
 
-		document.cookie = parts.join('|');
+			document.cookie = parts.join('|');
+		} else {
+			setCookie('', '', '', '', lang)
+		}
 		//alert(document.cookie);
 	} else {
 		setCookie('', '', '', '', lang)
