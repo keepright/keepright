@@ -115,47 +115,6 @@ query("DROP TABLE IF EXISTS _tmp_empty_relations", $db1, false);
 
 
 
-
-// ways crossing the boundary of export bounding box get truncated
-// ie in way_nodes you find node ids that are missing in nodes
-// these are fetched here via api
-/*
-echo "retrieve missing nodes via api\n";
-$count=0;
-$result = query("
-	SELECT DISTINCT node_id
-	FROM way_nodes
-	WHERE lat IS NULL
-", $db1);
-while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-
-	if ($response=file_get_contents("http://www.openstreetmap.org/api/0.6/node/" . $row['node_id'])) {
-		$xml = new SimpleXMLElement($response);
-
-		foreach ($xml->xpath('//node') as $node) {
-
-			// add node
-			query("INSERT INTO nodes(id, lat, lon, tstamp, user_name) VALUES (" . pg_escape_string($db2, $node['id']) . ", " . pg_escape_string($db2, $node['lat']) . ", " . pg_escape_string($db2, $node['lon']) . ", '" . pg_escape_string($db2, $node['timestamp']) . "', '" . pg_escape_string($db2, $node['user']) . "')", $db2, false);
-
-
-			// add tags of node
-			foreach ($node->xpath('tag') as $tag) {
-
-				query("INSERT INTO node_tags(node_id, k, v) VALUES (" . pg_escape_string($db2, $node['id']) . ", '" . pg_escape_string($db2, $tag['k']) . "', '" . pg_escape_string($db2, $tag['v']) . "')", $db2, false);
-
-			}
-			$count++;
-		}
-	}
-}
-pg_free_result($result);
-echo "fetched $count nodes via api.\n";
-*/
-//--------------------------------------------------
-
-
-
-
 // calculate x/y coordinates for nodes
 query("UPDATE nodes
 	SET x=merc_x(nodes.lon), y=merc_y(nodes.lat)
@@ -244,14 +203,14 @@ query("UPDATE ways
 
 
 //Perform database maintenance due to large database changes.
-query("VACUUM ANALYZE nodes", $db1);
-query("VACUUM ANALYZE node_tags", $db1);
-query("VACUUM ANALYZE ways", $db1);
-query("VACUUM ANALYZE way_tags", $db1);
-query("VACUUM ANALYZE way_nodes", $db1);
-query("VACUUM ANALYZE relations", $db1);
-query("VACUUM ANALYZE relation_tags", $db1);
-query("VACUUM ANALYZE relation_members", $db1);
+query("ANALYZE nodes", $db1);
+query("ANALYZE node_tags", $db1);
+query("ANALYZE ways", $db1);
+query("ANALYZE way_tags", $db1);
+query("ANALYZE way_nodes", $db1);
+query("ANALYZE relations", $db1);
+query("ANALYZE relation_tags", $db1);
+query("ANALYZE relation_members", $db1);
 query("VACUUM ANALYZE public.errors", $db1);
 query("VACUUM ANALYZE public.error_view", $db1);
 //--------------------------------------------------
