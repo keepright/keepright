@@ -31,7 +31,12 @@ function query($sql, &$link, $debug=true) {
                 echo($message);
         }
 
-        if ($debug) echo format_time(microtime(true)-$starttime) ."\n";
+        if ($debug) {
+		echo format_time(microtime(true)-$starttime) ."\n";
+
+		if (!preg_match("/CREATE|ALTER|DROP|ANALYZE/i", $sql))
+			echo pg_affected_rows($result) . " rows affected.\n";
+	}
         return $result;
 }
 
