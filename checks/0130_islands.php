@@ -306,13 +306,13 @@ query("
 ", $db1);
 
 
-
 // this is our optimized (==reduced) version of way_nodes with junctions only
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
 query("
 	CREATE TABLE _tmp_wn AS
 	SELECT wn.way_id, j.node_id
 	FROM _tmp_junctions j INNER JOIN way_nodes wn USING (node_id)
+	INNER JOIN _tmp_ways w ON (wn.way_id=w.way_id)
 ", $db1);
 query("CREATE INDEX idx_tmp_wn_node_id ON _tmp_wn (node_id)", $db1);
 query("CREATE INDEX idx_tmp_wn_way_id ON _tmp_wn (way_id)", $db1);
@@ -397,7 +397,7 @@ query("
 	WHERE w.way_id IS NULL AND NOT EXISTS (
 
 		SELECT wt.way_id FROM way_tags wt WHERE (
-			wt.way_id=w.way_id AND (
+			wt.way_id=wn.way_id AND (
 				(wt.k='man_made' AND wt.v='pier') OR
 				(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
 				(wt.k='amenity' AND wt.v='parking')
