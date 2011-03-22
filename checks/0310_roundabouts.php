@@ -210,7 +210,8 @@ query("
 
 
 // add mini_roundabouts.
-// direction can be clockwise or anticlockwise. anticlockwise is default and needn't be tagged
+// direction can be clockwise or anticlockwise
+// dont care about mini_roundabouts that have no valid direction tag
 query("
 	INSERT INTO _tmp_roundabouts (part, Cx, Cy, clockwise, right_hand_country, mini_roundabout)
 	SELECT -1*n.id, n.x, n.y,
@@ -226,6 +227,10 @@ query("
 		SELECT node_id
 		FROM node_tags nt
 		WHERE k='highway' AND v='mini_roundabout'
+	) AND id IN (
+		SELECT node_id
+		FROM node_tags nt2
+		WHERE k='direction' AND v IN ('clockwise', 'counterclockwise', 'anticlockwise')
 	)
 ", $db1);
 
