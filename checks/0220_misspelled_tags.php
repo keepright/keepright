@@ -30,6 +30,7 @@ $false_positives = array(
 	array('cafe', 'cave'),
 	array('color', 'colour'),
 	array('county', 'country'),
+	array('DE:rural', 'DK:rural'),
 	array('derail', 'detail', 'retail'),
 	array('door', 'moor'),
 	array('Eiche', 'Esche'),
