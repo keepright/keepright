@@ -28,12 +28,12 @@ foreach ($tables as $object_type=>$table) {
 
 
 
-// build a view containing all way_tags except 'created_by'
+// build a view containing all way_tags except some non-sense-tags
 query("
 	CREATE OR REPLACE VIEW tmp_tagged_ways AS
 	SELECT way_id as id
 	FROM way_tags wt
-	WHERE k<>'created_by'
+	WHERE k NOT IN ('created_by', 'source')
 ", $db1);
 
 // note ways that have no tags in said view...
