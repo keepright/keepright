@@ -115,16 +115,21 @@ for i do	# loop all given parameter values
 	psql -c "CREATE SCHEMA $SCHEMA"
 
 	# Activate GIS; try for postGIS 8.4 and fallback to postGIS 8.3
-	PGINITFILE="/usr/share/postgresql-8.4-postgis/postgis.sql"
+	PGINITFILE="/usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql"
 	if [ -f "$PGINITFILE" ]; then
 		psql -f $PGINITFILE > /dev/null
 	else
-		PGINITFILE="/usr/share/postgresql-8.3-postgis/lwpostgis.sql"
+		PGINITFILE="/usr/share/postgresql-8.4-postgis/postgis.sql"
 		if [ -f "$PGINITFILE" ]; then
 			psql -f $PGINITFILE > /dev/null
 		else
-			echo "postGIS init file lwpostgis.sql not found. cannot initianlze DB structures"
-			exit 1
+			PGINITFILE="/usr/share/postgresql-8.3-postgis/lwpostgis.sql"
+			if [ -f "$PGINITFILE" ]; then
+				psql -f $PGINITFILE > /dev/null
+			else
+				echo "postGIS init file postgis.sql not found. cannot initianlze DB structures"
+				exit 1
+			fi
 		fi
 	fi
 
