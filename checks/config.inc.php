@@ -11,7 +11,7 @@ parse_config_vars('config');
 // please ensure that in your php.ini you should have
 // variables_order = "EGPCS" # (ENV, GET, POST, COOKIE, SESSION)
 // in order to access $_ENV
-parse_config_vars($_ENV["HOME"] . '/keepright.config');
+parse_config_vars(getenv('HOME') . '/keepright.config');
 
 // for calling from the admin interface. There is no suitable HOME variable (the script is run by the apache user), instead there is a symlink pointing to keepright.config
 parse_config_vars('keepright.config');
