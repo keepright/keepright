@@ -978,3 +978,13 @@ CHECK_0360_ENABLED="1"
 CHECK_0360_FILE="0360_language_unknown.php"
 CHECK_0360_CLASS="warning"
 CHECK_0360_DESCRIPTION="To help applications choose the best matching language they should know the language used for the name tag. It is therefore necessary to provide a name:XX tag with the same content as found in the name tag where XX specifies the language used for the name tag."
+
+
+CHECK_0380_NAME="non-physical use of sport-tag"
+CHECK_0380_ENABLED="1"
+CHECK_0380_FILE="0380_nonphysical_sport_tag.php"
+CHECK_0380_CLASS="error"
+CHECK_0380_DESCRIPTION="'sports' is a non-physical tag that needs to be bound to some physical structure
+like for example a leisure-item or an amenity. Ways tagged with 'sports' solely will be invisible on the map."
+
+
