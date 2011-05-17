@@ -99,6 +99,24 @@ query("ANALYZE _tmp_one_ways", $db1);
 
 // find end nodes that are not connected to any other way
 // exclude ring-ways (firstnode==lastnode)
+
+// exclude furthermore ways that build a loop and end in itself like this:
+// these ways aren't connected to other ways but they are still valid!
+//
+//              ---<-------<-----+
+//              |                |
+//              v                ^
+//              |                |
+//              |                |
+//              +-->------->---- *
+//                               |
+//                               ^
+//                               |
+//  -----------------------------*--------------
+//
+// these ways have their first (last) node (at least) twice in way_nodes
+// but with different sequence ids
+
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked, lat, lon)
 	SELECT $error_type, 'way', o.way_id, 'The first node (id $1) of this one-way is not connected to any other way', o.first_node_id, NOW(), 1e7*o.first_node_lat, 1e7*o.first_node_lon
@@ -108,6 +126,13 @@ query("
 		SELECT way_id
 		FROM way_nodes wn1
 		WHERE o.first_node_id=wn1.node_id AND wn1.way_id<>o.way_id
+	) AND
+	NOT EXISTS(
+		SELECT way_id
+		FROM way_nodes wn2
+		WHERE o.first_node_id=wn2.node_id AND wn2.way_id=o.way_id
+		GROUP BY way_id, node_id
+		HAVING COUNT(DISTINCT sequence_id)>1
 	)
 ", $db1);
 
@@ -121,7 +146,15 @@ query("
 		SELECT way_id
 		FROM way_nodes wn2
 		WHERE o.last_node_id=wn2.node_id AND wn2.way_id<>o.way_id
+	) AND
+	NOT EXISTS(
+		SELECT way_id
+		FROM way_nodes wn2
+		WHERE o.last_node_id=wn2.node_id AND wn2.way_id=o.way_id
+		GROUP BY way_id, node_id
+		HAVING COUNT(DISTINCT sequence_id)>1
 	)
+
 ", $db1);
 
 
