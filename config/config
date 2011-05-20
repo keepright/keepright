@@ -988,3 +988,10 @@ CHECK_0380_DESCRIPTION="'sports' is a non-physical tag that needs to be bound to
 like for example a leisure-item or an amenity. Ways tagged with 'sports' solely will be invisible on the map."
 
 
+CHECK_0390_NAME="missing tracktype"
+CHECK_0390_ENABLED="1"
+CHECK_0390_FILE="0390_missing_tracktype.php"
+CHECK_0390_CLASS="warning"
+CHECK_0390_DESCRIPTION="highway=track ways should be added with more detail about the tracktype (grade1..grade5). The tracktype is included in rendering rules and makes maps more expressive."
+
+
