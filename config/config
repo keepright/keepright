@@ -114,6 +114,23 @@ MIN_SIZE_0="95000"
 URL_0="http://download.geofabrik.de/osm/europe/austria.osm.bz2"
 CAT_0="bzcat"
 
+# test instance Mödling
+MAIN_DB_NAME_md="osm_EU"
+MIN_SIZE_md="0"
+LEFT_md="16.30"
+RIGHT_md="16.35"
+TOP_md="48.08"
+BOTTOM_md="48.0"
+
+# test instance Austria
+MAIN_DB_NAME_at="osm_EU"
+MIN_SIZE_at="0"
+LEFT_at="9.3"
+RIGHT_at="17.3"
+TOP_at="49"
+BOTTOM_at="46.2"
+
+
 
 MAIN_DB_NAME_86="osm_EU"
 MIN_SIZE_86="0"
