@@ -27,6 +27,7 @@ $islands = array(
 	'europe' => array(
 		'Kufstein, Austria' => 4433559,
 		'Vösendorf, Austria' => 51103634,
+		'Mödling, Austria' => 27174552,
 		'Ponta Delgada, Azores' => 26644602,
 		'Antwerpen, Belgium' => 4400616,
 		'Bruxelles, Belgium' => 15371932,
@@ -275,7 +276,7 @@ query("
 	HAVING COUNT(DISTINCT wn.way_id)>1
 ", $db1);
 
-query("CREATE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
+query("CREATE UNIQUE INDEX idx_tmp_junctions_node_id ON _tmp_junctions (node_id)", $db1);
 query("ANALYZE _tmp_junctions", $db1);
 
 
