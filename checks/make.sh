@@ -68,28 +68,24 @@ while { [ "$1" != "--loop" ] && [ $FIRSTRUN -eq 1 ] ; } || { [ "$1" = "--loop" ]
 
 		case "$i" in
 
-			AllButUSAndAU)
+			cetest)
 
-				for schema in 86 87 2 90 91 92 93 72 4 100 101 102 7 76 77 78 79 80 81 82 83 84 85 88 89 15 94 95 96 97 98 99 18 19 46 68 17 47 48 73 74 75
+				for schema in 39 24 27 54 53 60 52 57 51 42 26 46 35 55 96 38 59 33 40 61 41 58 22 100 34 62 97 21 43 44 63 101 102 45 65 98 56 99 37 95 32 18 31 25 64 94 2 73 17 69 15 86 30 90 76
 				do
 					process_schema
 				done
 
-				pg_dump --table=errors osm_EU > "$RESULTSDIR/osm_EU.errors.sql"
-				pg_dump --table=errors osm_XA > "$RESULTSDIR/osm_XA.errors.sql"
-				pg_dump --table=errors osm_XC > "$RESULTSDIR/osm_XC.errors.sql"
-				pg_dump --table=errors osm_XD > "$RESULTSDIR/osm_XD.errors.sql"
-				pg_dump --table=errors osm_XG > "$RESULTSDIR/osm_XG.errors.sql"
+				pg_dump --table=errors osm > "$RESULTSDIR/errors_cetest.sql"
 
 			;;
-			US)
+			serverce)
 
-				for schema in 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 69
+				for schema in 87 92 89 68 83 79 47 88 93 28 91 29 81 82 36 77 80 85 4 72 78 74 48 19 7 84 75 20 23
 				do
 					process_schema
 				done
 
-				pg_dump --table=errors osm_US > "$RESULTSDIR/osm_US.errors.sql"
+				pg_dump --table=errors osm > "$RESULTSDIR/errors_serverce.sql"
 
 			;;
 			AU)
