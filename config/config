@@ -1012,3 +1012,9 @@ CHECK_0390_CLASS="warning"
 CHECK_0390_DESCRIPTION="highway=track ways should be added with more detail about the tracktype (grade1..grade5). The tracktype is included in rendering rules and makes maps more expressive."
 
 
+CHECK_0410_NAME="websites"
+CHECK_0410_ENABLED="1"
+CHECK_0410_FILE="0410_website.php"
+CHECK_0410_CLASS="error"
+CHECK_0410_DESCRIPTION="call websites and try to match website content with key tags from the osm element"
+
