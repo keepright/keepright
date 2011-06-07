@@ -1,4 +1,5 @@
 <?php
+require_once('helpers.inc.php');
 
 //
 //  OpenStreetMap website tag validator.  Using heuristics, flag websites
@@ -27,11 +28,33 @@ $keys_to_search = array('name','website:searchstring','phone','alt_name',
 			  'operator','addr:street','frequency');
 
 
+// this script has two ways of execution:
+// * with a filename as command line parameter (for testing):
+//	treat the file name as osm planet file data source
+// otherwise:
+// * wit standard command line parameters (for running inside keepright):
+//	run with data from the database
 
-$tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_tags');
 
-// this loop will execute similar queries for all three *_tags tables
-foreach ($tables as $object_type=>$table) {
+
+if ($argc>=2 && is_readable($argv[1])) {
+
+	exit (run_standalone());
+
+} else {
+
+	$tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_tags');
+
+	foreach ($tables as $object_type=>$table) {
+		run_keepright($db1, $db2, $object_type, $table);
+	}
+}
+
+
+
+function run_keepright($db1, $db2, $object_type, $table) {
+	global $error_type, $checkable_tags;
+
 
 	echo "checking on $table...\n";
 	$urls_checked=0;
@@ -64,9 +87,9 @@ foreach ($tables as $object_type=>$table) {
 			$errors++;
 
 			// avoid apos crash the SQL-string
-			$msgid=str_replace("'",'', $ret[0]);
-			$txt1=str_replace("'",'', $ret[1]);
-			$txt2=str_replace("'",'', $ret[2]);
+			$msgid=pg_escape_string($db2, $ret[0]);
+			$txt1=pg_escape_string($db2, $ret[1]);
+			$txt2=pg_escape_string($db2, $ret[2]);
 
 			query("
 				INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
@@ -87,6 +110,81 @@ foreach ($tables as $object_type=>$table) {
 }
 
 
+function run_standalone() {
+	global $argc, $argv;
+
+
+	//  Command line parsing
+	$target_id = null;
+	if($argc > 1) {
+		$planet_file = $argv[1];
+	} else {
+		print "Usage: [planet file] <OSM id number\n";
+		return(5);
+	}
+	if($argc > 2) {
+		$target_id   = $argv[2];
+	}
+
+	//
+	//  Stream a planet file or planet file subset.
+	//  Call fetchcompare_website_tag() for any checkable elements.
+	//
+	//  IDEAS
+	//	  * Process colons (e.g. "website:*");
+	//	  * Process semicolons (e.g. "amenity=cafe;bar");
+	//
+	$checkable_tags = array('website','url','website:mobile','contact:website');
+	$reader = new XMLReader();
+	$reader->open($planet_file);	// Would be nice to stream bz2 files here 
+	$element = array();
+	while ($reader->read()) {
+		switch ($reader->nodeType) {
+
+		// Collect all key/value pairs as we stream
+		case (XMLREADER::ELEMENT):
+			switch( $reader->localName ) {
+				case "node":
+				case "way":
+					$element['id']=$reader->getAttribute("id");
+					break;
+				case "tag":
+					$element[$reader->getAttribute("k")]=$reader->getAttribute("v");
+					break;
+				}
+			break;
+
+		// As each end tag is hit, process the key/value pairs collected above
+		case (XMLREADER::END_ELEMENT):
+			switch( $reader->localName ) {
+				case "node":
+				case "way":
+					// Skip features if we're skipping
+					if( $target_id && $target_id != $element['id'] ) {
+						$element = array();
+						break;
+					}
+
+					// Process element
+					foreach( $checkable_tags as $tag ) {
+						if( isset($element[$tag]) ) {
+							$rv=fetchcompare_website_tag($element, $element[$tag]);
+							if($rv) {
+								print "$rv\n";
+								print_r($element);
+							} else {
+								print "Checked $element[id]: $element[$tag]\n";
+							}
+						}
+					}
+					$element = array();	// Clear out collection bucket
+					break;
+			}
+			break;
+		}
+	}
+	return 0;
+}
 
 
 //  *******************************************************************
