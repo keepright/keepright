@@ -93,7 +93,7 @@ function run_keepright($db1, $db2, $object_type, $table) {
 
 			query("
 				INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
-				VALUES ($error_type, '$object_type', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
+				VALUES ($error_type + " . $ret['type'] . ", '$object_type', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
 			", $db2, false);
 
 			echo "error on URL " . $row1['v'] . "\n";
@@ -244,7 +244,7 @@ function fetchcompare_website_tag($osm_element, $url_under_test)
 	curl_setopt_array($ch, $curlopt);
 	$response = curl_exec($ch);
 	if($response === false) {
-		return(array('The URL ($1) cannot be opened ($2)', $url_under_test, curl_error($ch)));
+		return(array('type'=>1, 'The URL ($1) cannot be opened ($2)', $url_under_test, curl_error($ch)));
 		//return("Error $osm_element[id]: $url ".curl_error($ch));
 	}
 	$http_status  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -261,7 +261,7 @@ function fetchcompare_website_tag($osm_element, $url_under_test)
 
 	// Only accept success
 	if($http_status < 200 || $http_status > 299) {
-		return(array('The URL ($1) cannot be opened (HTTP status code $2)', $url_under_test, $http_status));
+		return(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $url_under_test, $http_status));
 		//return("Error $osm_element[id]: $http_eurl gave HTTP Code $http_status");
 	}
 
@@ -307,7 +307,7 @@ function fetchcompare_website_tag($osm_element, $url_under_test)
 	}
 	$temp = join($squat_strings,'|');
 	if(preg_match("/$temp/", $response, $matches)) {
-		return(array('Possible domain squatting: $1. Suspicious text is: "$2"', $http_eurl, $matches[0]));
+		return(array('type'=>2, 'Possible domain squatting: $1. Suspicious text is: "$2"', $http_eurl, $matches[0]));
 		//return "Possible domain squatting: $osm_element[id] $http_eurl.  Suspicious text is: \"$matches[0].\"";
 	}
 
@@ -362,7 +362,7 @@ function fetchcompare_website_tag($osm_element, $url_under_test)
 	//$searchedfor = substr($searchedfor,1);
 	//echo "No match at element $osm_element[id] $http_eurl with encoding $http_encoding. Checks made: \"$searchedfor\" from tags $keys_to_search\n";
 
-	return array('Content of the URL ($1) could not be matched with tags on the element ($2)', $http_eurl, $searchedfor);
+	return array('type'=>3, 'Content of the URL ($1) could not be matched with tags on the element ($2)', $http_eurl, $searchedfor);
 
 	}
 

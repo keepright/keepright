@@ -1018,3 +1018,6 @@ CHECK_0410_FILE="0410_website.php"
 CHECK_0410_CLASS="error"
 CHECK_0410_DESCRIPTION="call websites and try to match website content with key tags from the osm element"
 
+SUBTYPE_0411_NAME="http error"
+SUBTYPE_0412_NAME="domain hijacking"
+SUBTYPE_0413_NAME="non-match"
