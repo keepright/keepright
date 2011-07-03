@@ -214,7 +214,7 @@ function run_standalone() {
 //
 function fetchcompare_website_tag($osm_element, $url_under_test)
 {
-	global $keys_to_search;
+	global $keys_to_search, $HTTP_PROXY_ENABLED, $HTTP_PROXY, $HTTP_PROXY_USER, $HTTP_PROXY_PWD;
 	$w = '[\s\S]*?'; //ungreedy wildcard - matches anything
 	$z = '[\h\v]*?'; //ungreedy wildcard - matches whitespace only
 	$searchedfor = "";
@@ -241,6 +241,15 @@ function fetchcompare_website_tag($osm_element, $url_under_test)
 		'KeepRightBot/0.1 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
 		CURLOPT_HTTPHEADER => array('Accept-Language: en')
 	);
+
+	if ($HTTP_PROXY_ENABLED) {
+		$curlopt[CURLOPT_PROXY]			= $HTTP_PROXY;
+		$curlopt[CURLOPT_PROXYAUTH]		= 'CURLAUTH_BASIC';
+		$curlopt[CURLOPT_PROXYUSERPWD]		= $HTTP_PROXY_USER . ':' . $HTTP_PROXY_PWD;
+		$curlopt[CURLOPT_HTTPPROXYTUNNEL]	= true;
+	}
+
+
 	curl_setopt_array($ch, $curlopt);
 	$response = curl_exec($ch);
 	if($response === false) {

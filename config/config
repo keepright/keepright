@@ -94,6 +94,15 @@ ERROR_TYPES_FILE="/home/haraldk/OSM/keepright/results/error_types"
 CREATE_COMPRESSED_DUMPS="1"
 
 
+# config options for using a http proxy
+# used in 410_website.php for checking website URLs
+HTTP_PROXY_ENABLED="0"
+HTTP_PROXY="localhost:3128"
+HTTP_PROXY_USER="username"
+HTTP_PROXY_PWD="password"
+
+
+
 ############################################
 # Cutting parameters for various databases
 ############################################
