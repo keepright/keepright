@@ -13,8 +13,11 @@ Call this script from your client pc using webUpdateClient.php
 * re-open temporarily ignored errors
 */
 
-ini_set('session.use_cookies', false);	// never use cookies
+ini_set('default_charset', 'iso-8859-1');
+ini_set('session.use_cookies', 0);	// never use cookies
+ini_set('session.use_only_cookies', 0);	// never use cookies
 ini_set('session.gc_maxlifetime', 1800);// 30 minutes as max. session lifetime
+session_cache_limiter('nocache');	// disallow caching this page for proxies
 
 require('webconfig.inc.php');
 require('helpers.inc.php');
@@ -333,24 +336,27 @@ function write_file($filename, $content) {
 
 
 // update temporarily ignored errors to open again
-// if the ignore state was set before the object was edited
-// i.e. if the version of the object after the edit was checked.
-// lets assume a crace time of maximum two hours between state timestamp
-// and object timestamp (users needn't edit the objects at the same
-// time as they set the state in keepright.
-// do this only if the error is still open in the newest error_view
+// if the tmp.ignore state was set after the planet file
+// was downloaded (updated). Let's assume that max(object_timestamp)
+// equals the time of download.
+// Do this only if the error is still open in the newest error_view
 function reopen_errors($db1, $schema) {
 	global $comments_name;
 
 	echo "reopening errors not solved by this update\n";
 
 	$sql="
-		UPDATE $comments_name c inner join error_view_$schema ev using (`schema`, error_id)
+		UPDATE $comments_name c INNER JOIN error_view_$schema ev USING (`schema`, error_id)
 		SET c.state=null,
 		c.comment=CONCAT(\"[error still open, \", CURDATE(), \"] \", c.comment)
 		WHERE ev.`schema`='$schema' AND c.state='ignore_temporarily' AND
 		ev.state<>'cleared' AND
-		c.timestamp<DATE_ADD(ev.object_timestamp, INTERVAL 2 HOUR)
+		c.timestamp<DATE_SUB((
+
+			SELECT MAX(tmp.object_timestamp)
+			FROM error_view_$schema tmp
+
+		), INTERVAL 1 HOUR)
 	";
 	query($sql, $db1);
 	echo "\ndone.\n";

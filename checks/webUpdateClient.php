@@ -56,33 +56,33 @@ switch ($argv[1]) {
 if ($argv[2]=='--export_comments') {
 	echo "exporting comments on server\n";
 
-	$SID=login($URL);
-	//echo "session id is $SID";
+	$session_ID=login($URL);
+	//echo "session id is $session_ID";
 
-	if ($SID) {
+	if ($session_ID) {
 
-		$myURL="$URL?cmd=export_comments&PHPSESSID=$SID";
+		$myURL="$URL?cmd=export_comments&PHPSESSID=$session_ID";
 
 		echo "$myURL\n";
 		$result = readHTTP($myURL);
 		echo implode("\n", $result);
 
-		logout($URL, $SID);
+		logout($URL, $session_ID);
 	}
 
 } else {
 	echo "uploading to $URL schema $schema\n";
 
-	$SID=login($URL);
-	//echo "session id is $SID";
+	$session_ID=login($URL);
+	//echo "session id is $session_ID";
 
-	if ($SID) {
+	if ($session_ID) {
 		if ($argv[1]=='--remote') ftp_upload($MAIN_DB_NAME, $schema);
 
 		$fname="error_view_$schema.txt.bz2";
 
 
-		$myURL="$URL?schema=$schema&cmd=update&PHPSESSID=$SID" .
+		$myURL="$URL?schema=$schema&cmd=update&PHPSESSID=$session_ID" .
 			"&updated_date=" . date("Y-m-d") .
 			"&error_view_filename=$fname";
 
@@ -90,7 +90,7 @@ if ($argv[2]=='--export_comments') {
 		$result = readHTTP($myURL);
 		echo implode("\n", $result);
 
-		logout($URL, $SID);
+		logout($URL, $session_ID);
 	}
 }
 
@@ -120,9 +120,9 @@ function login($URL) {
 	}
 }
 
-function logout($URL, $SID) {
+function logout($URL, $session_ID) {
 	echo "\n\nlogging out---------------------------------------------\n\n";
-	$result = readHTTP("$URL?cmd=logout&PHPSESSID=$SID");
+	$result = readHTTP("$URL?cmd=logout&PHPSESSID=$session_ID");
 	echo implode("\n", $result);
 }
 
