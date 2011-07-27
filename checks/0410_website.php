@@ -109,6 +109,7 @@ function run_keepright($db1, $db2, $object_type, $table) {
 	echo "checking on $table...\n";
 	$urls_queued=0;
 	$error_count=0;
+	$urlstats=array();
 
 	$rc = new RollingCurl("run_keepright_callback");
 	$rc->options = $curlopt;
@@ -144,6 +145,7 @@ function run_keepright($db1, $db2, $object_type, $table) {
 		// third: match them!
 		$urls_queued++;
 		echo "queueing URL " . $row1['url'] . "\n";
+		$urlstats[$row1['url']]++;
 		queueURL($rc, $obj, $row1['url']);
 
 
@@ -154,6 +156,13 @@ function run_keepright($db1, $db2, $object_type, $table) {
 	if ($urls_queued) $rc->execute();
 
 	echo "matched $urls_queued URLs with $error_count errors.\n";
+	echo "top 10 urls matched:\n";
+	arsort($urlstats);
+	$i=1;
+	foreach ($urlstats as $url=>$count) {
+		echo "$count\t$url\n";
+		if ($i++>9) break;
+	}
 }
 
 
