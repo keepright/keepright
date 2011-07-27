@@ -1,5 +1,6 @@
 <?php
 require_once('helpers.inc.php');
+require_once('rolling-curl/RollingCurl.php');
 
 //
 //  OpenStreetMap website tag validator.  Using heuristics, flag websites
@@ -10,31 +11,80 @@ require_once('helpers.inc.php');
 //      http://wiki.openstreetmap.org/wiki/Key:url
 //
 //  Requirements
-//	http://www.php.net/manual/en/book.curl.php
+//	http://www.php.net/manual/en/book.curl.php (sudo apt-get install php5-curl)
+//
+//  Ideas/TODO
+//      Run in parallel with http://code.google.com/p/rolling-curl/
+//	    Process colons (e.g. "website:*");
+//	    Process semicolons (e.g. "amenity=cafe;bar");
+//      Follow meta-refresh redirects properly
+//
+//  Tips for OSM editors
+//      1) Simplify URL's to make them more robust:
+//          Bad:  www.foo.com/home_page.php?a=b
+//          Good: www.foo.com/
+//      2) Check for extra spaces or junk in the OSM tags.
+//      3) If you can't get a match any other way, add to OSM a
+//      "website:searchstring" tag with some text from the existing valid website.
 //
 //  Author: Bryce Nesbitt, May 2011
 //
-
-// this script needs cURL. If it doesn't work, maybe you have to install
-// a package like php5-curl
-
-
-// these tags may contain URLs
-$checkable_tags = array('website','url','website:mobile','contact:website');
-
-// Fuzzy search full text of page for matching words.
-// try to find the content of these tags on the website to ensure authenticity
-$keys_to_search = array('name','website:searchstring','phone','alt_name',
-			  'operator','addr:street','frequency');
 
 
 // this script has two ways of execution:
 // * with a filename as command line parameter (for testing):
 //	treat the file name as osm planet file data source
 // otherwise:
-// * wit standard command line parameters (for running inside keepright):
+// * with standard command line parameters (for running inside keepright):
 //	run with data from the database
 
+
+// these tags may contain URLs
+$checkable_tags = array('website','url','website:mobile','contact:website');
+
+// these tags may contain text which can validate the website matches the osm element:
+// two flavors: fixed strings or regexes can be used
+$keys_to_search_fixed = array('name','alt_name','website:searchstring','phone',
+			  'operator','addr:street','frequency');
+
+$keys_to_search_regex = array('name:[a-z]{2}');
+
+
+// never try to match these URLs
+// these are regexes and they are applied in case insensitive manner automatically!
+$whitelist = array(
+	'^http://www.internationalboundarycommission.org/coordinates/',	// match beginning of string
+	'^http://ancien-geodesie.ign.fr/',				// match beginning of string
+	'.pdf$'								// matching pdf files not useful
+);
+
+// used for identifying domainsquatting
+$squat_strings = array(
+	"http://www.acquirethisname.com",
+	"__changoPartnerId='parkedcom'",
+);
+
+
+
+$curlopt = array(
+    CURLOPT_USERAGENT       => 'KeepRightBot/0.1 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
+    CURLOPT_HTTPHEADER      => array('Accept-Language: en'),
+    CURLOPT_FOLLOWLOCATION  => true,
+    CURLOPT_AUTOREFERER     => true,
+    CURLOPT_MAXREDIRS       => 50,
+);
+
+// ****************************************************************************************************** //
+$debug  = 0;
+$w = '[\s\S]*?'; //ungreedy wildcard - matches anything
+$z = '[\h\v]*?'; //ungreedy wildcard - matches whitespace only
+
+
+// prepare regexes for domainsquatting search
+$cnt = count($squat_strings);
+for ($i = 0; $i < $cnt; $i++) {
+	$squat_strings[$i] = preg_quote($squat_strings[$i],"/");
+}
 
 
 if ($argc>=2 && is_readable($argv[1])) {
@@ -53,21 +103,33 @@ if ($argc>=2 && is_readable($argv[1])) {
 
 
 function run_keepright($db1, $db2, $object_type, $table) {
-	global $error_type, $checkable_tags;
+	global $error_type, $checkable_tags, $whitelist, $error_count, $curlopt;
 
 
 	echo "checking on $table...\n";
-	$urls_checked=0;
-	$errors=0;
+	$urls_queued=0;
+	$error_count=0;
 
-	// first find objects with URL tags
-	$result1=query("SELECT {$object_type}_id, k, v FROM $table
-		WHERE k IN ('" . implode("', '", $checkable_tags) . "')", $db1, false);
+	$rc = new RollingCurl("run_keepright_callback");
+	$rc->options = $curlopt;
+	$rc->window_size = 20;		// number of concurrent URLs to open
+
+	// first find objects with URL tags and exclude whitelisted URLs
+	$result1=query("
+		SELECT {$object_type}_id, MAX(v) AS url
+		FROM $table
+		WHERE k IN ('" . implode("', '", $checkable_tags) . "') AND
+		NOT (v ~* '" . implode("' OR v ~* '", $whitelist) . "')
+		GROUP BY {$object_type}_id
+	", $db1);
+
+
+
 
 	while ($row1=pg_fetch_array($result1, NULL, PGSQL_ASSOC)) {
 
 
-		$obj=array(id=>$row1[$object_type . '_id']);
+		$obj=array('id'=>$row1[$object_type . '_id'], 'object_type'=>$object_type);
 
 		// second: find all tags of those objects
 		$result2=query("SELECT k, v FROM $table
@@ -80,39 +142,25 @@ function run_keepright($db1, $db2, $object_type, $table) {
 
 
 		// third: match them!
-		$urls_checked++;
-		echo "checking URL " . $row1['v'] . "\n";
-		$ret=fetchcompare_website_tag($obj, $row1['v']);
-		if ($ret !== null) {
-			$errors++;
+		$urls_queued++;
+		echo "queueing URL " . $row1['url'] . "\n";
+		queueURL($rc, $obj, $row1['url']);
 
-			// avoid apos crash the SQL-string
-			$msgid=pg_escape_string($db2, $ret[0]);
-			$txt1=pg_escape_string($db2, $ret[1]);
-			$txt2=pg_escape_string($db2, $ret[2]);
-
-			query("
-				INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
-				VALUES ($error_type + " . $ret['type'] . ", '$object_type', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
-			", $db2, false);
-
-			echo "error on URL " . $row1['v'] . "\n";
-			print_r($obj);
-			echo "result:\n";
-			print_r($ret);
-
-		}
 
 	}
 	pg_free_result($result1);
 
-	echo "matched $urls_checked URLs with $errors errors.\n";
+	#   Execute web requets queued above
+	if ($urls_queued) $rc->execute();
+
+	echo "matched $urls_queued URLs with $error_count errors.\n";
 }
 
 
 function run_standalone() {
-	global $argc, $argv;
+	global $argc, $argv, $checkable_tags, $curlopt;
 
+	$urls_queued=0;
 
 	//  Command line parsing
 	$target_id = null;
@@ -123,7 +171,7 @@ function run_standalone() {
 		return(5);
 	}
 	if($argc > 2) {
-		$target_id   = $argv[2];
+		$target_id = $argv[2];
 	}
 
 	//
@@ -134,10 +182,14 @@ function run_standalone() {
 	//	  * Process colons (e.g. "website:*");
 	//	  * Process semicolons (e.g. "amenity=cafe;bar");
 	//
-	$checkable_tags = array('website','url','website:mobile','contact:website');
 	$reader = new XMLReader();
-	$reader->open($planet_file);	// Would be nice to stream bz2 files here 
+	$reader->open($planet_file);	// Would be nice to stream bz2 or pbf files here
 	$element = array();
+
+	$rc = new RollingCurl("run_standalone_callback");
+	$rc->options = $curlopt;
+	$rc->window_size = 20;		// number of concurrent URLs to open
+
 	while ($reader->read()) {
 		switch ($reader->nodeType) {
 
@@ -168,23 +220,103 @@ function run_standalone() {
 					// Process element
 					foreach( $checkable_tags as $tag ) {
 						if( isset($element[$tag]) ) {
-							$rv=fetchcompare_website_tag($element, $element[$tag]);
-							if($rv) {
-								print "$rv\n";
-								print_r($element);
+							if(whitelisted($element[$tag])) {
+								echo "skipping whitelisted URL {$element[$tag]} on ID $element[id]\n";
 							} else {
-								print "Checked $element[id]: $element[$tag]\n";
+								echo "queueing URL " . $element[$tag] . "\n";
+								queueURL($rc, $element, $element[$tag]);
+								$urls_queued++;
 							}
 						}
 					}
-					$element = array();	// Clear out collection bucket
-					break;
 			}
+			$element = array();	// Clear out collection bucket
 			break;
 		}
 	}
+
+	if ($urls_queued) $rc->execute();
 	return 0;
 }
+
+
+
+// returns true if the given URL is whitelisted
+function whitelisted($URL) {
+	global $whitelist;
+
+	foreach ($whitelist as $pattern) {
+		if (preg_match('@' . $pattern . '@i', $URL)) return true;
+	}
+
+	return false;
+}
+
+
+// push an element onto the request queue
+function queueURL(&$rc, $element, $url) {
+
+	// Normalize given URL.  Per spec, default to http:// if no protocol given.
+	$url = trim($url);
+	if(!preg_match("|.*?://|i",$url)) {
+		$url = "http://".$url;
+	}
+
+	// Queue for later
+	//print "Queue $url on ID $element[id]\n";
+	$request = new RollingCurlRequest($url);
+	$request->callback_data = $element;
+	$rc->add($request);
+}
+
+
+
+// handle http response in standalone mode
+function run_standalone_callback($response, $info, $request) {
+	if($info['http_code'] < 200 || $info['http_code'] > 299) {
+		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
+	return;
+	}
+	$rv=fuzzy_compare($response, $request->callback_data, $request->url);
+	print_r($rv);
+}
+
+
+// handle http response in keepright mode
+function run_keepright_callback($response, $info, $request) {
+	global $db2, $error_type, $error_count;
+
+	if($info['http_code'] < 200 || $info['http_code'] > 299) {
+		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
+	return;
+	}
+	$obj = $request->callback_data;
+	$ret=fuzzy_compare($response, $obj, $request->url);
+
+
+	if ($ret !== null) {
+		$error_count++;
+
+		// avoid apos crash the SQL-string
+		$msgid=pg_escape_string($db2, $ret[0]);
+		$txt1=pg_escape_string($db2, $ret[1]);
+		$txt2=pg_escape_string($db2, $ret[2]);
+
+		query("
+			INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
+			VALUES ($error_type + " . $ret['type'] . ", '" . $obj['object_type'] . "', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
+		", $db2, false);
+
+		echo "error on URL " . $request->url . "\n";
+		print_r($obj);
+		echo "result:\n";
+		print_r($ret);
+
+	}
+
+	print_r($rv);
+}
+
 
 
 //  *******************************************************************
@@ -212,89 +344,13 @@ function run_standalone() {
 //      * Work harder to avoid explired domain hijack pages.
 //      * Use an Accept-Language header that matches the mapped region.
 //
-function fetchcompare_website_tag($osm_element, $url_under_test)
-{
-	global $keys_to_search, $HTTP_PROXY_ENABLED, $HTTP_PROXY, $HTTP_PROXY_USER, $HTTP_PROXY_PWD;
-	$w = '[\s\S]*?'; //ungreedy wildcard - matches anything
-	$z = '[\h\v]*?'; //ungreedy wildcard - matches whitespace only
+
+function fuzzy_compare($response, $osm_element, $http_eurl) {
+	global $keys_to_search_fixed, $keys_to_search_regex, $w, $z, $debug, $squat_strings;
 	$searchedfor = "";
 
-	// Normalize given URL.  Per spec, default to http:// if no protocol given.
-	$url = trim($url_under_test);
-	if(!preg_match("|.*?://|i",$url)) {
-		$url = "http://".$url;
-	}
-
-	// Fetch URL using curl into string $response
-	$ch = curl_init();
-	$curlopt = array(
-		CURLOPT_URL             => $url,
-		CURLOPT_TIMEOUT         => 5,
-
-		CURLOPT_RETURNTRANSFER  => true,
-		CURLOPT_FOLLOWLOCATION  => true,
-		CURLOPT_AUTOREFERER     => true,
-		CURLOPT_MAXREDIRS       => 50,
-		CURLOPT_HEADER          => false,
-
-		CURLOPT_USERAGENT =>
-		'KeepRightBot/0.1 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
-		CURLOPT_HTTPHEADER => array('Accept-Language: en')
-	);
-
-	if ($HTTP_PROXY_ENABLED) {
-		$curlopt[CURLOPT_PROXY]			= $HTTP_PROXY;
-		$curlopt[CURLOPT_PROXYAUTH]		= 'CURLAUTH_BASIC';
-		$curlopt[CURLOPT_PROXYUSERPWD]		= $HTTP_PROXY_USER . ':' . $HTTP_PROXY_PWD;
-		$curlopt[CURLOPT_HTTPPROXYTUNNEL]	= true;
-	}
-
-
-	curl_setopt_array($ch, $curlopt);
-	$response = curl_exec($ch);
-	if($response === false) {
-		return(array('type'=>1, 'The URL ($1) cannot be opened ($2)', $url_under_test, curl_error($ch)));
-		//return("Error $osm_element[id]: $url ".curl_error($ch));
-	}
-	$http_status  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	$http_eurl	= curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-	$http_encoding= curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-
-	if(false) {
-		print "Curl debug start $http_eurl:\n";
-		print_r(curl_getinfo($ch));
-		print "Body strlen=".strlen($response)." mb_strlen=".
-			   mb_strlen($response).":\n$response\nCurl debug end\n\n";
-	}
-	curl_close($ch);
-
-	// Only accept success
-	if($http_status < 200 || $http_status > 299) {
-		return(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $url_under_test, $http_status));
-		//return("Error $osm_element[id]: $http_eurl gave HTTP Code $http_status");
-	}
-
-	// Follow relevant http-equiv="refresh" meta tags.  For example:
-	// <meta http-equiv="refresh" content="0;url= Site/Welcome.html" />
-	// <meta http-equiv="refresh" content="1200;url=http://www.slavonski-brod.hr/">
-	//
-	// TODO: this parsing could be more robust
-	//	   consider http://simplehtmldom.sourceforge.net/
-	//	   We could then search by structure, rather than
-	//	   just string manipulation.
-	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\".*content$z=$z\".*url$z=(.*)\"/i", $response,$match)) {
-		$temp = trim($match[1]);
-		if(preg_match("|http://|",$temp)) {
-			$newurl = $temp;
-		} else {
-			$newurl = $url.'/'.$temp;
-		}
-		if(!( $newurl == $http_eurl )) {
-			return(fetchcompare_website_tag($osm_element, $newurl));
-			}
-		}
-
 	// Try to get our copy of the page match the encoding of the OSM tags
+	$match = null;
 	if(preg_match("/meta${z}http-equiv$z=$z\"content-type\".*content$z=$z\".*?charset$z=$z([\w-]*)/i", $response,$match)) {
 		$http_encoding = strtolower($match[1]);
 		if($http_encoding !== 'utf-8') {
@@ -306,73 +362,84 @@ function fetchcompare_website_tag($osm_element, $url_under_test)
 	//
 	// Heuristics to flag probable domain squatting
 	//
-	$squat_strings = array(
-		"http://www.acquirethisname.com",
-		"__changoPartnerId='parkedcom'",
-	);
-	$cnt = count($squat_strings);
-	for ($i = 0; $i < $cnt; $i++) {
-		$squat_strings[$i] = preg_quote($squat_strings[$i],"/");
-	}
 	$temp = join($squat_strings,'|');
 	if(preg_match("/$temp/", $response, $matches)) {
 		return(array('type'=>2, 'Possible domain squatting: $1. Suspicious text is: "$2"', $http_eurl, $matches[0]));
-		//return "Possible domain squatting: $osm_element[id] $http_eurl.  Suspicious text is: \"$matches[0].\"";
 	}
-
 
 	//
 	// Fuzzy search full text of page
 	// Our goal is to find something -- anything -- that matches between the OSM
 	// tags and the actual page content.
 	//
-	foreach($keys_to_search as $key) {
+	$searchedfor='';
+	foreach($keys_to_search_fixed as $key) {
 		if(isset($osm_element[$key])) {
+			$result = match($response, $osm_element[$key]);
+//echo " searching $key=" . $osm_element[$key] . " results $searchedfor\n";
+			if ($result===null) return null; else $searchedfor .= $result;
+		}
+	}
+	// do the same with regex-searchstrings
+	$keylist = array_keys($osm_element);
+	foreach($keys_to_search_regex as $key) {
 
+		foreach($keylist as $current_key) {		// match regex with every key of $element
 
-			// Check the value as given
-			$value_straight   = $osm_element[$key];
-			$searchedfor .= "✔".$value_straight;
-			$temp = preg_quote($value_straight,'|');
-			$temp = preg_replace('|\s|',"$z",$temp);
-			if(preg_match("|$temp|i", $response)) {
-				return(null);   // Match!
-			}
-
-			// Strip out diacriticals.  Though, php's defective iconv makes this hard.
-			// Ideally it would convert like so:
-			//	  grüßen<200e>!
-			//	  grussen!
-			$value_stripped   = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value_straight);
-			$value_stripped   = str_replace("?",'',$value_stripped); 
-			if( $value_stripped !== $value_straight ) {
-				$searchedfor .= "✔".$value_stripped;
-				$temp = preg_quote($value_stripped,'|');
-				$temp = preg_replace('|\s|',"$z",$temp);
-				if(preg_match("|$temp|i", $response)) {
-					return(null);   // Match!
-				}
-			}
-
-			// Remove ' and check
-			$value_apostrophe = str_replace("'",'',$value_straight);
-			if( $value_straight !== $value_apostrophe ) {
-				$searchedfor .= "✔".$value_apostrophe;
-				$temp = preg_quote($value_apostrophe,'|');
-				$temp = preg_replace('|\s|',"$z",$temp);
-				if(preg_match("|$temp|i", $response)) {
-					return(null);   // Match!
-				}
-			}
+			if (preg_match('@' . $key . '@i', $current_key)) {
+				$result = match($response, $osm_element[$current_key]);
+//echo " searching $current_key=" . $osm_element[$current_key] . " results $searchedfor\n";
+				if ($result===null) return null; else $searchedfor .= $result;			}
 		}
 	}
 
+
 	// Fall through with failure to match
-	//$searchedfor = substr($searchedfor,1);
-	//echo "No match at element $osm_element[id] $http_eurl with encoding $http_encoding. Checks made: \"$searchedfor\" from tags $keys_to_search\n";
+	return array('type'=>3, 'Content of the URL ($1) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
+}
 
-	return array('type'=>3, 'Content of the URL ($1) could not be matched with tags on the element ($2)', $http_eurl, $searchedfor);
 
+// $haystack is the html text of the webpage, $needle is a keyword that is to find
+// return null on match, return a list of variations tried otherwise
+function match($haystack, $needle) {
+	global $z;
+
+	// Check the value as given
+	$value_straight   = $needle;
+	$searchedfor = "✔".$value_straight;
+	$temp = preg_quote($value_straight,'|');
+	$temp = preg_replace('|\s|',"$z",$temp);
+	if(preg_match("|$temp|i", $haystack)) {
+		return(null);   // Match!
 	}
+
+	// Strip out diacriticals.  Though, php's defective iconv makes this hard.
+	// Ideally it would convert like so:
+	//	  grüßen<200e>!
+	//	  grussen!
+	$value_stripped   = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value_straight);
+	$value_stripped   = str_replace("?",'',$value_stripped);
+	if( $value_stripped !== $value_straight ) {
+		$searchedfor .= "✔".$value_stripped;
+		$temp = preg_quote($value_stripped,'|');
+		$temp = preg_replace('|\s|',"$z",$temp);
+		if(preg_match("|$temp|i", $haystack)) {
+			return(null);   // Match!
+		}
+	}
+
+	// Remove ' and check
+	$value_apostrophe = str_replace("'",'',$value_straight);
+	if( $value_straight !== $value_apostrophe ) {
+		$searchedfor .= "✔".$value_apostrophe;
+		$temp = preg_quote($value_apostrophe,'|');
+		$temp = preg_replace('|\s|',"$z",$temp);
+		if(preg_match("|$temp|i", $haystack)) {
+			return(null);   // Match!
+		}
+	}
+
+	return $searchedfor;
+}
 
 ?>
