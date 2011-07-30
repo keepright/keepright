@@ -67,12 +67,31 @@ $squat_strings = array(
 
 
 $curlopt = array(
-    CURLOPT_USERAGENT       => 'KeepRightBot/0.1 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
-    CURLOPT_HTTPHEADER      => array('Accept-Language: en'),
-    CURLOPT_FOLLOWLOCATION  => true,
-    CURLOPT_AUTOREFERER     => true,
-    CURLOPT_MAXREDIRS       => 50,
+	CURLOPT_URL             => '',		// need to specify at least an empty URL here, otherwise nothing will be fetched
+	CURLOPT_USERAGENT	=> 'KeepRightBot/0.1 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
+	CURLOPT_HTTPHEADER	=> array('Accept-Language: en'),
+	CURLOPT_HEADER          => false,	// don't include the http header in the result
+	CURLOPT_FOLLOWLOCATION	=> true,
+	CURLOPT_AUTOREFERER	=> true,
+	CURLOPT_RETURNTRANSFER	=> true,	// don't echo http response, instead return it as string
+	CURLOPT_MAXREDIRS	=> 50,		// follow up to x http redirects
+
+ 	CURLOPT_SSL_VERIFYPEER	=> false,	// don't care about missing or outdated ssl certificates
+ 	CURLOPT_SSL_VERIFYHOST	=> 1,
+
+	CURLOPT_TIMEOUT		=> 20
 );
+
+
+if ($HTTP_PROXY_ENABLED) {
+	$curlopt[CURLOPT_PROXY]			= $HTTP_PROXY;
+	$curlopt[CURLOPT_PROXYAUTH]		= 'CURLAUTH_BASIC';
+	$curlopt[CURLOPT_PROXYUSERPWD]		= $HTTP_PROXY_USER . ':' . $HTTP_PROXY_PWD;
+	$curlopt[CURLOPT_HTTPPROXYTUNNEL]	= true;
+}
+
+
+
 
 // ****************************************************************************************************** //
 $debug  = 0;
@@ -295,14 +314,26 @@ function run_standalone_callback($response, $info, $request) {
 function run_keepright_callback($response, $info, $request) {
 	global $db2, $error_type, $error_count;
 
+	$obj = $request->callback_data;
+	echo "callback for " . $request->url . "\n";
+
 	if($info['http_code'] < 200 || $info['http_code'] > 299) {
-		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
+
+		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
+
+		$error_count++;
+		$txt1=pg_escape_string($db2, $request->url);
+		$txt2=pg_escape_string($db2, $info['http_code']);
+		query("
+			INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
+			VALUES ($error_type + 1, '" . $obj['object_type'] . "', " . $obj['id'] . ", 'The URL ($1) cannot be opened (HTTP status code $2)', '$txt1', '$txt2', NOW())
+		", $db2, false);
+
 	return;
 	}
-	$obj = $request->callback_data;
+
+
 	$ret=fuzzy_compare($response, $obj, $request->url);
-
-
 	if ($ret !== null) {
 		$error_count++;
 
@@ -322,8 +353,6 @@ function run_keepright_callback($response, $info, $request) {
 		print_r($ret);
 
 	}
-
-	print_r($rv);
 }
 
 
@@ -385,7 +414,7 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	foreach($keys_to_search_fixed as $key) {
 		if(isset($osm_element[$key])) {
 			$result = match($response, $osm_element[$key]);
-//echo " searching $key=" . $osm_element[$key] . " results $searchedfor\n";
+			//echo " searching $key=" . $osm_element[$key] . " results $searchedfor\n";
 			if ($result===null) return null; else $searchedfor .= $result;
 		}
 	}
@@ -397,7 +426,7 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 
 			if (preg_match('@' . $key . '@i', $current_key)) {
 				$result = match($response, $osm_element[$current_key]);
-//echo " searching $current_key=" . $osm_element[$current_key] . " results $searchedfor\n";
+				//echo " searching $current_key=" . $osm_element[$current_key] . " results $searchedfor\n";
 				if ($result===null) return null; else $searchedfor .= $result;			}
 		}
 	}
