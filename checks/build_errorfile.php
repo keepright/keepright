@@ -77,15 +77,15 @@ foreach ($ev_filenames as $ev_filename) {
 			$lat=$lat/1e7;
 			$lon=$lon/1e7;
 */
-			fwrite($dst, "$ev_schema\t$ev_error_id\t$error_type\t$error_name\t$object_type\t$object_id");
+			fwrite($dst, smooth_text("$ev_schema\t$ev_error_id\t$error_type\t$error_name\t$object_type\t$object_id"));
 
 			if ($ev_schema==$co_schema && $ev_error_id==$co_error_id) {
 
-				if (strlen(trim($co_state))>0) fwrite($dst, "\t$co_state"); else fwrite($dst, "\t$ev_state");
+				if (strlen(trim($co_state))>0) fwrite($dst, smooth_text("\t$co_state")); else fwrite($dst, smooth_text("\t$ev_state"));
 
-				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5\n");
+				fwrite($dst, smooth_text("\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5") . "\n");
 			} else {
-				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5\n");
+				fwrite($dst, smooth_text("\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5") . "\n");
 			}
 		}
 	}
@@ -103,6 +103,11 @@ system ("bzip2 -c $dst_filename > ${dst_filename}.bz2");
 $ftp_url="ftp://$FTP_USER:$FTP_PASS@$FTP_HOST/$FTP_PATH";
 system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ ${dst_filename}.bz2 \"$ftp_url\" 2>&1");
 
+
+// remove any newline characters
+function smooth_text($txt) {
+	return strtr($txt, array("\r\n"=>' ', "\r"=>' ', "\n"=>' '));
+}
 
 
 /*
