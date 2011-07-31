@@ -23,6 +23,13 @@ function query($sql, &$link, $debug=true) {
                 $starttime=microtime(true);
         }
 
+	// one cannot EXPLAIN DDL-type SQL-statements
+/*        if ($debug && !preg_match("/CREATE|ALTER|DROP|ANALYZE/i", $sql)) {
+		$result=pg_query($link, "EXPLAIN $sql");
+		print_pg_result($result);
+		pg_free_result($result);
+	}
+*/
         $result=pg_query($link, $sql);
 
         if ($result===false) {
@@ -400,17 +407,30 @@ function create_postgres_functions($db) {
 		$$ LANGUAGE 'plpgsql';
 	", $db, false);
 
+
+	// always nice to have: XOR
+	query("
+		CREATE OR REPLACE FUNCTION XOR (boolean, boolean)
+		RETURNS boolean as $$
+		BEGIN
+			RETURN ($1 and not $2) or ($2 and not $1);
+		END
+		$$ LANGUAGE 'plpgsql'
+	", $db, false);
+
+
 }
 
 
 function drop_postgres_functions($db) {
-	query("DROP FUNCTION IF EXISTS deg_rad(ang double precision)", $db, false);
-	query("DROP FUNCTION IF EXISTS merc_x(lon double precision)", $db, false);
-	query("DROP FUNCTION IF EXISTS merc_y(lat1 double precision)", $db, false);
-	query("DROP FUNCTION IF EXISTS array_to_rows(myarray ANYARRAY)", $db, false);
-	query("DROP AGGREGATE IF EXISTS array_accum(anyelement)", $db, false);
-	query("DROP AGGREGATE IF EXISTS group_concat(text)", $db, false);
-	query("DROP FUNCTION IF EXISTS _group_concat(text, text)", $db, false);
+	query('DROP FUNCTION IF EXISTS deg_rad(ang double precision)', $db, false);
+	query('DROP FUNCTION IF EXISTS merc_x(lon double precision)', $db, false);
+	query('DROP FUNCTION IF EXISTS merc_y(lat1 double precision)', $db, false);
+	query('DROP FUNCTION IF EXISTS array_to_rows(myarray ANYARRAY)', $db, false);
+	query('DROP AGGREGATE IF EXISTS array_accum(anyelement)', $db, false);
+	query('DROP AGGREGATE IF EXISTS group_concat(text)', $db, false);
+	query('DROP FUNCTION IF EXISTS _group_concat(text, text)', $db, false);
+	query('DROP FUNCTION IF EXISTS XOR (boolean, boolean)', $db, false);
 }
 
 
@@ -488,6 +508,23 @@ function locate_relation($id, $db1, $depth=0) {
 // Declare the layer column this way: layer text DEFAULT '0'
 function find_layer_values($table, $way_id_column, $layer_column, $db) {
 
+	find_bridge_or_tunnel($table, $way_id_column, $layer_column, $db);
+
+	// fetch layer tag and overwrite defaults
+	query("
+		UPDATE $table c
+		SET $layer_column=t.v
+		FROM way_tags t
+		WHERE t.way_id=c.$way_id_column AND t.k='layer'
+	", $db);
+}
+
+// in contrary to the function above this one will only identify
+// bridges and tunnels but discard layer tags
+// this is useful in cases one cannot depend on valid layer tags
+// Declare the layer column this way: layer text DEFAULT '0'
+function find_bridge_or_tunnel($table, $way_id_column, $layer_column, $db) {
+
 	// set default layers:
 	// bridges have layer +1 (if no layer tag is given)
 	// tunnels have layer -1 (if no layer tag is given)
@@ -508,15 +545,112 @@ function find_layer_values($table, $way_id_column, $layer_column, $db) {
 		t.k='tunnel' AND t.v NOT IN ('no', 'false', '0')
 	", $db);
 
-	// fetch layer tag and overwrite defaults
-	query("
-		UPDATE $table c
-		SET $layer_column=t.v
-		FROM way_tags t
-		WHERE t.way_id=c.$way_id_column AND t.k='layer'
-	", $db);
 }
 
+
+// creates a new table _tmp_one_ways containing one way streets
+// explicitly and implicitly tagged (impl. eg: motorways)
+// optionally a table containing way_ids may be provided
+// (column name containing way_ids must be provided)
+// to limit the resultset to just these ways
+// retrieving first/last node ids and locations may be switched off
+function find_oneways($db1, $way_table='', $include_node_locations=true) {
+
+	query("DROP TABLE IF EXISTS _tmp_one_ways", $db1);
+	query("
+		CREATE TABLE _tmp_one_ways (
+		way_id bigint NOT NULL,
+		reversed boolean DEFAULT false, " .
+		(
+		$include_node_locations ?
+		"	first_node_id bigint,
+			last_node_id bigint,
+			first_node_lat double precision,
+			first_node_lon double precision,
+			last_node_lat double precision,
+			last_node_lon double precision,
+		"
+		: '') . "
+		PRIMARY KEY (way_id)
+		)
+	", $db1);
+
+
+	// fetch all one-way tagged ways
+	// that are ways with oneway=yes/true/1/reverse/-1
+	// and all motorways (tagged implicitly)
+	// and all *_links that don't have a oneway=no/false/0 tag
+	query("
+		INSERT INTO _tmp_one_ways (way_id)
+		SELECT wt.way_id
+		FROM way_tags wt " . (strlen($way_table)>0 ?
+			"INNER JOIN $way_table USING (way_id) "
+			: '') . "
+		WHERE (wt.k='oneway' AND wt.v IN ('yes', 'true', '1', 'reverse', '-1')) OR
+			(wt.k='junction' AND wt.v = 'roundabout') OR
+			(wt.k='highway' AND wt.v IN ('motorway', 'motorway_link', 'trunk_link',
+			'primary_link', 'secondary_link'))
+		GROUP BY wt.way_id
+	", $db1);
+
+
+	// implicitly oneway-tagged ways may be tagged non-oneway here
+	// mostly applicable to motorway_link, trunk_link, primary_link, secondary_link
+	query("
+		DELETE FROM _tmp_one_ways
+		WHERE way_id IN (
+			SELECT way_id
+			FROM way_tags tmp
+			WHERE tmp.k='oneway' AND tmp.v IN ('no', 'false', '0')
+		)
+	", $db1);
+
+
+	query("
+		UPDATE _tmp_one_ways AS c
+		SET reversed=true
+		FROM way_tags tmp
+		WHERE tmp.way_id=c.way_id AND
+		tmp.k='oneway' AND tmp.v IN ('reverse', '-1')
+	", $db1);
+
+	if ($include_node_locations) {
+
+		// find id of first and last node as well as coordinates of first and last node
+		query("
+			UPDATE _tmp_one_ways AS c
+			SET first_node_id=w.first_node_id,
+			first_node_lat=w.first_node_lat,
+			first_node_lon=w.first_node_lon,
+			last_node_id=w.last_node_id,
+			last_node_lat=w.last_node_lat,
+			last_node_lon=w.last_node_lon
+			FROM ways AS w
+			WHERE NOT c.reversed AND w.id=c.way_id
+		", $db1);
+
+		// oneways tagged with oneway=reverse or oneway=-1 are oneways
+		// running in opposite direction (for some reason it isn't
+		// possible to change orientation of the way so this tag was chosen)
+		// assign first and last nodes the other way round:
+		query("
+			UPDATE _tmp_one_ways AS c
+			SET first_node_id=w.last_node_id,
+			last_node_id=w.first_node_id,
+			first_node_lat=w.last_node_lat,
+			first_node_lon=w.last_node_lon,
+			last_node_lat=w.first_node_lat,
+			last_node_lon=w.first_node_lon
+			FROM ways AS w
+			WHERE c.reversed AND w.id=c.way_id
+		", $db1);
+
+		query("CREATE INDEX idx_tmp_one_ways_first_node_id ON _tmp_one_ways (first_node_id)", $db1, false);
+		query("CREATE INDEX idx_tmp_one_ways_last_node_id ON _tmp_one_ways (last_node_id)", $db1, false);
+	}
+	query("ANALYZE _tmp_one_ways", $db1);
+
+}
 
 
 // gets a time value in seconds and writes it in s, min, h
