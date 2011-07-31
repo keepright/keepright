@@ -653,6 +653,25 @@ function find_oneways($db1, $way_table='', $include_node_locations=true) {
 }
 
 
+// return an array containing all possible values inside the tag value
+// split by ";". verbose ";" have to be doubled ";;"
+// http://wiki.openstreetmap.org/wiki/Semi-colon_value_separator
+function split_tag($value) {
+
+	if (strpos($value, ';') === false) {// shortcut for the common case: no semicolon at all
+
+		return array($value);
+
+	} else {
+		$tmp = str_replace(';;', '<semicolon>', $value);	// save any verbose ;
+		$list = explode(';', $tmp);
+		$list = str_replace('<semicolon>', ';', $list);		// restore after splitting
+
+		return $list;
+	}
+}
+
+
 // gets a time value in seconds and writes it in s, min, h
 // according to its amount
 function format_time($t) {

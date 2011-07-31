@@ -140,6 +140,7 @@ function run_keepright($db1, $db2, $object_type, $table) {
 		FROM $table
 		WHERE k IN ('" . implode("', '", $checkable_tags) . "') AND
 		NOT (v ~* '" . implode("' OR v ~* '", $whitelist) . "')
+and {$object_type}_id=582757432
 		GROUP BY {$object_type}_id
 	", $db1);
 
@@ -162,11 +163,14 @@ function run_keepright($db1, $db2, $object_type, $table) {
 
 
 		// third: match them!
-		$urls_queued++;
-		echo "queueing URL " . $row1['url'] . "\n";
-		$urlstats[$row1['url']]++;
-		queueURL($rc, $obj, $row1['url']);
+		$list = split_tag($row1['url']);	// inside the tag value there could be multiple values separated by ";"
+		foreach ($list as $url) {
 
+			$urls_queued++;
+			echo "queueing URL $url\n";
+			$urlstats[$url]++;
+			queueURL($rc, $obj, $url);
+		}
 
 	}
 	pg_free_result($result1);
