@@ -140,7 +140,6 @@ function run_keepright($db1, $db2, $object_type, $table) {
 		FROM $table
 		WHERE k IN ('" . implode("', '", $checkable_tags) . "') AND
 		NOT (v ~* '" . implode("' OR v ~* '", $whitelist) . "')
-and {$object_type}_id=582757432
 		GROUP BY {$object_type}_id
 	", $db1);
 
