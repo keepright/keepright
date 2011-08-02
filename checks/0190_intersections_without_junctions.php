@@ -167,7 +167,7 @@ query("
 	CASE WHEN ST_crosses(w1.geom, w2.geom) THEN 'crosses' ELSE 'overlaps' END as action
 	FROM _tmp_ways w1, _tmp_ways w2
 	WHERE w1.layer=w2.layer AND
-		w1.way_id>w2.way_id AND NOT (
+		w1.way_id<w2.way_id AND NOT (
 			(w1.way_type='waterway' AND w2.way_type='riverbank') OR
 			(w1.way_type='riverbank' AND w2.way_type='waterway') OR
 			(w1.way_type='riverbank' AND w2.way_type='riverbank')
