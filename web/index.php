@@ -44,7 +44,6 @@ printf(T_gettext('Data Checks for South America%s (Starting point São Paulo, Br
 echo "<br><a href='report_map.php?zoom=14&lat=35.68051&lon=139.76404'>";
 printf(T_gettext('Data Checks for Asia%s (Starting point Tokio, Japan)'), "</a>");
 
-echo "<br><br><a href='report.php'>" . T_gettext('Europe Data Checks as ugly list') . "</a><br><br>";
 
 printf(T_gettext("Developers have a look at the %sSourceForge%s site providing svn access to the sources."), "<a href='http://apps.sourceforge.net/trac/keepright/'>", '</a>');
 echo "<br>";
@@ -52,6 +51,14 @@ printf(T_gettext("If you want to export errors from KeepRight you will want to h
 
 
 echo '<h3>' . T_gettext('logfile') . '</h3>';
+
+echo "<h4>2011-06-06</h4>";
+echo T_gettext(
+	"Currently there are some regions empty (no markers visible). " .
+	"I'm working on the problem and try to restore all error markers " .
+	"as soon as possible. It will take two days until everything will be fixed"
+) . '<br>';
+
 
 echo "<h4>2010-11-29</h4>";
 echo T_gettext(
@@ -71,7 +78,6 @@ echo T_gettext(
 	"different and should not be used on ways. Thank you, Johan, for making me " .
 	"think about the problem again!"
 ) . '<br>';
-
 
 
 echo "<h4>2010-06-20</h4>";
