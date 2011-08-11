@@ -525,7 +525,7 @@ function match($haystack, $needle) {
 	$needle2   = preg_replace("/\p{P}/",'',$needle);
 	if( $needle2 !== $needle ) {
 	if(!( $temp = match_any($haystack2,$needle2) )) {
-		return(null);   // Match!
+			return(null);   // Match!
 		}
 		$searchedfor .= $temp;
 	}
@@ -536,7 +536,7 @@ function match($haystack, $needle) {
 	$needle3    = $needle2;
 	if( $needle3 !== $needle ) {
 	if(!( $temp = match_any($haystack3,$needle2) )) {
-		return(null);   // Match!
+			return(null);   // Match!
 		}
 		$searchedfor .= $temp;
 	}
