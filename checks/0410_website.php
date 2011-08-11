@@ -13,11 +13,13 @@ require_once('rolling-curl/RollingCurl.php');
 //  Requirements
 //	http://www.php.net/manual/en/book.curl.php (sudo apt-get install php5-curl)
 //
-//  Ideas/TODO
-//      Run in parallel with http://code.google.com/p/rolling-curl/
+//  Ideas
 //	    Process colons (e.g. "website:*");
 //	    Process semicolons (e.g. "amenity=cafe;bar");
-//      Follow meta-refresh redirects properly
+//
+//  URGENT IDEAS TODO
+//      Follow meta-refresh redirects properly. In the handler re-queue the page if you see:
+//          <meta http-equiv="refresh"...>
 //
 //  Tips for OSM editors
 //      1) Simplify URL's to make them more robust:
@@ -40,35 +42,59 @@ require_once('rolling-curl/RollingCurl.php');
 
 
 // these tags may contain URLs
-$checkable_tags = array('website','url','website:mobile','contact:website');
+$checkable_tags = array(
+	'website',
+	'url',
+	'website:mobile',
+	'contact:website'
+);
 
 // these tags may contain text which can validate the website matches the osm element:
 // two flavors: fixed strings or regexes can be used
-$keys_to_search_fixed = array('name','alt_name','website:searchstring','phone',
-			  'operator','addr:street','frequency');
-
-$keys_to_search_regex = array('name:[a-z]{2}');
-
+$keys_to_search_fixed = array(
+	'name',
+	'alt_name',
+	'website:searchstring',
+	'phone',
+	'operator',
+	#'addr:street',  # matches common prefixes too easily
+	'frequency',
+);
+$keys_to_search_regex = array(
+	'name:[a-z]{2}',
+);
 
 // never try to match these URLs
 // these are regexes and they are applied in case insensitive manner automatically!
+// Supports regex
 $whitelist = array(
-	'^http://www.internationalboundarycommission.org/coordinates/',	// match beginning of string
-	'^http://ancien-geodesie.ign.fr/',				// match beginning of string
-	'.pdf$'								// matching pdf files not useful
-);
+	'^http://www.internationalboundarycommission.org/coordinates/',
+	'^http://ancien-geodesie.ign.fr/',
+	'.pdf$',							// PDF matching not useful... yet
+	'^http://disneyland.disney.go.com/',
+    );
 
-// used for identifying domainsquatting
+// used for identifying probable domain squatting or hijack.
+// Straight strings, no regex.
 $squat_strings = array(
 	"http://www.acquirethisname.com",
+	"http://dsnextgen.com/?a_id=",
+	"http://www.domainbrokeronline.com/rd.php",
+	"http://www.dsnextgen.com/",
+	"http://domainbrokers.com/index.php?page=offer",
+	"/static/template/qing/images/qing.ico",    # http://domainbrokers.com/
+	"http://images.sitesense-oo.com/images/template/",
 	"__changoPartnerId='parkedcom'",
-);
+	"The DreamHost customer who owns this domain has parked their website.",    # Dreamhost
+	"Buy This Domain",                          # Generic
+	"/_static/img/ND_new_logo_small.jpg",       # namedrive.com
+    );
 
 
 
 $curlopt = array(
 	CURLOPT_URL             => '',		// need to specify at least an empty URL here, otherwise nothing will be fetched
-	CURLOPT_USERAGENT	=> 'KeepRightBot/0.1 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
+	CURLOPT_USERAGENT	=> 'KeepRightBot/0.2 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
 	CURLOPT_HTTPHEADER	=> array('Accept-Language: en'),
 	CURLOPT_HEADER          => false,	// don't include the http header in the result
 	CURLOPT_FOLLOWLOCATION	=> true,
@@ -79,7 +105,7 @@ $curlopt = array(
  	CURLOPT_SSL_VERIFYPEER	=> false,	// don't care about missing or outdated ssl certificates
  	CURLOPT_SSL_VERIFYHOST	=> 1,
 
-	CURLOPT_TIMEOUT		=> 20
+	CURLOPT_TIMEOUT		=> 45           // Returns 0 if it takes too long
 );
 
 
@@ -308,6 +334,7 @@ function run_standalone_callback($response, $info, $request) {
 		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
 	return;
 	}
+	process_meta_refresh($response, $request->callback_data, $request->url);
 	$rv=fuzzy_compare($response, $request->callback_data, $request->url);
 	print_r($rv);
 }
@@ -320,8 +347,11 @@ function run_keepright_callback($response, $info, $request) {
 	$obj = $request->callback_data;
 	echo "callback for " . $request->url . "\n";
 
-	if($info['http_code'] < 200 || $info['http_code'] > 299) {
-
+	if($info['http_code'] == 0) {
+		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
+	return;
+        }
+	else if($info['http_code'] < 200 || $info['http_code'] > 299) {
 		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
 
 		$error_count++;
@@ -439,47 +469,101 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	return array('type'=>3, 'Content of the URL ($1) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
 }
 
+function process_meta_refresh($response, $osm_element, $http_eurl) {
+	global $z;
+
+	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\"/i", $response,$match)) {
+		# TODO
+		# TODO
+		# TODO
+		# TODO
+		print "Warning: http-equiv refresh found $http_eurl\n";
+	}
+}
 
 // $haystack is the html text of the webpage, $needle is a keyword that is to find
 // return null on match, return a list of variations tried otherwise
 function match($haystack, $needle) {
 	global $z;
 
-	// Check the value as given
-	$value_straight   = $needle;
-	$searchedfor = "✔".$value_straight;
-	$temp = preg_quote($value_straight,'|');
-	$temp = preg_replace('|\s|',"$z",$temp);
-	if(preg_match("|$temp|i", $haystack)) {
+	$searchedfor = "";
+
+	## Exact match? If only...
+	$searchedfor .= "✔".$needle;
+	if( stripos( $haystack, $needle ) ) {
 		return(null);   // Match!
 	}
 
-	// Strip out diacriticals.  Though, php's defective iconv makes this hard.
+	##
+	## Now pass if ANY word in the needle is in the haystack.
+	## For English excluding words under 4 characters works,
+	## avoiding "and", "or", "bar", "&" and other common words and symbols.
+	##
+	if(!( $temp = match_any($haystack,$needle) )) {
+		return(null);   // Match!
+	}
+	$searchedfor .= $temp;
+
+	// Strip out diacriticals and search again.
+	// Though, php's defective iconv makes this hard.
 	// Ideally it would convert like so:
 	//	  grüßen<200e>!
 	//	  grussen!
-	$value_stripped   = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value_straight);
-	$value_stripped   = str_replace("?",'',$value_stripped);
-	if( $value_stripped !== $value_straight ) {
-		$searchedfor .= "✔".$value_stripped;
-		$temp = preg_quote($value_stripped,'|');
-		$temp = preg_replace('|\s|',"$z",$temp);
-		if(preg_match("|$temp|i", $haystack)) {
+	$needle2 = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $needle);
+	$needle2 = str_replace("?",'',$needle2);
+	if( $needle2 !== $needle ) {
+		if(!( $temp = match_any($haystack,$needle2) )) {
 			return(null);   // Match!
 		}
+		$searchedfor .= $temp;
 	}
 
-	// Remove ' and check
-	$value_apostrophe = str_replace("'",'',$value_straight);
-	if( $value_straight !== $value_apostrophe ) {
-		$searchedfor .= "✔".$value_apostrophe;
-		$temp = preg_quote($value_apostrophe,'|');
-		$temp = preg_replace('|\s|',"$z",$temp);
-		if(preg_match("|$temp|i", $haystack)) {
-			return(null);   // Match!
+	#   Let's try the match without punctuation
+	#           Rooney's == Rooneys
+	#           Case-Shiller == CaseShiller
+	$haystack2 = $haystack;
+	$needle2   = preg_replace("/\p{P}/",'',$needle);
+	if( $needle2 !== $needle ) {
+	if(!( $temp = match_any($haystack2,$needle2) )) {
+		return(null);   // Match!
+		}
+		$searchedfor .= $temp;
+	}
+
+	#   Let's try the match with punctuation converted to spaces:
+	#           Case-Shiller == Case Shiller
+	$haystack3  = preg_replace("/\p{P}/",' ',$haystack);
+	$needle3    = $needle2;
+	if( $needle3 !== $needle ) {
+	if(!( $temp = match_any($haystack3,$needle2) )) {
+		return(null);   // Match!
+		}
+		$searchedfor .= $temp;
+	}
+
+	#   Let's try the match with punctuation converted to spaces:
+	#       510-558-8770 == 510.558.8770 == +1 (510) 558-8770
+	#   TODO
+
+	return $searchedfor;
+}
+
+##
+## We pass if ANY word in the needle is in the haystack
+##
+function match_any($haystack, $needle)
+{
+	$searchedfor = "";
+	$words = preg_split("/\s+/",$needle);
+	foreach($words as $word) {
+		if (strlen($word) < 4)    {continue;}   # Except short words
+		if ($word == "test")      {continue;}   # Except "test"
+
+		$searchedfor .= "✔".$word;
+		if( stripos( $haystack, $word ) ) {
+			return(null);
 		}
 	}
-
 	return $searchedfor;
 }
 
