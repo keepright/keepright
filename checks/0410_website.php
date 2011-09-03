@@ -67,11 +67,262 @@ $keys_to_search_regex = array(
 // never try to match these URLs
 // these are regexes and they are applied in case insensitive manner automatically!
 // Supports regex
+// insert URLs pointing to public transport companies or retailers/food companies
+// running multiple stores/restaurants and the URL doesn't point to an individual store
 $whitelist = array(
-	'^http://www.internationalboundarycommission.org/coordinates/',
-	'^http://ancien-geodesie.ign.fr/',
 	'.pdf$',							// PDF matching not useful... yet
+	'^http://a2wtrail.org/',
+	'^http://ancien-geodesie.ign.fr/',
+	'^http://caravanclub.se/',
+	'^http://cwr.naturalengland.org.uk/Default.aspx?Module=CountryWalkDetails&Site=3065',
+	'^http://dcatlas.dcgis.dc.gov/metadata/RecPly.html',
 	'^http://disneyland.disney.go.com/',
+	'^http://en.wikipedia.org/wiki/A._Soriano_Highway',
+	'^http://en.wikipedia.org/wiki/Research_and_Development_Array',
+	'^http://fi.wikipedia.org/wiki/Saimaa',
+	'^http://fi.wikipedia.org/wiki/Seututie_135',
+	'^http://gorod.megafonvolga.ru/?city=2',	'^http://ja.wikipedia.org/wiki/%E5%A4%9A%E6%91%A9%E5%B7%9D%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%AD%E3%83%BC%E3%83%89',
+	'^http://kaerntner-linien.at',
+	'^http://karlsruher-sonnendaecher.de/kasd/public/sopaI/muelldeponiewest',
+	'^http://landkreislauf.de/',
+	'^http://nctr.pmel.noaa.gov/Dart/',
+	'^http://norfolk-safety-camera.org.uk/index.php?page=fixedinfo',
+	'^http://openstreetmap.falco2.de/Bostalsee/Wasserzapfstelle.jpg',
+	'^http://paslo.ru',
+	'^http://run-walk-innsbruck.at',
+	'^http://sbrf.ru/',
+	'^http://sites.google.com/site/norwichpolicecctv/',
+	'^http://tps.cr.nps.gov/nhl/detail.cfm?ResourceId=618&ResourceType=Structure',
+	'^http://vernongreenways.org',
+	'^http://wag.at',
+	'^http://walking-papers.org/scan.php?id=pbrrgrls',
+	'^http://wiki.openstreetmap.org/wiki/Germany:Public_Transport/saarVV',
+	'^http://wiki.openstreetmap.org/wiki/WikiProject_Luxembourg/Public_Transport',
+	'^http://www.7-eleven.com',
+	'^http://www.aarhusbycykel.dk/',
+	'^http://www.abuaf.com/directo/index.htm',
+	'^www.acoventryway.org.uk',
+	'^http://www.acts.it/',
+	'^http://www.afa-busbetrieb.ch',
+	'^http://www.afzamorana.es/',
+	'^http://www.aktivzentrum-bodenmais.de',
+	'^http://www.aldi-nord.de',
+	'^http://www.aldi-sued.de',
+	'^http://www.alpendorf.com',
+	'^http://www.altaviacmargentea.net/ospitalita/ripari.shtml',
+	'^http://www.amt.genova.it/orari/orari_urbana.asp',
+	'^http://www.amt.genova.it/orari/orari.asp',
+	'^http://www.aral.de/',
+	'^http://www.arco.com',
+	'^http://www.atp-spa.it',
+	'^http://www.atp-spa.it/cartina.php',
+	'^http://www.autopistamadridtoledo.com/',
+	'^http://www.baeckerei-dreissig.de',
+	'^http://www.baeckerlampe.de/',
+	'^www.bahn.de',
+	'^(http://)?www.billa.at',
+	'^http://www.blueridgeparkway.org/',
+	'^www.bridgehead.ca',
+	'^http://www.bristolbathrailwaypath.org.uk/',
+	'^http://www.brnonakole.cz/',
+	'^http://www.bvg.de',
+	'^http://www.caffenero.com',
+	'^http://www.cambio-carsharing.de/aachen',
+	'^http://www.caminaspe.fr/encore-mieux/topo-45-randos-vall%C3%A9e',
+	'^http://www.captainslash.com/buriram-chong-chom-and-along',
+	'^http://www.captainslash.com/chumphon-to-phetchaburi/',
+	'^http://www.captainslash.com/cnx-east-of-mae-khachan',
+	'^http://www.captainslash.com/nan-pong-through-the-mountains',
+	'^http://www.captainslash.com/nan-the-1333-and-some',
+	'^http://www.captainslash.com/si-saket-4-reservoirs-and',
+	'^http://www.captainslash.com/si-saket-meandering-through-some',
+	'^http://www.captainslash.com/si-saket-tha-tum-on',
+	'^http://www.captainslash.com/si-saket-the-emerald-triangle',
+	'^http://www.captainslash.com/si-saket-the-lots-of',
+	'^http://www.carsharing.at/',
+	'^http://www.cg94.fr/transport-voirie/17239-les-routes-du',
+	'^http://www.ch-montmorillon.fr',
+	'^www.chevron.com',
+	'^http://www.chguadiana.es/',
+	'^http://www.citybikewien.at',
+	'^http://www.confishare.de',
+	'^http://www.connecta-parc.de',
+	'^http://www.coop.dk/',
+	'^http://www.cumbria-railways.co.uk/brampton_railway.html',
+	'^http://www.cumbriacc.gov.uk/roads-transport/highways-pavements/roads/road-works/major-projects/cndr.asp',
+	'^http://www.cuxland.de/aktuelles/Radwandern.html',
+	'^http://www.dec.ny.gov/lands/5970.html',
+	'^http://www.dec.ny.gov/lands/8066.html',
+	'^http://www.dec.ny.gov/outdoor/7815.html',
+	'^http://www.dec.ny.gov/outdoor/8297.html',
+	'^http://www.dntoslo.no/',
+	'^www.draisinenbahn.de',
+	'^http://www.dublinbikes.ie/',
+	'^www.dzongkhag.gov.bt',
+	'^http://www.edeka.de/',
+	'^http://www.ekorosk.fi',
+	'^http://www.eldorado.ru/',
+	'^http://www.elster-nahverkehr.de',
+	'^http://www.energiewende-oberland-gmbh.de/',
+	'^http://www.ep-moke.fi/',
+	'^http://www.erlebnisbahn.de',
+	'^http://www.evrasia.spb.ru/',
+	'^http://www.festung-ulm.de/',
+	'^www.gemeentewestland.nl',
+	'^http://www.geobase.ca/geobase/en/data/admin/cgb/description.html',
+	'^http://www.glasgow.gov.uk/en/Residents/Parks_Outdoors/Parks_gardens/queenspark.htm',
+	'^http://www.gobiernodecanarias.org/boc/2008/246/001.html',
+	'^http://www.grafschaft-bentheim-tourismus.de/radfahren/grafschafter-fietsentour.html',
+	'^http://www.grand-rodez.com/fr/guides/annuaires_pratiques/guide_transports.php',
+	'^http://www.grandforksgov.com/greenway/index.htm',
+	'^http://www.grossglockner.at',
+	'^www.haarlemmermeer.nl',
+	'^www.hema.nl',
+	'^http://www.herr-berge.de',
+	'^http://www.hit.de/',
+	'^www.hmb-ev.de',
+	'^http://www.hofer.at',
+	'^www.hohensalzburg.com',
+	'^http://www.ilukste.lv/index.php?option=com_content&view=article&id=231&Itemid=609',
+	'^http://www.internationalboundarycommission.org/coordinates/',
+	'^http://www.invg.de',
+	'^http://www.isf-trento.org/?page_id=38',
+	'^http://www.ivb.at',
+	'^http://www.jiffylube.com',
+	'^http://www.kajaaninmoottorikelkkayhdistys.net/',
+	'^http://www.kalwaria.pszowska.katowice.opoka.org.pl/',
+	'^www.kauhajoenmoottorikelkkailijat.org',
+	'^www.kelkkailijat.net',
+	'^http://www.klewenalp.ch/',
+	'^http://www.kolumbus.no',
+	'^http://www.koskilinjat.fi',
+	'^http://www.krasnoe-beloe.ru',
+	'^http://www.kreissparkasse-diepholz.de',
+	'^www.laengholz.ch',
+	'^http://www.lamsa.com.br',
+	'^http://www.landkreis-demmin.de',
+	'^www.lauha.fi',
+	'^http://www.leb.ch/',
+	'^http://www.lepilote.com/',
+	'^http://www.lessentiersdelestrie.qc.ca/',
+	'^http://www.levelo-mpm.fr/',
+	'^http://www.lovdata.no/all/nl-20090605-035.html',
+	'^http://www.maridalensvenner.no/index.php?id=178047',
+	'^http://www.maridalensvenner.no/index.php?id=178088',
+	'^http://www.maridalensvenner.no/index.php?id=178092',
+	'^http://www.mbb-mgn.de',
+	'^http://www.mc30.es/',
+	'^http://www.mcdonalds.ru/',
+	'^http://www.mcrailways.co.uk/',
+	'^http://www.mendel-grundmann-gesellschaft.de',
+	'^www.metan.by',
+	'^http://www.metropolradruhr.de',
+	'^www.metroradruhr.de',
+	'^http://www.metrostlouis.org/',	'^http://www.metsa.fi/sivustot/metsa/fi/Eraasiatjaretkeily/Moottorikelkkailu/Sivut/Maastoliikenne.aspx',
+	'^http://www.mhs.marcellusny.com/MHS_Home/Marcellus_and_Otisco_Lake_Railw.html',
+	'^http://www.midttrafik.dk/k%c3%b8replaner/bybus',
+	'^http://www.mkedcd.org/DowntownMilwaukee/RiverWalk/index.html',
+	'^http://www.mobi-e.pt',
+	'^http://www.mobility.ch/',
+	'^http://www.mockel-bahn.de',
+	'^http://www.mr-sub.de/',
+	'^http://www.mrao.cam.ac.uk/telescopes/',
+	'^http://www.mvg-mobil.de',
+	'^http://www.mvv-muenchen.de',
+	'^http://www.nasa.de/',
+	'^http://www.naturpark-lueneburger-heide.de',
+	'^www.naturparkmeissner.de',
+	'^http://www.naturparkschwarzwald.de/sport-erlebnis/mountainbiking/searchtouren/index_html',
+	'^http://www.net-plaza.org/KANKO/shinshiro/karuta.html',
+	'^http://www.nextbike.de/potsdam.html',
+	'^http://www.nextbike.pl',
+	'^http://www.nisseringen.dk/',
+	'^http://www.northyorkshiremoorsrailway.com/',
+	'^http://www.nos-borkum.de/',
+	'^http://www.nps.gov/klgo/planyourvisit/chilkoottrail.htm',
+	'^http://www.orgp.ru/raspall.html?1',
+	'^http://www.ostfalia.de',
+	'^http://www.otto.fi/',
+	'^http://www.packstation.de',
+	'^www.pharmacia.by',
+	'^www.pizzaiolo.ca',
+	'^www.pohjoiskarjalankelkkaurat.fi',
+	'^http://www.postauto.ch',
+	'^http://www.pret.com',
+	'^www.prokon.net',
+	'^www.radverkehrsnetz.nrw.de',
+	'^http://www.rideau-info.com/canal/index.html',
+	'^http://www.rivieratrasporti.it/ShowOrari.asp',
+	'^http://www.rossmann.de',
+	'^http://www.rovg.de/php/linienbetreiber.php',
+	'^http://www.rvv.de',
+	'^http://www.safeway.com',
+	'^http://www.sbb.ch/fr/',
+	'^http://www.sbrf.ru/',
+	'^http://www.schaapskopp.de/eibia/Werksgelaende.shtml',
+	'^http://www.schotten.de/freizeit/TouristInfo/Schneebericht.htm',
+	'^http://www.sculp.de',
+	'^www.secondcup.com',
+	'^http://www.sgv-duesseldorf.de/',
+	'^http://www.sharis.com',
+	'^http://www.shell.de/',
+	'^http://www.shell.us',
+	'^http://www.skaneleden.se/',
+	'^http://www.skyscrapercity.com/showthread.php?t=321518',
+	'^http://www.skyscrapercity.com/showthread.php?t=496160',
+	'^http://www.smul.sachsen.de/sbs/',
+	'^www.spar.at',
+	'^http://www.sparkasse-aachen.de/',
+	'^http://www.sparkasse-hattingen.de',
+	'^http://www.sparkasse-muensterland-ost.de/',
+	'^http://www.sparkasse-paderborn.de',
+	'^http://www.spbkoreana.ru/',
+	'^http://www.spitaljudeteanmures.ro/',
+	'^www.sprboracay.com',
+	'^www.stadtreinigung-hh.de',
+	'^www.starbucks.ca/en-ca',
+	'^http://www.starbucks.co.uk',
+	'^http://www.stolpersteine-konstanz.de/',
+	'^http://www.stolpersteine-lueneburg.de/',
+	'^http://www.streetcar.co.uk/',
+	'^http://www.sts.qc.ca/',
+	'^http://www.studentenwerkbielefeld.de',
+	'^http://www.swneumarkt.de/stadtbusse.html',
+	'^http://www.t-l.ch/',
+	'^http://www.teilauto.net',
+	'^http://www.three-brooks.info',
+	'^http://www.tobike.it/',
+	'^www.tourism-novobrdo.com',
+	'^http://www.tpwr.de/',
+	'^www.transportstyrelsen.se',
+	'^http://www.travelmart.net/philippines/nautical.html',
+	'^http://www.trekking.suedtirol.info/',
+	'^http://www.umwelt.bremen.de/de/detail.php?gsid=bremen179.c.9329.de',
+	'^http://www.usbr.gov/lc/hooverdam/faqs/powerfaq.html',
+	'^http://www.vag.de',
+	'^www.vasaloppet.se',
+	'^http://www.vegvesen.no/Vegprosjekter/tforbindelsen',
+	'^www.veloh.lu',
+	'^http://www.velopistejcp.com',
+	'^http://www.vg-lambrecht.de/vg_lambrecht/Erleben/Freizeitangebote/Kunst%20und%20Kultur/',
+	'^http://www.vgo.de/vgo/vgo.nsf/c/Aktuelles,News?open&P1=7FDC38A2D0FB26F3C12572DC004CF128',
+	'^http://www.vgs-online.de/',
+	'^www.vmobil.at',
+	'^http://www.vrbank-coburg.de/',
+	'^http://www.vtfishandwildlife.com/access-areas-map.cfm',
+	'^http://www.vv.se/norralanken',
+	'^http://www.vvt.at',
+	'^http://www.waldviertlerbahn.at/',
+	'^http://www.wallaseycemetery.co.uk/Cemetery%20Plan.htm',
+	'^http://www.wandelzoekpagina.nl/groene_wissels/lijst.php',
+	'^http://www.watchtower.org/',
+	'^http://www.westgov.com/mainstreet/mainstreet_parking.html',
+	'^http://www.winterpark-willingen.info/loipeninfos/',
+	'^http://www.yunnanexplorer.com/features/guandu/',
+	'^http://www.yunnanexplorer.com/transport/',
+	'^http://www.zfa-iserlohn.de/balve/containerstandorte.asp',
+	'^https://www.sparkasse-rottal-inn.de/',
+	'^http://zditm.szczecin.pl/rozklady/index.html'
     );
 
 // used for identifying probable domain squatting or hijack.
@@ -109,7 +360,7 @@ $curlopt = array(
 );
 
 
-if ($HTTP_PROXY_ENABLED) {
+if (isset($HTTP_PROXY_ENABLED) && $HTTP_PROXY_ENABLED) {
 	$curlopt[CURLOPT_PROXY]			= $HTTP_PROXY;
 	$curlopt[CURLOPT_PROXYAUTH]		= 'CURLAUTH_BASIC';
 	$curlopt[CURLOPT_PROXYUSERPWD]		= $HTTP_PROXY_USER . ':' . $HTTP_PROXY_PWD;
@@ -123,6 +374,7 @@ if ($HTTP_PROXY_ENABLED) {
 $debug  = 0;
 $w = '[\s\S]*?'; //ungreedy wildcard - matches anything
 $z = '[\h\v]*?'; //ungreedy wildcard - matches whitespace only
+$rc;            // Rolling Curl object (fake multithreading for php) 
 
 
 // prepare regexes for domainsquatting search
@@ -148,7 +400,7 @@ if ($argc>=2 && is_readable($argv[1])) {
 
 
 function run_keepright($db1, $db2, $object_type, $table) {
-	global $error_type, $checkable_tags, $whitelist, $error_count, $curlopt;
+	global $error_type, $checkable_tags, $whitelist, $error_count, $curlopt, $rc;
 
 
 	echo "checking on $table...\n";
@@ -161,6 +413,7 @@ function run_keepright($db1, $db2, $object_type, $table) {
 	$rc->window_size = 20;		// number of concurrent URLs to open
 
 	// first find objects with URL tags and exclude whitelisted URLs
+
 	$result1=query("
 		SELECT {$object_type}_id, MAX(v) AS url
 		FROM $table
@@ -168,9 +421,6 @@ function run_keepright($db1, $db2, $object_type, $table) {
 		NOT (v ~* '" . implode("' OR v ~* '", $whitelist) . "')
 		GROUP BY {$object_type}_id
 	", $db1);
-
-
-
 
 	while ($row1=pg_fetch_array($result1, NULL, PGSQL_ASSOC)) {
 
@@ -192,7 +442,6 @@ function run_keepright($db1, $db2, $object_type, $table) {
 		foreach ($list as $url) {
 
 			$urls_queued++;
-			echo "queueing URL $url\n";
 			$urlstats[$url]++;
 			queueURL($rc, $obj, $url);
 		}
@@ -215,7 +464,7 @@ function run_keepright($db1, $db2, $object_type, $table) {
 
 
 function run_standalone() {
-	global $argc, $argv, $checkable_tags, $curlopt;
+	global $argc, $argv, $checkable_tags, $curlopt, $rc;
 
 	$urls_queued=0;
 
@@ -320,7 +569,7 @@ function queueURL(&$rc, $element, $url) {
 	}
 
 	// Queue for later
-	//print "Queue $url on ID $element[id]\n";
+	print "Queue $url on ID $element[id]\n";
 	$request = new RollingCurlRequest($url);
 	$request->callback_data = $element;
 	$rc->add($request);
@@ -330,15 +579,16 @@ function queueURL(&$rc, $element, $url) {
 
 // handle http response in standalone mode
 function run_standalone_callback($response, $info, $request) {
+	echo "Callback on $request->url\n";
 	if($info['http_code'] < 200 || $info['http_code'] > 299) {
 		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
-	return;
+		return;
 	}
-	process_meta_refresh($response, $request->callback_data, $request->url);
-	$rv=fuzzy_compare($response, $request->callback_data, $request->url);
-	print_r($rv);
+	if(check_meta_refresh($response, $request->callback_data, $request->url)) {
+		return;
+	}
+	print_r(fuzzy_compare($response, $request->callback_data, $request->url));
 }
-
 
 // handle http response in keepright mode
 function run_keepright_callback($response, $info, $request) {
@@ -349,7 +599,7 @@ function run_keepright_callback($response, $info, $request) {
 
 	if($info['http_code'] == 0) {
 		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
-	return;
+		return;
         }
 	else if($info['http_code'] < 200 || $info['http_code'] > 299) {
 		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
@@ -365,6 +615,9 @@ function run_keepright_callback($response, $info, $request) {
 	return;
 	}
 
+	if(check_meta_refresh($response, $request->callback_data, $request->url)) {
+        return;
+    }
 
 	$ret=fuzzy_compare($response, $obj, $request->url);
 	if ($ret !== null) {
@@ -469,16 +722,37 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	return array('type'=>3, 'Content of the URL ($1) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
 }
 
-function process_meta_refresh($response, $osm_element, $http_eurl) {
-	global $z;
+// Requeue pages which simply refrence another page.
+// Watch out for loops!
+function check_meta_refresh($response, $osm_element, $http_eurl) {
+	global $z, $rc;
 
-	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\"/i", $response,$match)) {
-		# TODO
-		# TODO
-		# TODO
-		# TODO
-		print "Warning: http-equiv refresh found $http_eurl\n";
+	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\".*content$z=$z\".*?url=${z}(.*?)\"/i", $response,$match)) {
+
+		$url = trim($match[1]);
+
+		if ($url!=='' && $url!=='/') {		// some pages refresh on "/" or on blank urls; this shall not build a loop
+
+			// Normalize URL
+			// guess if given URL is absolute or relative
+			// TODO: detect hostnames without scheme prefix like host.domain,net as absolute URL
+			if(strstr($match[1], '://')===false && strstr($match[1], 'www.')===false) {
+				// seems to be a relative URL so preprend the __host__part__
+				// of the old URL
+				$urlparts=parse_url($http_eurl);
+
+				$url=$urlparts['scheme'] . '://' . $urlparts['host'] . (substr($url, 0, 1)=='/' ? $url : "/$url");
+				//$url = "$http_eurl/".$url;
+			}
+
+
+			print "Old style http-equiv refresh found $http_eurl $match[1] $url\n";
+			queueURL($rc, $osm_element, $url);
+			//$osm_element{keepright_loopcount}++;
+			return(true);
+		}
 	}
+	return(false);
 }
 
 // $haystack is the html text of the webpage, $needle is a keyword that is to find
@@ -558,6 +832,8 @@ function match_any($haystack, $needle)
 	foreach($words as $word) {
 		if (strlen($word) < 4)    {continue;}   # Except short words
 		if ($word == "test")      {continue;}   # Except "test"
+		if ($word == "cafe")      {continue;}   # Except "cafe"
+		if ($word == "café")      {continue;}   # Except "café"
 
 		$searchedfor .= "✔".$word;
 		if( stripos( $haystack, $word ) ) {
