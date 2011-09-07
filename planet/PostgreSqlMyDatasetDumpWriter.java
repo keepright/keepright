@@ -44,6 +44,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 	private static final String RELATION_TAG_SUFFIX = "relation_tags.txt";
 	private static final String RELATION_MEMBER_SUFFIX = "relation_members.txt";
 
+	private static final String FORMATSTR_IDS = "%010d";
 
 	private boolean enableBboxBuilder;
 	private boolean enableLinestringBuilder;
@@ -152,7 +153,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 
 		node = nodeContainer.getEntity();
 
-		nodeWriter.writeField(String.format("%010d", node.getId()));
+		nodeWriter.writeField(String.format(FORMATSTR_IDS, node.getId()));
 		nodeWriter.writeField(node.getUser().getId());
 		nodeWriter.writeField(node.getTimestamp());
 		lat=node.getLatitude();
@@ -192,7 +193,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 		// Ignore ways with a single node because they can't be loaded into postgis.
 		// doesn't apply to data consistency checks!
 		//if (way.getWayNodes().size() > 1) {
-			wayWriter.writeField(way.getId());
+			wayWriter.writeField(String.format(FORMATSTR_IDS, way.getId()));
 			wayWriter.writeField(way.getUser().getId());
 			wayWriter.writeField(way.getTimestamp());
 			if (enableBboxBuilder) {
@@ -214,19 +215,19 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 			sequenceId = last_node_id = 0;
 			for (WayNode wayNode : way.getWayNodes()) {
 				wayNodeWriter.writeField(way.getId());
-				wayNodeWriter.writeField(String.format("%010d", last_node_id=wayNode.getNodeId()));
+				wayNodeWriter.writeField(String.format(FORMATSTR_IDS, last_node_id=wayNode.getNodeId()));
 
 				// this goes into the way file!
-				if (sequenceId == 0) wayWriter.writeField(String.format("%010d", last_node_id));
+				if (sequenceId == 0) wayWriter.writeField(String.format(FORMATSTR_IDS, last_node_id));
 
 				wayNodeWriter.writeField(sequenceId++);
 				wayNodeWriter.endRecord();
 			}
 
 			// id of last node of this way:
-                        wayWriter.writeField(String.format("%010d", last_node_id));
+			wayWriter.writeField(String.format(FORMATSTR_IDS, last_node_id));
 			// number of nodes in this way:
-                        wayWriter.writeField(sequenceId);
+			wayWriter.writeField(sequenceId);
 			wayWriter.endRecord();
 		//}
 	}
