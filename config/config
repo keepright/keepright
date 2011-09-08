@@ -71,7 +71,7 @@ PLANETFILE_URL="http://planet.openstreetmap.org/planet-latest.osm.bz2"
 PLANETFILE="/home/haraldk/OSM/keepright/planet/planet.osm"
 
 # the path of the osmosis calling script -- not the JAR-file!
-OSMOSIS_BIN="/home/haraldk/OSM/osmosis-0.32.1/bin/osmosis"
+OSMOSIS_BIN="/home/haraldk/OSM/osmosis-0.39/bin/osmosis"
 
 # path used for osmosis to store the tab-separated dump files
 # this option is only needed on installations where two hosts
