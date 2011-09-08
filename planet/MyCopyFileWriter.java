@@ -23,41 +23,41 @@ import org.openstreetmap.osmosis.core.lifecycle.Completable;
 /**
  * This class provides the capability to write a file that contains data for a
  * database COPY statement for loading a single table into the database.
- * 
+ *
  * @author Brett Henderson
  */
 public class MyCopyFileWriter implements Completable {
-	
+
 	private static Logger log = Logger.getLogger(MyCopyFileWriter.class.getName());
-	
-	
+
+
 	private File file;
 	private boolean initialized;
 	private BufferedWriter writer;
 	private boolean midRecord;
 	private SimpleDateFormat dateFormat;
 	private BinaryWriter postgisBinaryWriter;
-	
-	
+
+
 	/**
 	 * Creates a new instance.
-	 * 
+	 *
 	 * @param file
 	 *            The file to write.
 	 */
 	public MyCopyFileWriter(File file) {
 		this.file = file;
-		
+
 		midRecord = false;
-		
+
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 		postgisBinaryWriter = new BinaryWriter();
 	}
-	
-	
+
+
 	/**
 	 * Adds a field separator if required.
-	 * 
+	 *
 	 * @throws IOException
 	 *             if the field cannot be written.
 	 */
@@ -68,32 +68,32 @@ public class MyCopyFileWriter implements Completable {
 			midRecord = true;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
-	 * 
+	 *
 	 * @param data
 	 *            The data to be written.
 	 */
 	public void writeField(boolean data) {
 		initialize();
-		
+
 		try {
 			separateField();
-			
+
 			if (data) {
 				writer.write("t");
 			} else {
 				writer.write("f");
 			}
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
 	 * 
@@ -102,62 +102,62 @@ public class MyCopyFileWriter implements Completable {
 	 */
 	public void writeField(int data) {
 		initialize();
-		
+
 		try {
 			separateField();
-			
+
 			writer.write(Integer.toString(data));
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
-	 * 
+	 *
 	 * @param data
 	 *            The data to be written.
 	 */
 	public void writeField(double data) {
 		initialize();
-		
+
 		try {
 			separateField();
-			
+
 			writer.write(Double.toString(data));
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
-	 * 
+	 *
 	 * @param data
 	 *            The data to be written.
 	 */
 	public void writeField(long data) {
 		initialize();
-		
+
 		try {
 			separateField();
-			
+
 			writer.write(Long.toString(data));
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Inserts escape sequences needed to make a String suitable for writing to
 	 * a COPY file.
-	 * 
+	 *
 	 * @param data
 	 *            The raw data string.
 	 * @return The escaped string.
@@ -165,18 +165,18 @@ public class MyCopyFileWriter implements Completable {
 	private String escapeString(String data) {
 		StringBuilder result;
 		char[] dataArray;
-		
+
 		if (data == null) {
 			return "\\N";
 		}
-		
+
 		result = new StringBuilder(data.length());
 		dataArray = data.toCharArray();
 		for (int i = 0; i < dataArray.length; i++) {
 			char currentChar;
-			
+
 			currentChar = dataArray[i];
-			
+
 			switch (currentChar) {
 			case '\\': // Slash
 				result.append("\\\\");
@@ -201,78 +201,78 @@ public class MyCopyFileWriter implements Completable {
 				break;
 			default:
 				result.append(currentChar);
-				
+
 			}
 		}
-		
+
 		return result.toString();
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
-	 * 
+	 *
 	 * @param data
 	 *            The data to be written.
 	 */
 	public void writeField(String data) {
 		initialize();
-		
+
 		try {
 			separateField();
-			
+
 			writer.write(escapeString(data));
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
-	 * 
+	 *
 	 * @param data
 	 *            The data to be written.
 	 */
 	public void writeField(Date data) {
 		initialize();
-		
+
 		try {
 			separateField();
-			
+
 			writer.write(dateFormat.format(data));
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes data to the output file.
-	 * 
+	 *
 	 * @param data
 	 *            The data to be written.
 	 */
 	public void writeField(Geometry data) {
 		initialize();
-		
+
 		try {
 			separateField();
 
 		    if (data == null) {
                 writer.write(escapeString(null));
-            } else {	
+            } else {
 			    writer.write(postgisBinaryWriter.writeHexed(data));
             }
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Writes a new line in the output file.
 	 */
@@ -280,13 +280,13 @@ public class MyCopyFileWriter implements Completable {
 		try {
 			writer.newLine();
 			midRecord = false;
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to end record.", e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Initialises the output file for writing. This must be called by
 	 * sub-classes before any writing is performed. This method may be called
@@ -296,15 +296,15 @@ public class MyCopyFileWriter implements Completable {
 	private void initialize() {
 		if (!initialized) {
 			OutputStream outStream = null;
-			
+
 			try {
 				outStream = new FileOutputStream(file);
-				
+
 				writer = new BufferedWriter(
 						new OutputStreamWriter(new BufferedOutputStream(outStream, 65536), "UTF-8"));
-				
+
 				outStream = null;
-				
+
 			} catch (IOException e) {
 				throw new OsmosisRuntimeException("Unable to open file for writing.", e);
 			} finally {
@@ -317,27 +317,27 @@ public class MyCopyFileWriter implements Completable {
 					outStream = null;
 				}
 			}
-			
+
 			initialized = true;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Flushes all changes to file.
 	 */
 	public void complete() {
 		initialize();
-		
+
 		try {
 			if (midRecord) {
 				throw new OsmosisRuntimeException("The current record has not been ended.");
 			}
-			
+
 			if (writer != null) {
 				writer.close();
 			}
-			
+
 		} catch (IOException e) {
 			throw new OsmosisRuntimeException("Unable to complete writing to the data stream.", e);
 		} finally {
@@ -345,8 +345,8 @@ public class MyCopyFileWriter implements Completable {
 			writer = null;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Cleans up any open file handles.
 	 */
