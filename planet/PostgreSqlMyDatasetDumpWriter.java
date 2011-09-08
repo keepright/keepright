@@ -29,7 +29,7 @@ import org.openstreetmap.osmosis.core.task.v0_6.Sink;
 /**
  * An OSM data sink for storing all data to a database dump file. This task is
  * intended for populating an empty database.
- * 
+ *
  * @author Brett Henderson
  */
 public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
@@ -67,7 +67,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 
 	/**
 	 * Creates a new instance.
-	 * 
+	 *
 	 * @param filePrefix
 	 *            The prefix to prepend to all generated file names.
 	 * @param enableBboxBuilder
@@ -267,7 +267,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 
 
 	/**
-	 * Writes any buffered data to the database and commits. 
+	 * Writes any buffered data to the database and commits.
 	 */
 	public void complete() {
 		//writerContainer.complete();
