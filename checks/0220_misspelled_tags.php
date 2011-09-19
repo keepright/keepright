@@ -16,6 +16,9 @@ will be found so any name value will be ok
 // * characters used as fake namespace separator: |>
 // * colons (:) at the end of a key are bad
 
+
+global $false_positives, $never_complain_about, $force_irregular, $force_regular;
+
 // list of key or value parts that sound very similar but are something completely different
 // please keep values in ascending order!
 $false_positives = array(

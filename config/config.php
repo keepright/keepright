@@ -1,3 +1,10 @@
+<?php
+
+$error_types=array();
+$schemas=array();
+$config=array();
+
+
 // ###########################################
 // Database credentials
 // ###########################################
@@ -115,3 +122,40 @@ $config['hstore.sql']['ubuntu/postgis 9.0'] = '/usr/local/Cellar/postgresql/9.0.
 $config['hstore.sql']['debian6/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/hstore.sql';
 $config['hstore.sql']['ubuntu/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/hstore.sql';
 
+
+
+
+require('../config/schemas.php');
+require('../config/error_types.php');
+
+// print_r($error_types);
+// print_r($schemas);
+// print_r($config);
+
+
+// log levels
+define('KR_ERROR', 1);
+define('KR_WARNING', 2);
+define('KR_INFO', 4);
+define('KR_INDEX_USAGE', 8);
+define('KR_COMMANDS', 16);
+
+
+// determines which kinds of messages should be logged
+$config['loglevel'] = KR_ERROR + KR_WARNING + KR_INFO + KR_INDEX_USAGE + KR_COMMANDS;
+
+
+
+$userconfig=$_ENV['HOME'] . '/.keepright';
+
+if (!is_readable($userconfig)) {
+	logger('~/.keepright not found. This is the first time you have run keepright. I\'ll create ~/.keepright for you; adapt the settings as needed and run this script again.', KR_ERROR);
+
+	copy('../config/keepright.template', $userconfig);
+	exit(1);
+}
+
+// read private settings overwriting some of the general settings
+require($userconfig);
+
+?>

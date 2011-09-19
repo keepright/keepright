@@ -14,7 +14,13 @@ find ways whose bouding box contains the end node
 note ways that come closer than min_distance to the endpoint
 */
 
-
+// minimum distance between a not connected end of a way and any other segment
+// nearby. ways coming closer than min_distance to the end of another way are
+// considered to be almost-junctions. specified in meters.
+// The value of 10 is chosen because most streets are approximately 10 meters
+// wide and people draw them close enough that they _seem_ to be connected
+global $check0050_min_distance;
+$check0050_min_distance=10;
 
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 
@@ -25,6 +31,7 @@ query("
 	way_id bigint NOT NULL,
 	first_node_id bigint,
 	last_node_id bigint,
+	layer text DEFAULT '0',
 	PRIMARY KEY (way_id)
 	)
 ", $db1);
@@ -49,6 +56,8 @@ query("CREATE INDEX idx_tmp_ways_last_node_id ON _tmp_ways (last_node_id)", $db1
 query("CREATE INDEX idx_tmp_ways_bbox ON _tmp_ways USING gist (bbox);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
+find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
+
 
 // find the first and last node of given ways
 
@@ -60,6 +69,7 @@ query("
 	node_id bigint NOT NULL,
 	x double precision,
 	y double precision,
+	layer text DEFAULT '0',
 	PRIMARY KEY (node_id))
 ", $db1);
 query("SELECT AddGeometryColumn('_tmp_end_nodes', 'geom', 4326, 'POINT', 2)", $db1);
@@ -67,24 +77,24 @@ query("SELECT AddGeometryColumn('_tmp_end_nodes', 'geom', 4326, 'POINT', 2)", $d
 
 // find first nodes that are end-nodes (that are found in way_nodes just once)
 query("
-	INSERT INTO _tmp_end_nodes (way_id, node_id)
-	SELECT w.way_id, w.first_node_id
+	INSERT INTO _tmp_end_nodes (way_id, node_id, layer)
+	SELECT w.way_id, w.first_node_id, w.layer
 	FROM _tmp_ways w INNER JOIN way_nodes wn ON w.first_node_id=wn.node_id
-	GROUP BY w.way_id, w.first_node_id
+	GROUP BY w.way_id, w.first_node_id, w.layer
 	HAVING COUNT(wn.way_id)=1
 ", $db1);
 // find last nodes that are end-nodes (that are found in way_nodes just once)
 // lacking the INSERT IGNORE syntax in postgres we need to exclude nodes
 // that already exist in _tmp_end_nodes (subquery)
 query("
-	INSERT INTO _tmp_end_nodes (way_id, node_id)
-	SELECT w.way_id, w.last_node_id
+	INSERT INTO _tmp_end_nodes (way_id, node_id, layer)
+	SELECT w.way_id, w.last_node_id, w.layer
 	FROM _tmp_ways w INNER JOIN way_nodes wn ON w.last_node_id=wn.node_id
 	WHERE NOT EXISTS (
 		SELECT * FROM _tmp_end_nodes AS tmp
 		WHERE tmp.node_id=w.last_node_id
 	)
-	GROUP BY w.way_id, w.last_node_id
+	GROUP BY w.way_id, w.last_node_id, w.layer
 	HAVING COUNT(wn.way_id)=1
 ", $db1);
 query("ANALYZE _tmp_end_nodes", $db1);
@@ -99,10 +109,10 @@ query("ANALYZE _tmp_end_nodes", $db1);
 // will never stand in the middle of a crossing
 query("
 	DELETE FROM _tmp_end_nodes en
-	WHERE EXISTS (
+	WHERE en.node_id IN (
 		SELECT node_id
 		FROM node_tags AS t
-		WHERE t.node_id=en.node_id AND (
+		WHERE (
 			(t.k='noexit' AND t.v IN ('yes', 'true', '1')) OR
 			(t.k='highway' AND t.v='turning_circle') OR
 			(t.k='highway' AND t.v='bus_stop') OR
@@ -118,11 +128,10 @@ query("
 // should be found by the islands check
 query("
 	DELETE FROM _tmp_end_nodes en
-	WHERE EXISTS (
+	WHERE en.way_id IN (
 		SELECT way_id
 		FROM way_tags AS t
-		WHERE t.way_id=en.way_id AND
-			t.k='noexit' AND t.v IN ('yes', 'true', '1')
+		WHERE t.k='noexit' AND t.v IN ('yes', 'true', '1')
 	)
 ", $db1);
 
@@ -138,21 +147,50 @@ query("CREATE INDEX idx_tmp_end_nodes_geom ON _tmp_end_nodes USING gist (geom);"
 query("ANALYZE _tmp_end_nodes", $db1);
 
 
-
 /////////////////////////////////////////////////////////////////////////////////////
 $bi=new BufferedInserter('_tmp_errors', $db4);
 
 
 // join end_nodes and ways on "node inside bounding box of way"
+query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+query("
+	CREATE TABLE _tmp_error_candidates (
+		way_id bigint NOT NULL,
+		node_id bigint NOT NULL,
+		node_x double precision NOT NULL,
+		node_y double precision NOT NULL,
+		nearby_way_id bigint NOT NULL,
+		distance double precision NOT NULL
+	)
+", $db1, false);
+
 $result=query("
+	INSERT INTO _tmp_error_candidates (way_id, node_id, node_x, node_y, nearby_way_id, distance)
 	SELECT en.way_id, en.node_id, en.x AS node_x, en.y AS node_y, w.way_id AS nearby_way_id, ST_distance(w.geom, en.geom) AS distance
 	FROM _tmp_end_nodes en, _tmp_ways w
 	WHERE w.bbox && en.geom AND
 	ST_DWithin(w.geom, en.geom, {$check0050_min_distance}) AND
-	en.way_id<>w.way_id
-	ORDER BY en.node_id, distance
+	en.way_id<>w.way_id AND
+	en.layer=w.layer
 ", $db1);
 
+
+$result=query("
+	INSERT INTO _tmp_error_candidates (way_id, node_id, node_x, node_y, nearby_way_id, distance)
+	SELECT en1.way_id, en1.node_id, en1.x AS node_x, en1.y AS node_y, en2.way_id AS nearby_way_id, ST_distance(en2.geom, en1.geom) AS distance
+	FROM _tmp_end_nodes en1, _tmp_end_nodes en2
+	WHERE ST_DWithin(en1.geom, en2.geom, {$check0050_min_distance}) AND
+	en1.way_id<>en2.way_id AND
+	en1.layer<>en2.layer
+", $db1);
+
+
+
+$result=query("
+	SELECT way_id, node_id, node_x, node_y, nearby_way_id, distance
+	FROM _tmp_error_candidates
+	ORDER BY node_id, distance
+", $db1);
 
 // examine nodes that are close to ways in more detail:
 // there are short final segments on dead ended roads that would end
@@ -178,8 +216,9 @@ $bi->flush_buffer();
 
 print_index_usage($db1);
 
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
-query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1);
+// query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+// query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1);
+// query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
 
 
 

@@ -9,8 +9,8 @@ the errors dump is a copy of the error_view plus comments given by users
 
 $schema=2;
 
-require('config.inc.php');
-require('helpers.inc.php');
+require('config.php');
+require('helpers.php');
 
 
 // update and download the comments file from the web server

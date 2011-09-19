@@ -24,91 +24,106 @@ this script won't accept any cookies
 
 */
 
+if (count(get_included_files())<=1) {	// we're running from commandline if not there are already files included
 
-echo "argc=$argc\n";
-print_r($argv);
-
-if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {
-	echo "Usage: \"php export_errors.php --local | --remote 17 | --export_comments\"\n";
-	echo "will upload dump file 17 created by export_errors.php to the web server\n";
-	exit;
-}
-
-if ($argv[2]=='--export_comments') $schema=2; else $schema=$argv[2];
-
-require('config.inc.php');
-require('helpers.inc.php');
+	require_once('helpers.php');
+	require_once('config.php');
 
 
-// local/remote operation, choose URL
-switch ($argv[1]) {
-	case '--local':
-		$URL=$UPDATE_TABLES_URL_LOCAL;
-	break;
-	case '--remote':
-		$URL=$UPDATE_TABLES_URL;
-	break;
-	default:
-		echo "unknown upload destination '$argv[1]'\n";
+	if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {
+		echo "Usage: \"php export_errors.php --local 17 | --remote 17 | --export_comments\"\n";
+		echo "will upload dump file 17 created by export_errors.php to the web server\n";
 		exit;
-}
-
-if ($argv[2]=='--export_comments') {
-	echo "exporting comments on server\n";
-
-	$session_ID=login($URL);
-	//echo "session id is $session_ID";
-
-	if ($session_ID) {
-
-		$myURL="$URL?cmd=export_comments&PHPSESSID=$session_ID";
-
-		echo "$myURL\n";
-		$result = readHTTP($myURL);
-		echo implode("\n", $result);
-
-		logout($URL, $session_ID);
 	}
 
-} else {
-	echo "uploading to $URL schema $schema\n";
 
-	$session_ID=login($URL);
-	//echo "session id is $session_ID";
+	if ($argv[2]=='--export_comments')
+		export_errors($argv[1], $argv[2]);
+	else
+		export_errors($argv[1], '--upload_errors', $argv[2]);
 
-	if ($session_ID) {
-		if ($argv[1]=='--remote') ftp_upload($MAIN_DB_NAME, $schema);
-
-		$fname="error_view_$schema.txt.bz2";
+}
 
 
-		$myURL="$URL?schema=$schema&cmd=update&PHPSESSID=$session_ID" .
-			"&updated_date=" . date("Y-m-d") .
-			"&error_view_filename=$fname";
+// $location: [ --local | --remote ]
+// $cmd: [ --export_comments | --upload_errors ]
+// $schema: schema number (only required when $cmd==--upload_errors
+function export_errors($location, $cmd, $schema=0) {
+	global $config;
 
-		echo "$myURL\n";
-		$result = readHTTP($myURL);
-		echo implode("\n", $result);
+	// local/remote operation, choose URL
+	switch ($location) {
+		case '--local':
+			$URL=$config['upload']['url_local'];
+		break;
+		case '--remote':
+			$URL=$config['upload']['url'];
+		break;
+		default:
+			logger("unknown upload destination '$location'", KR_ERROR);
+			exit;
+	}
 
-		logout($URL, $session_ID);
+
+	if ($cmd=='--export_comments') {
+		echo "exporting comments on server\n";
+
+		$session_ID=login($URL);
+		//echo "session id is $session_ID";
+
+		if ($session_ID) {
+
+			$myURL="$URL?cmd=export_comments&PHPSESSID=$session_ID";
+
+			echo "$myURL\n";
+			$result = readHTTP($myURL);
+			echo implode("\n", $result);
+
+			logout($URL, $session_ID);
+		}
+
+	} else {
+		echo "uploading to $URL schema $schema\n";
+
+		$session_ID=login($URL);
+		//echo "session id is $session_ID";
+
+		if ($session_ID) {
+			if ($location=='--remote') ftp_upload($schema);
+
+			$fname="error_view_$schema.txt.bz2";
+
+
+			$myURL="$URL?schema=$schema&cmd=update&PHPSESSID=$session_ID" .
+				"&updated_date=" . date("Y-m-d") .
+				"&error_view_filename=$fname";
+
+			echo "$myURL\n";
+			$result = readHTTP($myURL);
+			echo implode("\n", $result);
+
+			logout($URL, $session_ID);
+		}
 	}
 }
+
+
 
 
 // establish a session with the server module
 // return the session id on success, 0 on error
 function login($URL) {
-	global $UPDATE_TABLES_USERNAME, $UPDATE_TABLES_PASSWD;
+	global $config;
 	echo "\n\nlogging in----------------------------------------------\n\n";
 
 	// call the server script to receive the session id and challenge
 	$result1 = readHTTP($URL);
 	echo "result:\n" . implode("\n", $result1) . "\n(end of result)	\n";
 
-	$response=md5($UPDATE_TABLES_USERNAME . trim($result1[1]) . $UPDATE_TABLES_PASSWD);
+	$response=md5($config['account']['user'] . trim($result1[1]) . $config['account']['password']);
 
 	// now respond...
-	$result2 = readHTTP("$URL?username=$UPDATE_TABLES_USERNAME&response=$response&PHPSESSID=" . trim($result1[2]));
+	$result2 = readHTTP("$URL?username=" . $config['account']['user'] . "&response=$response&PHPSESSID=" . trim($result1[2]));
 	echo "result:\n" . implode("\n", $result2) . "\n(end of result)	\n";
 
 	if (trim($result2[0])=="OK welcome!") {
@@ -127,17 +142,18 @@ function logout($URL, $session_ID) {
 }
 
 
-function ftp_upload($db, $schema) {
-	global $FTP_USER, $FTP_PASS, $FTP_HOST, $FTP_PATH;
+function ftp_upload($schema) {
+	global $config;
 	echo "\n\nuploading dump file-------------------------------------\n\n";
 
-	$ftp_url="ftp://$FTP_USER:$FTP_PASS@$FTP_HOST/$FTP_PATH";
 
-	$filenames="../results/error_view_{$schema}.txt.bz2 ../results/error_types.txt";
+	$ftp_url='ftp://' . $config['upload']['ftp_user'] . ':' . $config['upload']['ftp_password'] . '@' . $config['upload']['ftp_host'] . '/' . $config['upload']['ftp_path'];
+
+	$filename="../results/error_view_{$schema}.txt.bz2";
 
 	// call wput, overwrite files if already existing, dont create directories
 	// upload the error_view dumps and the error_types dump
-	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ $filenames \"$ftp_url\" 2>&1");
+	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ $filename \"$ftp_url\" 2>&1");
 }
 
 

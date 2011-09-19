@@ -1,84 +1,127 @@
 <?php
 
+// this script will call osmosis to cut a planet file in pieces
+// or update pieces cut in a previous step
 
-if ($argc<2 || ($argv[1]<>'--cut' && $argv[1]<>'--update')) {
-	echo "Usage: \">php planet.php --cut planet.osm | --update  [schemas]\"\n";
-	echo "this script will call osmosis to cut a planet file in pieces'\n";
-	echo "or update pieces cut in a previous step\n";
-	exit;
+
+function planet_cut($schema) {
+	global $config;
+
+	$planetfile=$config['base_dir'] . 'planet/planet.pbf';
+	if (!file_exists($planetfile)) {
+
+		logger("Main planet file $planetfile not found.", KR_ERROR);
+
+		exit(1);
+	}
+
+	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes --wb "' . $config['base_dir'] . $schema . '.pbf"';
+	logger($cmd, KR_COMMANDS);
+	//system($cmd, $errorlevel);
+	if ($errorlevel) {
+		logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
+		exit(1);
+	}
+
+	init_workingDir($schema);
 }
 
-$dont_care_about_missing_db_parameters=true;
-require('config.inc.php');
-require('helpers.inc.php');
 
 
-switch ($argv[1]) {
+function planet_update($schema) {
+	global $config;
 
-	case '--cut':
-		$cmd="$OSMOSIS_BIN --rx {$argv[2]} --tee " . ($argc-3);
-		for ($i=3;$i<$argc;$i++) {
-			$cmd .= " --bb " . get_bbox_parameters($argv[$i]) . " idTrackerType=BitSet completeWays=yes completeRelations=yes --wx $TMPDIR/{$argv[$i]}.osm ";
-			echo "$cmd\n";
-			system($cmd, $errorlevel);
-			if ($errorlevel) exit;
+	$planetDirectory=$config['base_dir'] . 'planet/';
+	$workingDirectory=$planetDirectory . $schema;
+	$planetfile=$planetDirectory . $schema . '.pbf';
 
-			init_workingDir($argv[$i]);
+	if (!file_exists($planetfile)) {
+		logger("planet file $planetfile not found.", KR_ERROR);
+		exit(1);
+	}
+
+	if ($config['update_source_data']) {
+
+		// read replication diffs, apply them on the planet file,
+		// write the planet file to disk and create data files
+		// using the custom osmosis-plugin "pl"
+
+		// this part would produce the pg simple format we're not using yet:
+		//--wpd " . $config['temp_dir'] . " enableBboxBuilder=yes enableLinestringBuilder=yes nodeLocationStoreType=TempFile
+
+		$cmd="cd \"$planetDirectory\" && " .
+			'"' . $config['osmosis_bin'] . '"' .
+			' --rri workingDirectory="' . $workingDirectory . '" ' .
+			' --simc ' .
+			' --rb "' . $planetfile . '" ' .
+			' --ac ' .
+			' --bb ' . get_bbox_parameters($schema) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes ' .
+			' --tee 2 ' .
+			' --b bufferCapacity=10000 ' .
+			' --wb "' . $planetfile . '.new" compress=none ' .
+			' --b bufferCapacity=10000 ' .
+			' --pl directory="' . $config['temp_dir'] . '"';
+
+
+		logger($cmd, KR_COMMANDS);
+		system($cmd, $errorlevel);
+		if ($errorlevel) {
+			logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
+			exit(1);
 		}
 
-	break;
-	case '--update':
-		for ($i=2;$i<$argc;$i++) {
-			$workingDirectory=$file="$TMPDIR/{$argv[$i]}";
+		rename($planetfile, $planetfile . '.old');
+		rename($planetfile . '.new', $planetfile);
 
-			init_workingDir($argv[$i]);
+	} else {
 
-			$cmd="$OSMOSIS_BIN --rri workingDirectory=$workingDirectory " .
-			" --simplify-change --rx $file.osm --ac --bb " . get_bbox_parameters($argv[$i]) . " idTrackerType=BitSet completeWays=yes completeRelations=yes --wx $file.osm.new ";
-			echo "$cmd\n";
-			system($cmd, $errorlevel);
-			if ($errorlevel) exit;
+		// just convert the planet file to textfiles suitable for db loading
 
-			if (file_exists("$file.osm.old")) unlink("$file.osm.old");
+		$cmd="cd \"$planetDirectory\" && " .
+			'"' . $config['osmosis_bin'] . '"' .
+			' --rb "' . $planetfile . '" ' .
+			' --pl directory="' . $config['temp_dir'] . '"';
 
-			if ($DROP_OLD_PLANETFILE=="0") {
-				// keep old file
-				rename("$file.osm", "$file.osm.old");
-			} else {
-				// kill old file
-				unlink("$file.osm");
-			}
-			rename("$file.osm.new", "$file.osm");
+
+		logger($cmd, KR_COMMANDS);
+		system($cmd, $errorlevel);
+		if ($errorlevel) {
+			logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
+			exit(1);
 		}
-	break;
+	}
 }
 
 
 // make sure the osmosis working directory does exist and config file is right
 function init_workingDir($schema) {
-	global $TMPDIR, $OSMOSIS_BIN;
-	$workingDirectory="$TMPDIR/$schema";
+	global $config;
+	$workingDirectory=$config['base_dir'] . 'planet/' . $schema;
 
-	if (!is_dir($workingDirectory)) {
-		mkdir($workingDirectory);
+	if (is_dir($workingDirectory)) return;
 
-		$cmd="$OSMOSIS_BIN --rrii workingDirectory=$workingDirectory";
-		echo "$cmd\n";
-		system($cmd, $errorlevel);
-		if ($errorlevel) exit;
+	mkdir($workingDirectory);
 
-
-		// now fix config file with appropriate URL and without limit of downloading files
-		$f=fopen("$workingDirectory/configuration.txt", 'w');
-		fwrite($f, "# The URL of the directory containing change files.\n");
-		fwrite($f, "baseUrl=http://planet.openstreetmap.org/hour-replicate\n\n");
-		fwrite($f, "# Defines the maximum time interval in seconds to download in a single invocation.\n");
-		fwrite($f, "# Setting to 0 disables this feature.\n");
-		fwrite($f, "maxInterval = 0\n");
-		fclose($f);
-
-		echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/hour-replicate/ according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
+	$cmd=$config['osmosis_bin'] . " --rrii workingDirectory=$workingDirectory";
+	logger($cmd, KR_COMMANDS);
+	system($cmd, $errorlevel);
+	if ($errorlevel) {
+		logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
+		exit(1);
 	}
+
+
+	// now fix config file with appropriate URL and without limit of downloading files
+	$f=fopen("$workingDirectory/configuration.txt", 'w');
+	fwrite($f, "# The URL of the directory containing change files.\n");
+	fwrite($f, "baseUrl=http://planet.openstreetmap.org/hour-replicate\n\n");
+	fwrite($f, "# Defines the maximum time interval in seconds to download in a single invocation.\n");
+	fwrite($f, "# Setting to 0 disables this feature.\n");
+	fwrite($f, "maxInterval = 0\n");
+	fclose($f);
+
+
+	echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/hour-replicate/ according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
 }
 
 
@@ -99,12 +142,14 @@ function fit_limits_lat($value) {
 
 // build a string suitable for inserting in an osmosis bbox cutting command
 function get_bbox_parameters($schema) {
-	global $db_params, $MARGIN;
+	global $schemas, $config;
 
-	$LEFT = fit_limits_lon(merc_lon(merc_x($db_params[$schema]['LEFT']) - $MARGIN));
-	$RIGHT = fit_limits_lon(merc_lon(merc_x($db_params[$schema]['RIGHT']) + $MARGIN));
-	$TOP = fit_limits_lat(merc_lat(merc_y($db_params[$schema]['TOP']) + $MARGIN));
-	$BOTTOM = fit_limits_lat(merc_lat(merc_y($db_params[$schema]['BOTTOM']) - $MARGIN));
+	$m = $config['cutting_margin'];
+
+	$LEFT = fit_limits_lon(merc_lon(merc_x($schemas[$schema]['left']) - $m));
+	$RIGHT = fit_limits_lon(merc_lon(merc_x($schemas[$schema]['right']) + $m));
+	$TOP = fit_limits_lat(merc_lat(merc_y($schemas[$schema]['top']) + $m));
+	$BOTTOM = fit_limits_lat(merc_lat(merc_y($schemas[$schema]['bottom']) - $m));
 
 	return "left=$LEFT top=$TOP right=$RIGHT bottom=$BOTTOM";
 }

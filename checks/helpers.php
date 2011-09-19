@@ -24,7 +24,7 @@ function query($sql, &$link, $debug=true) {
         }
 
 	// one cannot EXPLAIN DDL-type SQL-statements
-/*        if ($debug && !preg_match("/CREATE|ALTER|DROP|ANALYZE/i", $sql)) {
+/*        if ($debug && !preg_match("/CREATE|ALTER|DROP|TRUNCATE|ANALYZE/i", $sql)) {
 		$result=pg_query($link, "EXPLAIN $sql");
 		print_pg_result($result);
 		pg_free_result($result);
@@ -41,7 +41,7 @@ function query($sql, &$link, $debug=true) {
         if ($debug) {
 		echo format_time(microtime(true)-$starttime) ."\n";
 
-		if (!preg_match("/CREATE|ALTER|DROP|ANALYZE/i", $sql))
+		if (!preg_match("/CREATE|ALTER|DROP|TRUNCATE|ANALYZE/i", $sql))
 			echo pg_affected_rows($result) . " rows affected.\n";
 	}
         return $result;
@@ -653,6 +653,15 @@ function find_oneways($db1, $way_table='', $include_node_locations=true) {
 }
 
 
+// logs a message to stdout if loglevel is appropriate
+function logger($message, $loglevel=KR_INFO) {
+	global $config;
+
+	if ($loglevel & $config['loglevel']) echo $message . "\n";
+
+}
+
+
 // return an array containing all possible values inside the tag value
 // split by ";". verbose ";" have to be doubled ";;"
 // http://wiki.openstreetmap.org/wiki/Semi-colon_value_separator
@@ -749,6 +758,78 @@ function print_pg_result($result) {
 			printf($fmtstrings[$col], $row[$col]);
 		echo "|\n";
 	}
+}
+
+
+
+// any precondition that is needed for keepright to run
+// shall be checked here and fixed if applicable
+function check_prerequisites() {
+	global $config;
+	$ret=0;
+
+	// check if osmosis is an executable
+	if (!is_executable($config['osmosis_bin'])) {
+		logger('osmosis was not found or is not executable', KR_ERROR);
+		$ret=1;
+	}
+
+	// check if base_dir exists
+	if (!is_dir($config['base_dir'])) {
+		logger('keepright base_dir not found. please check your config file', KR_ERROR);
+		$ret=1;
+	}
+
+	// check if temp_dir exists
+	if (!is_dir($config['temp_dir'])) {
+		logger('keepright temp_dir not found. please check your config file', KR_ERROR);
+		$ret=1;
+	}
+
+
+	return $ret;
+}
+
+
+
+// create the osmosis authfile containing db credentials for osmosis to access postgres-DB
+function create_authfile() {
+	global $config;
+
+	$authfile = $config['base_dir'] . 'planet/osmosis_auth';
+	$config['authfile'] = $authfile;
+
+	// files created with file_put_contents() have liberal permissions
+	file_put_contents($authfile, 'some boring content');
+
+	// cut permissions to read and write for owner, nothing for anybody else
+	chmod($authfile, 0600);
+
+	file_put_contents($authfile,
+		'host=' . $config['db']['host'] . "\n" .
+		'port=' . $config['db']['port'] . "\n" .
+		'database=' . $config['db']['database'] . "\n" .
+		'user=' . $config['db']['user'] . "\n" .
+		'password=' . $config['db']['password'] . "\n" .
+		"dbType=postgresql\n"
+	);
+}
+
+
+function connectstring($schema='') {
+	global $config;
+
+	$connectstring='host=' . $config['db']['host'] . ' port=' . $config['db']['port'] . ' dbname=' . $config['db']['database'] . ' user=' . $config['db']['user'] . ' password=' . $config['db']['password'];
+
+	// append the schema name to the connect string to make any connection
+	// use the given schema automatically
+	if ($schema!=='') {
+		$connectstring.=" options='--search_path=schema$schema,public'";
+	} else {
+		$connectstring.=" options='--search_path=public'";
+	}
+
+	return $connectstring;
 }
 
 ?>

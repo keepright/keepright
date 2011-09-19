@@ -1,5 +1,5 @@
 <?php
-require_once('helpers.inc.php');
+require_once('helpers.php');
 require_once('rolling-curl/RollingCurl.php');
 
 //
@@ -40,6 +40,8 @@ require_once('rolling-curl/RollingCurl.php');
 // * with standard command line parameters (for running inside keepright):
 //	run with data from the database
 
+
+global $checkable_tags, $keys_to_search_fixed, $keys_to_search_regex, $whitelist, $curlopt, $w, $z, $debug, $squat_strings, $rc, $db1, $db2;
 
 // these tags may contain URLs
 $checkable_tags = array(
@@ -360,10 +362,11 @@ $curlopt = array(
 );
 
 
-if (isset($HTTP_PROXY_ENABLED) && $HTTP_PROXY_ENABLED) {
-	$curlopt[CURLOPT_PROXY]			= $HTTP_PROXY;
+
+if (isset($config['http_proxy']['enabled']) && $config['http_proxy']['enabled']) {
+	$curlopt[CURLOPT_PROXY]			= $config['http_proxy']['host'];
 	$curlopt[CURLOPT_PROXYAUTH]		= 'CURLAUTH_BASIC';
-	$curlopt[CURLOPT_PROXYUSERPWD]		= $HTTP_PROXY_USER . ':' . $HTTP_PROXY_PWD;
+	$curlopt[CURLOPT_PROXYUSERPWD]		= $config['http_proxy']['user'] . ':' . $config['http_proxy']['password'];
 	$curlopt[CURLOPT_HTTPPROXYTUNNEL]	= true;
 }
 
@@ -374,7 +377,7 @@ if (isset($HTTP_PROXY_ENABLED) && $HTTP_PROXY_ENABLED) {
 $debug  = 0;
 $w = '[\s\S]*?'; //ungreedy wildcard - matches anything
 $z = '[\h\v]*?'; //ungreedy wildcard - matches whitespace only
-$rc;            // Rolling Curl object (fake multithreading for php) 
+$rc;            // Rolling Curl object (fake multithreading for php)
 
 
 // prepare regexes for domainsquatting search
@@ -393,14 +396,14 @@ if ($argc>=2 && is_readable($argv[1])) {
 	$tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_tags');
 
 	foreach ($tables as $object_type=>$table) {
-		run_keepright($db1, $db2, $object_type, $table);
+		run_keepright($db1, $db2, $object_type, $table, $curlopt);
 	}
 }
 
 
 
-function run_keepright($db1, $db2, $object_type, $table) {
-	global $error_type, $checkable_tags, $whitelist, $error_count, $curlopt, $rc;
+function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
+	global $error_type, $checkable_tags, $whitelist, $error_count, $rc;
 
 
 	echo "checking on $table...\n";
