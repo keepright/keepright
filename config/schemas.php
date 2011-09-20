@@ -34,7 +34,7 @@ $schemas['2']['left']=1.8;
 $schemas['2']['right']=12;
 $schemas['2']['top']=90;
 $schemas['2']['bottom']=55;
-$schemas['2']['user']='ceserver';
+$schemas['2']['user']='cetest';
 
 $schemas['4']['left']=7.5;
 $schemas['4']['right']=10;
@@ -250,7 +250,7 @@ $schemas['50']['left']=110;
 $schemas['50']['right']=180;
 $schemas['50']['top']=-10;
 $schemas['50']['bottom']=-90;
-$schemas['50']['user']='cetest';
+$schemas['50']['user']='australia';
 
 $schemas['51']['left']=-120.6;
 $schemas['51']['right']=-113.7;
