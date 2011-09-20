@@ -40,7 +40,7 @@ $schemas['4']['left']=7.5;
 $schemas['4']['right']=10;
 $schemas['4']['top']=55;
 $schemas['4']['bottom']=49.3;
-$schemas['4']['user']='cetest';
+$schemas['4']['user']='ceserver';
 
 $schemas['7']['left']=3.5;
 $schemas['7']['right']=6.7;
@@ -58,13 +58,13 @@ $schemas['17']['left']=-30;
 $schemas['17']['right']=51.4;
 $schemas['17']['top']=35;
 $schemas['17']['bottom']=-90;
-$schemas['17']['user']='ceserver';
+$schemas['17']['user']='cetest';
 
 $schemas['18']['left']=12;
 $schemas['18']['right']=23;
 $schemas['18']['top']=90;
 $schemas['18']['bottom']=55;
-$schemas['18']['user']='ceserver';
+$schemas['18']['user']='cetest';
 
 $schemas['19']['left']=23;
 $schemas['19']['right']=51.4;
@@ -82,13 +82,13 @@ $schemas['21']['left']=-180;
 $schemas['21']['right']=-116;
 $schemas['21']['top']=50;
 $schemas['21']['bottom']=46;
-$schemas['21']['user']='ceserver';
+$schemas['21']['user']='cetest';
 
 $schemas['22']['left']=-116;
 $schemas['22']['right']=-99;
 $schemas['22']['top']=50;
 $schemas['22']['bottom']=46;
-$schemas['22']['user']='ceserver';
+$schemas['22']['user']='cetest';
 
 $schemas['23']['left']=-99;
 $schemas['23']['right']=-30;
@@ -100,25 +100,25 @@ $schemas['24']['left']=-117.3;
 $schemas['24']['right']=-111.6;
 $schemas['24']['top']=46;
 $schemas['24']['bottom']=42;
-$schemas['24']['user']='ceserver';
+$schemas['24']['user']='cetest';
 
 $schemas['25']['left']=-77.4;
 $schemas['25']['right']=-72;
 $schemas['25']['top']=46;
 $schemas['25']['bottom']=42;
-$schemas['25']['user']='ceserver';
+$schemas['25']['user']='cetest';
 
 $schemas['26']['left']=-180;
 $schemas['26']['right']=-117.3;
 $schemas['26']['top']=46;
 $schemas['26']['bottom']=42;
-$schemas['26']['user']='ceserver';
+$schemas['26']['user']='cetest';
 
 $schemas['27']['left']=-111.6;
 $schemas['27']['right']=-100.3;
 $schemas['27']['top']=46;
 $schemas['27']['bottom']=42;
-$schemas['27']['user']='ceserver';
+$schemas['27']['user']='cetest';
 
 $schemas['28']['left']=-100.3;
 $schemas['28']['right']=-88.9;
@@ -136,37 +136,37 @@ $schemas['30']['left']=-72;
 $schemas['30']['right']=-30;
 $schemas['30']['top']=46;
 $schemas['30']['bottom']=42;
-$schemas['30']['user']='ceserver';
+$schemas['30']['user']='cetest';
 
 $schemas['31']['left']=-180;
 $schemas['31']['right']=-120.6;
 $schemas['31']['top']=42;
 $schemas['31']['bottom']=38;
-$schemas['31']['user']='ceserver';
+$schemas['31']['user']='cetest';
 
 $schemas['32']['left']=-113.7;
 $schemas['32']['right']=-102.3;
 $schemas['32']['top']=42;
 $schemas['32']['bottom']=38;
-$schemas['32']['user']='ceserver';
+$schemas['32']['user']='cetest';
 
 $schemas['33']['left']=-102.3;
 $schemas['33']['right']=-92;
 $schemas['33']['top']=42;
 $schemas['33']['bottom']=40;
-$schemas['33']['user']='ceserver';
+$schemas['33']['user']='cetest';
 
 $schemas['34']['left']=-92;
 $schemas['34']['right']=-84.5;
 $schemas['34']['top']=42;
 $schemas['34']['bottom']=40;
-$schemas['34']['user']='ceserver';
+$schemas['34']['user']='cetest';
 
 $schemas['35']['left']=-79.4;
 $schemas['35']['right']=-75;
 $schemas['35']['top']=42;
 $schemas['35']['bottom']=40;
-$schemas['35']['user']='ceserver';
+$schemas['35']['user']='cetest';
 
 $schemas['36']['left']=-180;
 $schemas['36']['right']=-116;
@@ -178,61 +178,61 @@ $schemas['37']['left']=-116;
 $schemas['37']['right']=-100.3;
 $schemas['37']['top']=38;
 $schemas['37']['bottom']=34;
-$schemas['37']['user']='ceserver';
+$schemas['37']['user']='cetest';
 
 $schemas['38']['left']=-100.3;
 $schemas['38']['right']=-94.6;
 $schemas['38']['top']=38;
 $schemas['38']['bottom']=34;
-$schemas['38']['user']='ceserver';
+$schemas['38']['user']='cetest';
 
 $schemas['39']['left']=-88.9;
 $schemas['39']['right']=-85;
 $schemas['39']['top']=38;
 $schemas['39']['bottom']=36.4;
-$schemas['39']['user']='ceserver';
+$schemas['39']['user']='cetest';
 
 $schemas['40']['left']=-77.6;
 $schemas['40']['right']=-30;
 $schemas['40']['top']=38;
 $schemas['40']['bottom']=34;
-$schemas['40']['user']='ceserver';
+$schemas['40']['user']='cetest';
 
 $schemas['41']['left']=-180;
 $schemas['41']['right']=-108.3;
 $schemas['41']['top']=34;
 $schemas['41']['bottom']=20;
-$schemas['41']['user']='ceserver';
+$schemas['41']['user']='cetest';
 
 $schemas['42']['left']=-108.3;
 $schemas['42']['right']=-97.5;
 $schemas['42']['top']=34;
 $schemas['42']['bottom']=30;
-$schemas['42']['user']='ceserver';
+$schemas['42']['user']='cetest';
 
 $schemas['43']['left']=-97.5;
 $schemas['43']['right']=-90.9;
 $schemas['43']['top']=34;
 $schemas['43']['bottom']=30;
-$schemas['43']['user']='ceserver';
+$schemas['43']['user']='cetest';
 
 $schemas['44']['left']=-90.9;
 $schemas['44']['right']=-85.7;
 $schemas['44']['top']=34;
 $schemas['44']['bottom']=30;
-$schemas['44']['user']='ceserver';
+$schemas['44']['user']='cetest';
 
 $schemas['45']['left']=-83.2;
 $schemas['45']['right']=-30;
 $schemas['45']['top']=34;
 $schemas['45']['bottom']=30;
-$schemas['45']['user']='ceserver';
+$schemas['45']['user']='cetest';
 
 $schemas['46']['left']=-180;
 $schemas['46']['right']=-95;
 $schemas['46']['top']=30;
 $schemas['46']['bottom']=14;
-$schemas['46']['user']='ceserver';
+$schemas['46']['user']='cetest';
 
 $schemas['47']['left']=-180;
 $schemas['47']['right']=-30;
@@ -250,97 +250,97 @@ $schemas['50']['left']=110;
 $schemas['50']['right']=180;
 $schemas['50']['top']=-10;
 $schemas['50']['bottom']=-90;
-$schemas['50']['user']='ceserver';
+$schemas['50']['user']='cetest';
 
 $schemas['51']['left']=-120.6;
 $schemas['51']['right']=-113.7;
 $schemas['51']['top']=42;
 $schemas['51']['bottom']=38;
-$schemas['51']['user']='ceserver';
+$schemas['51']['user']='cetest';
 
 $schemas['52']['left']=-102.3;
 $schemas['52']['right']=-90.9;
 $schemas['52']['top']=40;
 $schemas['52']['bottom']=38;
-$schemas['52']['user']='ceserver';
+$schemas['52']['user']='cetest';
 
 $schemas['53']['left']=-84.5;
 $schemas['53']['right']=-79.4;
 $schemas['53']['top']=42;
 $schemas['53']['bottom']=40;
-$schemas['53']['user']='ceserver';
+$schemas['53']['user']='cetest';
 
 $schemas['54']['left']=-90.9;
 $schemas['54']['right']=-85.1;
 $schemas['54']['top']=40;
 $schemas['54']['bottom']=38;
-$schemas['54']['user']='ceserver';
+$schemas['54']['user']='cetest';
 
 $schemas['55']['left']=-85.1;
 $schemas['55']['right']=-79.4;
 $schemas['55']['top']=40;
 $schemas['55']['bottom']=38;
-$schemas['55']['user']='ceserver';
+$schemas['55']['user']='cetest';
 
 $schemas['56']['left']=-75;
 $schemas['56']['right']=-30;
 $schemas['56']['top']=42;
 $schemas['56']['bottom']=40;
-$schemas['56']['user']='ceserver';
+$schemas['56']['user']='cetest';
 
 $schemas['57']['left']=-79.4;
 $schemas['57']['right']=-77.2;
 $schemas['57']['top']=40;
 $schemas['57']['bottom']=38;
-$schemas['57']['user']='ceserver';
+$schemas['57']['user']='cetest';
 
 $schemas['58']['left']=-77.2;
 $schemas['58']['right']=-30;
 $schemas['58']['top']=40;
 $schemas['58']['bottom']=38;
-$schemas['58']['user']='ceserver';
+$schemas['58']['user']='cetest';
 
 $schemas['59']['left']=-94.6;
 $schemas['59']['right']=-88.9;
 $schemas['59']['top']=38;
 $schemas['59']['bottom']=34;
-$schemas['59']['user']='ceserver';
+$schemas['59']['user']='cetest';
 
 $schemas['60']['left']=-85;
 $schemas['60']['right']=-81.4;
 $schemas['60']['top']=38;
 $schemas['60']['bottom']=36.4;
-$schemas['60']['user']='ceserver';
+$schemas['60']['user']='cetest';
 
 $schemas['61']['left']=-81.4;
 $schemas['61']['right']=-78.9;
 $schemas['61']['top']=38;
 $schemas['61']['bottom']=36.4;
-$schemas['61']['user']='ceserver';
+$schemas['61']['user']='cetest';
 
 $schemas['62']['left']=-88.9;
 $schemas['62']['right']=-83.8;
 $schemas['62']['top']=36.4;
 $schemas['62']['bottom']=34;
-$schemas['62']['user']='ceserver';
+$schemas['62']['user']='cetest';
 
 $schemas['63']['left']=-83.8;
 $schemas['63']['right']=-81.4;
 $schemas['63']['top']=36.4;
 $schemas['63']['bottom']=34;
-$schemas['63']['user']='ceserver';
+$schemas['63']['user']='cetest';
 
 $schemas['64']['left']=-81.4;
 $schemas['64']['right']=-78.9;
 $schemas['64']['top']=36.4;
 $schemas['64']['bottom']=34;
-$schemas['64']['user']='ceserver';
+$schemas['64']['user']='cetest';
 
 $schemas['65']['left']=-85.7;
 $schemas['65']['right']=-83.2;
 $schemas['65']['top']=34;
 $schemas['65']['bottom']=30;
-$schemas['65']['user']='ceserver';
+$schemas['65']['user']='cetest';
 
 $schemas['68']['left']=-95;
 $schemas['68']['right']=-30;
@@ -352,7 +352,7 @@ $schemas['69']['left']=-78.9;
 $schemas['69']['right']=-77.6;
 $schemas['69']['top']=38;
 $schemas['69']['bottom']=34;
-$schemas['69']['user']='ceserver';
+$schemas['69']['user']='cetest';
 
 $schemas['72']['left']=1.8;
 $schemas['72']['right']=7.5;
@@ -364,7 +364,7 @@ $schemas['73']['left']=110;
 $schemas['73']['right']=131;
 $schemas['73']['top']=90;
 $schemas['73']['bottom']=-10;
-$schemas['73']['user']='ceserver';
+$schemas['73']['user']='cetest';
 
 $schemas['74']['left']=131;
 $schemas['74']['right']=139;
@@ -382,7 +382,7 @@ $schemas['76']['left']=-30;
 $schemas['76']['right']=-1.8;
 $schemas['76']['top']=49.3;
 $schemas['76']['bottom']=45;
-$schemas['76']['user']='ceserver';
+$schemas['76']['user']='cetest';
 
 $schemas['77']['left']=-1.8;
 $schemas['77']['right']=3.5;
@@ -442,7 +442,7 @@ $schemas['86']['left']=-30;
 $schemas['86']['right']=1.8;
 $schemas['86']['top']=90;
 $schemas['86']['bottom']=52.3;
-$schemas['86']['user']='ceserver';
+$schemas['86']['user']='cetest';
 
 $schemas['87']['left']=-30;
 $schemas['87']['right']=1.8;
@@ -466,7 +466,7 @@ $schemas['90']['left']=1.8;
 $schemas['90']['right']=5.8;
 $schemas['90']['top']=55;
 $schemas['90']['bottom']=52;
-$schemas['90']['user']='ceserver';
+$schemas['90']['user']='cetest';
 
 $schemas['91']['left']=5.8;
 $schemas['91']['right']=7.5;
@@ -490,54 +490,54 @@ $schemas['94']['left']=6.7;
 $schemas['94']['right']=10;
 $schemas['94']['top']=49.3;
 $schemas['94']['bottom']=48.1;
-$schemas['94']['user']='ceserver';
+$schemas['94']['user']='cetest';
 
 $schemas['95']['left']=6.7;
 $schemas['95']['right']=10;
 $schemas['95']['top']=48.1;
 $schemas['95']['bottom']=46.5;
-$schemas['95']['user']='ceserver';
+$schemas['95']['user']='cetest';
 
 $schemas['96']['left']=6.7;
 $schemas['96']['right']=10;
 $schemas['96']['top']=46.5;
 $schemas['96']['bottom']=45;
-$schemas['96']['user']='ceserver';
+$schemas['96']['user']='cetest';
 
 $schemas['97']['left']=10;
 $schemas['97']['right']=14;
 $schemas['97']['top']=49.3;
 $schemas['97']['bottom']=48.1;
-$schemas['97']['user']='ceserver';
+$schemas['97']['user']='cetest';
 
 $schemas['98']['left']=10;
 $schemas['98']['right']=14;
 $schemas['98']['top']=48.1;
 $schemas['98']['bottom']=46.5;
-$schemas['98']['user']='ceserver';
+$schemas['98']['user']='cetest';
 
 $schemas['99']['left']=10;
 $schemas['99']['right']=14;
 $schemas['99']['top']=46.5;
 $schemas['99']['bottom']=45;
-$schemas['99']['user']='ceserver';
+$schemas['99']['user']='cetest';
 
 $schemas['100']['left']=10;
 $schemas['100']['right']=14;
 $schemas['100']['top']=55;
 $schemas['100']['bottom']=52.3;
-$schemas['100']['user']='ceserver';
+$schemas['100']['user']='cetest';
 
 $schemas['101']['left']=10;
 $schemas['101']['right']=14;
 $schemas['101']['top']=52.3;
 $schemas['101']['bottom']=50.6;
-$schemas['101']['user']='ceserver';
+$schemas['101']['user']='cetest';
 
 $schemas['102']['left']=10;
 $schemas['102']['right']=14;
 $schemas['102']['top']=50.6;
 $schemas['102']['bottom']=49.3;
-$schemas['102']['user']='ceserver';
+$schemas['102']['user']='cetest';
 
 ?>
