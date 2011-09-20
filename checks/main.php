@@ -34,7 +34,7 @@ foreach ($schemas as $schema=>$schema_cfg) {
 		(!$firstrun || $schema==$startschema || $startschema==0)) {
 
 		// update source code from svn
-		system('cd "' . $config['base_dir'] . '" && svn st');
+		system('cd "' . $config['base_dir'] . '" && svn up');
 
 		logger("processing schema $schema");
 
