@@ -19,6 +19,7 @@ require('updateDB.php');
 require('run-checks.php');
 require('planet.php');
 require('export_errors.php');
+require('webUpdateClient.php');
 
 
 
@@ -36,7 +37,7 @@ prepareDB($schema);
 updateDB($schema);
 run_checks($schema);
 export_errors($schema);
-//upload_errors($schema);
+upload_errors('--remote', '--upload_errors', $schema);
 
 if (!$config['keep_database_after_processing']) dropSchema($schema);
 

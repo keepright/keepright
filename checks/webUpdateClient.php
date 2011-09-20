@@ -38,9 +38,9 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 
 
 	if ($argv[2]=='--export_comments')
-		export_errors($argv[1], $argv[2]);
+		upload_errors($argv[1], $argv[2]);
 	else
-		export_errors($argv[1], '--upload_errors', $argv[2]);
+		upload_errors($argv[1], '--upload_errors', $argv[2]);
 
 }
 
@@ -48,7 +48,7 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 // $location: [ --local | --remote ]
 // $cmd: [ --export_comments | --upload_errors ]
 // $schema: schema number (only required when $cmd==--upload_errors
-function export_errors($location, $cmd, $schema=0) {
+function upload_errors($location, $cmd, $schema=0) {
 	global $config;
 
 	// local/remote operation, choose URL
