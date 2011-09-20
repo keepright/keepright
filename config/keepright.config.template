@@ -1,3 +1,5 @@
+<?php
+
 // ###########################################
 // Database credentials
 // ###########################################
@@ -115,3 +117,4 @@ $config['hstore.sql']['ubuntu/postgis 9.0'] = '/usr/local/Cellar/postgresql/9.0.
 $config['hstore.sql']['debian6/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/hstore.sql';
 $config['hstore.sql']['ubuntu/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/hstore.sql';
 
+?>
