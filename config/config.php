@@ -146,7 +146,7 @@ $config['loglevel'] = KR_ERROR + KR_WARNING + KR_INFO + KR_INDEX_USAGE + KR_COMM
 
 
 
-$userconfig=$_ENV['HOME'] . '/.keepright';
+$userconfig=getenv('HOME') . '/.keepright';
 
 if (!is_readable($userconfig)) {
 	logger('~/.keepright not found. This is the first time you have run keepright. I\'ll create ~/.keepright for you; adapt the settings as needed and run this script again.', KR_ERROR);
