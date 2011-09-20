@@ -36,12 +36,6 @@ $schemas['2']['top']=90;
 $schemas['2']['bottom']=55;
 $schemas['2']['user']='ceserver';
 
-$schemas['3']['left']=1.8;
-$schemas['3']['right']=7.5;
-$schemas['3']['top']=55;
-$schemas['3']['bottom']=49.3;
-$schemas['3']['user']='cetest';
-
 $schemas['4']['left']=7.5;
 $schemas['4']['right']=10;
 $schemas['4']['top']=55;
