@@ -750,8 +750,20 @@ function check_meta_refresh($response, $osm_element, $http_eurl) {
 
 
 			print "Old style http-equiv refresh found $http_eurl $match[1] $url\n";
+
+			// count redirects for this element
+			if (isset($osm_element['keepright_loopcount']))
+				$osm_element['keepright_loopcount']++;
+			else
+				$osm_element['keepright_loopcount']=1;
+
+			if ($osm_element['keepright_loopcount']>5) {
+				echo "redirect loop detected for URL $url. Won't follow this redirect\n";
+				return false;	// in case of a redirection-loop most probably a content-mismatch error will be raised because there won't be a match on a redir-page
+			}
+
 			queueURL($rc, $osm_element, $url);
-			//$osm_element{keepright_loopcount}++;
+
 			return(true);
 		}
 	}
