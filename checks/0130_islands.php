@@ -62,6 +62,7 @@ $islands = array(
 		'Pula, Istria' => 28004142,
 		'Riga, Latvia' => 38788862,
 		'Vilnius, Lithuania' => 4914187,
+		'Funchal, Madeira' => 27354062,
 		'Amsterdam, Netherlands' => 7382660,
 		'Zwolle, Netherlands' => 6504013,
 		'Oslo, Norway' => 4394237,
