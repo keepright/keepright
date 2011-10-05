@@ -108,13 +108,13 @@ function index_exists($db, $indexname, $schema='') {
 
 // will examine meta data to find out if a column of given name exists
 function column_exists($table, $column, $db, $schema) {
-	global $MAIN_DB_NAME;
+	global $config;
 
 	// query meta table of all columns for column to add
 	return query_firstval("
 		SELECT COUNT(column_name)
 		FROM information_schema.columns
-		WHERE 	table_catalog='$MAIN_DB_NAME'
+		WHERE 	table_catalog='" . $config['db']['database'] . "'
 			AND table_schema='$schema'
 			AND table_name='$table'
 			AND column_name='$column'
@@ -145,14 +145,14 @@ function drop_column($table, $column, $db, $schema='', $debug=true) {
 
 // make sure a column has a specific data type
 function set_column_type($table, $column, $type, $db, $schema='') {
-	global $MAIN_DB_NAME;
+	global $config;
 	$sch=get_schema($schema);
 
 	// query meta table of all columns for column datatype
 	if (query_firstval("
 		SELECT data_type
 		FROM information_schema.columns
-		WHERE 	table_catalog='$MAIN_DB_NAME'
+		WHERE 	table_catalog='" . $config['db']['database'] . "'
 			AND table_schema='$sch'
 			AND table_name='$table'
 			AND column_name='$column'

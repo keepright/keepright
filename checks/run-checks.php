@@ -44,7 +44,7 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 
 function run_checks($schema, $checks_to_run=array()) {
 
-	global $config, $error_types, $error_type, $db1, $db2, $db3, $db4, $db5, $db6;
+	global $config, $error_types, $schemas, $error_type, $db1, $db2, $db3, $db4, $db5, $db6;
 
 	echo "Running checks for $schema\n";
 
@@ -277,7 +277,6 @@ function run_checks($schema, $checks_to_run=array()) {
 		query("
 			CREATE TABLE public.error_view (
 			error_id int NOT NULL,
-			db_name VARCHAR(50) NOT NULL,
 			schema VARCHAR(8) NOT NULL DEFAULT '',
 			error_type int NOT NULL,
 			error_name VARCHAR(100) NOT NULL DEFAULT '',
@@ -300,11 +299,14 @@ function run_checks($schema, $checks_to_run=array()) {
 		", $db1, false);
 	}
 
+	// don't need that column any more:
+	drop_column('error_view', 'db_name', $db1, 'public');
+
 
 	// delete anything from this (sub-)database
 	query("
 		DELETE FROM public.error_view
-		WHERE schema='$schema' OR schema IS NULL or schema=''
+		WHERE schema='$schema'
 	", $db1);
 
 	// _tmp_ev is used as helper table to find the locations of relations
@@ -314,8 +316,8 @@ function run_checks($schema, $checks_to_run=array()) {
 	", $db1, false);
 
 	query("
-		INSERT INTO _tmp_ev (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
-		SELECT DISTINCT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id, e.state, e.first_occurrence, e.last_checked, 0, 0, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
+		INSERT INTO _tmp_ev (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+		SELECT DISTINCT e.error_id, '$schema', e.error_type, e.object_type, e.object_id, e.state, e.first_occurrence, e.last_checked, 0, 0, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e
 		WHERE e.schema='$schema' AND e.object_type='relation' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
 	", $db1);
@@ -362,8 +364,8 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	// first insert errors on nodes that don't have lat/lon
 	query("
-		INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
-		SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
+		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+		SELECT e.error_id, '$schema', e.error_type, e.object_type, e.object_id,
 			e.state, e.first_occurrence, e.last_checked, n.tstamp,
 			1e7*n.lat, 1e7*n.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
@@ -373,8 +375,8 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	// second insert errors on ways that don't have lat/lon
 	query("
-		INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
-		SELECT e.error_id, '$MAIN_DB_NAME', '$schema', e.error_type, e.object_type, e.object_id,
+		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+		SELECT e.error_id, '$schema', e.error_type, e.object_type, e.object_id,
 			e.state, e.first_occurrence, e.last_checked, w.tstamp,
 			1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
@@ -388,8 +390,8 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	// finally insert errors on ways/nodes/relations that do have lat/lon values
 	query("
-		INSERT INTO public.error_view (error_id, db_name, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
-		SELECT DISTINCT e.error_id, '$MAIN_DB_NAME' as db_name, e.schema, e.error_type,
+		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+		SELECT DISTINCT e.error_id, e.schema, e.error_type,
 			e.object_type, e.object_id, e.state,
 			e.first_occurrence, e.last_checked, e.lat, e.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e
