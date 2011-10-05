@@ -68,6 +68,7 @@ $islands = array(
 		'Oslo, Norway' => 4394237,
 		'Warszawa, Poland' => 4990561,
 		'Bucharest, Romania' => 23485603,
+		'Barcelona, Spain' => 116315120,
 		'Madrid, Spain' => 4680727,
 		'Palma de Majorca' => 32694069,
 		'Majorca' => 5123287,
