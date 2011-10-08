@@ -8,7 +8,7 @@ export errors from public.error_view into a text file
 if (count(get_included_files())<=1) {	// we're running from commandline if not there are already files included
 
 	require_once('helpers.php');
-	require_once('config.php');
+	require_once('../config/config.php');
 
 	if ($argc<1) {
 		echo ("Usage: \">php export_errors.php 17\"\n" .

@@ -27,7 +27,7 @@ this script won't accept any cookies
 if (count(get_included_files())<=1) {	// we're running from commandline if not there are already files included
 
 	require_once('helpers.php');
-	require_once('config.php');
+	require_once('../config/config.php');
 
 
 	if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {

@@ -9,7 +9,7 @@ the errors dump is a copy of the error_view plus comments given by users
 
 $schema=2;
 
-require('config.php');
+require('../config/config.php');
 require('helpers.php');
 
 

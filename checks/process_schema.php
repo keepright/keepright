@@ -11,7 +11,7 @@
 // publish the results on the web server
 
 require('helpers.php');
-require('config.php');
+require('../config/config.php');
 require('BufferedInserter.php');
 
 require('prepareDB.php');

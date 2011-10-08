@@ -22,7 +22,7 @@ $ php run-checks.php schema [error_types to run]
 if (count(get_included_files())<=1) {	// we're running from commandline if not there are already files included
 
 	require_once('helpers.php');
-	require_once('config.php');
+	require_once('../config/config.php');
 	require_once('BufferedInserter.php');
 
 	if ($argc<=1) {
