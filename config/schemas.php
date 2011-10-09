@@ -15,6 +15,9 @@ $config['cutting_margin']=20000;
 // i.e. margin is added automatically
 
 
+// schema names are varchar(8) in errors-table and error_view-table
+
+
 // testing schema Mödling, Austria
 $schemas['md']['left']=16.20;
 $schemas['md']['right']=16.35;
