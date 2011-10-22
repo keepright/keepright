@@ -6,7 +6,7 @@ $error_types[10]['source']='0010_deleted_items.php';
 $error_types[10]['description']='Deleted items should not be used in conjunction with not deleted items. This can be ways that contain deleted nodes or deleted ways/nodes that are member of relations.';
 
 $error_types[20]['name']='multiple nodes on the same spot';
-$error_types[20]['enabled']=false;
+$error_types[20]['enabled']=true;
 $error_types[20]['source']='0020_multiple_nodes_on_same_spot.php';
 $error_types[20]['class']='warning';
 $error_types[20]['description']='Try to find nodes that are (almost) on the same spot. Distances less than +/-0.5 meters are considered zero';
