@@ -105,26 +105,6 @@ function prepare_helpertables($schema) {
 
 
 
-
-	// calculate x/y coordinates for nodes
-	query("UPDATE nodes
-		SET x=merc_x(nodes.lon), y=merc_y(nodes.lat)
-		WHERE x IS NULL
-	", $db1);
-
-	// build point geometry for nodes
-	query("UPDATE nodes
-		SET geom=GeomFromText('POINT(' || x || ' ' || y || ')', 4326)
-		WHERE geom IS NULL
-	", $db1);
-
-	// copy lat/lon and x/y coordinates from nodes into way_nodes, where missing
-	query("UPDATE way_nodes
-		SET lat=nodes.lat, lon=nodes.lon, x=merc_x(nodes.lon), y=merc_y(nodes.lat)
-		FROM nodes
-		WHERE way_nodes.lat IS NULL AND nodes.id=way_nodes.node_id
-	", $db1);
-
 	// now remove everything that could not be retrieved
 	query("DELETE FROM way_nodes WHERE lat IS NULL", $db1);
 
