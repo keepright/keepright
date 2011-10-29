@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `keepright_errors` (
   `lat` int(11) NOT NULL,
   `lon` int(11) NOT NULL,
   `comment` text,
-  `comment_timestamp` datetime
+  `comment_timestamp` datetime,
   `msgid` text,
   `txt1` text,
   `txt2` text,
