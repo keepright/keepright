@@ -100,7 +100,8 @@ system ("bzip2 -c $dst_filename > ${dst_filename}.bz2");
 
 // call wput, overwrite files if already existing, dont create directories
 // upload the error_view dumps and the error_types dump
-$ftp_url="ftp://$FTP_USER:$FTP_PASS@$FTP_HOST/$FTP_PATH";
+$ftp_url='ftp://' . $config['upload']['ftp_user'] . ':' . $config['upload']['ftp_password'] . '@' . $config['upload']['ftp_host'] . '/' . $config['upload']['ftp_path'];
+
 system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ ${dst_filename}.bz2 \"$ftp_url\" 2>&1");
 
 
