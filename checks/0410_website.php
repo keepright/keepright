@@ -674,7 +674,6 @@ function run_keepright_callback($response, $info, $request) {
 
 function fuzzy_compare($response, $osm_element, $http_eurl) {
 	global $keys_to_search_fixed, $keys_to_search_regex, $w, $z, $debug, $squat_strings;
-	$searchedfor = "";
 
 	// Try to get our copy of the page match the encoding of the OSM tags
 	$match = null;
@@ -719,6 +718,9 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 				if ($result===null) return null; else $searchedfor .= $result;			}
 		}
 	}
+
+	// there are no tags that could be matched, this is OK
+	if ($searchedfor==='') return null;
 
 
 	// Fall through with failure to match
