@@ -22,11 +22,12 @@ global $false_positives, $never_complain_about, $force_irregular, $force_regular
 // list of key or value parts that sound very similar but are something completely different
 // please keep values in ascending order!
 $false_positives = array(
+	array('AB Kreisstraßen', 'AN Kreisstraßen', 'ANs Kreisstraßen', 'BA Kreisstraßen', 'BAs Kreisstraßen', 'BT Kreisstraßen', 'FÜ Kreisstraßen', 'KC Kreisstraßen', 'KG Kreisstraßen', 'KT Kreisstraßen', 'KU Kreisstraßen', 'N Kreisstraßen', 'SC Kreisstraßen', 'SW Kreisstraßen', 'SWs Kreisstraßen', 'WÜ Kreisstraßen', 'WÜs Kreisstraßen'),
 	array('AND_a', 'AND_c', 'AND_f', 'AND_gf', 'AND_i', 'AND_o', 'AND_r', 'AND_w'),
 	array('AND_nosr_p', 'AND_nosr_r'),
 	array('area', 'arena'),
 	array('beach', 'bench'),
-	array('block', 'lock'),
+	array('block', 'clock', 'lock'),
 	array('biking', 'hiking'),
 	array('Birke', 'Birne'),
 	array('bump', 'hump'),
@@ -37,6 +38,7 @@ $false_positives = array(
 	array('DE:urban', 'DK:urban'),
 	array('derail', 'detail', 'retail'),
 	array('door', 'moor'),
+	array('drain', 'train'),
 	array('Eiche', 'Esche'),
 	array('EIIR', 'EVIIR', 'EVIIIR'),
 	array('email', 'e-mail', 'mail'),
@@ -46,6 +48,7 @@ $false_positives = array(
 	array('garage', 'garages'),
 	array('good', 'wood'),
 	array('GR', 'VR'),
+	array('gray', 'grey'),
 	array('hall', 'mall', 'wall'),
 	array('height', 'weight'),
 	array('hires', 'wires'),
@@ -68,11 +71,13 @@ $false_positives = array(
 	array('note', 'notes'),
 	array('number', 'numbers'),
 	array('power', 'tower'),
+	array('reg_name, ref_name'),
 	array('rail', 'trail'),
 	array('salb', 'sale', 'salt'),
 	array('service', 'services'),
 	array('short', 'sport'),
 	array('ship', 'show', 'shop', 'stop'),
+	array('stair', 'stairs', 'star'),
 	array('tell', 'toll'),
 	array('trail', 'train'),
 	array('water_power', 'water_tower'),
@@ -152,6 +157,7 @@ $never_complain_about = "(
 	'source_ref:name:=',
 	'statscan:rbuid:=',
 	'strassen-nrw:abs:=',
+	'traffic_sign:=',
 	'UNIDAD_MAN:=',
 	'website:='
 )";
@@ -169,12 +175,17 @@ $force_irregular = array(
 );
 
 $force_regular = array(
+	'addr:province:=British Columbia',
 	'brand:=Esso',
 	'brand:=Shell',
 	'brand:=Tamoil',
 	'brand:=Total',
+	'gnis:county_name:=Cheyboygan',
+	'man_made:=cutline',
 	'usability:skate:=excellent',
-	'geometry_source_type:=Walking Papers/Misson GPS'
+	'geometry_source_type:=Walking Papers/Misson GPS',
+	'lengths:left:=',
+	'lengths:right:=',
 );
 
 
