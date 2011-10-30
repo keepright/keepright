@@ -94,7 +94,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 			$filenr='devil';
 			break;
 		default:
-			$filenr=$row['error_type'];
+			$filenr=10*floor($row['error_type']/10);	// use icon 190 for types 191-199
 	}
 
 	if ($locale == 'en') {

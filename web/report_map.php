@@ -253,7 +253,7 @@ function mkurl($ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filenam
 // checks the checkbox if applicable
 function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0, $class='error') {
 	global $checks_selected, $checks_to_hide;
-	echo "\n\t<img border=0 height=12 src='img/zap$et.png' alt='error marker $et'>\n\t";
+	echo "\n\t<img border=0 height=12 src='img/zap" . 10*floor($et/10) . ".png' alt='error marker $et'>\n\t"; 			// use icon 190 for types 191-199
 
 	if ($draw_checkbox) {
 		echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
