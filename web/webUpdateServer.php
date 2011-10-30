@@ -136,7 +136,7 @@ function export_comments($db1) {
 		", $db1, false);
 
 		while ($row = mysqli_fetch_assoc($result)) {
-			fwrite($f, $row['schema'] ."\t". $row['error_id'] ."\t". $row['state'] ."\t". strtr($row['comment'], array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) ."\t". $row['timestamp'] . "\n");
+			fwrite($f,  smooth_text($row['schema'] ."\t". $row['error_id'] ."\t". $row['state'] ."\t". strtr($row['comment'], array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) ."\t". $row['timestamp']) . "\n");
 		}
 
 		mysqli_free_result($result);
@@ -144,6 +144,14 @@ function export_comments($db1) {
 		system("bzip2 --force $fname");
 	}
 }
+
+
+
+// remove any newline characters
+function smooth_text($txt) {
+	return strtr($txt, array("\r\n"=>' ', "\r"=>' ', "\n"=>' '));
+}
+
 
 // ensure there is an error_view_osmXX_shadow table for inserting records
 function toggle_tables1($db1, $schema){
