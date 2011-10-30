@@ -129,7 +129,7 @@ $error_types=array();
 $subtypes = array();
 
 $result=mysqli_query($db1, "
-	SELECT error_type, error_name, error_class
+	SELECT error_type, error_name, error_class, hidden
 	FROM $error_types_name
 	ORDER BY error_class, error_type
 ");
@@ -138,11 +138,14 @@ while ($row = mysqli_fetch_array($result)) {
 	$et = $row['error_type'];
 	$main_type=10*floor($et/10);
 
-	if ($et == $main_type) {	// not a subtype of an error
-		$error_types[$main_type]=array($row['error_class'], $row['error_name']);
+	if ($row['hidden']==0 || in_array($et, $checks_selected)) {	// display non-hidden errors and hidden errors that are explicitly selected
 
-	} else {			// subtype of an error
-		$subtypes[$main_type][$et]=$row['error_name'];
+		if ($et == $main_type) {	// not a subtype of an error
+			$error_types[$main_type]=array($row['error_class'], $row['error_name']);
+
+		} else {			// subtype of an error
+			$subtypes[$main_type][$et]=$row['error_name'];
+		}
 	}
 }
 mysqli_free_result($result);
