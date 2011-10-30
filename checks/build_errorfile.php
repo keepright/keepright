@@ -7,8 +7,6 @@ the errors dump is a copy of the error_view plus comments given by users
 
 */
 
-$schema=2;
-
 require('../config/config.php');
 require('helpers.php');
 
@@ -59,10 +57,16 @@ foreach ($ev_filenames as $ev_filename) {
 		$ev_line=trim(fgets($ev));
 		list($ev_schema, $ev_error_id, $error_type, $error_name, $object_type, $object_id, $ev_state, $descr, $fo, $lc, $ot, $lat, $lon, $msgid, $txt1, $txt2, $txt3, $txt4, $txt5) = split("\t", $ev_line);
 
-		while (!feof($co) && ($co_schema<$ev_schema || $co_error_id<$ev_error_id)) {
+
+		while (!feof($co) && (
+			(string)$co_schema<(string)$ev_schema ||
+			($co_schema==$ev_schema && $co_error_id<$ev_error_id)
+		)) {
+
 			$co_line = trim(fgets($co));
 			list($co_schema, $co_error_id, $co_state, $co_comment, $co_tstamp) = split("\t",  $co_line);
 		}
+
 		if (feof($co)) {
 			$co_line="";
 			$co_schema=0;
@@ -72,20 +76,14 @@ foreach ($ev_filenames as $ev_filename) {
 
 		if ($ev_error_id) {
 
-/*
-			if ($ev_state=='reopened') $ev_state=='new';
-			$lat=$lat/1e7;
-			$lon=$lon/1e7;
-*/
-			fwrite($dst, smooth_text("$ev_schema\t$ev_error_id\t$error_type\t$error_name\t$object_type\t$object_id"));
+			fwrite($dst, "$ev_schema\t$ev_error_id\t$error_type\t$error_name\t$object_type\t$object_id");
 
 			if ($ev_schema==$co_schema && $ev_error_id==$co_error_id) {
+				if (strlen(trim($co_state))>0) fwrite($dst, "\t$co_state"); else fwrite($dst, "\t$ev_state");
 
-				if (strlen(trim($co_state))>0) fwrite($dst, smooth_text("\t$co_state")); else fwrite($dst, smooth_text("\t$ev_state"));
-
-				fwrite($dst, smooth_text("\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5") . "\n");
+				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
 			} else {
-				fwrite($dst, smooth_text("\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5") . "\n");
+				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
 			}
 		}
 	}
@@ -103,12 +101,6 @@ system ("bzip2 -c $dst_filename > ${dst_filename}.bz2");
 $ftp_url='ftp://' . $config['upload']['ftp_user'] . ':' . $config['upload']['ftp_password'] . '@' . $config['upload']['ftp_host'] . '/' . $config['upload']['ftp_path'];
 
 system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ ${dst_filename}.bz2 \"$ftp_url\" 2>&1");
-
-
-// remove any newline characters
-function smooth_text($txt) {
-	return strtr($txt, array("\r\n"=>' ', "\r"=>' ', "\n"=>' '));
-}
 
 
 /*
