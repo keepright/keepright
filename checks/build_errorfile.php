@@ -59,7 +59,7 @@ foreach ($ev_filenames as $ev_filename) {
 
 
 		while (!feof($co) && (
-			(string)$co_schema<(string)$ev_schema ||
+			's'.$co_schema<'s'.$ev_schema ||
 			($co_schema==$ev_schema && $co_error_id<$ev_error_id)
 		)) {
 
@@ -80,7 +80,6 @@ foreach ($ev_filenames as $ev_filename) {
 
 			if ($ev_schema==$co_schema && $ev_error_id==$co_error_id) {
 				if (strlen(trim($co_state))>0) fwrite($dst, "\t$co_state"); else fwrite($dst, "\t$ev_state");
-
 				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
 			} else {
 				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
