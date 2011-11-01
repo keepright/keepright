@@ -341,6 +341,7 @@ $squat_strings = array(
 	"The DreamHost customer who owns this domain has parked their website.",    # Dreamhost
 	"Buy This Domain",                          # Generic
 	"/_static/img/ND_new_logo_small.jpg",       # namedrive.com
+	"is for sale. To purchase, call Register.com at 1-866-507-4956",    # http://www.register.com/
     );
 
 
@@ -587,7 +588,7 @@ function run_standalone_callback($response, $info, $request) {
 		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
 		return;
 	}
-	if(check_meta_refresh($response, $request->callback_data, $request->url)) {
+	if(!($response = check_redirects($response, $request->callback_data, $request->url))) {
 		return;
 	}
 	print_r(fuzzy_compare($response, $request->callback_data, $request->url));
@@ -618,7 +619,7 @@ function run_keepright_callback($response, $info, $request) {
 	return;
 	}
 
-	if(check_meta_refresh($response, $request->callback_data, $request->url)) {
+	if(!($response = check_redirects($response, $request->callback_data, $request->url))) {
         return;
     }
 
@@ -727,30 +728,22 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	return array('type'=>3, 'Content of the URL ($1) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
 }
 
-// Requeue pages which simply refrence another page.
+// Requeue pages which simply refrence another page:
+//      meta-refresh DONE
+//      framesets DONE
+//      javascript TBD
 // Watch out for loops!
-function check_meta_refresh($response, $osm_element, $http_eurl) {
-	global $z, $rc;
+function check_redirects($response, $osm_element, $http_eurl) {
+	global $z, $rc, $debug, $curlopt;
 
+    // META REFRESH
 	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\".*content$z=$z\".*?url=${z}(.*?)\"/i", $response,$match)) {
 
 		$url = trim($match[1]);
 
 		if ($url!=='' && $url!=='/') {		// some pages refresh on "/" or on blank urls; this shall not build a loop
 
-			// Normalize URL
-			// guess if given URL is absolute or relative
-			// TODO: detect hostnames without scheme prefix like host.domain,net as absolute URL
-			if(strstr($match[1], '://')===false && strstr($match[1], 'www.')===false) {
-				// seems to be a relative URL so preprend the __host__part__
-				// of the old URL
-				$urlparts=parse_url($http_eurl);
-
-				$url=$urlparts['scheme'] . '://' . $urlparts['host'] . (substr($url, 0, 1)=='/' ? $url : "/$url");
-				//$url = "$http_eurl/".$url;
-			}
-
-
+			$url = normalize_url($match[1], $http_eurl);
 			print "Old style http-equiv refresh found $http_eurl $match[1] $url\n";
 
 			// count redirects for this element
@@ -766,10 +759,27 @@ function check_meta_refresh($response, $osm_element, $http_eurl) {
 
 			queueURL($rc, $osm_element, $url);
 
-			return(true);
+			return(false);
 		}
 	}
-	return(false);
+
+	// FRAMESETS
+	// glom all of the parts of the frameset into the $response string.
+	if(preg_match_all('/\<FRAME.*?SRC="(.*?)".*?\>/iu',$response, $match)) {
+		foreach($match[1] as $url) {
+			$url = normalize_url($url, $http_eurl);
+			print "LOAD FRAME ELEMENT: $url\n";    // if $debug
+			$ch = curl_init();
+			curl_setopt_array($ch, $curlopt);
+			curl_setopt($ch, CURLOPT_URL, $url);
+			$response .= $url . "\n";
+			$response .= curl_exec($ch);
+			curl_close($ch);
+		}
+		return($response);
+	}
+
+	return($response);
 }
 
 // $haystack is the html text of the webpage, $needle is a keyword that is to find
@@ -858,6 +868,24 @@ function match_any($haystack, $needle)
 		}
 	}
 	return $searchedfor;
+}
+
+
+// $url is found inside content of $referer
+// $url could be a relative URL
+function normalize_url($url, $referer) {
+	// Normalize URL
+	// guess if given URL is absolute or relative
+	// TODO: detect hostnames without scheme prefix like host.domain,net as absolute URL
+	if(strstr($url, '://')===false && strstr($url, 'www.')===false) {
+		// seems to be a relative URL so preprend the __host__part__
+		// of the old URL
+		$urlparts=parse_url($referer);
+
+		return $urlparts['scheme'] . '://' . $urlparts['host'] . (substr($url, 0, 1)=='/' ? $url : "/$url");
+	}
+
+	return $url;
 }
 
 ?>
