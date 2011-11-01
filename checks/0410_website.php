@@ -813,7 +813,7 @@ function match($haystack, $needle) {
 	#           Rooney's == Rooneys
 	#           Case-Shiller == CaseShiller
 	$haystack2 = $haystack;
-	$needle2   = preg_replace("/\p{P}/",'',$needle);
+	$needle2   = preg_replace("/\p{P}/u",'',$needle);
 	if( $needle2 !== $needle ) {
 	if(!( $temp = match_any($haystack2,$needle2) )) {
 			return(null);   // Match!
@@ -823,7 +823,7 @@ function match($haystack, $needle) {
 
 	#   Let's try the match with punctuation converted to spaces:
 	#           Case-Shiller == Case Shiller
-	$haystack3  = preg_replace("/\p{P}/",' ',$haystack);
+	$haystack3  = preg_replace("/\p{P}/u",' ',$haystack);
 	$needle3    = $needle2;
 	if( $needle3 !== $needle ) {
 	if(!( $temp = match_any($haystack3,$needle2) )) {
