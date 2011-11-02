@@ -545,7 +545,8 @@ function run_standalone() {
 		}
 	}
 
-	if ($urls_queued) $rc->execute();
+	if ($urls_queued)           $rc->execute();
+	if (sizeof($rc->requests))  $rc->execute(); // In case new items got queued
 	return 0;
 }
 
@@ -736,8 +737,11 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 function check_redirects($response, $osm_element, $http_eurl) {
 	global $z, $rc, $debug, $curlopt;
 
-    // META REFRESH
-	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\".*content$z=$z\".*?url=${z}(.*?)\"/i", $response,$match)) {
+	// Seek <META> refresh
+	// Ignore blocks inside <NOSCRIPT>
+	$response2 = preg_replace("/<NOSCRIPT>.*<\/NOSCRIPT>/is",'',$response);
+	if(preg_match("/meta${z}http-equiv$z=$z\"refresh\".*content$z=$z\".*?url=${z}(.*?)\"/i", $response2,$match)) {
+
 
 		$url = trim($match[1]);
 
@@ -763,7 +767,7 @@ function check_redirects($response, $osm_element, $http_eurl) {
 		}
 	}
 
-	// FRAMESETS
+	// Seek FRAMESETS
 	// glom all of the parts of the frameset into the $response string.
 	if(preg_match_all('/\<FRAME.*?SRC="(.*?)".*?\>/iu',$response, $match)) {
 		foreach($match[1] as $url) {
