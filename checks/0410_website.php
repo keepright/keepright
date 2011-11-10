@@ -342,6 +342,7 @@ $squat_strings = array(
 	"Buy This Domain",                          # Generic
 	"/_static/img/ND_new_logo_small.jpg",       # namedrive.com
 	"is for sale. To purchase, call Register.com at 1-866-507-4956",    # http://www.register.com/
+	"domainpark/domainpark.cgi", #http://justcookiessite.com
     );
 
 
