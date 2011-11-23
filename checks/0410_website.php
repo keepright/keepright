@@ -360,7 +360,11 @@ $curlopt = array(
  	CURLOPT_SSL_VERIFYPEER	=> false,	// don't care about missing or outdated ssl certificates
  	CURLOPT_SSL_VERIFYHOST	=> 1,
 
-	CURLOPT_TIMEOUT		=> 45           // Returns 0 if it takes too long
+	CURLOPT_TIMEOUT		=> 45,          // Returns 0 if it takes too long
+	CURLOPT_ENCODING	=> ""		// "Accept-Encoding" header. An empty string "" means
+						// a header containing all supported encoding types is sent
+						// required setting to make gzip-compressed transfers
+						// decompressed by the library
 );
 
 
