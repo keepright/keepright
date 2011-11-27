@@ -306,7 +306,7 @@ function create_postgres_functions($db) {
 
 	query("
 		CREATE FUNCTION deg_rad (ang double precision) RETURNS double precision AS $$
-			BEGIN 
+			BEGIN
 				RETURN ang * PI() / 180.0;
 			END;
 		$$ LANGUAGE plpgsql IMMUTABLE;
@@ -314,7 +314,7 @@ function create_postgres_functions($db) {
 
 	query("
 		CREATE FUNCTION merc_x (lon double precision) RETURNS double precision AS $$
-			BEGIN 
+			BEGIN
 				RETURN 6378137.0 * deg_rad(lon);
 			END;
 		$$ LANGUAGE plpgsql IMMUTABLE;
@@ -332,7 +332,7 @@ function create_postgres_functions($db) {
 				con double precision;
 				com double precision;
 
-			BEGIN 
+			BEGIN
 
 				lat := lat1;
 				IF lat1 > 89.5 THEN
@@ -361,11 +361,11 @@ function create_postgres_functions($db) {
 		-- Note: For DISTINCT and ORDER BY a subquery is required
 		CREATE OR REPLACE FUNCTION _group_concat(text, text)
 		RETURNS text AS $$
-		SELECT CASE
-		WHEN $2 IS NULL THEN $1
-		WHEN $1 IS NULL THEN $2
-		ELSE $1 operator(pg_catalog.||) ',' operator(pg_catalog.||) $2
-		END
+			SELECT CASE
+				WHEN $2 IS NULL THEN $1
+				WHEN $1 IS NULL THEN $2
+				ELSE $1 operator(pg_catalog.||) ',' operator(pg_catalog.||) $2
+			END
 		$$ IMMUTABLE LANGUAGE SQL;
 	", $db, false);
 
@@ -386,9 +386,9 @@ function create_postgres_functions($db) {
 	query("
 		CREATE AGGREGATE array_accum (anyelement)
 		(
-		sfunc = array_append,
-		stype = anyarray,
-		initcond = '{}'
+			sfunc = array_append,
+			stype = anyarray,
+			initcond = '{}'
 		);
 	", $db, false);
 
@@ -399,10 +399,10 @@ function create_postgres_functions($db) {
 		CREATE OR REPLACE FUNCTION array_to_rows(myarray ANYARRAY) RETURNS SETOF
 		ANYELEMENT AS $$
 		BEGIN
-		FOR j IN 1..ARRAY_UPPER(myarray,1) LOOP
-		RETURN NEXT myarray[j];
-		END LOOP;
-		RETURN;
+			FOR j IN 1..ARRAY_UPPER(myarray,1) LOOP
+				RETURN NEXT myarray[j];
+			END LOOP;
+			RETURN;
 		END;
 		$$ LANGUAGE 'plpgsql';
 	", $db, false);
