@@ -204,9 +204,9 @@ function run_checks($schema, $checks_to_run=array()) {
 			// remember which jobs got executed because only these jobs have to be included  in syncing
 			$checks_executed.=',' . $error_type;
 
-			$checktime=microtime(true)-$starttime;
-			echo "\ntotal check time: " . format_time($checktime) . "\n";
-			$jobreport[$error['source']]=format_time($checktime);
+			$checktime=format_time(microtime(true)-$starttime);
+			echo "\ntotal check time: $checktime\n";
+			$jobreport[$error['source']]=$checktime;
 		}
 	}
 
@@ -231,6 +231,8 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	// update last-checked timestamp for all errors that (still) exist
 	// set reopened-state for cleared errors that are now found in _tmp_errors again
+	// include schema in update in case of splitting a schema in smaller parts
+	// the schema column needs to be updated
 	query("
 		UPDATE public.errors AS e
 		SET schema='$schema', last_checked=te.last_checked,
