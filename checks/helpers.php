@@ -48,6 +48,15 @@ function query($sql, &$link, $debug=true) {
 }
 
 
+// quotes text to remove html special characters and
+// apos to build a string that can be safely INSERTed to the DB
+function quote($db, $evil) {
+
+	return pg_escape_string($db, htmlspecialchars($evil, ENT_QUOTES));
+
+}
+
+
 // query_firstval() will execute given query and return just the first
 // value of the first row. This helps executing queries like
 // SELECT COUNT(*) FROM..., SELECT MAX(...)
@@ -419,6 +428,19 @@ function create_postgres_functions($db) {
 	", $db, false);
 
 
+	// according to php's htmlspecialchars() replace the most important
+	// html special characters with html entities to produce valid html
+	query("
+		CREATE OR REPLACE FUNCTION htmlspecialchars (text)
+		RETURNS text as $$
+		BEGIN
+			RETURN REPLACE(REPLACE(REPLACE(REPLACE(REPLACE($1, '&', '&amp;'), '''', '&#039;'), '\"', '&quot;'), '<', '&lt;'), '>', '&gt;');
+		END
+		$$ LANGUAGE 'plpgsql'
+	", $db, false);
+
+
+
 }
 
 
@@ -431,6 +453,7 @@ function drop_postgres_functions($db) {
 	query('DROP AGGREGATE IF EXISTS group_concat(text)', $db, false);
 	query('DROP FUNCTION IF EXISTS _group_concat(text, text)', $db, false);
 	query('DROP FUNCTION IF EXISTS XOR (boolean, boolean)', $db, false);
+	query('DROP FUNCTION IF EXISTS htmlspecialchars (boolean, boolean)', $db, false);
 }
 
 

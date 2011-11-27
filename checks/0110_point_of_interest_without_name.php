@@ -21,7 +21,7 @@ query("
 ", $db1);
 query("
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
-	SELECT $error_type, 'node', node_id, 'This node is tagged as $1 and therefore needs a name tag', v, NOW()
+	SELECT $error_type, 'node', node_id, 'This node is tagged as $1 and therefore needs a name tag', htmlspecialchars(v), NOW()
 	FROM _tmp_points_of_interest b
 	WHERE NOT EXISTS( SELECT nt.node_id FROM node_tags nt WHERE nt.node_id=b.node_id AND nt.k='name' )
 ", $db1);
@@ -36,7 +36,7 @@ query("
 ", $db1);
 query("
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
-	SELECT $error_type, 'node', node_id, 'This node is tagged as $1 and therefore needs a name tag or an operator tag', v, NOW()
+	SELECT $error_type, 'node', node_id, 'This node is tagged as $1 and therefore needs a name tag or an operator tag', htmlspecialchars(v), NOW()
 	FROM _tmp_points_of_interest b
 	WHERE NOT EXISTS( SELECT nt.node_id FROM node_tags nt WHERE nt.node_id=b.node_id AND nt.k IN ('name', 'operator'))
 ", $db1);

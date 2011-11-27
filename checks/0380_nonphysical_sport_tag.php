@@ -17,7 +17,7 @@ like for example a leisure-item or an amenity
 
 query("
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
-	SELECT $error_type, 'way', way_id, 'This way is tagged $1 but has no physical tag like e.g. leisure, building, amenity or highway', 'sport=' || MIN(t.v), NOW()
+	SELECT $error_type, 'way', way_id, 'This way is tagged $1 but has no physical tag like e.g. leisure, building, amenity or highway', 'sport=' || htmlspecialchars(MIN(t.v)), NOW()
 
 	FROM way_tags t
 	WHERE k = 'sport'

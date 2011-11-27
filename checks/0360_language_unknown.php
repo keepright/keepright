@@ -36,7 +36,7 @@ foreach ($tables as $object_type=>$table) {
 	// the same value than the original name tag
 	query("
 		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2,  last_checked)
-		SELECT $error_type, '$object_type', {$object_type}_id, 'It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX shows the language of its name ''$2''.', '$object_type', MAX(tags.v), NOW()
+		SELECT $error_type, '$object_type', {$object_type}_id, 'It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX shows the language of its name ''$2''.', '$object_type', htmlspecialchars(MAX(tags.v)), NOW()
 
 		FROM $table tags
 		WHERE k='name' AND EXISTS(

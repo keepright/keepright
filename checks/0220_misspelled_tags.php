@@ -332,7 +332,7 @@ global $error_type, $false_positives, $db1, $db2;
 	query("
 		INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, txt2, txt3, txt4, txt5, last_checked)
 		SELECT DISTINCT $error_type, CAST('$item' AS type_object_type), t.${item}_id,
-		'This $1 is tagged ''$2=$3'' where $4 looks like $5', '$item', t.k, t.v, bt.wrong_tag, bt.right_tag, NOW()
+		'This $1 is tagged ''$2=$3'' where $4 looks like $5', '$item', htmlspecialchars(t.k), htmlspecialchars(t.v), htmlspecialchars(bt.wrong_tag), htmlspecialchars(bt.right_tag), NOW()
 		FROM ${item}_tags t INNER JOIN _tmp_bad_tags bt USING (k, v)
 	", $db1);
 

@@ -247,7 +247,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 		if ($check_strictly) {
 			if ($closed_ways[$row['way_id']]) { 
 				echo "already know way #{$row['way_id']} to be closed-loop\n";
-				continue; 
+				continue;
 			}
 
 			$ways=is_closed_loop_strict($row['way_id'], $row['first_node_id'], $row['last_node_id'], $db2);
@@ -260,8 +260,8 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 			}
 
 		} else {
-			if (!is_closed_loop($row['way_id'], $row['first_node_id'], $row['last_node_id'], $db2)) 
-				$bi->insert("$error_type\tway\t{$row['way_id']}\tNOW()\t\\N\t\\N\tThis way is tagged with '$1=$2' and should be closed-loop\t$k\t$v\t\\N\t\\N\t\\N");
+			if (!is_closed_loop($row['way_id'], $row['first_node_id'], $row['last_node_id'], $db2))
+				$bi->insert("$error_type\tway\t{$row['way_id']}\tNOW()\t\\N\t\\N\tThis way is tagged with '$1=$2' and should be closed-loop\t" . $bi->escape($k) . "\t" . $bi->escape($v) . "\t\\N\t\\N\t\\N");
 		}
 	}
 	$bi->flush_buffer();

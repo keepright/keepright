@@ -590,6 +590,7 @@ function queueURL(&$rc, $element, $url) {
 // handle http response in standalone mode
 function run_standalone_callback($response, $info, $request) {
 	echo "Callback on $request->url\n";
+
 	if($info['http_code'] < 200 || $info['http_code'] > 299) {
 		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
 		return;
@@ -616,10 +617,10 @@ function run_keepright_callback($response, $info, $request) {
 
 		$error_count++;
 		$txt1=pg_escape_string($db2, $request->url);
-		$txt2=pg_escape_string($db2, $info['http_code']);
+		$txt2=quote($db2, $info['http_code']);
 		query("
 			INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
-			VALUES ($error_type + 1, '" . $obj['object_type'] . "', " . $obj['id'] . ", 'The URL ($1) cannot be opened (HTTP status code $2)', '$txt1', '$txt2', NOW())
+			VALUES ($error_type + 1, '" . $obj['object_type'] . "', " . $obj['id'] . ", 'The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP status code $2)', '$txt1', '$txt2', NOW())
 		", $db2, false);
 
 	return;
@@ -697,7 +698,7 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	//
 	$temp = join($squat_strings,'|');
 	if(preg_match("/$temp/", $response, $matches)) {
-		return(array('type'=>2, 'Possible domain squatting: $1. Suspicious text is: "$2"', $http_eurl, $matches[0]));
+		return(array('type'=>2, 'Possible domain squatting: <a target=\"_blank\" href="$1">$1</a>. Suspicious text is: "$2"', $http_eurl, $matches[0]));
 	}
 
 	//
@@ -731,7 +732,7 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 
 
 	// Fall through with failure to match
-	return array('type'=>3, 'Content of the URL ($1) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
+	return array('type'=>3, 'Content of the URL (<a target=\"_blank\" href="$1">$1</a>) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
 }
 
 // Requeue pages which simply refrence another page:

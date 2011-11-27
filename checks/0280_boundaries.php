@@ -58,7 +58,7 @@ query("
 	ELSE
 		CAST('relation' AS type_object_type)
 	END,
-	COALESCE(relation_id, way_id), 'The boundary of $1 has no admin_level', COALESCE(name, '(no name)'), NOW()
+	COALESCE(relation_id, way_id), 'The boundary of $1 has no admin_level', htmlspecialchars(COALESCE(name, '(no name)')), NOW()
 	FROM _tmp_border_ways
 	WHERE admin_level IS NULL
 ", $db1);
@@ -73,7 +73,7 @@ query("
 	ELSE
 		CAST('relation' AS type_object_type)
 	END,
-	COALESCE(relation_id, way_id), 'The boundary of $1 has no valid numeric admin_level. Please do not use admin levels like for example 6;7. Always tag the lowest admin_level of all boundaries.', COALESCE(name, '(no name)'), NOW()
+	COALESCE(relation_id, way_id), 'The boundary of $1 has no valid numeric admin_level. Please do not use admin levels like for example 6;7. Always tag the lowest admin_level of all boundaries.', htmlspecialchars(COALESCE(name, '(no name)')), NOW()
 	FROM _tmp_border_ways
 	WHERE NOT (trim(admin_level) ~ '^[0-9]+$')
 ", $db1);
@@ -155,7 +155,7 @@ query("
 	ELSE
 		CAST('relation' AS type_object_type)
 	END AS ot,
-	COALESCE(relation_id, way_id) AS oid, 'The boundary of $1 is not closed-loop', MIN(name), NOW(), 1e7*n.lat, 1e7*n.lon
+	COALESCE(relation_id, way_id) AS oid, 'The boundary of $1 is not closed-loop', htmlspecialchars(MIN(name)), NOW(), 1e7*n.lat, 1e7*n.lon
 	FROM _tmp_open_parts o INNER JOIN nodes n ON (n.id=o.node_id1 OR n.id=o.node_id2)
 	WHERE relation_id IS NOT NULL OR NOT EXISTS(
 		SELECT tmp.relation_id
@@ -219,7 +219,7 @@ query("
 	ELSE
 		CAST('relation' AS type_object_type)
 	END AS ot,
-	COALESCE(b.relation_id, b.way_id) AS oid, 'The boundary of $1 splits here', MIN(nl.name), NOW(), 1e7*n.lat, 1e7*n.lon
+	COALESCE(b.relation_id, b.way_id) AS oid, 'The boundary of $1 splits here', htmlspecialchars(MIN(nl.name)), NOW(), 1e7*n.lat, 1e7*n.lon
 	FROM _tmp_evil_nodes nl INNER JOIN _tmp_border_ways b USING (name, admin_level)
 	INNER JOIN nodes n on nl.node_id=n.id
 	GROUP BY ot, oid, n.lat, n.lon
@@ -232,7 +232,7 @@ query("
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
 	SELECT $error_type+5, CAST('way' AS type_object_type) AS ot,
-	b.way_id, 'This boundary-way has admin_level $1 but belongs to a relation with lower admin_level (higher priority); it should have the lowest admin_level of all relations', MAX(b.admin_level), NOW()
+	b.way_id, 'This boundary-way has admin_level $1 but belongs to a relation with lower admin_level (higher priority); it should have the lowest admin_level of all relations', htmlspecialchars(MAX(b.admin_level)), NOW()
 	FROM _tmp_border_ways b
 	WHERE relation_id IS NULL AND TRIM(admin_level) ~ '^[0-9]+$'
 	AND CAST(admin_level AS INT)=(SELECT MAX(CAST(tmp1.admin_level AS INT))

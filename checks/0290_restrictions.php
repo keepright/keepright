@@ -73,9 +73,11 @@ foreach (array(2=>'from', 3=>'to') as $k=>$v) {
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
 	SELECT $error_type+4, CAST('relation' AS type_object_type),
-	r.relation_id, 'From- and To-members of turn restrictions need to be ways. $1', group_concat(m.member_role ||
+	r.relation_id, 'From- and To-members of turn restrictions need to be ways. $1',
+	htmlspecialchars(group_concat(m.member_role ||
 		CASE WHEN m.member_type='N' THEN ' node #' ELSE ' relation #' END
-		|| m.member_id), NOW()
+		|| m.member_id)),
+	NOW()
 	FROM _tmp_restrictions r INNER JOIN relation_members m USING (relation_id)
 	WHERE member_role IN ('from', 'to') AND m.member_type<>'W'
 	GROUP BY r.relation_id

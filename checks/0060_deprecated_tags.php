@@ -64,7 +64,7 @@ foreach ($replacement_list as $replacement) {
 
 	if (strlen(trim($replacement[3]))>1) {
 		$msgid .= '. Please use $4 instead!';
-		$repl = trim($replacement[3]);
+		$repl = quote($db2, trim($replacement[3]));
 	} else {
 		$repl='';
 	}
@@ -73,7 +73,7 @@ foreach ($replacement_list as $replacement) {
 	foreach ($tables as $object_type=>$table) {
 		query("
 			INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, txt2, txt3, txt4, last_checked)
-			SELECT $error_type, '$object_type', {$object_type}_id, '$msgid', '$object_type', k, v, '$repl', NOW()
+			SELECT $error_type, '$object_type', {$object_type}_id, '$msgid', '$object_type', htmlspecialchars(k), htmlspecialchars(v), '$repl', NOW()
 			FROM $table
 			WHERE $where
 		", $db2, false);

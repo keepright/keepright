@@ -14,7 +14,7 @@ foreach($tables as $table) {
 
 	query("
 		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
-		SELECT $error_type, '$table', {$table}_id, '$1',  array_to_string(array(
+		SELECT $error_type, '$table', {$table}_id, '$1', htmlspecialchars(array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM {$table}_tags AS tmp
 			WHERE tmp.{$table}_id=t.{$table}_id AND (
@@ -24,7 +24,7 @@ foreach($tables as $table) {
 				(tmp.k='ref' AND tmp.v='tbd') OR
 				(tmp.k='highway' AND tmp.v='road')
 			)
-		), ', '), NOW()
+		), ', ')), NOW()
 
 		FROM {$table}_tags t
 		WHERE (

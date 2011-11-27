@@ -14,11 +14,11 @@ foreach ($tables as $object_type=>$table) {
 
 	query("
 		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2,   last_checked)
-		SELECT $error_type, '$object_type', {$object_type}_id, 'This $1 has an empty tag: $2', '$object_type', array_to_string(array(
+		SELECT $error_type, '$object_type', {$object_type}_id, 'This $1 has an empty tag: $2', '$object_type', htmlspecialchars(array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM $table AS tmp
 			WHERE tmp.{$object_type}_id=t.{$object_type}_id AND (tmp.k IS NULL or LENGTH(TRIM(tmp.k))=0 OR tmp.v IS NULL or LENGTH(TRIM(tmp.v))=0)
-		), ', '), NOW()
+		), ', ')), NOW()
 
 		FROM $table t
 		WHERE k IS NULL or LENGTH(TRIM(k))=0 OR v IS NULL or LENGTH(TRIM(v))=0

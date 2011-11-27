@@ -48,6 +48,11 @@ class BufferedInserter {
 		$this->records=array();
 		$this->rowcount=0;
 	}
+
+	// remove any tab character and encode html special characters
+	function escape($st) {
+		return htmlspecialchars(strtr($st, "\t", ' '));
+	}
 }
 
 ?>
