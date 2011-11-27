@@ -31,7 +31,7 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 
 
 	if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {
-		echo "Usage: \"php export_errors.php --local 17 | --remote 17 | --export_comments\"\n";
+		echo "Usage: \"php webUpdateClient.php --local 17 | --remote 17 | --export_comments\"\n";
 		echo "will upload dump file 17 created by export_errors.php to the web server\n";
 		exit;
 	}
