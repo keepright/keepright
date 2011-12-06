@@ -53,6 +53,7 @@ $false_positives = array(
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
+	array('lamp', 'ramp'),
 	array('land', 'sand'),
 	array('lanes', 'lines'),
 	array('lawyer', 'layer'),
