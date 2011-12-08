@@ -31,24 +31,25 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 
 
 	if ($argc<2 || ($argv[1]<>'--local' && $argv[1]<>'--remote')) {
-		echo "Usage: \"php webUpdateClient.php --local 17 | --remote 17 | --export_comments\"\n";
+		echo "Usage: \"php webUpdateClient.php --local 17 | --remote 17 | --export_comments | --get_state\"\n";
 		echo "will upload dump file 17 created by export_errors.php to the web server\n";
 		exit;
 	}
 
 
-	if ($argv[2]=='--export_comments')
-		upload_errors($argv[1], $argv[2]);
+	if ($argv[2]=='--export_comments' || $argv[2]=='--get_state')
+		remote_command($argv[1], $argv[2]);
 	else
-		upload_errors($argv[1], '--upload_errors', $argv[2]);
+		remote_command($argv[1], '--upload_errors', $argv[2]);
 
 }
 
 
+// execute a remote command on the webserver
 // $location: [ --local | --remote ]
-// $cmd: [ --export_comments | --upload_errors ]
-// $schema: schema number (only required when $cmd==--upload_errors
-function upload_errors($location, $cmd, $schema=0) {
+// $cmd: [ --export_comments | --get_state | --upload_errors ]
+// $schema: schema number (only required when $cmd==--upload_errors)
+function remote_command($location, $cmd, $schema=0) {
 	global $config;
 
 	// local/remote operation, choose URL
@@ -82,7 +83,25 @@ function upload_errors($location, $cmd, $schema=0) {
 			logout($URL, $session_ID);
 		}
 
-	} else {
+	} else if ($cmd=='--get_state') {
+		echo "retrieving server state\n";
+
+		$session_ID=login($URL);
+		//echo "session id is $session_ID";
+
+		if ($session_ID) {
+
+			$myURL="$URL?cmd=get_state&PHPSESSID=$session_ID";
+
+			echo "$myURL\n";
+			$result = readHTTP($myURL);
+
+			logout($URL, $session_ID);
+
+			return unserialize(implode("\n", $result));
+		}
+
+	}else {
 		echo "uploading to $URL schema $schema\n";
 
 		$session_ID=login($URL);
@@ -152,8 +171,8 @@ function ftp_upload($schema) {
 	$filename="../results/error_view_{$schema}.txt.bz2";
 
 	// call wput, overwrite files if already existing, dont create directories
-	// upload the error_view dumps and the error_types dump
-	system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ $filename \"$ftp_url\" 2>&1");
+	// upload the error_view dumps
+	system("/usr/bin/wput --dont-continue --reupload --binary --no-directories --basename=../results/ $filename \"$ftp_url\" 2>&1");
 }
 
 

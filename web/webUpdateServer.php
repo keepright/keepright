@@ -96,6 +96,12 @@ if ($_SESSION['authorized']===true) {
 		mysqli_close($db1);
 	}
 
+
+	if ($_GET['cmd'] == 'get_state') {
+		get_state();
+	}
+
+
 	if ($_GET['cmd'] == 'logout') {
 		logout();
 	}
@@ -145,6 +151,26 @@ function export_comments($db1) {
 	}
 }
 
+
+// create a status page
+// including file names, sizes and mod dates of all error_view dump files
+function get_state() {
+
+	$result=array();
+	$result['files']=array();
+
+	// list all error_view files
+	$dir=glob("error_view*.txt.bz2");
+
+	foreach ($dir as $filename) {
+		$result['files'][$filename] = array(
+			'size'=>filesize($filename),
+			'mtime'=>filemtime($filename)
+		);
+	}
+
+	echo serialize($result);
+}
 
 
 // remove any newline characters

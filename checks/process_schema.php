@@ -37,7 +37,7 @@ prepareDB($schema);
 updateDB($schema);
 run_checks($schema);
 export_errors($schema);
-upload_errors('--remote', '--upload_errors', $schema);
+remote_command('--remote', '--upload_errors', $schema);
 
 if (!$config['keep_database_after_processing']) dropSchema($schema);
 

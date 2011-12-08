@@ -67,7 +67,7 @@ $config['update_source_data']=true;
 $config['keep_database_after_processing']=true;
 
 
-// keepright will stop its indefinite loop as soon as
+// keepright will stop its infinite loop as soon as
 // this file exists. Execution will stop after
 // the current schema has finisched working
 $config['stop_indicator']='/tmp/stop_keepright';
@@ -112,6 +112,11 @@ $config['account']['password']='shhh!';
 
 
 
+// ###########################################
+// other settings
+// ###########################################
+
+
 // various file locations for postGIS initialization file
 $config['postgis.sql']['ubuntu/postgis 9.0'] = '/usr/local/share/postgis/postgis.sql';
 $config['postgis.sql']['debian6/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql';
@@ -121,6 +126,31 @@ $config['postgis.sql']['ubuntu/postgis 8.4'] = '/usr/share/postgresql-8.4-postgi
 $config['hstore.sql']['ubuntu/postgis 9.0'] = '/usr/local/Cellar/postgresql/9.0.1/share/contrib/hstore.sql';
 $config['hstore.sql']['debian6/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/hstore.sql';
 $config['hstore.sql']['ubuntu/postgis 8.4'] = '/usr/share/postgresql/8.4/contrib/hstore.sql';
+
+
+
+// ###########################################
+// watchdog settings
+// ###########################################
+
+
+// planet files must not be smaller than this limit
+// if they are, they are damaged.
+// currently there is no planet file smaller than 90MB
+$config['watchdog']['planet_minimum_filesize']=90000000;
+
+
+// every db schema shall be updated within max 18 days
+// config variable is in seconds, as are unix timestamps
+$config['watchdog']['schema_max_age']=18 * 86400;
+
+
+// result files must not be smaller than this limit
+// if they are, they are damaged.
+// currently there is no result file smaller than 700kB
+$config['watchdog']['error_view_minimum_filesize']=500000;
+
+
 
 
 
