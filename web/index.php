@@ -109,7 +109,7 @@ mysqli_query($db1, "SET SESSION wait_timeout=60");
 $result=query("
 	SELECT error_type, error_name, error_description
 	FROM $error_types_name
-	WHERE error_type=10*FLOOR(error_type/10)
+	WHERE hidden=0 AND error_type=10*FLOOR(error_type/10)
 	ORDER BY error_type
 	", $db1, false);
 while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
