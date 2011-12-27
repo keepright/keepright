@@ -5,13 +5,20 @@
 //
 // usage:
 // php watchdog.php
+//
+// outputs messages regarding to health-checking rules:
+// * file size and modification date of planet files
+// * file size and modification date of result files
+// * compare file size and modification date of result file with file on webserver
+//
+
 
 require('helpers.php');
 require('../config/config.php');
 require('webUpdateClient.php');
 
 
-$serverstate = remote_command('--local', '--get_state');
+$serverstate = remote_command('--remote', '--get_state');	// get listing of result files from webserver
 //print_r($serverstate);
 
 
@@ -19,6 +26,9 @@ $issues = array();
 
 
 foreach ($schemas as $schema=>$schema_cfg) {
+
+
+	if ($schema=='at' || $schema=='md' || $schema=='50') continue;	// don't check testing schemas and Australia
 
 	$resultfile = 'error_view_' . $schema . '.txt.bz2';
 	$resultfile_path = $config['base_dir'] . 'results/' . $resultfile;
@@ -95,6 +105,6 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 
 print_r($issues);
-echo count($issues) . " issues found.\n";
+if (count($issues)>0) echo count($issues) . " issues found.\n";
 
 ?>
