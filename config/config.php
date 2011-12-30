@@ -77,6 +77,12 @@ $config['stop_indicator']='/tmp/stop_keepright';
 $config['main_logfile']=$config['base_dir'] . 'checks/main.log';
 
 
+// logging is done one file per database schema per update run.
+// specify the number of logfile versions that
+// should be retained per schema
+$config['logfile_count']=9;
+
+
 # config options for using a http proxy
 # used in 410_website.php for checking website URLs
 $config['http_proxy']['enabled']=false;

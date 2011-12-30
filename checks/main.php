@@ -38,7 +38,11 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 		logger("processing schema $schema");
 
-		system('php "' . $config['base_dir'] . '/checks/process_schema.php" "' . $schema . '" >> "' . $config['main_logfile'] . '" 2>&1');
+		log_rotate($schema);
+
+		// call process_schema.php
+		system('php "' . $config['base_dir'] . 'checks/process_schema.php" "' . $schema .
+			'" > "' . $config['base_dir'] . 'logs/' . $schema . '.log" 2>&1');
 
 
 		$firstrun=false;
@@ -61,8 +65,31 @@ if (!$processed_a_schema) {
 
 
 // restart yourself
-// this clumsy way of building an infinite loop allows for swithing to
+// this clumsy way of building an infinite loop allows for switching to
 // a new version of the running code in case of svn updates
-system('(php ' . $config['base_dir'] . '/checks/main.php &) >> "' . $config['main_logfile'] . '"');
+system('(php ' . $config['base_dir'] . 'checks/main.php &) >> "' . $config['main_logfile'] . '"');
+
+
+
+
+// rename logfiles for a given schema so that up to $config['logfile_count'] versions
+// of the log remain in the logs directory
+function log_rotate($schema) {
+	global $config;
+
+	$logfile=$config['base_dir'] . 'logs/' . $schema . '.log';
+
+	if (!file_exists($logfile)) return 0;	// nothing to do
+
+	for ($level=$config['logfile_count']; $level>0; $level--) {
+
+		if (file_exists($logfile . '.' . $level . '.bz2')) {
+			rename($logfile . '.' . $level . '.bz2', $logfile . '.' . ($level+1) . '.bz2');
+		}
+	}
+
+	// compress the latest logfile
+	system('bzip2 -c "' . $logfile . '" > "' . $logfile . '.1.bz2"');
+}
 
 ?>
