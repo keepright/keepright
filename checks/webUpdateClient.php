@@ -165,14 +165,43 @@ function ftp_upload($schema) {
 	global $config;
 	echo "\n\nuploading dump file-------------------------------------\n\n";
 
-
-	$ftp_url='ftp://' . $config['upload']['ftp_user'] . ':' . $config['upload']['ftp_password'] . '@' . $config['upload']['ftp_host'] . '/' . $config['upload']['ftp_path'];
-
 	$filename="../results/error_view_{$schema}.txt.bz2";
+	$remote_file="error_view_{$schema}.txt.bz2";
 
-	// call wput, overwrite files if already existing, dont create directories
-	// upload the error_view dumps
-	system("/usr/bin/wput --dont-continue --reupload --binary --no-directories --basename=../results/ $filename \"$ftp_url\" 2>&1");
+
+	// set up basic connection
+	$conn_id = ftp_connect($config['upload']['ftp_host']);
+
+	if (!$conn_id) {
+		echo "couldn't conect to ftp server " . $config['upload']['ftp_host'] . "\n";
+		return;
+	}
+
+	// login with username and password
+	if (!ftp_login($conn_id, $config['upload']['ftp_user'], $config['upload']['ftp_password'])) {
+		echo "Couldn't login to " . $config['upload']['ftp_host'] . " as " . $config['upload']['ftp_user'] ."\n";
+
+		ftp_close($conn_id);
+		return;
+	}
+
+	// change to destination directory
+	if (!ftp_chdir($conn_id, '/' . $config['upload']['ftp_path'])) {
+		echo "Couldn't change directory on ftp server\n";
+
+		ftp_close($conn_id);
+		return;
+	}
+
+	// upload the file
+	if (ftp_put($conn_id, $remote_file, $filename, FTP_ASCII)) {
+		echo "successfully uploaded $filename\n";
+	} else {
+		echo "There was a problem while uploading $filename\n";
+	}
+
+	// close the connection
+	ftp_close($conn_id);
 }
 
 
