@@ -194,7 +194,7 @@ function ftp_upload($schema) {
 	}
 
 	// upload the file
-	if (ftp_put($conn_id, $remote_file, $filename, FTP_ASCII)) {
+	if (ftp_put($conn_id, $remote_file, $filename, FTP_BINARY)) {
 		echo "successfully uploaded $filename\n";
 	} else {
 		echo "There was a problem while uploading $filename\n";
