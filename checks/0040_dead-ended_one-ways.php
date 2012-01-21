@@ -99,13 +99,38 @@ foreach ($cfg as $item=>$msg) {
 
 	// find one-way streets connected together by their first (last) node
 	query("TRUNCATE TABLE _tmp_one_way_junctions", $db1, false);
+
+	// find nodes that are part of junctions made up of oneway streets
+	// ignore nodes that are part of closed-loop ways (aka roundabouts)
+	// as they are no problem with regard to this check
+
+	// see this example: node #349165157, lat=41.724615&lon=-8.162456
+	// the node in question is first and last node of the roundabout
+	// and two ways lead out of the roundabout in this node
+	// without the subselect this was marked as error because the roundabout
+	// was excluded and the two leaving highways remained in the check
+	//                         \   |
+	//                          \  |
+	//                           \ |
+	//                    _-----_ \|
+	//                   /       --*\
+	//                  |            |
+	//                  \           /
+	//                   ----------
+
 	query("
 		INSERT INTO _tmp_one_way_junctions (node_id)
 		SELECT ${item}_node_id
 		FROM _tmp_one_ways o
-		WHERE o.first_node_id<>o.last_node_id
+		WHERE ${item}_node_id NOT IN (
+
+			SELECT first_node_id
+			FROM _tmp_one_ways
+			WHERE first_node_id=last_node_id
+
+		)
 		GROUP BY ${item}_node_id
-		HAVING COUNT(way_id)>1
+		HAVING COUNT(DISTINCT way_id)>1
 	", $db1);
 
 	// it is an error, if...
