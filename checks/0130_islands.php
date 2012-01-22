@@ -308,7 +308,8 @@ query("
 			wt.way_id=w.way_id AND (
 				(wt.k='man_made' AND wt.v='pier') OR
 				(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
-				(wt.k='amenity' AND wt.v='parking')
+				(wt.k='amenity' AND wt.v='parking') OR
+				(wt.k IN ('railway', 'public_transport') AND wt.v='platform')
 			)
 		)
 	)
@@ -399,6 +400,7 @@ do {
 
 // any way that exists in way-temp-table but is not member of any island is an error
 // don't complain about amenity=parking ways; they are included here only for connecting highways
+// the same for platforms and aeroway-related items
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT DISTINCT $error_type, CAST('way' AS type_object_type), wn.way_id, 'This way is not connected to the rest of the map', NOW()
@@ -409,7 +411,8 @@ query("
 			wt.way_id=wn.way_id AND (
 				(wt.k='man_made' AND wt.v='pier') OR
 				(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
-				(wt.k='amenity' AND wt.v='parking')
+				(wt.k='amenity' AND wt.v='parking') OR
+				(wt.k IN ('railway', 'public_transport') AND wt.v='platform')
 			)
 		)
 	)
