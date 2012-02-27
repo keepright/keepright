@@ -1,5 +1,27 @@
 <?php
 
+// ###########################################
+// KeepRight config file
+// ###########################################
+//
+// This is the main configuration for KeepRight
+//
+// never change any settings in this file directly!
+// Always modify your private config file in ~/.keepright
+// as this file is subject to svn updates, which would result
+// in change conflicts
+//
+// ~/.keepright is read _after_ config.php so you may overwrite
+// any settings in your private config file.
+//
+// When running on Windows please always specify path names
+// using a single slash ("/") as directory separator.
+//
+// On Windows your private config file (" ~/.keepright") is
+// located in <path to keepright>\config\userconfig.php
+//
+
+
 $error_types=array();
 $schemas=array();
 $config=array();
@@ -181,17 +203,19 @@ define('KR_COMMANDS', 16);
 $config['loglevel'] = KR_ERROR + KR_WARNING + KR_INFO + KR_INDEX_USAGE + KR_COMMANDS;
 
 
-
-$userconfig=getenv('HOME') . '/.keepright';
+if (platform()=='Linux') {
+	$userconfig=getenv('HOME') . '/.keepright';
+} else {
+	$userconfig='../config/userconfig.php';
+}
 
 if (!is_readable($userconfig)) {
-	logger('~/.keepright not found. This is the first time you have run keepright. I\'ll create ~/.keepright for you; adapt the settings as needed and run this script again.', KR_ERROR);
+	logger("$userconfig not found. This is the first time you have run keepright. I'll create $userconfig for you; adapt the settings as needed and run this script again.", KR_ERROR);
 
-	copy('../config/keepright.template', $userconfig);
+	copy('../config/keepright.config.template', $userconfig);
 	exit(1);
 }
 
 // read private settings overwriting some of the general settings
 require($userconfig);
-
 ?>

@@ -33,8 +33,12 @@ foreach ($schemas as $schema=>$schema_cfg) {
 	if (($schema_cfg['user'] == $config['account']['user']) &&
 		(!$firstrun || $schema==$startschema || $startschema==0)) {
 
-		// update source code from svn
-		system('cd "' . $config['base_dir'] . '" && svn up');
+		// update source code from svn (switch up to base directory)
+		$oldpath=getcwd();
+		chdir($config['base_dir']);
+		system('svn up');
+		chdir($oldpath);
+
 
 		logger("processing schema $schema");
 
@@ -64,12 +68,29 @@ if (!$processed_a_schema) {
 }
 
 
+
+// perform database maintenance on error tables only once per complete loop
+$db1 = pg_pconnect(connectstring(), PGSQL_CONNECT_FORCE_NEW);
+query("VACUUM ANALYZE public.errors", $db1);
+query("VACUUM ANALYZE public.error_view", $db1);
+pg_close($db1);
+
+
+
 // restart yourself
 // this clumsy way of building an infinite loop allows for switching to
 // a new version of the running code in case of svn updates
-system('(php ' . $config['base_dir'] . 'checks/main.php &) >> "' . $config['main_logfile'] . '"');
+if (platform()=='Linux') {
 
+	system('(php ' . $config['base_dir'] . 'checks/main.php &) >> "' . $config['main_logfile'] . '"');
 
+} else {
+	// http://de2.php.net/manual/en/function.exec.php#43917
+	$WshShell = new COM('WScript.Shell');
+	$oExec = $WshShell->Run('cmd /S %windir% /C php "' .
+		$config['base_dir'] . 'checks/main.php" >> "' .
+		$config['main_logfile'] . '"', 0, false);
+}
 
 
 // rename logfiles for a given schema so that up to $config['logfile_count'] versions

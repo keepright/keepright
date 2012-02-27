@@ -685,6 +685,14 @@ function logger($message, $loglevel=KR_INFO) {
 }
 
 
+// returns the operating system the script runs on
+// need to consider special requirements eg for
+// building command line calls
+// possible values: Linux, Windows NT
+function platform() {
+	return php_uname('s');
+}
+
 // return an array containing all possible values inside the tag value
 // split by ";". verbose ";" have to be doubled ";;"
 // http://wiki.openstreetmap.org/wiki/Semi-colon_value_separator
@@ -792,7 +800,9 @@ function check_prerequisites() {
 	$ret=0;
 
 	// check if osmosis is an executable
-	if (!is_executable($config['osmosis_bin'])) {
+	// in windows one cannot check for executability, only for existence
+	if ((platform()=='Linux' && !is_executable($config['osmosis_bin'])) ||
+		(platform()=='Windows NT' && !is_readable($config['osmosis_bin']))) {
 		logger('osmosis was not found or is not executable', KR_ERROR);
 		$ret=1;
 	}

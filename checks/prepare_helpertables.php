@@ -182,8 +182,6 @@ function prepare_helpertables($schema) {
 	query("ANALYZE relations", $db1);
 	query("ANALYZE relation_tags", $db1);
 	query("ANALYZE relation_members", $db1);
-	query("VACUUM ANALYZE public.errors", $db1);
-	query("VACUUM ANALYZE public.error_view", $db1);
 	//--------------------------------------------------
 
 	drop_postgres_functions($db1);

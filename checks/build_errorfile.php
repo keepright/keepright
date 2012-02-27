@@ -91,15 +91,46 @@ foreach ($ev_filenames as $ev_filename) {
 fclose($co);
 
 
+$remote_file="${dst_filename}.bz2";
 
-system ("bzip2 -c $dst_filename > ${dst_filename}.bz2");
+system ("bzip2 -c $dst_filename > $remote_file");
 
 
-// call wput, overwrite files if already existing, dont create directories
-// upload the error_view dumps and the error_types dump
-$ftp_url='ftp://' . $config['upload']['ftp_user'] . ':' . $config['upload']['ftp_password'] . '@' . $config['upload']['ftp_host'] . '/' . $config['upload']['ftp_path'];
+// upload to ftp site
 
-system("/usr/bin/wput --timestamping --dont-continue --reupload --binary --no-directories --basename=../results/ ${dst_filename}.bz2 \"$ftp_url\" 2>&1");
+// set up basic connection
+$conn_id = ftp_connect($config['upload']['ftp_host']);
+
+if (!$conn_id) {
+	echo "couldn't conect to ftp server " . $config['upload']['ftp_host'] . "\n";
+	return;
+}
+
+// login with username and password
+if (!ftp_login($conn_id, $config['upload']['ftp_user'], $config['upload']['ftp_password'])) {
+	echo "Couldn't login to " . $config['upload']['ftp_host'] . " as " . $config['upload']['ftp_user'] ."\n";
+
+	ftp_close($conn_id);
+	return;
+}
+
+// change to destination directory
+if (!ftp_chdir($conn_id, '/' . $config['upload']['ftp_path'])) {
+	echo "Couldn't change directory on ftp server\n";
+
+	ftp_close($conn_id);
+	return;
+}
+
+// upload the file
+if (ftp_put($conn_id, "keepright_errors.txt.bz2.tst", $remote_file, FTP_BINARY)) {
+	echo "successfully uploaded $remote_file\n";
+} else {
+	echo "There was a problem while uploading $remote_file\n";
+}
+
+// close the connection
+ftp_close($conn_id);
 
 
 /*

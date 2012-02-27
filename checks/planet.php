@@ -49,8 +49,10 @@ function planet_update($schema) {
 		// this part would produce the pg simple format we're not using yet:
 		//--wpd " . $config['temp_dir'] . " enableBboxBuilder=yes enableLinestringBuilder=yes nodeLocationStoreType=TempFile
 
-		$cmd="cd \"$planetDirectory\" && " .
-			'"' . $config['osmosis_bin'] . '"' .
+		$oldpath=getcwd();
+		chdir($planetDirectory);
+
+		$cmd='"' . $config['osmosis_bin'] . '"' .
 			' --rri workingDirectory="' . $workingDirectory . '" ' .
 			' --simc ' .
 			' --rb "' . $planetfile . '" ' .
@@ -69,6 +71,7 @@ function planet_update($schema) {
 			logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
 			exit(1);
 		}
+		chdir($oldpath);
 
 		rename($planetfile, $planetfile . '.old');
 		rename($planetfile . '.new', $planetfile);
@@ -77,8 +80,10 @@ function planet_update($schema) {
 
 		// just convert the planet file to textfiles suitable for db loading
 
-		$cmd="cd \"$planetDirectory\" && " .
-			'"' . $config['osmosis_bin'] . '"' .
+		$oldpath=getcwd();
+		chdir($planetDirectory);
+
+		$cmd='"' . $config['osmosis_bin'] . '"' .
 			' --rb "' . $planetfile . '" ' .
 			' --pl directory="' . $config['temp_dir'] . '"';
 
@@ -89,6 +94,7 @@ function planet_update($schema) {
 			logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
 			exit(1);
 		}
+		chdir($oldpath);
 	}
 }
 

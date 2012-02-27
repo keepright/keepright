@@ -15,11 +15,11 @@ AXIS["y", NORTH],AUTHORITY["EPSG","900913"]]',
 
 
 -- Import the table data from the data files using the fast COPY method.
-copy nodes FROM '%TEMPDIR%nodes_sorted.txt' WITH NULL AS 'NULL';
+copy nodes FROM '%TEMPDIR%nodes.txt' WITH NULL AS 'NULL';
 copy node_tags FROM '%TEMPDIR%node_tags.txt' WITH NULL AS 'NULL';
-copy ways FROM '%TEMPDIR%ways.txt' WITH NULL AS 'NULL';
+copy ways (id, user_name, tstamp, first_node_id, last_node_id, node_count) FROM '%TEMPDIR%ways.txt' WITH NULL AS 'NULL';
 copy way_tags FROM '%TEMPDIR%way_tags.txt' WITH NULL AS 'NULL';
-copy way_nodes FROM '%TEMPDIR%way_nodes2.txt' WITH NULL AS 'NULL';
+copy way_nodes (way_id, node_id, sequence_id) FROM '%TEMPDIR%way_nodes.txt' WITH NULL AS 'NULL';
 copy relations FROM '%TEMPDIR%relations.txt' WITH NULL AS 'NULL';
 copy relation_tags FROM '%TEMPDIR%relation_tags.txt' WITH NULL AS 'NULL';
 copy relation_members FROM '%TEMPDIR%relation_members.txt' WITH NULL AS 'NULL';
@@ -58,3 +58,20 @@ CREATE INDEX idx_way_tags_v ON way_tags (v);
 CREATE INDEX idx_relation_tags_k ON relation_tags (k);
 CREATE INDEX idx_relation_tags_v ON relation_tags (v);
 
+
+UPDATE way_nodes
+SET lat=nodes.lat, lon=nodes.lon, x=nodes.x, y=nodes.y
+FROM nodes
+WHERE nodes.id=way_nodes.node_id;
+
+
+UPDATE ways
+SET first_node_lat=nodes.lat, first_node_lon=nodes.lon, first_node_x=nodes.x, first_node_y=nodes.y
+FROM nodes
+WHERE nodes.id=ways.first_node_id;
+
+
+UPDATE ways
+SET last_node_lat=nodes.lat, last_node_lon=nodes.lon, last_node_x=nodes.x, last_node_y=nodes.y
+FROM nodes
+WHERE nodes.id=ways.last_node_id;
