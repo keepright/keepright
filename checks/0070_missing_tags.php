@@ -47,6 +47,10 @@ query("
 // exception: members of relations
 // need not be tagged, as long as the relation is tagged
 // these are dropped
+
+// help Postgres on Windows find a better query plan
+query("ANALYZE _tmp_errors", $db1);
+
 query("
 	DELETE FROM _tmp_errors e
 	WHERE e.error_type=$error_type+1 AND EXISTS(
