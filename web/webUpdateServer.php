@@ -98,7 +98,9 @@ if ($_SESSION['authorized']===true) {
 
 
 	if ($_GET['cmd'] == 'get_state') {
-		get_state();
+		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+		get_state($db1);
+		mysqli_close($db1);
 	}
 
 
@@ -154,7 +156,7 @@ function export_comments($db1) {
 
 // create a status page
 // including file names, sizes and mod dates of all error_view dump files
-function get_state() {
+function get_state($db) {
 
 	$result=array();
 	$result['files']=array();
@@ -165,11 +167,29 @@ function get_state() {
 	foreach ($dir as $filename) {
 		$result['files'][$filename] = array(
 			'size'=>filesize($filename),
-			'mtime'=>filemtime($filename)
+			'mtime'=>filemtime($filename),
+			'count'=>count_star($db, substr($filename, 0, -8))
 		);
 	}
 
 	echo serialize($result);
+}
+
+
+// returns the number of records in given table
+function count_star($db, $table) {
+
+	$result=query("
+		SELECT COUNT(*) AS c
+		FROM $table
+	", $db, false);
+
+	while ($row = mysqli_fetch_assoc($result)) {
+		$c=$row['c'];
+	}
+
+	mysqli_free_result($result);
+	return $c;
 }
 
 

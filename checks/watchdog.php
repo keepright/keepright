@@ -75,7 +75,7 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 		// compare file size and modification date of result file with file on webserver
 
-		// remote restult file found
+		// remote result file found
 		if (array_key_exists($resultfile, $serverstate['files'])) {
 
 			// local vs remote result file size
@@ -89,6 +89,10 @@ foreach ($schemas as $schema=>$schema_cfg) {
 				$issues[]="result file date (" . date('d.m.Y H:m:s', $mtime) .
 					") for schema $schema is newer than version on web server (" .
 					date('d.m.Y H:m:s', $serverstate['files'][$resultfile]['mtime']) . ")";
+
+			// check error count from server table	
+			if (!($serverstate['files'][$resultfile]['count']>1))
+				$issues[]="error_view table seems to be empty for schema $schema";
 
 
 		} else $issues[]="result file for schema $schema not found on web server";
