@@ -31,7 +31,7 @@ foreach ($schemas as $schema=>$schema_cfg) {
 	if ($schema=='at' || $schema=='md' || $schema=='50') continue;	// don't check testing schemas and Australia
 
 	$resultfile = 'error_view_' . $schema . '.txt.bz2';
-	$resultfile_path = $config['base_dir'] . 'results/' . $resultfile;
+	$resultfile_path = $config['results_dir'] . $resultfile;
 	$planetfile = $config['base_dir'] . 'planet/' . $schema . '.pbf';
 
 

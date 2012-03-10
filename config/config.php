@@ -68,6 +68,10 @@ $config['base_dir']='/home/haraldk/OSM/keepright/';
 $config['temp_dir']='/tmp/';
 
 
+// directory where to put result files
+$config['results_dir']=$config['base_dir'] . 'results/';
+
+
 // file location of the complete planet file
 // optional. just needed in case you want to split
 // the file yourself

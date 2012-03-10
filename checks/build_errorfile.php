@@ -10,15 +10,16 @@ the errors dump is a copy of the error_view plus comments given by users
 require('../config/config.php');
 require('helpers.php');
 
+$results=$config['results_dir'];
 
 // update and download the comments file from the web server
 system ('php webUpdateClient.php --remote --export_comments');
-system ('wget -O ../results/comments.txt.bz2 "http://keepright.ipax.at/comments.txt.bz2"');
-system ('bunzip2 -f ../results/comments.txt.bz2');
+system ('wget -O ' . $results . 'comments.txt.bz2 "http://keepright.ipax.at/comments.txt.bz2"');
+system ('bunzip2 -f ' . $results . 'comments.txt.bz2');
 
 
 
-$dst_filename='../results/keepright_errors.txt';
+$dst_filename=$results . 'keepright_errors.txt';
 
 
 if (!$dst=fopen($dst_filename, 'w')) {
@@ -27,13 +28,13 @@ if (!$dst=fopen($dst_filename, 'w')) {
 }
 
 
-$co_filename='../results/comments.txt';
+$co_filename=$results . 'comments.txt';
 if (!$co=fopen($co_filename, 'r')) {
 	echo "could not open $co_filename for reading\n";
 	exit;
 }
 
-$ev_filenames=glob("../results/error_view_*.txt");
+$ev_filenames=glob($results . "error_view_*.txt");
 sort($ev_filenames);
 
 $co_schema=0;

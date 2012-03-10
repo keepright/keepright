@@ -465,7 +465,7 @@ function run_checks($schema, $checks_to_run=array()) {
 
 
 	// dump the number of nodes per square degree
-	$fname=$config['base_dir'] . 'results/nodes_'. $schema . '.txt';
+	$fname=$config['results_dir'] . 'nodes_'. $schema . '.txt';
 	$f = fopen($fname, 'w');
 	if ($f) {
 

@@ -165,7 +165,7 @@ function ftp_upload($schema) {
 	global $config;
 	echo "\n\nuploading dump file-------------------------------------\n\n";
 
-	$filename="../results/error_view_{$schema}.txt.bz2";
+	$filename=$config['results_dir'] . "error_view_{$schema}.txt.bz2";
 	$remote_file="error_view_{$schema}.txt.bz2";
 
 

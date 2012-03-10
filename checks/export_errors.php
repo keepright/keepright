@@ -39,7 +39,7 @@ function export_errors($schema) {
 		exit(1);
 	}
 
-	$fname=$config['base_dir'] . 'results/error_view_' . $schema . '.txt';
+	$fname=$config['results_dir'] . 'error_view_' . $schema . '.txt';
 	$f = fopen($fname, 'w');
 
 	if ($f) {
