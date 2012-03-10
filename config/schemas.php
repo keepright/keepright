@@ -23,7 +23,7 @@ $schemas['md']['left']=16.20;
 $schemas['md']['right']=16.35;
 $schemas['md']['top']=48.08;
 $schemas['md']['bottom']=48.06;
-$schemas['md']['user']='test';
+$schemas['md']['user']='testMD';
 
 // testing schema Austria
 $schemas['at']['left']=9.30;
@@ -43,7 +43,7 @@ $schemas['4']['left']=7.5;
 $schemas['4']['right']=10;
 $schemas['4']['top']=55;
 $schemas['4']['bottom']=49.3;
-$schemas['4']['user']='ceserver';
+$schemas['4']['user']='pc9';
 
 $schemas['7']['left']=3.5;
 $schemas['7']['right']=6.7;
@@ -61,19 +61,19 @@ $schemas['17']['left']=-30;
 $schemas['17']['right']=51.4;
 $schemas['17']['top']=35;
 $schemas['17']['bottom']=-90;
-$schemas['17']['user']='cetest';
+$schemas['17']['user']='pc0';
 
 $schemas['18']['left']=12;
 $schemas['18']['right']=23;
 $schemas['18']['top']=90;
 $schemas['18']['bottom']=55;
-$schemas['18']['user']='cetest';
+$schemas['18']['user']='pc9';
 
 $schemas['19']['left']=23;
 $schemas['19']['right']=51.4;
 $schemas['19']['top']=90;
 $schemas['19']['bottom']=55;
-$schemas['19']['user']='ceserver';
+$schemas['19']['user']='pc9';
 
 $schemas['20']['left']=-180;
 $schemas['20']['right']=-30;
@@ -97,7 +97,7 @@ $schemas['23']['left']=-99;
 $schemas['23']['right']=-30;
 $schemas['23']['top']=50;
 $schemas['23']['bottom']=46;
-$schemas['23']['user']='ceserver';
+$schemas['23']['user']='pc9';
 
 $schemas['24']['left']=-117.3;
 $schemas['24']['right']=-111.6;
@@ -205,7 +205,7 @@ $schemas['41']['left']=-180;
 $schemas['41']['right']=-108.3;
 $schemas['41']['top']=34;
 $schemas['41']['bottom']=20;
-$schemas['41']['user']='cetest';
+$schemas['41']['user']='pc9';
 
 $schemas['42']['left']=-108.3;
 $schemas['42']['right']=-97.5;
@@ -241,13 +241,13 @@ $schemas['47']['left']=-180;
 $schemas['47']['right']=-30;
 $schemas['47']['top']=14;
 $schemas['47']['bottom']=-90;
-$schemas['47']['user']='ceserver';
+$schemas['47']['user']='pc9';
 
 $schemas['48']['left']=51.4;
 $schemas['48']['right']=110;
 $schemas['48']['top']=90;
 $schemas['48']['bottom']=-90;
-$schemas['48']['user']='ceserver';
+$schemas['48']['user']='pc9';
 
 $schemas['50']['left']=110;
 $schemas['50']['right']=180;
@@ -349,7 +349,7 @@ $schemas['68']['left']=-95;
 $schemas['68']['right']=-30;
 $schemas['68']['top']=30;
 $schemas['68']['bottom']=14;
-$schemas['68']['user']='ceserver';
+$schemas['68']['user']='pc9';
 
 $schemas['69']['left']=-78.9;
 $schemas['69']['right']=-77.6;
@@ -361,7 +361,7 @@ $schemas['72']['left']=1.8;
 $schemas['72']['right']=7.5;
 $schemas['72']['top']=51;
 $schemas['72']['bottom']=49.3;
-$schemas['72']['user']='ceserver';
+$schemas['72']['user']='pc9';
 
 $schemas['73']['left']=110;
 $schemas['73']['right']=131;
@@ -409,19 +409,19 @@ $schemas['80']['left']=14;
 $schemas['80']['right']=18;
 $schemas['80']['top']=55;
 $schemas['80']['bottom']=49.3;
-$schemas['80']['user']='ceserver';
+$schemas['80']['user']='pc9';
 
 $schemas['81']['left']=18;
 $schemas['81']['right']=51.4;
 $schemas['81']['top']=55;
 $schemas['81']['bottom']=49.3;
-$schemas['81']['user']='ceserver';
+$schemas['81']['user']='pc9';
 
 $schemas['82']['left']=14;
 $schemas['82']['right']=19;
 $schemas['82']['top']=49.3;
 $schemas['82']['bottom']=45;
-$schemas['82']['user']='ceserver';
+$schemas['82']['user']='pc9';
 
 $schemas['83']['left']=19;
 $schemas['83']['right']=51.4;
@@ -433,7 +433,7 @@ $schemas['84']['left']=-30;
 $schemas['84']['right']=0;
 $schemas['84']['top']=45;
 $schemas['84']['bottom']=35;
-$schemas['84']['user']='ceserver';
+$schemas['84']['user']='pc9';
 
 $schemas['85']['left']=0;
 $schemas['85']['right']=3.3;
@@ -445,13 +445,13 @@ $schemas['86']['left']=-30;
 $schemas['86']['right']=1.8;
 $schemas['86']['top']=90;
 $schemas['86']['bottom']=52.3;
-$schemas['86']['user']='cetest';
+$schemas['86']['user']='pc9';
 
 $schemas['87']['left']=-30;
 $schemas['87']['right']=1.8;
 $schemas['87']['top']=52.3;
 $schemas['87']['bottom']=49.3;
-$schemas['87']['user']='ceserver';
+$schemas['87']['user']='pc9';
 
 $schemas['88']['left']=3.3;
 $schemas['88']['right']=6.5;
@@ -463,43 +463,43 @@ $schemas['89']['left']=6.5;
 $schemas['89']['right']=18.3;
 $schemas['89']['top']=45;
 $schemas['89']['bottom']=35;
-$schemas['89']['user']='ceserver';
+$schemas['89']['user']='pc9';
 
 $schemas['90']['left']=1.8;
 $schemas['90']['right']=5.8;
 $schemas['90']['top']=55;
 $schemas['90']['bottom']=52;
-$schemas['90']['user']='cetest';
+$schemas['90']['user']='pc9';
 
 $schemas['91']['left']=5.8;
 $schemas['91']['right']=7.5;
 $schemas['91']['top']=55;
 $schemas['91']['bottom']=52;
-$schemas['91']['user']='ceserver';
+$schemas['91']['user']='pc9';
 
 $schemas['92']['left']=1.8;
 $schemas['92']['right']=5.5;
 $schemas['92']['top']=52;
 $schemas['92']['bottom']=51;
-$schemas['92']['user']='ceserver';
+$schemas['92']['user']='pc9';
 
 $schemas['93']['left']=5.5;
 $schemas['93']['right']=7.5;
 $schemas['93']['top']=52;
 $schemas['93']['bottom']=51;
-$schemas['93']['user']='ceserver';
+$schemas['93']['user']='pc9';
 
 $schemas['94']['left']=6.7;
 $schemas['94']['right']=10;
 $schemas['94']['top']=49.3;
 $schemas['94']['bottom']=48.1;
-$schemas['94']['user']='cetest';
+$schemas['94']['user']='pc9';
 
 $schemas['95']['left']=6.7;
 $schemas['95']['right']=10;
 $schemas['95']['top']=48.1;
 $schemas['95']['bottom']=46.5;
-$schemas['95']['user']='cetest';
+$schemas['95']['user']='pc9';
 
 $schemas['96']['left']=6.7;
 $schemas['96']['right']=10;
@@ -523,24 +523,24 @@ $schemas['99']['left']=10;
 $schemas['99']['right']=14;
 $schemas['99']['top']=46.5;
 $schemas['99']['bottom']=45;
-$schemas['99']['user']='cetest';
+$schemas['99']['user']='pc9';
 
 $schemas['100']['left']=10;
 $schemas['100']['right']=14;
 $schemas['100']['top']=55;
 $schemas['100']['bottom']=52.3;
-$schemas['100']['user']='cetest';
+$schemas['100']['user']='pc9';
 
 $schemas['101']['left']=10;
 $schemas['101']['right']=14;
 $schemas['101']['top']=52.3;
 $schemas['101']['bottom']=50.6;
-$schemas['101']['user']='cetest';
+$schemas['101']['user']='pc9';
 
 $schemas['102']['left']=10;
 $schemas['102']['right']=14;
 $schemas['102']['top']=50.6;
 $schemas['102']['bottom']=49.3;
-$schemas['102']['user']='cetest';
+$schemas['102']['user']='pc9';
 
 ?>
