@@ -122,6 +122,9 @@ function prepare_helpertables($schema) {
 	query("ANALYZE _tmp_nodecounts", $db1);
 	query("ANALYZE ways", $db1);
 
+	drop_column('ways', 'node_count', $db1, '', false);
+	add_column('ways', 'node_count', 'int', $db1, '', false);	// discard any nodecounts that might be there; in case of zero nodes, any old (wrong) value would remain
+
 	query("UPDATE ways
 		SET node_count=nc.cnt
 		FROM _tmp_nodecounts nc
