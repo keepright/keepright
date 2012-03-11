@@ -41,5 +41,6 @@ remote_command('--remote', '--upload_errors', $schema);
 
 if (!$config['keep_database_after_processing']) dropSchema($schema);
 
+logger(strftime('%D %T') . ": finished processing schema " . $schema . ".\n");
 
 ?>
