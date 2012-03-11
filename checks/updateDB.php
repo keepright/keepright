@@ -132,13 +132,13 @@ function loadDB($schema) {
 	// eventually delete data files to save disk space
         if (!$config['keep_database_after_processing']) {
 
-		unlink($config['temp_dir'] . 'nodes_sorted.txt');
+		unlink($config['temp_dir'] . 'nodes.txt');
 		unlink($config['temp_dir'] . 'node_tags.txt');
 		unlink($config['temp_dir'] . 'relation_members.txt');
 		unlink($config['temp_dir'] . 'relations.txt');
 		unlink($config['temp_dir'] . 'relation_tags.txt');
 		unlink($config['temp_dir'] . 'users.txt');
-		unlink($config['temp_dir'] . 'way_nodes2.txt');
+		unlink($config['temp_dir'] . 'way_nodes.txt');
 		unlink($config['temp_dir'] . 'ways.txt');
 		unlink($config['temp_dir'] . 'way_tags.txt');
 
