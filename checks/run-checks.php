@@ -131,14 +131,12 @@ function run_checks($schema, $checks_to_run=array()) {
 			txt2 text,
 			txt3 text,
 			txt4 text,
-			txt5 text,
-			UNIQUE (error_type, object_type, object_id, lat, lon)
+			txt5 text
 			)
 		", $db1, false);
 		query("CREATE INDEX idx_errors_schema ON public.errors (schema)", $db1);
 		query("CREATE INDEX idx_errors_object_id ON public.errors (object_id)", $db1);
 		query("CREATE INDEX idx_errors_state ON public.errors (state)", $db1);
-		add_insert_ignore_rule('public.errors', array('error_type', 'object_type', 'object_id', 'lat', 'lon'), $db1);
 	}
 
 
