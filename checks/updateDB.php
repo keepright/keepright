@@ -73,6 +73,19 @@ function loadDB($schema) {
 	query("copy relation_tags FROM '" . $config['temp_dir'] . "relation_tags.txt' WITH NULL AS 'NULL';", $db);
 	query("copy relation_members FROM '" . $config['temp_dir'] . "relation_members.txt' WITH NULL AS 'NULL';", $db);
 
+
+	// delete data files to save disk space
+	unlink($config['temp_dir'] . 'nodes.txt');
+	unlink($config['temp_dir'] . 'node_tags.txt');
+	unlink($config['temp_dir'] . 'relation_members.txt');
+	unlink($config['temp_dir'] . 'relations.txt');
+	unlink($config['temp_dir'] . 'relation_tags.txt');
+	unlink($config['temp_dir'] . 'users.txt');
+	unlink($config['temp_dir'] . 'way_nodes.txt');
+	unlink($config['temp_dir'] . 'ways.txt');
+	unlink($config['temp_dir'] . 'way_tags.txt');
+
+
 	// Add the primary keys and indexes back again (except the way bbox index).
 	query('ALTER TABLE ONLY schema_info ADD CONSTRAINT pk_schema_info PRIMARY KEY (version);', $db, false);
 	query('ALTER TABLE ONLY nodes ADD CONSTRAINT pk_nodes PRIMARY KEY (id);', $db, false);
@@ -128,21 +141,6 @@ function loadDB($schema) {
 	", $db);
 	pg_close($db);
 
-
-	// eventually delete data files to save disk space
-        if (!$config['keep_database_after_processing']) {
-
-		unlink($config['temp_dir'] . 'nodes.txt');
-		unlink($config['temp_dir'] . 'node_tags.txt');
-		unlink($config['temp_dir'] . 'relation_members.txt');
-		unlink($config['temp_dir'] . 'relations.txt');
-		unlink($config['temp_dir'] . 'relation_tags.txt');
-		unlink($config['temp_dir'] . 'users.txt');
-		unlink($config['temp_dir'] . 'way_nodes.txt');
-		unlink($config['temp_dir'] . 'ways.txt');
-		unlink($config['temp_dir'] . 'way_tags.txt');
-
-	}
 }
 
 ?>
