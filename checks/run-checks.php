@@ -193,7 +193,7 @@ function run_checks($schema, $checks_to_run=array()) {
 		if (($error['enabled'] && count($checks_to_run)==0) || in_array($error_type, $checks_to_run)) {
 			echo "-------------------------------------------------------------------\n";
 			$starttime=microtime(true);
-			echo strftime('%D %T') . ": starting check " . $error['source'] . "...\n";
+			echo strftime('%m/%d/%y %H:%M:%S') . ": starting check " . $error['source'] . "...\n";
 
 			// including the file means executing the job
 			if (strlen(trim($error['source']))>0)

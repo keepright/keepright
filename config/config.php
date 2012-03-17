@@ -207,6 +207,10 @@ define('KR_COMMANDS', 16);
 $config['loglevel'] = KR_ERROR + KR_WARNING + KR_INFO + KR_INDEX_USAGE + KR_COMMANDS;
 
 
+// select your time zone
+date_default_timezone_set('Europe/Vienna');
+
+
 if (platform()=='Linux') {
 	$userconfig=getenv('HOME') . '/.keepright';
 } else {
