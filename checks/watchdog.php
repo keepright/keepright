@@ -32,7 +32,7 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 	$resultfile = 'error_view_' . $schema . '.txt.bz2';
 	$resultfile_path = $config['results_dir'] . $resultfile;
-	$planetfile = $config['base_dir'] . 'planet/' . $schema . '.pbf';
+	$planetfile = $config['planet_dir'] . $schema . '.pbf';
 
 
 

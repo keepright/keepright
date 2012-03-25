@@ -71,11 +71,14 @@ $config['temp_dir']='/tmp/';
 // directory where to put result files
 $config['results_dir']=$config['base_dir'] . 'results/';
 
+// directory where to find planet files
+$config['planet_dir']=$config['base_dir'] . 'planet/';
+
 
 // file location of the complete planet file
 // optional. just needed in case you want to split
 // the file yourself
-$config['planet_file']=$config['base_dir'] . 'planet/planet.pbf';
+$config['planet_file']=$config['planet_dir'] . 'planet.pbf';
 
 
 // the path of the osmosis calling script -- not the JAR-file!

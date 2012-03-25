@@ -829,7 +829,7 @@ function check_prerequisites() {
 function create_authfile() {
 	global $config;
 
-	$authfile = $config['base_dir'] . 'planet/osmosis_auth';
+	$authfile = $config['planet_dir'] . 'osmosis_auth';
 	$config['authfile'] = $authfile;
 
 	// files created with file_put_contents() have liberal permissions

@@ -79,22 +79,22 @@ function createSchema($schema) {
 	$db = pg_pconnect(connectstring($schema));
 
 	// add SRIDs into spatial_ref_sys table
-	query(file_get_contents($config['base_dir'].'planet/spatial_ref_sys.sql'), $db, false);
+	query(file_get_contents($config['planet_dir'].'spatial_ref_sys.sql'), $db, false);
 
 
 	// create openstreetmap tables for the non standard simple schema (old schema
 	// including arbitrary extensions)
- 	query(file_get_contents($config['base_dir'].'planet/pgsql_simple_schema.sql'), $db, false);
+ 	query(file_get_contents($config['planet_dir'].'pgsql_simple_schema.sql'), $db, false);
 
 	// create openstreetmap tables for simple schema including bbox + linestring
-// 	query(file_get_contents($config['base_dir'].'planet/pgsql_simple_schema_0.6.sql'), $db, false);
-// 	query(file_get_contents($config['base_dir'].'planet/pgsql_simple_schema_0.6_action.sql'), $db, false);
-// 	query(file_get_contents($config['base_dir'].'planet/pgsql_simple_schema_0.6_bbox.sql'), $db, false);
-// 	query(file_get_contents($config['base_dir'].'planet/pgsql_simple_schema_0.6_linestring.sql'), $db, false);
+// 	query(file_get_contents($config['planet_dir'].'pgsql_simple_schema_0.6.sql'), $db, false);
+// 	query(file_get_contents($config['planet_dir'].'pgsql_simple_schema_0.6_action.sql'), $db, false);
+// 	query(file_get_contents($config['planet_dir'].'pgsql_simple_schema_0.6_bbox.sql'), $db, false);
+// 	query(file_get_contents($config['planet_dir'].'pgsql_simple_schema_0.6_linestring.sql'), $db, false);
 
 	// create keepright tables
 	// still not relevant since run-checks does this job
-	//query(file_get_contents($config['base_dir'].'planet/keepright.sql'), $db, false);
+	//query(file_get_contents($config['planet_dir'].'keepright.sql'), $db, false);
 
 	pg_close($db);
 }

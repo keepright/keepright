@@ -23,7 +23,7 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 function planet_cut($schema) {
 	global $config;
 
-	$planetfile=$config['base_dir'] . 'planet/planet.pbf';
+	$planetfile=$config['planet_dir'] . 'planet.pbf';
 	if (!file_exists($planetfile)) {
 
 		logger("Main planet file $planetfile not found.", KR_ERROR);
@@ -31,7 +31,7 @@ function planet_cut($schema) {
 		exit(1);
 	}
 
-	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes --wb "' . $config['base_dir'] . $schema . '.pbf"';
+	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf"';
 	logger($cmd, KR_COMMANDS);
 	//system($cmd, $errorlevel);
 	if ($errorlevel) {
@@ -47,7 +47,7 @@ function planet_cut($schema) {
 function planet_update($schema, $mode) {
 	global $config;
 
-	$planetDirectory=$config['base_dir'] . 'planet/';
+	$planetDirectory=$config['planet_dir'];
 	$workingDirectory=$planetDirectory . $schema;
 	$planetfile=$planetDirectory . $schema . '.pbf';
 
@@ -124,7 +124,7 @@ function planet_update($schema, $mode) {
 // make sure the osmosis working directory does exist and config file is right
 function init_workingDir($schema) {
 	global $config;
-	$workingDirectory=$config['base_dir'] . 'planet/' . $schema;
+	$workingDirectory=$config['planet_dir'] . $schema;
 
 	if (is_dir($workingDirectory)) return;
 
