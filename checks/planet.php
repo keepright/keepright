@@ -4,6 +4,22 @@
 // or update pieces cut in a previous step
 
 
+if (count(get_included_files())<=1) {	// we're running from commandline if not there are already files included
+
+	require_once('helpers.php');
+	require_once('../config/config.php');
+
+	if ($argc<=2 || $argv[1]!=='--update') {
+		logger('usage: $ php planet.php --update schema', KR_ERROR);
+		exit(1);
+	}
+
+	planet_update($argv[2], 'update-only');
+}
+
+
+
+
 function planet_cut($schema) {
 	global $config;
 
@@ -28,7 +44,7 @@ function planet_cut($schema) {
 
 
 
-function planet_update($schema) {
+function planet_update($schema, $mode) {
 	global $config;
 
 	$planetDirectory=$config['base_dir'] . 'planet/';
@@ -40,7 +56,7 @@ function planet_update($schema) {
 		exit(1);
 	}
 
-	if ($config['update_source_data']) {
+	if ($config['update_source_data'] || $mode=='update-only') {
 
 		// read replication diffs, apply them on the planet file,
 		// write the planet file to disk and create data files
@@ -57,12 +73,18 @@ function planet_update($schema) {
 			' --simc ' .
 			' --rb "' . $planetfile . '" ' .
 			' --ac ' .
-			' --bb ' . get_bbox_parameters($schema) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes ' .
-			' --tee 2 ' .
-			' --b bufferCapacity=10000 ' .
-			' --wb "' . $planetfile . '.new" compress=none ' .
-			' --b bufferCapacity=10000 ' .
-			' --pl directory="' . $config['temp_dir'] . '"';
+			' --bb ' . get_bbox_parameters($schema) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes ';
+
+		if ($mode=='update-only')		// just update the file and store it
+			$cmd.=	' --b bufferCapacity=10000 ' .
+				' --wb "' . $planetfile . '.new" compress=none ';
+
+		else
+			$cmd.=	' --tee 2 ' .		// update the file and create dump files for db loading
+				' --b bufferCapacity=10000 ' .
+				' --wb "' . $planetfile . '.new" compress=none ' .
+				' --b bufferCapacity=10000 ' .
+				' --pl directory="' . $config['temp_dir'] . '"';
 
 
 		logger($cmd, KR_COMMANDS);
