@@ -7,8 +7,8 @@ the errors dump is a copy of the error_view plus comments given by users
 
 */
 
-require('../config/config.php');
 require('helpers.php');
+require('../config/config.php');
 
 $results=$config['results_dir'];
 
