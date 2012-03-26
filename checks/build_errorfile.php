@@ -124,7 +124,7 @@ if (!ftp_chdir($conn_id, '/' . $config['upload']['ftp_path'])) {
 }
 
 // upload the file
-if (ftp_put($conn_id, "keepright_errors.txt.bz2.tst", $remote_file, FTP_BINARY)) {
+if (ftp_put($conn_id, "keepright_errors.txt.bz2", $remote_file, FTP_BINARY)) {
 	echo "successfully uploaded $remote_file\n";
 } else {
 	echo "There was a problem while uploading $remote_file\n";
