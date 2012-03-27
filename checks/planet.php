@@ -44,7 +44,7 @@ function planet_cut($schema) {
 
 
 
-function planet_update($schema, $mode) {
+function planet_update($schema, $mode='') {
 	global $config;
 
 	$planetDirectory=$config['planet_dir'];
