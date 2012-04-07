@@ -101,32 +101,50 @@ function remote_command($location, $cmd, $schema=0) {
 			return unserialize(implode("\n", $result));
 		}
 
-	}else {
+	} else {
 		echo "uploading to $URL schema $schema\n";
 
 		$session_ID=login($URL);
 		//echo "session id is $session_ID";
 
 		if ($session_ID) {
-			if ($location=='--remote') ftp_upload($schema);
-
-			$fname="error_view_$schema.txt.bz2";
-
-
-			$myURL="$URL?schema=$schema&cmd=update&PHPSESSID=$session_ID" .
-				"&updated_date=" . date("Y-m-d") .
-				"&error_view_filename=$fname";
-
-			echo "$myURL\n";
-			$result = readHTTP($myURL);
-			echo implode("\n", $result);
-
-			logout($URL, $session_ID);
+			update_schema($schema, $session_ID, $URL, $location);
 		}
+
+		logout($URL, $session_ID);
 	}
 }
 
 
+// update contents belonging to a given schema
+// ie. upload all the files and start update procedure on webserver
+function update_schema($schema, $session_ID, $URL, $location) {
+
+	// initialize update sequence
+	$myURL="$URL?schema=$schema&cmd=prepare_update&PHPSESSID=$session_ID";
+	echo "$myURL\n";
+	$result = readHTTP($myURL);
+	echo implode("\n", $result);
+
+	// update one or more files
+	foreach (glob("error_view_$schema.*.txt.bz2") as $fname) {
+
+		if ($location=='--remote') ftp_upload($fname);
+
+		$myURL="$URL?schema=$schema&cmd=load_dump&PHPSESSID=$session_ID" .
+			"&error_view_filename=$fname";
+		echo "$myURL\n";
+		$result = readHTTP($myURL);
+		echo implode("\n", $result);
+	}
+
+	// toggle tables and finalize update sequence
+	$myURL="$URL?schema=$schema&cmd=finish_update&PHPSESSID=$session_ID" .
+		"&updated_date=" . date("Y-m-d");
+	echo "$myURL\n";
+	$result = readHTTP($myURL);
+	echo implode("\n", $result);
+}
 
 
 // establish a session with the server module
@@ -161,13 +179,11 @@ function logout($URL, $session_ID) {
 }
 
 
-function ftp_upload($schema) {
+function ftp_upload($filename) {
 	global $config;
 	echo "\n\nuploading dump file-------------------------------------\n\n";
 
-	$filename=$config['results_dir'] . "error_view_{$schema}.txt.bz2";
-	$remote_file="error_view_{$schema}.txt.bz2";
-
+	$local_filename=$config['results_dir'] . $filename;
 
 	// set up basic connection
 	$conn_id = ftp_connect($config['upload']['ftp_host']);
@@ -194,10 +210,10 @@ function ftp_upload($schema) {
 	}
 
 	// upload the file
-	if (ftp_put($conn_id, $remote_file, $filename, FTP_BINARY)) {
-		echo "successfully uploaded $filename\n";
+	if (ftp_put($conn_id, $filename, $local_filename, FTP_BINARY)) {
+		echo "successfully uploaded $local_filename\n";
 	} else {
-		echo "There was a problem while uploading $filename\n";
+		echo "There was a problem while uploading $local_filename\n";
 	}
 
 	// close the connection

@@ -65,7 +65,18 @@ $schema=addslashes($_GET['schema']);
 // handle commands for logged in users
 if ($_SESSION['authorized']===true) {
 
-	if ($_GET['cmd'] == 'update') {
+	if ($_GET['cmd'] == 'prepare_update') {		// create shadow table ready to receive conents of one or more dump files
+
+		if (!permissions($USERS[$_SESSION['username']], $schema)) {
+			die("you are not authorized to access schema $schema\n");
+		}
+
+		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+		toggle_tables1($db1, $schema);
+		mysqli_close($db1);
+	}
+
+	if ($_GET['cmd'] == 'load_dump') {		// load one part of the dump file (call repeatedly in case the dump file has more than one part
 
 		if (!permissions($USERS[$_SESSION['username']], $schema)) {
 			die("you are not authorized to access schema $schema\n");
@@ -78,9 +89,18 @@ if ($_SESSION['authorized']===true) {
 		}
 
 		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-
-		toggle_tables1($db1, $schema);
 		load_dump($db1, $error_view_filename, 'error_view', $schema);
+		mysqli_close($db1);
+	}
+
+	if ($_GET['cmd'] == 'finish_update') {		// toggle back tables, make shadow table visible
+
+		if (!permissions($USERS[$_SESSION['username']], $schema)) {
+			die("you are not authorized to access schema $schema\n");
+		}
+
+		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
 		toggle_tables2($db1, $schema);
 		reopen_errors($db1, $schema);
 

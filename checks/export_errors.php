@@ -39,7 +39,16 @@ function export_errors($schema) {
 		exit(1);
 	}
 
-	$fname=$config['results_dir'] . 'error_view_' . $schema . '.txt';
+
+	// first of all delete old files. especially important in case the number
+	// of error decreases and just one file instead of two is needed any more
+	foreach (glob($config['results_dir'] . "error_view_$schema.*.txt*") as $fname) {
+		unlink($fname);
+	}
+
+
+	$counter=0;
+	$fname=$config['results_dir'] . 'error_view_' . $schema . '.' . floor($counter/500000) . '.txt';
 	$f = fopen($fname, 'w');
 
 	if ($f) {
@@ -53,6 +62,20 @@ function export_errors($schema) {
 
 		while ($row=pg_fetch_assoc($result)) {
 			fwrite($f, smooth_text($row['schema'] ."\t". $row['error_id'] ."\t". $row['error_type'] ."\t". $row['error_name'] ."\t". $row['object_type'] ."\t". $row['object_id'] ."\t". $row['state'] ."\t". strtr($row['description'], array("\t"=>" ")) ."\t". $row['fo'] ."\t". $row['lc'] ."\t". $row['ts'] ."\t".  $row['lat'] . "\t". $row['lon'] . "\t". $row['msgid'] . "\t". $row['txt1'] . "\t". $row['txt2'] . "\t". $row['txt3'] . "\t". $row['txt4'] . "\t". $row['txt5']) . "\n");
+
+			if (++$counter % 500000 == 0) {		// switch to another file every 500.000th line
+
+				fclose($f);
+				system("bzip2 -c \"$fname\" > \"$fname.bz2\"");
+
+				$fname=$config['results_dir'] . 'error_view_' . $schema . '.' . floor($counter/500000) . '.txt';
+				echo "switching to file $fname\n";
+				$f = fopen($fname, 'w');
+				if (!$f) {
+					echo "Cannot open error_view file ($fname) for writing";
+					exit(1);
+				}
+			}
 		}
 		pg_free_result($result);
 		fclose($f);
