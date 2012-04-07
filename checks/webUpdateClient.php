@@ -119,6 +119,7 @@ function remote_command($location, $cmd, $schema=0) {
 // update contents belonging to a given schema
 // ie. upload all the files and start update procedure on webserver
 function update_schema($schema, $session_ID, $URL, $location) {
+	global $config;
 
 	// initialize update sequence
 	$myURL="$URL?schema=$schema&cmd=prepare_update&PHPSESSID=$session_ID";
@@ -127,6 +128,8 @@ function update_schema($schema, $session_ID, $URL, $location) {
 	echo implode("\n", $result);
 
 	// update one or more files
+	$oldpath=getcwd();
+	chdir($config['results_dir']);
 	foreach (glob("error_view_$schema.*.txt.bz2") as $fname) {
 
 		if ($location=='--remote') ftp_upload($fname);
@@ -137,6 +140,7 @@ function update_schema($schema, $session_ID, $URL, $location) {
 		$result = readHTTP($myURL);
 		echo implode("\n", $result);
 	}
+	chdir($oldpath);
 
 	// toggle tables and finalize update sequence
 	$myURL="$URL?schema=$schema&cmd=finish_update&PHPSESSID=$session_ID" .
