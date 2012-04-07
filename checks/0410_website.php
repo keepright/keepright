@@ -429,7 +429,7 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 		WHERE k IN ('" . implode("', '", $checkable_tags) . "') AND
 		NOT (v ~* '" . implode("' OR v ~* '", $whitelist) . "')
 		GROUP BY {$object_type}_id
-	", $db1);
+	", $db1, false);
 
 	while ($row1=pg_fetch_array($result1, NULL, PGSQL_ASSOC)) {
 
@@ -579,7 +579,7 @@ function queueURL(&$rc, $element, $url) {
 	}
 
 	// Queue for later
-	print "Queue $url on ID $element[id]\n";
+	//print "Queue $url on ID $element[id]\n";
 	$request = new RollingCurlRequest($url);
 	$request->callback_data = $element;
 	$rc->add($request);
@@ -606,7 +606,7 @@ function run_keepright_callback($response, $info, $request) {
 	global $db2, $error_type, $error_count;
 
 	$obj = $request->callback_data;
-	echo "callback for " . $request->url . "\n";
+	//echo "callback for " . $request->url . "\n";
 
 	if($info['http_code'] == 0) {
 		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
@@ -644,10 +644,12 @@ function run_keepright_callback($response, $info, $request) {
 			VALUES ($error_type + " . $ret['type'] . ", '" . $obj['object_type'] . "', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
 		", $db2, false);
 
+		/*
 		echo "error on URL " . $request->url . "\n";
 		print_r($obj);
 		echo "result:\n";
 		print_r($ret);
+		*/
 
 	}
 }
@@ -754,7 +756,7 @@ function check_redirects($response, $osm_element, $http_eurl) {
 		if ($url!=='' && $url!=='/') {		// some pages refresh on "/" or on blank urls; this shall not build a loop
 
 			$url = normalize_url($match[1], $http_eurl);
-			print "Old style http-equiv refresh found $http_eurl $match[1] $url\n";
+			//print "Old style http-equiv refresh found $http_eurl $match[1] $url\n";
 
 			// count redirects for this element
 			if (isset($osm_element['keepright_loopcount']))
@@ -778,7 +780,7 @@ function check_redirects($response, $osm_element, $http_eurl) {
 	if(preg_match_all('/\<FRAME.*?SRC="(.*?)".*?\>/iu',$response, $match)) {
 		foreach($match[1] as $url) {
 			$url = normalize_url($url, $http_eurl);
-			print "LOAD FRAME ELEMENT: $url\n";    // if $debug
+			//print "LOAD FRAME ELEMENT: $url\n";    // if $debug
 			$ch = curl_init();
 			curl_setopt_array($ch, $curlopt);
 			curl_setopt($ch, CURLOPT_URL, $url);
