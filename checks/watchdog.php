@@ -66,9 +66,12 @@ foreach ($schemas as $schema=>$schema_cfg) {
 		$at_least_one_resultfile=true;
 
 		// local result file size
-		$size=filesize($resultfile_path);
-		if ($size<$config['watchdog']['error_view_minimum_filesize'])
-			$issues[]="result file for schema $schema is too small. Size is $size";
+		// only check this one on the first file of each schema
+		if substr($resultfile, 0, -10)=='.0.txt.bz2') {
+			$size=filesize($resultfile_path);
+			if ($size<$config['watchdog']['error_view_minimum_filesize'])
+				$issues[]="result file for schema $schema is too small. Size is $size";
+		}
 
 		// local result file mtime
 		$mtime=filemtime($resultfile_path);
