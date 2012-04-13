@@ -20,7 +20,7 @@ require('webUpdateClient.php');
 
 $serverstate = remote_command('--remote', '--get_state');	// get listing of result files from webserver
 
-print_r($serverstate);
+//print_r($serverstate);
 
 
 $issues = array();
