@@ -188,7 +188,7 @@ function get_state($db) {
 		$result['files'][$filename] = array(
 			'size'=>filesize($filename),
 			'mtime'=>filemtime($filename),
-			'count'=>count_star($db, substr($filename, 0, -8))
+			'count'=>count_star($db, substr($filename, 0, strpos($filename, '.')))		// length := position of the dot
 		);
 	}
 

@@ -19,7 +19,8 @@ require('webUpdateClient.php');
 
 
 $serverstate = remote_command('--remote', '--get_state');	// get listing of result files from webserver
-//print_r($serverstate);
+
+print_r($serverstate);
 
 
 $issues = array();
@@ -30,8 +31,6 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 	if ($schema=='at' || $schema=='md' || $schema=='50') continue;	// don't check testing schemas and Australia
 
-	$resultfile = 'error_view_' . $schema . '.txt.bz2';
-	$resultfile_path = $config['results_dir'] . $resultfile;
 	$planetfile = $config['planet_dir'] . $schema . '.pbf';
 
 
@@ -55,10 +54,16 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 
 
-	// check file size and modification date of result file
+	// check file size and modification date of result file(s)
+	// at least the error_view[schema].0.txt.bz2 must exist
 
-	// local result file found
-	if (file_exists($resultfile_path)) {
+	$at_least_one_resultfile=false;
+	$list=glob($config['results_dir'] . 'error_view_' . $schema . '.*.txt.bz2');
+
+	foreach ($list as $resultfile_path) {
+
+		$resultfile=basename($resultfile_path);
+		$at_least_one_resultfile=true;
 
 		// local result file size
 		$size=filesize($resultfile_path);
@@ -97,7 +102,9 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 		} else $issues[]="result file for schema $schema not found on web server";
 
-	} else $issues[]="result file for schema $schema not found on local server";
+	}
+
+	if (!$at_least_one_resultfile) $issues[]="result file for schema $schema not found on local server";
 
 
 
