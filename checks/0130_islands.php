@@ -40,7 +40,7 @@ $islands = array(
 		'Kopenhagen, Denmark' => 5056358,
 		'Tallinn, Estonia' => 4554198,
 		'Torshavn, Faröer' => 4967431,
-		'Berlin, Germany' => 13853652,
+		'Berlin, Germany' => 156597518,
 		'Düsseldorf, Germany' => 143229689,
 		'Frankfurt aM, Germany' => 25119827,
 		'Ingolstadt, Germany' => 30404126,
@@ -50,7 +50,7 @@ $islands = array(
 		'Athens, Greece' => 123272451,
 		'Lahti, Finland' => 24318266,
 		'Marseille, France' => 6313524,
-		'Paris, France' => 26503463,
+		'Paris, France' => 78454008,
 		'Lyon, France' => 4360392,
 		'London, Great Britain' => 144718992,
 		'Sheffield, Great Britain' => 93168220,
@@ -59,7 +59,7 @@ $islands = array(
 		'Roma, Italy' => 28604181,
 		'Mestre, Italy' => 34694832,
 		'Milano, Italy' => 36874245,
-		'Pula, Istria' => 28004142,
+		'Pula, Istria' => 148887801,
 		'Riga, Latvia' => 38788862,
 		'Vilnius, Lithuania' => 4914187,
 		'Funchal, Madeira' => 27354062,
@@ -79,7 +79,7 @@ $islands = array(
 		'Kiew, Ukraine' => 4375099,
 	),
 	'australia' => array(
-		'Melbourne' => 20275086,
+		'Melbourne' => 157699828,
 		'Sydney' => 5152283
 	),
 	'africa' => array(
@@ -151,7 +151,7 @@ $islands = array(
 		'Reno, NV' => 32776300,		//39.5367148, -119.8036587
 		'Salt Lake City, UT' => 32079486, //40.7658591, -111.9348698
 		'Denver, CO' => 16974487,	//39.7909665, -104.9884513
-		'Lincoln, NE' => 14148564,	//40.8204001, -96.9105351
+		'Lincoln, NE' => 51804962,	//40.8204001, -96.9105351
 		'Topeka, KS' => 13251159,	//38.8693256, -95.8354975
 		'Des Moines, IA' => 34105509,	//41.5953603, -93.6154316
 		'Springfield, IL' => 22012674,	//39.8005698, -89.6478647
@@ -171,14 +171,14 @@ $islands = array(
 		'Santa Fe, NM' => 14612892,	//35.502096, -106.248635
 		'Houston, TX' => 15446151,	//29.7360998, -95.3685672
 		'Lubbock, TX' => 44530340,	//33.594531, -101.855227
-		'Oklahoma City, OK' => 14926398,//35.4628604, -97.4875224
+		'Oklahoma City, OK' => 132448129,//35.4628604, -97.4875224
 		'Little Rock, AR' => 38287741,	//34.6403829, -92.4451611
 		'Baton Rouge, LA' => 27811078,	//30.4391683, -91.1829017
 		'Jackson, MS' => 30493865,	//32.2857821, -90.2153904
 		'Atlanta, GA' => 28851747,	//33.691751, -84.402198
 		'Raleigh, NC' => 18898636,	//35.755875, -78.657918
 		'Asheville, NC' => 43596376,	//35.5884879, -82.5254032
-		'Columbia, SC' => 34443968,	//34.0101336, -81.0625124
+		'Columbia, SC' => 158977007,	//34.0101336, -81.0625124
 		'Augusta, SC' => 26944246,	//33.4690182, -81.9588167
 		'Tallahassee, FL' => 11049098,	//30.483967, -84.041192
 		'Orlando, FL' => 32075497,	//28.4792, -81.44891
@@ -200,7 +200,7 @@ $islands = array(
 		'Ottawa, Canada' => 76434558,
 		'Quebec, Canada' => 16229066,
 		'Calgary, Canada' => 5386816,
-		'Santo Domingo, Dominican Republic' => 28118564,
+		'Santo Domingo, Dominican Republic' => 154964833,
 		'Ile de la Gonave, Haiti' => 49014482,
 		'San Juan, Puerto Rico' => 22231517,
 		'Isla de Vieques' => 22256504,
@@ -234,6 +234,33 @@ $islands = array(
 		'Cayenne, Fr. Guyana' => 34316537
 	)
 );
+
+
+
+if ($argc=2 && $argv[1]=='checkways') {
+
+	exit (checkways());
+
+}
+
+// helper function for checking if all starting ways still exist
+function checkways() {
+	global $islands;
+
+	echo "checking starting ways for existence\n";
+	foreach ($islands as $island=>$ways) foreach ($ways as $dontcare=>$way) {
+
+		$response = file_get_contents("http://www.openstreetmap.org/api/0.6/way/$way");
+
+		// you get http error "410: Gone" if the way doesn't exist any more
+		if (!(strlen($response)>1))
+			echo "missing way $way\n";
+
+		// wait for 0.5 seconds
+		usleep(500000);
+	}
+}
+
 
 
 // include all ways tagged as highway (but exclude emergency_access_points and
