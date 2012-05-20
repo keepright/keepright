@@ -212,6 +212,13 @@ $error_types[360]['class']='warning';
 $error_types[360]['description']='To help applications choose the best matching language they should know the language used for the name tag. It is therefore necessary to provide a name:XX tag with the same content as found in the name tag where XX specifies the language used for the name tag.';
 
 
+$error_types[370]['name']='doubled places';
+$error_types[370]['enabled']=true;
+$error_types[370]['source']='0370_double_place.php';
+$error_types[370]['class']='error';
+$error_types[370]['description']='a node inside of an area that is tagged with same name and representing the same physical entity leads to wrong statistics and doubled labels on the map';
+
+
 $error_types[380]['name']='non-physical use of sport-tag';
 $error_types[380]['enabled']=true;
 $error_types[380]['source']='0380_nonphysical_sport_tag.php';
