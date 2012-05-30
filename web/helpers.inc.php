@@ -152,4 +152,31 @@ function language_selector() {
 	}
 	echo '</select>';
 }
+
+
+// print out announcements for the web landing page
+// parameter $show_archived_entries (0|1) selects current or archived entries
+function announcements($db1, $show_archived_entries) {
+	$result=query("
+		SELECT subject, body, COALESCE( txt1, '') AS txt1,
+			COALESCE( txt2, '') AS txt2, COALESCE( txt3, '') AS txt3
+		FROM announce
+		WHERE visible<>0 AND archived=" . $show_archived_entries . "
+		ORDER BY ID DESC
+	", $db1, false);
+
+	while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+
+		$body=strtr(T_gettext($row['body']),
+			array(	'$1'=>T_gettext($row['txt1']),
+				'$2'=>T_gettext($row['txt2']),
+				'$3'=>T_gettext($row['txt3'])
+			)
+		);
+
+		echo '<h4>' . T_gettext($row['subject']) . "</h4><p>$body</p>\n";
+	}
+
+	mysqli_free_result($result);
+}
 ?>
