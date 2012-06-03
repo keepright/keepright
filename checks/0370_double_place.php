@@ -88,16 +88,20 @@ $keylist = "'abutters', 'aerialway', 'aeroway', 'agricultural', 'amenity', 'area
 
 
 // outer part: select from inner part where way as well as node
-// are tagged with the same name.
+// are tagged with the same name or no name at all.
 // inner part:
 // select way/node pairs with common key/value pairs
 // where key is on the list from above, thus representing some
 // physical 2D entity
+
+// ILIKE ... compare name in case insensitive manner
+// turn off escaping because pattern is virtually unknown and could contain % or _
 query("
 
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
-	SELECT $error_type, 'node', T.node_id, 'This node has tags in common with the surrounding way #$1 (including the name \'$2\') and seems to be redundand', T.way_id, wt2.v, NOW()
-
+	SELECT $error_type, 'node', T.node_id, 'This node has tags in common with the surrounding way #$1' ||
+		CASE WHEN wt2.v IS NOT NULL THEN ' (including the name \'$2\')' ELSE '' END ||
+		' and seems to be redundand', T.way_id, wt2.v, NOW()
 	FROM (
 		SELECT i.*
 		FROM _tmp_inclusions i
@@ -116,17 +120,15 @@ query("
 		)
 	) AS T
 
-	INNER JOIN way_tags wt2 USING (way_id)
-	INNER JOIN node_tags nt2 USING (node_id)
-	WHERE wt2.k='name' AND
-		nt2.k='name' AND
-		wt2.v=nt2.v
+	LEFT JOIN (SELECT way_id, v FROM way_tags WHERE k='name') wt2 USING (way_id)
+	LEFT JOIN (SELECT node_id, v FROM node_tags WHERE k='name') nt2 USING (node_id)
+	WHERE COALESCE(wt2.v, '') ILIKE COALESCE(nt2.v, '') ESCAPE ''
 ", $db1);
 
 
 
-// query("DROP TABLE IF EXISTS _tmp_ways", $db1);
-// query("DROP TABLE IF EXISTS _tmp_nodes", $db1);
-// query("DROP TABLE IF EXISTS _tmp_inclusions", $db1);
+query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_nodes", $db1);
+query("DROP TABLE IF EXISTS _tmp_inclusions", $db1);
 
 ?>
