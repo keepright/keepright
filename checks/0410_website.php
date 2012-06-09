@@ -324,7 +324,8 @@ $whitelist = array(
 	'^http://www.yunnanexplorer.com/transport/',
 	'^http://www.zfa-iserlohn.de/balve/containerstandorte.asp',
 	'^https://www.sparkasse-rottal-inn.de/',
-	'^http://zditm.szczecin.pl/rozklady/index.html'
+	'^http://zditm.szczecin.pl/rozklady/index.html',
+	'^http://www.carifvg.it/'
     );
 
 // used for identifying probable domain squatting or hijack.
