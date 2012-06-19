@@ -32,12 +32,8 @@ function planet_cut($schema) {
 	}
 
 	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf"';
-	logger($cmd, KR_COMMANDS);
-	//system($cmd, $errorlevel);
-	if ($errorlevel) {
-		logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
-		exit(1);
-	}
+
+	//shellcmd($cmd, 'osmosis');
 
 	init_workingDir($schema);
 }
@@ -87,12 +83,7 @@ function planet_update($schema, $mode='') {
 				' --pl directory="' . $config['temp_dir'] . '"';
 
 
-		logger($cmd, KR_COMMANDS);
-		system($cmd, $errorlevel);
-		if ($errorlevel) {
-			logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
-			exit(1);
-		}
+		shellcmd($cmd, 'osmosis');
 		chdir($oldpath);
 
 		rename($planetfile, $planetfile . '.old');
@@ -110,12 +101,7 @@ function planet_update($schema, $mode='') {
 			' --pl directory="' . $config['temp_dir'] . '"';
 
 
-		logger($cmd, KR_COMMANDS);
-		system($cmd, $errorlevel);
-		if ($errorlevel) {
-			logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
-			exit(1);
-		}
+		shellcmd($cmd, 'osmosis');
 		chdir($oldpath);
 	}
 }
@@ -130,13 +116,7 @@ function init_workingDir($schema) {
 
 	mkdir($workingDirectory);
 
-	$cmd=$config['osmosis_bin'] . " --rrii workingDirectory=$workingDirectory";
-	logger($cmd, KR_COMMANDS);
-	system($cmd, $errorlevel);
-	if ($errorlevel) {
-		logger("osmosis: exit with errorlevel $errorlevel", KR_ERROR);
-		exit(1);
-	}
+	shellcmd($config['osmosis_bin'] . " --rrii workingDirectory=$workingDirectory", 'osmosis');
 
 
 	// now fix config file with appropriate URL and without limit of downloading files

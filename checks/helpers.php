@@ -693,6 +693,19 @@ function platform() {
 	return php_uname('s');
 }
 
+
+// run shell command and check errorlevel
+// prepend $label in any error message
+function shellcmd($cmd, $label='') {
+	logger($cmd, KR_COMMANDS);
+	system($cmd, $errorlevel);
+	if ($errorlevel) {
+		logger("$label exit with errorlevel $errorlevel", KR_ERROR);
+		exit(1);
+	}
+}
+
+
 // return an array containing all possible values inside the tag value
 // split by ";". verbose ";" have to be doubled ";;"
 // http://wiki.openstreetmap.org/wiki/Semi-colon_value_separator
