@@ -85,6 +85,16 @@ $config['planet_file']=$config['planet_dir'] . 'planet.pbf';
 $config['osmosis_bin']='/home/haraldk/OSM/osmosis-0.39/bin/osmosis';
 
 
+// tools part of (gnuwin32)-coreutils
+// file locations for linux
+$config['cmd_sort']='/usr/bin/sort';
+$config['cmd_join']='/usr/bin/join';
+
+// file locations for windows
+//$config['cmd_sort']='"C:/Program Files (x86)/coreutils-5.3.0-bin/bin/sort.exe"';
+//$config['cmd_join']='"C:/Program Files (x86)/coreutils-5.3.0-bin/bin/join.exe"';
+
+
 // to turn off downloading the planet file and use
 // the old one set this parameter to false
 $config['update_source_data']=true;

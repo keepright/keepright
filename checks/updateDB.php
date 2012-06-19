@@ -10,6 +10,7 @@ require('prepare_countries.php');
 function updateDB($schema) {
 
 	planet_update($schema);
+	postprocess_datafiles();
 
 	emptyDB($schema);
 
@@ -64,24 +65,26 @@ function loadDB($schema) {
 
 	// Import the table data from the data files using the fast COPY method.
 	// replace temp-path for data files created by osmosis
-	query("copy nodes FROM '" . $config['temp_dir'] . "nodes.txt' WITH NULL AS 'NULL';", $db);
+	query("copy nodes FROM '" . $config['temp_dir'] . "nodes_sorted.txt' WITH NULL AS 'NULL';", $db);
 	query("copy node_tags FROM '" . $config['temp_dir'] . "node_tags.txt' WITH NULL AS 'NULL';", $db);
-	query("copy ways (id, user_name, tstamp, first_node_id, last_node_id, node_count) FROM '" . $config['temp_dir'] . "ways.txt' WITH NULL AS 'NULL';", $db);
+	query("copy ways FROM '" . $config['temp_dir'] . "ways.txt' WITH NULL AS 'NULL';", $db);
+//(id, user_name, tstamp, first_node_id, last_node_id, node_count)
 	query("copy way_tags FROM '" . $config['temp_dir'] . "way_tags.txt' WITH NULL AS 'NULL';", $db);
-	query("copy way_nodes (way_id, node_id, sequence_id) FROM '" . $config['temp_dir'] . "way_nodes.txt' WITH NULL AS 'NULL';", $db);
+	query("copy way_nodes FROM '" . $config['temp_dir'] . "way_nodes2.txt' WITH NULL AS 'NULL';", $db);
+//(way_id, node_id, sequence_id)
 	query("copy relations FROM '" . $config['temp_dir'] . "relations.txt' WITH NULL AS 'NULL';", $db);
 	query("copy relation_tags FROM '" . $config['temp_dir'] . "relation_tags.txt' WITH NULL AS 'NULL';", $db);
 	query("copy relation_members FROM '" . $config['temp_dir'] . "relation_members.txt' WITH NULL AS 'NULL';", $db);
 
 
 	// delete data files to save disk space
-	unlink($config['temp_dir'] . 'nodes.txt');
+	unlink($config['temp_dir'] . 'nodes_sorted.txt');
 	unlink($config['temp_dir'] . 'node_tags.txt');
 	unlink($config['temp_dir'] . 'relation_members.txt');
 	unlink($config['temp_dir'] . 'relations.txt');
 	unlink($config['temp_dir'] . 'relation_tags.txt');
 	unlink($config['temp_dir'] . 'users.txt');
-	unlink($config['temp_dir'] . 'way_nodes.txt');
+	unlink($config['temp_dir'] . 'way_nodes2.txt');
 	unlink($config['temp_dir'] . 'ways.txt');
 	unlink($config['temp_dir'] . 'way_tags.txt');
 
@@ -117,30 +120,55 @@ function loadDB($schema) {
 	query('CREATE INDEX idx_relation_tags_k ON relation_tags (k);', $db);
 	query('CREATE INDEX idx_relation_tags_v ON relation_tags (v);', $db);
 
-
-	query("
-		UPDATE way_nodes
-		SET lat=nodes.lat, lon=nodes.lon, x=nodes.x, y=nodes.y
-		FROM nodes
-		WHERE nodes.id=way_nodes.node_id;
-	", $db);
-
-	query("
-		UPDATE ways
-		SET first_node_lat=nodes.lat, first_node_lon=nodes.lon, first_node_x=nodes.x, first_node_y=nodes.y
-		FROM nodes
-		WHERE nodes.id=ways.first_node_id;
-	", $db);
-
-
-	query("
-		UPDATE ways
-		SET last_node_lat=nodes.lat, last_node_lon=nodes.lon, last_node_x=nodes.x, last_node_y=nodes.y
-		FROM nodes
-		WHERE nodes.id=ways.last_node_id;
-	", $db);
 	pg_close($db);
 
 }
+
+
+
+
+// postprocessing on tab-separated data files created by osmosis before they
+// can be inserted in postgres
+// manually join table way_nodes and nodes to add node coordinates to way_nodes2
+// manually join table ways with nodes to add node coordinates of first and last node to ways
+function postprocess_datafiles() {
+	global $config;
+
+	$PATH=$config['temp_dir'];
+	$SORTOPTIONS='--temporary-directory="' . $config['temp_dir'] . '"';
+	$SORT=$config['cmd_sort'];
+	$JOIN=$config['cmd_join'];
+	$lbl='postprocess_datafiles';
+
+
+
+	// join way_nodes with node coordinates
+
+	shellcmd("$SORT $SORTOPTIONS -t \"	\" -n -k 2,2 " . $PATH . "way_nodes.txt > " . $PATH . "way_nodes_sorted.txt", $lbl);
+	unlink($PATH . 'way_nodes.txt');
+
+	shellcmd("$SORT $SORTOPTIONS -t \"	\" -n -k 1,1 " . $PATH . "nodes.txt > " . $PATH . "nodes_sorted.txt", $lbl);
+	unlink($PATH . 'nodes.txt');
+
+	shellcmd("$JOIN -t \"	\" -e NULL -a 1 -1 2 -o 1.1,0,1.3,2.5,2.6,2.7,2.8 " . $PATH . "way_nodes_sorted.txt " . $PATH . "nodes_sorted.txt > " . $PATH . "way_nodes2.txt", $lbl);
+
+	unlink($PATH . 'way_nodes_sorted.txt');
+
+
+	// joining ways with coordinates of first and last node
+
+	shellcmd("$SORT $SORTOPTIONS -t \"	\" -n -k 4,4 " . $PATH . "ways.txt > " . $PATH . "ways_sorted.txt", $lbl);
+	unlink($PATH . 'ways.txt');
+
+	shellcmd("$JOIN -t \"	\" -e NULL -a 1 -1 4 -o 1.1,1.2,1.3,0,1.5,2.5,2.6,2.7,2.8,1.6 " . $PATH . "ways_sorted.txt " . $PATH . "nodes_sorted.txt > " . $PATH . "ways2.txt", $lbl);
+
+	shellcmd("$SORT $SORTOPTIONS -t \"	\" -n -k 5,5 " . $PATH . "ways2.txt > " . $PATH . "ways_sorted.txt", $lbl);
+	unlink($PATH . 'ways2.txt');
+
+	shellcmd("$JOIN -t \"	\" -e NULL -1 5 -o 1.1,1.2,1.3,1.4,0,1.6,1.7,1.8,1.9,2.5,2.6,2.7,2.8,1.10 " . $PATH . "ways_sorted.txt " . $PATH . "nodes_sorted.txt > " . $PATH . "ways.txt", $lbl);
+	unlink($PATH . 'ways_sorted.txt');
+
+}
+
 
 ?>
