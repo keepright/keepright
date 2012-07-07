@@ -473,7 +473,7 @@ function load_dump($db1, $filename, $destination, $schema) {
 
 	system("($CAT $filename > $fifoname) >/dev/null &");	// must run in the background
 
-	system("mysql -h$db_host -u$db_user -p$db_pass -e \"LOAD DATA LOCAL INFILE '$fifoname' INTO TABLE $tbl\" $db_name");
+	query("LOAD DATA LOCAL INFILE '$fifoname' INTO TABLE $tbl", $db1);
 
 	unlink($fifoname);
 
