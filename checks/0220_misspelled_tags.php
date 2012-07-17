@@ -16,7 +16,6 @@ will be found so any name value will be ok
 // * characters used as fake namespace separator: |>
 // * colons (:) at the end of a key are bad
 
-
 global $false_positives, $never_complain_about, $force_irregular, $force_regular;
 
 // list of key or value parts that sound very similar but are something completely different
@@ -54,6 +53,7 @@ $false_positives = array(
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
+	array('http', 'https'),
 	array('lamp', 'ramp'),
 	array('land', 'sand'),
 	array('lanes', 'lines'),
@@ -90,80 +90,80 @@ $false_positives = array(
 // keys that lead to diverse values. It doesn't ever make sense
 // to compare these keys' values with each other.
 // Most of these keys have numbers, dates or times as values. Comparing them is useless.
-// this string will be used in an SQL 'column NOT IN (...)' clause,
-// so you have to properly escape apos!
-// there is already an exception for any 'tiger'-prefixed tag in action so you needn't add one here
-$never_complain_about = "(
-	'addr:alternatenumber:=',
-	'addr:conscriptionnumber:=',
-	'addr:full:=',
-	'addr:housenumber:=',
-	'aims-id:=',
-	'AND_nosr_r:=',
-	'AND_a_nosr_r:=',
-	'atm_ref:=',
-	'canvec:uuid:=',
-	'collection_times:=',
-	'bridge_ref:=',
-	'bus_routes:=',
-	'created_by:=',
-	'distance:=',
-	'FDOT_ref:=',
-	'fixme:=',
-	'Fixme:=',
-	'FIXME:=',
-	'garmin_type:=',
-	'generator:output:electricity:=',
-	'generator:output:hot_water:=',
-	'generator:output:hot_air:=',
-	'generator:output:cold_water:=',
-	'generator:output:cold_air:=',
-	'generator:output:compressed_air:=',
-	'generator:output:steam:=',
-	'generator:output:vacuum:=',
-	'generator:output:battery_charging:=',
-	'gns_classification:=',
-	'gns:category:=',
-	'gns:dsg:=',
-	'gns:DSG:=',
-	'GNS:dsg_code:=',
-	'gns:MGRS:=',
-	'grades:=',
-	'history:=',
-	'image:=',
-	'ims:frequency:=',
-	'int_ref:=',
-	'line:=',
-	'lines:=',
-	'massgis:BASE_MAP:=',
-	'massgis:MANAGR_ABR:=',
-	'massgis:OWNER_ABRV:=',
-	'massgis:PROJ_ID:=',
-	'massgis:SOURCE_MAP:=',
-	'maxspeed:=',
-	'MGRS:=',
-	'MP_TYPE:=',
-	'opening_hours:=',
-	'power_rating:=',
-	'phone:=',
-	'nat_ref:=',
-	'nhd-shp:fdate:=',
-	'OCUPANTES:=',
-	'osak:identifier:=',
-	'PFM:garmin_type:=',
-	'ref:isil:=',
-	'ref_no:=',
-	'ref_num:=',
-	'route_ref:=',
-	'source:=',
-	'source_ref:=',
-	'source_ref:name:=',
-	'statscan:rbuid:=',
-	'strassen-nrw:abs:=',
-	'traffic_sign:=',
-	'UNIDAD_MAN:=',
-	'website:='
-)";
+// this string will be used directly in an SQL WHERE clause,
+// so you have to properly escape apos and adhere to the syntax convention!
+$never_complain_about = "
+	prefix LIKE 'addr:alternatenumber:=%' OR
+	prefix LIKE 'addr:conscriptionnumber:=%' OR
+	prefix LIKE 'addr:full:=%' OR
+	prefix LIKE 'addr:housenumber:=%' OR
+	prefix LIKE 'aims-id:=%' OR
+	prefix LIKE 'AND_nosr_r:=%' OR
+	prefix LIKE 'AND_a_nosr_r:=%' OR
+	prefix LIKE 'atm_ref:=%' OR
+	prefix LIKE 'canvec:uuid:=%' OR
+	prefix LIKE 'collection_times:=%' OR
+	prefix LIKE 'bridge_ref:=%' OR
+	prefix LIKE 'bus_routes:=%' OR
+	prefix LIKE 'created_by:=%' OR
+	prefix LIKE 'distance:=%' OR
+	prefix LIKE 'FDOT_ref:=%' OR
+	prefix LIKE 'fixme:=%' OR
+	prefix LIKE 'Fixme:=%' OR
+	prefix LIKE 'FIXME:=%' OR
+	prefix LIKE 'garmin_type:=%' OR
+	prefix LIKE 'generator:output:electricity:=%' OR
+	prefix LIKE 'generator:output:hot_water:=%' OR
+	prefix LIKE 'generator:output:hot_air:=%' OR
+	prefix LIKE 'generator:output:cold_water:=%' OR
+	prefix LIKE 'generator:output:cold_air:=%' OR
+	prefix LIKE 'generator:output:compressed_air:=%' OR
+	prefix LIKE 'generator:output:steam:=%' OR
+	prefix LIKE 'generator:output:vacuum:=%' OR
+	prefix LIKE 'generator:output:battery_charging:=%' OR
+	prefix LIKE 'gns_classification:=%' OR
+	prefix LIKE 'gns:category:=%' OR
+	prefix LIKE 'gns:dsg:=%' OR
+	prefix LIKE 'gns:DSG:=%' OR
+	prefix LIKE 'GNS:dsg_code:=%' OR
+	prefix LIKE 'gns:MGRS:=%' OR
+	prefix LIKE 'grades:=%' OR
+	prefix LIKE 'history:=%' OR
+	prefix LIKE 'image:=%' OR
+	prefix LIKE 'ims:frequency:=%' OR
+	prefix LIKE 'int_ref:=%' OR
+	prefix LIKE 'line:=%' OR
+	prefix LIKE 'lines:=%' OR
+	prefix LIKE 'massgis:BASE_MAP:=%' OR
+	prefix LIKE 'massgis:MANAGR_ABR:=%' OR
+	prefix LIKE 'massgis:OWNER_ABRV:=%' OR
+	prefix LIKE 'massgis:PROJ_ID:=%' OR
+	prefix LIKE 'massgis:SOURCE_MAP:=%' OR
+	prefix LIKE 'maxspeed:=%' OR
+	prefix LIKE 'MGRS:=%' OR
+	prefix LIKE 'MP_TYPE:=%' OR
+	prefix LIKE 'note:=%' OR
+	prefix LIKE 'opening_hours:=%' OR
+	prefix LIKE 'power_rating:=%' OR
+	prefix LIKE 'phone:=%' OR
+	prefix LIKE 'nat_ref:=%' OR
+	prefix LIKE 'nhd-shp:fdate:=%' OR
+	prefix LIKE 'OCUPANTES:=%' OR
+	prefix LIKE 'osak:identifier:=%' OR
+	prefix LIKE 'PFM:garmin_type:=%' OR
+	prefix LIKE 'ref:isil:=%' OR
+	prefix LIKE 'ref_no:=%' OR
+	prefix LIKE 'ref_num:=%' OR
+	prefix LIKE 'route_ref:=%' OR
+	prefix LIKE 'source:=%' OR
+	prefix LIKE 'source_ref:=%' OR
+	prefix LIKE 'source_ref:name:=%' OR
+	prefix LIKE 'statscan:rbuid:=%' OR
+	prefix LIKE 'strassen-nrw:abs:=%' OR
+	prefix LIKE 'traffic_sign:=%' OR
+	prefix LIKE 'UNIDAD_MAN:=%' OR
+	prefix LIKE 'website:='
+";
 
 
 
@@ -253,7 +253,8 @@ global $error_type, $false_positives, $db1, $db2;
 	// in order to avoid duplicating backslashes. This is PostgreSQL syntax.
 	query("
 		INSERT INTO _tmp_tags(k, keylist, v, k_orig, v_orig, tag_count)
-		SELECT k, regexp_split_to_array(k, ':') || ARRAY['=', v, ''], v, k_orig, v_orig, COUNT(id) as tag_count
+		SELECT k, regexp_split_to_array(k, ':') || ARRAY['='] || regexp_split_to_array(v, ':') || ARRAY[''],
+			v, k_orig, v_orig, COUNT(id) as tag_count
 		FROM (
 			SELECT regexp_replace(k, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '', 'g') AS k,
 			regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '0', 'g') AS v,
@@ -375,15 +376,15 @@ global $never_complain_about, $force_irregular, $force_regular;
 	$result=query("
 		SELECT prefix, k, tag_count
 		FROM _tmp_keys
-		WHERE (prefix NOT IN (
-			SELECT prefix
-			FROM _tmp_keys
-			GROUP BY prefix
-			HAVING COUNT(k)>$tag_diversity_limit
-		)
-		AND prefix NOT IN $never_complain_about
-		AND prefix NOT LIKE 'tiger:%'
-		) OR prefix IS NULL or prefix=''
+		WHERE (
+			prefix NOT IN (
+				SELECT prefix
+				FROM _tmp_keys
+				GROUP BY prefix
+				HAVING COUNT(k)>$tag_diversity_limit
+			)
+			AND NOT ($never_complain_about)
+		) OR prefix IS NULL OR prefix=''
 	", $db1, false);
 
 	while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
