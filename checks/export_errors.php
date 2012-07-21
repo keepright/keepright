@@ -27,6 +27,8 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 function export_errors($schema) {
 	global $config;
 
+	$max_lines_per_file = 100000;
+
 	$dbschema='schema' . $schema;
 
 	logger("exporting errors for $dbschema into dumpfile");
@@ -48,7 +50,7 @@ function export_errors($schema) {
 
 
 	$counter=0;
-	$fname=$config['results_dir'] . 'error_view_' . $schema . '.' . floor($counter/500000) . '.txt';
+	$fname=$config['results_dir'] . 'error_view_' . $schema . '.' . floor($counter/$max_lines_per_file) . '.txt';
 	$f = fopen($fname, 'w');
 
 	if ($f) {
@@ -63,12 +65,12 @@ function export_errors($schema) {
 		while ($row=pg_fetch_assoc($result)) {
 			fwrite($f, smooth_text($row['schema'] ."\t". $row['error_id'] ."\t". $row['error_type'] ."\t". $row['error_name'] ."\t". $row['object_type'] ."\t". $row['object_id'] ."\t". $row['state'] ."\t". strtr($row['description'], array("\t"=>" ")) ."\t". $row['fo'] ."\t". $row['lc'] ."\t". $row['ts'] ."\t".  $row['lat'] . "\t". $row['lon'] . "\t". $row['msgid'] . "\t". $row['txt1'] . "\t". $row['txt2'] . "\t". $row['txt3'] . "\t". $row['txt4'] . "\t". $row['txt5']) . "\n");
 
-			if (++$counter % 500000 == 0) {		// switch to another file every 500.000th line
+			if (++$counter % $max_lines_per_file == 0) {		// switch to another file every 500.000th line
 
 				fclose($f);
-				system("bzip2 -c \"$fname\" > \"$fname.bz2\"");
+				system("bzip2 -k \"$fname\"");
 
-				$fname=$config['results_dir'] . 'error_view_' . $schema . '.' . floor($counter/500000) . '.txt';
+				$fname=$config['results_dir'] . 'error_view_' . $schema . '.' . floor($counter/$max_lines_per_file) . '.txt';
 				echo "switching to file $fname\n";
 				$f = fopen($fname, 'w');
 				if (!$f) {
@@ -80,7 +82,7 @@ function export_errors($schema) {
 		pg_free_result($result);
 		fclose($f);
 
-		system("bzip2 -c \"$fname\" > \"$fname.bz2\"");
+		system("bzip2 -k \"$fname\"");
 
 	} else {
 		echo "Cannot open error_view file ($fname) for writing";
