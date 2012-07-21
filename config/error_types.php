@@ -232,13 +232,12 @@ $error_types[390]['class']='warning';
 $error_types[390]['description']='highway=track ways should be added with more detail about the tracktype (grade1..grade5). The tracktype is included in rendering rules and makes maps more expressive.';
 
 $error_types[400]['name']='geometry glitches';
-$error_types[400]['enabled']=false;
+$error_types[400]['enabled']=true;
 $error_types[400]['source']='0400_geometry_glitches.php';
 $error_types[400]['class']='error';
-$error_types[400]['description']='looks for impossible sharp angles on highways and junctions as well as junctions that should be united into one because they are very close';
+$error_types[400]['description']='looks for impossible sharp angles on highways and junctions. These may be caused by missing turn restrictions on junctions or glitches along the linestring of ways';
 $error_types[400]['subtype'][401]='missing turn restriction';
 $error_types[400]['subtype'][402]='impossible angles';
-$error_types[400]['subtype'][403]='adjacent junctions';
 
 
 $error_types[410]['name']='websites';
