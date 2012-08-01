@@ -71,6 +71,14 @@ if ($_SESSION['authorized']===true) {
 			die("you are not authorized to access schema $schema\n");
 		}
 
+		// remove old dump files
+		// this is essential in case the new dump has less files than the old one
+		// special precautions here: deleting files on user input!
+		// $schema has up to three chars
+		foreach (glob('error_view_' . escapeshellcmd(substr($_GET['schema'], 0, 3)) . '.*.txt.bz2') as $fname) {
+			unlink($fname);
+		}
+
 		$db1=mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 		toggle_tables1($db1, $schema);
 		mysqli_close($db1);
