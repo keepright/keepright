@@ -271,6 +271,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 	 */
 	public void complete() {
 		//writerContainer.complete();
+		userWriter.complete();
 		nodeWriter.complete();
 		nodeTagWriter.complete();
 		wayWriter.complete();
@@ -287,6 +288,7 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 	 */
 	public void release() {
 		//writerContainer.release();
+		userWriter.release();
 		nodeWriter.release();
 		nodeTagWriter.release();
 		wayWriter.release();
