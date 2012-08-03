@@ -21,8 +21,8 @@ function init() {
 	map.addLayer(layerMapnik);
 
 	// add the osmarender layer
-	var layerOsmarender = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
-	map.addLayer(layerOsmarender);
+// 	var layerOsmarender = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
+// 	map.addLayer(layerOsmarender);
 
 	// add the open cycle map layer
 	var layerCycle = new OpenLayers.Layer.OSM.CycleMap("OSM Cycle Map");
