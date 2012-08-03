@@ -61,13 +61,8 @@ if ($error_view=='') {
 }
 
 // build SQL for fetching errors
-$sql="SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.object_timestamp, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment";
-
-if ($locale == 'en') {
-	$sql .= ', e.description';
-} else {
-	$sql .= ', e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5';
-}
+$sql="SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id, e.object_timestamp, e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment,
+e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5";
 
 $sql .= " FROM ($error_view) e LEFT JOIN $comments_name c USING (`schema`, error_id)
 WHERE TRUE";
@@ -98,12 +93,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 	}
 
 	if ($locale == 'en') {
-		// english messages readily found in table
-		$description = $row['description'];
+		// english: just insert txt parts into msgid
+		$replacements = array('$1'=>$row['txt1'], '$2'=>$row['txt2'], '$3'=>$row['txt3'], '$4'=>$row['txt4'], '$5'=>$row['txt5']);
+
+		$description = strtr($row['msgid'], $replacements);
 		$error_name = $row['error_name'];
 		$object_type = $row['object_type'];
 	} else {
-		// other languages: translate message and insert parameters
+		// other languages: translate message and insert txt parts
 		$replacements = array('$1'=>translate($row['txt1']), '$2'=>translate($row['txt2']), '$3'=>translate($row['txt3']), '$4'=>translate($row['txt4']), '$5'=>translate($row['txt5']));
 
 		$description = strtr(T_gettext($row['msgid']), $replacements);
