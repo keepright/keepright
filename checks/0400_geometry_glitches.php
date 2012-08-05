@@ -193,15 +193,6 @@ $angle_limit = cos(20.0 * PI()/180.0);
 // further research has to be done to check if driving the
 // sharp angle is allowed or not
 
-// duplicated nodes near junctions are a problem here:
-// they make zero-sized vectors where calculating an angle
-// is ridiculous. We can safely ignore them here because
-// they are already flagged by the duplicated nodes check.
-
-// another problem is calculation precision on very very straight
-// ways. One can receive values > 1 or < -1 which confuses acos()
-// these are not of interest so exclude them
-
 query("
 	INSERT INTO _tmp_sharp_angles (
 	junction_id, first_way_id, first_reversed,
@@ -210,8 +201,37 @@ query("
 		B.way_id, B.reversed
 	FROM _tmp_jpartners A, _tmp_jpartners B
 	WHERE A.junction_id=B.junction_id AND A.other_id<B.other_id
-	AND (A.x*B.x + A.y*B.y) > 
+	AND (A.x*B.x + A.y*B.y) >
 		SQRT((A.x^2 + A.y^2)*(B.x^2 + B.y^2)) * ($angle_limit)
+
+", $db1);
+
+
+query("CREATE INDEX idx_tmp_sharp_angles_first_way_id ON _tmp_sharp_angles (first_way_id)", $db1);
+query("CREATE INDEX idx_tmp_sharp_angles_second_way_id ON _tmp_sharp_angles (second_way_id)", $db1);
+query("ANALYZE _tmp_sharp_angles", $db1, false);
+
+
+
+// exclude pairs of ways that have the same name or ref
+// we are looking for real junctions, not points where highways
+// split in separate oneways
+query("
+	DELETE FROM _tmp_sharp_angles
+	WHERE EXISTS (
+		SELECT 1
+		FROM way_tags wt1
+		WHERE wt1.way_id=first_way_id AND
+			wt1.k IN ('name', 'ref') AND
+			EXISTS (
+				SELECT 1
+				FROM way_tags wt2
+				WHERE wt2.way_id=second_way_id AND
+					wt1.k=wt2.k AND
+					wt1.v=wt2.v
+			)
+	)
+
 ", $db1);
 
 
@@ -370,7 +390,7 @@ query("
 query("
 	UPDATE _tmp_sharp_angles
 	SET error_first=false
-	WHERE EXISTS (
+	WHERE error_first AND EXISTS (
 		SELECT relation_id
 		FROM _tmp_restrictions r
 		WHERE
@@ -385,7 +405,7 @@ query("
 query("
 	UPDATE _tmp_sharp_angles
 	SET error_second=false
-	WHERE EXISTS (
+	WHERE error_second AND EXISTS (
 		SELECT relation_id
 		FROM _tmp_restrictions r
 		WHERE
@@ -400,7 +420,7 @@ query("
 query("
 	UPDATE _tmp_sharp_angles
 	SET error_first=false
-	WHERE EXISTS (
+	WHERE error_first AND EXISTS (
 		SELECT relation_id
 		FROM _tmp_restrictions r
 		WHERE
@@ -415,7 +435,7 @@ query("
 query("
 	UPDATE _tmp_sharp_angles
 	SET error_second=false
-	WHERE EXISTS (
+	WHERE error_second AND EXISTS (
 		SELECT relation_id
 		FROM _tmp_restrictions r
 		WHERE
