@@ -24,6 +24,7 @@ $serverstate = remote_command('--remote', '--get_state');	// get listing of resu
 
 
 $issues = array();
+$last_update_per_user=array();
 
 
 foreach ($schemas as $schema=>$schema_cfg) {
@@ -81,6 +82,12 @@ foreach ($schemas as $schema=>$schema_cfg) {
 				" days. File date is " . date('d.m.Y H:m:s', $mtime);
 
 
+		// record youngest update time per user
+		if (!array_key_exists($schema_cfg['user'], $last_update_per_user) ||
+			$mtime>$last_update_per_user[$schema_cfg['user']])
+			$last_update_per_user[$schema_cfg['user']]=$mtime;
+
+
 		// compare file size and modification date of result file with file on webserver
 
 		// remote result file found
@@ -98,7 +105,7 @@ foreach ($schemas as $schema=>$schema_cfg) {
 					") for schema $schema is newer than version on web server (" .
 					date('d.m.Y H:m:s', $serverstate['files'][$resultfile]['mtime']) . ")";
 
-			// check error count from server table	
+			// check error count from server table
 			if (!($serverstate['files'][$resultfile]['count']>1))
 				$issues[]="error_view table seems to be empty for schema $schema";
 
@@ -117,6 +124,11 @@ foreach ($schemas as $schema=>$schema_cfg) {
 
 }
 
+
+foreach ($last_update_per_user as $user=>$mtime) {
+	if ($mtime< time() - $config['watchdog']['user_max_age'])
+		$issues[]="last update from user $user dates " . date('d.m.Y H:m:s', $mtime);
+}
 
 print_r($issues);
 if (count($issues)>0) echo count($issues) . " issues found.\n";

@@ -190,6 +190,11 @@ $config['watchdog']['planet_minimum_filesize']=90000000;
 $config['watchdog']['schema_max_age']=18 * 86400;
 
 
+// every host (==user) should commit at least one schema
+// every 14 hours, else it stopped working
+$config['watchdog']['user_max_age']=14 * 3600;
+
+
 // result files must not be smaller than this limit
 // if they are, they are damaged.
 // currently there is no result file smaller than 700kB
