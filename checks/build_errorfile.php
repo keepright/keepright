@@ -52,7 +52,17 @@ fwrite($dst, "schema\terror_id\terror_type\terror_name\tobject_type\tobject_id" 
 // read error_view*.txt files (one for each schema) and dump them
 foreach ($ev_filenames as $ev_filename) {
 
-	$ev=fopen($ev_filename, 'r');
+
+	// note that build_errorfile takes a reasonable amount of time,
+	// the glob() call for finding the file list is executed just once
+	// in the beginning; updates to error_view files may happen anytime
+	// so files might disappear. In this rare case stop the script,
+	// the next run will hopefully be ok
+	if (!$ev=fopen($ev_filename, 'r')) {
+		echo "could not open $ev_filename for reading. Maybe the file was updated during export process\n";
+		exit;
+	}
+
 	echo "$ev_filename\n";
 	while(!feof($ev)) {
 		$ev_line=trim(fgets($ev));
