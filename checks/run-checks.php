@@ -475,10 +475,10 @@ function run_checks($schema, $checks_to_run=array()) {
 		}
 
 		$result = query("
-			SELECT round(e.lat) AS lat, round(e.lon) AS lon, COUNT(e.id) AS cnt
+			SELECT round(10*e.lat)/10 AS lat, round(10*e.lon)/10 AS lon, COUNT(e.id) AS cnt round(e.lat) AS lat, round(e.lon) AS lon, COUNT(e.id) AS cnt
 			FROM nodes e
 			$boundary_clipper
-			GROUP BY round(e.lat), round(e.lon)
+			GROUP BY round(10*e.lat)/10, round(10*e.lon)/10
 		", $db1);
 
 		while ($row=pg_fetch_assoc($result)) {
