@@ -49,6 +49,7 @@ $islands = array(
 		'Stuttgart, Germany' => 25239173,
 		'Athens, Greece' => 123272451,
 		'Lahti, Finland' => 24318266,
+		'Carhaix-Plouguer, France' => 32132329,
 		'Marseille, France' => 6313524,
 		'Paris, France' => 78454008,
 		'Lyon, France' => 4360392,

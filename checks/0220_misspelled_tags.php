@@ -63,6 +63,7 @@ $false_positives = array(
 	array('j-bar', 't-bar'),
 	array('kebab', 'kebap'),
 	array('left', 'lift'),
+	array('length', 'lengths'),
 	array('levels', 'level'),
 	array('light', 'right'),
 	array('line', 'link', 'mine', 'wine'),
