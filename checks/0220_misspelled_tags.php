@@ -36,6 +36,7 @@ $false_positives = array(
 	array('DE:rural', 'DK:rural'),
 	array('DE:urban', 'DK:urban'),
 	array('derail', 'detail', 'retail'),
+	array('dock', 'lock'),
 	array('door', 'moor'),
 	array('drain', 'train'),
 	array('Eiche', 'Esche'),
@@ -46,6 +47,7 @@ $false_positives = array(
 	array('function', 'junction'),
 	array('game', 'name'),
 	array('garage', 'garages'),
+	array('gold', 'golf'),
 	array('good', 'wood'),
 	array('GR', 'VR'),
 	array('gray', 'grey'),
@@ -53,9 +55,11 @@ $false_positives = array(
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
+	array('house', 'horse'),
 	array('http', 'https'),
 	array('lamp', 'ramp'),
 	array('land', 'sand'),
+	array('lane', 'line'),
 	array('lanes', 'lines'),
 	array('lawyer', 'layer'),
 	array('icn_ref', 'lcn_ref', 'lwn_ref', 'loc_ref', 'ncn_ref', 'nwn_ref', 'rcn_ref', 'rwn_ref'),
@@ -74,18 +78,21 @@ $false_positives = array(
 	array('note', 'notes'),
 	array('number', 'numbers'),
 	array('power', 'tower'),
-	array('reg_name', 'fref_name'),
+	array('reg_name', 'ref_name'),
 	array('rail', 'trail'),
+	array('roof', 'room'),
 	array('salb', 'sale', 'salt'),
 	array('service', 'services'),
 	array('short', 'sport'),
 	array('ship', 'show', 'shop', 'stop'),
 	array('stair', 'stairs', 'star'),
+	array('start', 'stars'),
 	array('tell', 'toll'),
 	array('tracks', 'trucks'),
 	array('trail', 'train'),
 	array('water_power', 'water_tower'),
 	array('wikimedia', 'wikipedia'),
+	array('wiki', 'wifi')
 );
 
 // keys that lead to diverse values. It doesn't ever make sense
@@ -94,20 +101,30 @@ $false_positives = array(
 // this string will be used directly in an SQL WHERE clause,
 // so you have to properly escape apos and adhere to the syntax convention!
 $never_complain_about = "
+	prefix LIKE '_Acres_:=%' OR
+	prefix LIKE '_CODE_:=%' OR
+	prefix LIKE '_HOJA_:=%' OR
+	prefix LIKE '_REFCAT_:=%' OR
 	prefix LIKE 'addr:alternatenumber:=%' OR
 	prefix LIKE 'addr:conscriptionnumber:=%' OR
 	prefix LIKE 'addr:full:=%' OR
 	prefix LIKE 'addr:housenumber:=%' OR
+	prefix LIKE 'addr:postcode:=%' OR
 	prefix LIKE 'aims-id:=%' OR
 	prefix LIKE 'AND_nosr_r:=%' OR
 	prefix LIKE 'AND_a_nosr_r:=%' OR
 	prefix LIKE 'atm_ref:=%' OR
-	prefix LIKE 'canvec:uuid:=%' OR
-	prefix LIKE 'collection_times:=%' OR
 	prefix LIKE 'bridge_ref:=%' OR
 	prefix LIKE 'bus_routes:=%' OR
+	prefix LIKE 'canvec:uuid:=%' OR
+	prefix LIKE 'capacity:=%' OR
+	prefix LIKE 'capacity:persons:=%' OR
+	prefix LIKE 'code:=%' OR
+	prefix LIKE 'collection_times:=%' OR
 	prefix LIKE 'created_by:=%' OR
+	prefix LIKE 'dcgis:propid:=%' OR
 	prefix LIKE 'distance:=%' OR
+	prefix LIKE 'fdot:ref:=%' OR
 	prefix LIKE 'FDOT_ref:=%' OR
 	prefix LIKE 'fixme:=%' OR
 	prefix LIKE 'Fixme:=%' OR
@@ -130,9 +147,13 @@ $never_complain_about = "
 	prefix LIKE 'gns:MGRS:=%' OR
 	prefix LIKE 'grades:=%' OR
 	prefix LIKE 'history:=%' OR
+	prefix LIKE 'id:db_shelter:=%' OR
 	prefix LIKE 'image:=%' OR
 	prefix LIKE 'ims:frequency:=%' OR
 	prefix LIKE 'int_ref:=%' OR
+	prefix LIKE 'IOM_project_DRR:form_number:=%' OR
+	prefix LIKE 'isced:level:=%' OR
+	prefix LIKE 'kern:Comb_Zn:=%' OR
 	prefix LIKE 'line:=%' OR
 	prefix LIKE 'lines:=%' OR
 	prefix LIKE 'massgis:BASE_MAP:=%' OR
@@ -140,9 +161,12 @@ $never_complain_about = "
 	prefix LIKE 'massgis:OWNER_ABRV:=%' OR
 	prefix LIKE 'massgis:PROJ_ID:=%' OR
 	prefix LIKE 'massgis:SOURCE_MAP:=%' OR
+	prefix LIKE 'maxheight:=%' OR
+	prefix LIKE 'maxwidth:=%' OR
 	prefix LIKE 'maxspeed:=%' OR
 	prefix LIKE 'MGRS:=%' OR
 	prefix LIKE 'MP_TYPE:=%' OR
+	prefix LIKE 'nhd:fdate:=%' OR
 	prefix LIKE 'note:=%' OR
 	prefix LIKE 'opening_hours:=%' OR
 	prefix LIKE 'power_rating:=%' OR
@@ -150,23 +174,43 @@ $never_complain_about = "
 	prefix LIKE 'nat_ref:=%' OR
 	prefix LIKE 'nhd-shp:fdate:=%' OR
 	prefix LIKE 'OCUPANTES:=%' OR
+	prefix LIKE 'old_ref_legislative:=%' OR
 	prefix LIKE 'osak:identifier:=%' OR
+	prefix LIKE 'P_S_COMM:=%' OR
+	prefix LIKE 'pcode:=%' OR
 	prefix LIKE 'PFM:garmin_type:=%' OR
 	prefix LIKE 'photo_url:=%' OR
 	prefix LIKE 'ref:isil:=%' OR
+	prefix LIKE 'ref_catastral:=%' OR
 	prefix LIKE 'ref_no:=%' OR
 	prefix LIKE 'ref_num:=%' OR
 	prefix LIKE 'route_ref:=%' OR
+	prefix LIKE 'seats:=%' OR
 	prefix LIKE 'source:=%' OR
 	(prefix LIKE 'source:name:=%' AND k LIKE 'Orange County plat book%') OR
 	(prefix LIKE 'source:old_name:=%' AND k LIKE 'Orange County plat book%') OR
 	prefix LIKE 'source_ref:=%' OR
+	prefix LIKE 'source_ref:bicycle:=%' OR
+	prefix LIKE 'source_ref:cycleway:=%' OR
+	prefix LIKE 'source_ref:hgv:=%' OR
 	prefix LIKE 'source_ref:name:=%' OR
+	prefix LIKE 'source_ref:maxheight:=%' OR
+	prefix LIKE 'source_ref:maxspeed:=%' OR
+	prefix LIKE 'source_ref:maxspeed:towing:=%' OR
+	prefix LIKE 'source_ref:maxspeed:advisory:=%' OR
+	prefix LIKE 'sourcedb:id:=%' OR
 	prefix LIKE 'statscan:rbuid:=%' OR
 	prefix LIKE 'strassen-nrw:abs:=%' OR
+	prefix LIKE 'tiger:cfcc:=%' OR
+	prefix LIKE 'tiger:source:=%' OR
+	prefix LIKE 'tracktype:=%' OR
 	prefix LIKE 'traffic_sign:=%' OR
+	prefix LIKE 'ts_codigo:=%' OR
 	prefix LIKE 'UNIDAD_MAN:=%' OR
-	prefix LIKE 'website:='
+	prefix LIKE 'waterway:kilometer:=%' OR
+	prefix LIKE 'website:=%' OR
+	prefix LIKE 'width:=%' OR
+	prefix LIKE 'zhb_code:=%'
 ";
 
 
@@ -176,6 +220,7 @@ $never_complain_about = "
 // please note the special notation!
 
 $force_irregular = array(
+	'hanger',
 	'usability:skate:=excelent',
 	'note_',
 	'Public'
@@ -189,12 +234,13 @@ $force_regular = array(
 	'brand:=Shell',
 	'brand:=Tamoil',
 	'brand:=Total',
-	'gnis:county_name:=Cheyboygan',
-	'man_made:=cutline',
-	'usability:skate:=excellent',
 	'geometry_source_type:=Walking Papers/Misson GPS',
+	'gnis:county_name:=Cheyboygan',
+	'hangar',
 	'lengths:left:=',
 	'lengths:right:=',
+	'man_made:=cutline',
+	'usability:skate:=excellent',
 );
 
 
