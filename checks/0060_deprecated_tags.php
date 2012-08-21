@@ -15,6 +15,7 @@ $replacement_list = array(
 	array("2007-07-13", "amenity", "bakers", "shop=bakery ", "Shop introduced"),
 	array("2007-07-13", "amenity", "butchers", "shop=butcher ", "Shop introduced"),
 	array("2007-07-13", "amenity", "candle_stick_makers", "shop=chandler ", "Shop introduced"),
+	array("2010-11-04", "amenity", "nursing_home", "amenity=social_facility"),
 	array("2009-02-12", "amenity", "signpost", "information=guidepost"),
 	array("2007-07-16", "amenity", "store", "shop=* ", "Shop introduced"),
 	array("2007-07-13", "amenity", "supermarket", "shop=supermarket ", "Shop introduced"),
@@ -43,7 +44,15 @@ $replacement_list = array(
 	array("2008-05-30", "route", "ncn", "Cycle_routes: http://wiki.openstreetmap.org/index.php/Cycle_routes"),
 	array("2008-03-19", "waterway", "mooring", "mooring=yes ", "More flexibility; allows us to keep original value of waterway=."),
 	array("2008-03-19", "waterway", "waste_disposal", "amenity=waste_disposal ", "Something this general should be in amenity."),
-	array("2008-03-21", "waterway", "water_point", "amenity=drinking_water ", "Access to drinking water is not limited to waterways.")
+	array("2008-03-21", "waterway", "water_point", "amenity=drinking_water ", "Access to drinking water is not limited to waterways."),
+	array("2009-08-1", "highway", "byway", "highway=path or highway=track etc plus designation=byway_open_to_all_traffic or designation=restricted_byway", "More accurate tagging for Public rights of way in England and Wales. "),
+	array("2010-09-1", "power_source", "*", "generator:source=*", "Reorganised tagging for power generator related things (see Proposed features/generator rationalisation). "),
+	array("2010-09-1", "power_rating", "*", "generator:output=*", "Reorganised tagging for power generator related things (see Proposed features/generator rationalisation). "),
+	array("2011-10-27", "building", "entrance", "entrance=*", "Cleaning the semantics of the \"building\" tag; entrance=* approved (see Proposed_features/entrance)."),
+	array("2011-10-27", "building:type", "*", "building=*", "Please use building=<building typology>"),
+	array("2011-10-27", "natural", "land", "type=multipolygon or natural=coastline", "Use Relations/Multipolygon for islands in lakes and rivers, natural=coastline for islands in the sea."),
+	array("2012-01-19", "bicycle_parking", "sheffield", "bicycle_parking=stand", "No real difference and sheffield is only used in UK, see Talk:Key:bicycle parking"),
+	array("2012-01-19", "higway", "ford", "ford=*", "")
 );
 
 
