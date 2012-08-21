@@ -93,15 +93,55 @@ while ($row = mysqli_fetch_assoc($result)) {
 	}
 
 	if ($locale == 'en') {
-		// english: just insert txt parts into msgid
 		$replacements = array('$1'=>$row['txt1'], '$2'=>$row['txt2'], '$3'=>$row['txt3'], '$4'=>$row['txt4'], '$5'=>$row['txt5']);
+	} else {
+		$replacements = array('$1'=>translate($row['txt1']), '$2'=>translate($row['txt2']), '$3'=>translate($row['txt3']), '$4'=>translate($row['txt4']), '$5'=>translate($row['txt5']));
+	}
+
+	switch($row['error_type']) {
+
+		case 40:
+		case 41:
+		case 210:	$replacements['$1']=hyperlink('node', $replacements['$1']);
+		break;
+
+		case 50:
+		case 370:	$replacements['$1']=hyperlink('way', $replacements['$1']);
+		break;
+
+		case 191:
+		case 192:
+		case 193:
+		case 194:
+		case 195:
+		case 196:
+		case 197:
+		case 198:
+		case 201:
+		case 202:
+		case 203:
+		case 204:
+		case 205:
+		case 206:
+		case 207:
+		case 208:	$replacements['$3']=hyperlink('way', $replacements['$3']);
+		break;
+
+		case 401:	$replacements['$1']=hyperlink('way', $replacements['$1']);
+				$replacements['$2']=hyperlink('way', $replacements['$2']);
+		break;
+
+	}
+
+
+	if ($locale == 'en') {
+		// english: just insert txt parts into msgid
 
 		$description = strtr($row['msgid'], $replacements);
 		$error_name = $row['error_name'];
 		$object_type = $row['object_type'];
 	} else {
 		// other languages: translate message and insert txt parts
-		$replacements = array('$1'=>translate($row['txt1']), '$2'=>translate($row['txt2']), '$3'=>translate($row['txt3']), '$4'=>translate($row['txt4']), '$5'=>translate($row['txt5']));
 
 		$description = strtr(T_gettext($row['msgid']), $replacements);
 		$error_name = T_gettext($row['error_name']);
@@ -128,6 +168,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 mysqli_free_result($result);
 mysqli_close($db1);
 
+
+function hyperlink($object_type, $id) {
+	return "<a target='_blank' href='http://www.openstreetmap.org/browse/$object_type/$id'>$id</a>";
+}
 
 function translate($txt) {
 	$translatables = array('node', 'way', 'relation');
