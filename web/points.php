@@ -98,17 +98,37 @@ while ($row = mysqli_fetch_assoc($result)) {
 		$replacements = array('$1'=>translate($row['txt1']), '$2'=>translate($row['txt2']), '$3'=>translate($row['txt3']), '$4'=>translate($row['txt4']), '$5'=>translate($row['txt5']));
 	}
 
+	// wrap node/way ids in hyperlinks
 	switch($row['error_type']) {
 
+		// a list of node ids, possibly interstratified with numbers of up to two digits
+		// (eg. layer values)
+		case 20:
+		case 211:
+		case 294:	$replacements['$1'] = preg_replace('/(\d{3,15})/',
+			"<a target='_blank' href='http://www.openstreetmap.org/browse/node/$1'>$1</a>",
+			$replacements['$1']);
+		break;
+
+		// a list of way ids, possibly interstratified with numbers of up to two digits
+		// (eg. layer values)
+		case 231:	$replacements['$1'] = preg_replace('/(\d{3,15})/',
+			"<a target='_blank' href='http://www.openstreetmap.org/browse/way/$1'>$1</a>",
+			$replacements['$1']);
+		break;
+
+		// single node id in txt1
 		case 40:
 		case 41:
 		case 210:	$replacements['$1']=hyperlink('node', $replacements['$1']);
 		break;
 
+		// single way id in txt1
 		case 50:
 		case 370:	$replacements['$1']=hyperlink('way', $replacements['$1']);
 		break;
 
+		// single way id in txt3
 		case 191:
 		case 192:
 		case 193:
@@ -127,10 +147,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 		case 208:	$replacements['$3']=hyperlink('way', $replacements['$3']);
 		break;
 
+		// way id in txt1 and txt2
 		case 401:	$replacements['$1']=hyperlink('way', $replacements['$1']);
 				$replacements['$2']=hyperlink('way', $replacements['$2']);
 		break;
-
 	}
 
 
