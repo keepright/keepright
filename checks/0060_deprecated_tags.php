@@ -52,7 +52,7 @@ $replacement_list = array(
 	array("2011-10-27", "building:type", "*", "building=*", "Please use building=<building typology>"),
 	array("2011-10-27", "natural", "land", "type=multipolygon or natural=coastline", "Use Relations/Multipolygon for islands in lakes and rivers, natural=coastline for islands in the sea."),
 	array("2012-01-19", "bicycle_parking", "sheffield", "bicycle_parking=stand", "No real difference and sheffield is only used in UK, see Talk:Key:bicycle parking"),
-	array("2012-01-19", "higway", "ford", "ford=*", "")
+	array("2012-01-19", "highway", "ford", "ford=*", "")
 );
 
 
