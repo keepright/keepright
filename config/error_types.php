@@ -38,7 +38,7 @@ $error_types[70]['description']='Ways, nodes and relations should in most cases 
 
 $error_types[80]['name']='bridges or tunnels without layer';
 $error_types[80]['enabled']=false;
-$error_types[90]['source']='0080_bridges_or_tunnels_without_layer.php';
+$error_types[80]['source']='0080_bridges_or_tunnels_without_layer.php';
 $error_types[80]['description']='Bridges and tunnels need a layer tag as a hint for map drawing processes for achieving correct visibility of elements. THIS CHECK IS OBSOLETE.';
 
 $error_types[90]['name']='motorways without ref';
@@ -174,6 +174,7 @@ $error_types[290]['description']='This check is about turn restrictions defined 
 $error_types[290]['subtype'][291]='missing type';
 $error_types[290]['subtype'][292]='missing from way';
 $error_types[290]['subtype'][293]='missing to way';
+$error_types[290]['subtype'][294]='from or to not a way';
 
 
 $error_types[300]['name']='missing maxspeed';
