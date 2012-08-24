@@ -102,7 +102,7 @@ $islands = array(
 	),
 	'asia' => array(
 		'Kuala Lumpur, Malaysia' => 24405048,
-		'Seoul, South Korea' => 71105549,
+		'Seoul, South Korea' => 177618263,
 		'Pyongyang, North Korea' => 4918162,
 		'Baghdad, Iraq' => 4075154,
 		'Damascus, Syria' => 28653226,
