@@ -36,6 +36,7 @@ $false_positives = array(
 	array('DE:rural', 'DK:rural'),
 	array('DE:urban', 'DK:urban'),
 	array('derail', 'detail', 'retail'),
+	array('detention', 'retention'),	// both are valid values for key=basin
 	array('dock', 'lock'),
 	array('door', 'moor'),
 	array('drain', 'train'),
