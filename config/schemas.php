@@ -253,7 +253,7 @@ $schemas['50']['left']=110;
 $schemas['50']['right']=180;
 $schemas['50']['top']=-10;
 $schemas['50']['bottom']=-90;
-$schemas['50']['user']='australia';
+$schemas['50']['user']='pc9';
 
 $schemas['51']['left']=-120.6;
 $schemas['51']['right']=-113.7;
