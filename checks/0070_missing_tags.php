@@ -65,4 +65,33 @@ query("
 
 query("DROP VIEW tmp_tagged_ways", $db1);
 
+
+
+// quite similar for nodes: no tags, not member of a way.
+// basically ignore if the node is member of a relation.
+// only exception: some roles in relation don't require
+// a "physical" node eg. the placement hint for the label
+query("
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
+	SELECT 2+$error_type, 'node', id,
+		'This node is not member of any way and does not have any tags', NOW()
+	FROM nodes n
+	WHERE NOT EXISTS (
+		SELECT 1
+		FROM way_nodes wn
+		WHERE wn.node_id=n.id
+	) AND NOT EXISTS (
+		SELECT 1
+		FROM node_tags nt
+		WHERE nt.node_id=n.id
+	) AND NOT EXISTS (
+		SELECT 1
+		FROM relation_members rm
+		WHERE rm.member_id=n.id AND
+		rm.member_type='N' AND
+		rm.member_role IN ('label', 'admin_center', 'admin_centre')
+	)
+", $db1);
+
+
 ?>
