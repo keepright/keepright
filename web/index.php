@@ -21,12 +21,11 @@ echo T_gettext('These pages show checks that are run on a local excerpt database
 
 echo "<br><br><a href='report_map.php?zoom=14&lat=48.20808&lon=16.37221'>";
 printf(T_gettext('Data Checks for Europe%s (Starting point Vienna, Austria)'), "</a>");
-echo '<br>';
 
-echo "
-<a href='http://keepright.x10hosting.com' target='_blank'>" . T_gettext('Australian KeepRight partner site') . "</a><br>";
+echo "<br><a href='report_map.php?zoom=14&lat=-33.87613&lon=151.17154'>";
+printf(T_gettext('Data Checks for Australia%s (Starting point Sydney)'), "</a>");
 
-echo "<a href='report_map.php?zoom=14&lat=30.039&lon=31.25345'>";
+echo "<br><a href='report_map.php?zoom=14&lat=30.039&lon=31.25345'>";
 printf(T_gettext('Data Checks for Africa%s (Starting point Cairo, Egypt)'), "</a>");
 
 echo "<br><a href='report_map.php?zoom=12&lat=46.79923&lon=-71.19432'>";
@@ -45,6 +44,7 @@ echo "<br><a href='report_map.php?zoom=14&lat=35.68051&lon=139.76404'>";
 printf(T_gettext('Data Checks for Asia%s (Starting point Tokio, Japan)'), "</a>");
 
 
+echo "<br><br>";
 printf(T_gettext("Developers have a look at the %sSourceForge%s site providing svn access to the sources."), "<a href='http://apps.sourceforge.net/trac/keepright/'>", '</a>');
 echo "<br>";
 printf(T_gettext("If you want to export errors from KeepRight you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
