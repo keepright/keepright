@@ -120,8 +120,9 @@ query("
 	(B.sequence_id=wn.sequence_id+1 OR B.sequence_id=wn.sequence_id-1)
 ", $db1);
 
+query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("CREATE INDEX idx_tmp_jpartners ON _tmp_jpartners (junction_id, other_id)", $db1);
-query("ANALYZE _tmp_junctions", $db1, false);
+query("ANALYZE _tmp_jpartners", $db1, false);
 
 
 
@@ -525,6 +526,7 @@ query("
 	ORDER BY wn.way_id, wn.sequence_id
 ", $db1);
 
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("CREATE INDEX idx_tmp_wn_pkey ON _tmp_wn (way_id, sequence_id)", $db1);
 query("ANALYZE _tmp_wn", $db1, false);
 
@@ -547,7 +549,5 @@ query("
 ", $db1);
 
 query("DROP TABLE IF EXISTS _tmp_wn", $db1);
-query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
-query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 
 ?>
