@@ -8,10 +8,18 @@ CREATE TABLE schema_info (
 );
 INSERT INTO schema_info VALUES (1);
 
+
+-- Create a table for users.
+CREATE TABLE users (
+    id bigint NOT NULL,
+    user_name text
+);
+
+
 -- Create a table for nodes.
 CREATE TABLE nodes (
     id bigint NOT NULL,
-    user_name text,
+    user_id bigint,
     tstamp timestamp without time zone NOT NULL
 );
 -- Add a postgis point column holding the location of the node.
@@ -36,7 +44,7 @@ CREATE TABLE node_tags (
 -- Create a table for ways.
 CREATE TABLE ways (
     id bigint NOT NULL,
-    user_name text,
+    user_id bigint,
     tstamp timestamp without time zone NOT NULL,
     first_node_id bigint,
     last_node_id bigint,
@@ -75,9 +83,10 @@ CREATE TABLE way_tags (
 -- Create a table for relations.
 CREATE TABLE relations (
     id bigint NOT NULL,
-    user_name text,
+    user_id bigint,
     tstamp timestamp without time zone NOT NULL
 );
+
 
 -- Create a table for representing relation member relationships.
 CREATE TABLE relation_members (

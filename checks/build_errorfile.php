@@ -66,7 +66,7 @@ foreach ($ev_filenames as $ev_filename) {
 	echo "$ev_filename\n";
 	while(!feof($ev)) {
 		$ev_line=trim(fgets($ev));
-		list($ev_schema, $ev_error_id, $error_type, $error_name, $object_type, $object_id, $ev_state, $descr, $fo, $lc, $ot, $lat, $lon, $msgid, $txt1, $txt2, $txt3, $txt4, $txt5) = split("\t", $ev_line);
+		list($ev_schema, $ev_error_id, $error_type, $error_name, $object_type, $object_id, $ev_state, $fo, $lc, $ot, $user_name, $lat, $lon, $msgid, $txt1, $txt2, $txt3, $txt4, $txt5) = split("\t", $ev_line);
 
 
 		while (!feof($co) && (
@@ -91,9 +91,9 @@ foreach ($ev_filenames as $ev_filename) {
 
 			if ($ev_schema==$co_schema && $ev_error_id==$co_error_id) {
 				if (strlen(trim($co_state))>0) fwrite($dst, "\t$co_state"); else fwrite($dst, "\t$ev_state");
-				fwrite($dst, "\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
+				fwrite($dst, "\t$fo\t$lc\t$ot\t$user_name\t$lat\t$lon\t$co_comment\t$co_tstamp\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
 			} else {
-				fwrite($dst, "\t$ev_state\t$descr\t$fo\t$lc\t$ot\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
+				fwrite($dst, "\t$ev_state\t$fo\t$lc\t$ot\t$user_name\t$lat\t$lon\t\N\t\N\t$msgid\t$txt1\t$txt2\t$txt3\t$txt4\t$txt5" . "\n");
 			}
 		}
 	}
@@ -147,7 +147,7 @@ ftp_close($conn_id);
 /*
 
 schema  error_id        error_type      error_name      object_type     object_id
-state   description     first_occurrence        last_checked    object_timestamp
+state   first_occurrence        last_checked    object_timestamp    user_name
 lat     lon     comment comment_timestamp	msgid	txt1	txt2	txt3
 txt4	txt5
 
@@ -162,10 +162,10 @@ CREATE TABLE IF NOT EXISTS `keepright_errors` (
   `object_type` enum('node','way','relation') NOT NULL,
   `object_id` bigint(64) NOT NULL,
   `state` enum('new','reopened','ignore_temporarily','ignore') NOT NULL,
-  `description` text NOT NULL,
   `first_occurrence` datetime NOT NULL,
   `last_checked` datetime NOT NULL,
   `object_timestamp` datetime NOT NULL,
+  `user_name` text NOT NULL,
   `lat` int(11) NOT NULL,
   `lon` int(11) NOT NULL,
   `comment` text,

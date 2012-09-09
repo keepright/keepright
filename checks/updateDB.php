@@ -36,7 +36,7 @@ function emptyDB($schema) {
 	query('TRUNCATE ways', $db);
 	query('TRUNCATE node_tags', $db);
 	query('TRUNCATE nodes', $db);
-	//query('TRUNCATE users', $db);
+	query('TRUNCATE users', $db);
 
 	pg_close($db);
 }
@@ -65,13 +65,12 @@ function loadDB($schema) {
 
 	// Import the table data from the data files using the fast COPY method.
 	// replace temp-path for data files created by osmosis
+	query("copy users FROM '" . $config['temp_dir'] . "users.txt' WITH NULL AS 'NULL';", $db);
 	query("copy nodes FROM '" . $config['temp_dir'] . "nodes_sorted.txt' WITH NULL AS 'NULL';", $db);
 	query("copy node_tags FROM '" . $config['temp_dir'] . "node_tags.txt' WITH NULL AS 'NULL';", $db);
 	query("copy ways FROM '" . $config['temp_dir'] . "ways.txt' WITH NULL AS 'NULL';", $db);
-//(id, user_name, tstamp, first_node_id, last_node_id, node_count)
 	query("copy way_tags FROM '" . $config['temp_dir'] . "way_tags.txt' WITH NULL AS 'NULL';", $db);
 	query("copy way_nodes FROM '" . $config['temp_dir'] . "way_nodes2.txt' WITH NULL AS 'NULL';", $db);
-//(way_id, node_id, sequence_id)
 	query("copy relations FROM '" . $config['temp_dir'] . "relations.txt' WITH NULL AS 'NULL';", $db);
 	query("copy relation_tags FROM '" . $config['temp_dir'] . "relation_tags.txt' WITH NULL AS 'NULL';", $db);
 	query("copy relation_members FROM '" . $config['temp_dir'] . "relation_members.txt' WITH NULL AS 'NULL';", $db);
@@ -91,6 +90,7 @@ function loadDB($schema) {
 
 	// Add the primary keys and indexes back again (except the way bbox index).
 	query('ALTER TABLE ONLY schema_info ADD CONSTRAINT pk_schema_info PRIMARY KEY (version);', $db, false);
+	query('ALTER TABLE ONLY users ADD CONSTRAINT pk_users PRIMARY KEY (id);', $db, false);
 	query('ALTER TABLE ONLY nodes ADD CONSTRAINT pk_nodes PRIMARY KEY (id);', $db, false);
 	query('ALTER TABLE ONLY ways ADD CONSTRAINT pk_ways PRIMARY KEY (id);', $db, false);
 	query('ALTER TABLE ONLY way_nodes ADD CONSTRAINT pk_way_nodes PRIMARY KEY (way_id, sequence_id);', $db, false);

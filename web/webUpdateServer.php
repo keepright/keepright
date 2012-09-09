@@ -273,10 +273,10 @@ function toggle_tables1($db1, $schema){
 		object_type enum('node','way','relation') NOT NULL,
 		object_id bigint(64) NOT NULL,
 		state enum('new','cleared','ignored','reopened') NOT NULL,
-		description text NOT NULL,
 		first_occurrence datetime NOT NULL,
 		last_checked datetime NOT NULL,
 		object_timestamp datetime NOT NULL,
+		user_name text,
 		lat int(11) NOT NULL,
 		lon int(11) NOT NULL,
 		UNIQUE schema_error_id (`schema`, error_id),
@@ -294,10 +294,10 @@ function toggle_tables1($db1, $schema){
 		object_type enum('node','way','relation') NOT NULL,
 		object_id bigint(64) NOT NULL,
 		state enum('new','cleared','ignored','reopened') NOT NULL,
-		description text NOT NULL,
 		first_occurrence datetime NOT NULL,
 		last_checked datetime NOT NULL,
 		object_timestamp datetime NOT NULL,
+		user_name text NOT NULL,
 		lat int(11) NOT NULL,
 		lon int(11) NOT NULL,
 		UNIQUE schema_error_id (`schema`, error_id),
@@ -308,12 +308,11 @@ function toggle_tables1($db1, $schema){
 	", $db1, false);
 
 	foreach (array("error_view_{$schema}_old", "error_view_{$schema}") as $tbl) {
-		add_column_if_not_exists($db1, $tbl, 'msgid', 'TEXT');
-		add_column_if_not_exists($db1, $tbl, 'txt1', 'TEXT');
-		add_column_if_not_exists($db1, $tbl, 'txt2', 'TEXT');
-		add_column_if_not_exists($db1, $tbl, 'txt3', 'TEXT');
-		add_column_if_not_exists($db1, $tbl, 'txt4', 'TEXT');
-		add_column_if_not_exists($db1, $tbl, 'txt5', 'TEXT');
+		if (column_exists($db1, $tbl, 'description'))
+			query("ALTER TABLE $tbl DROP `description`");
+
+		if (!column_exists($db1, $tbl, 'user_name'))
+			query("ALTER TABLE $tbl ADD `user_name` TEXT AFTER `object_timestamp`");
 	}
 
 	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
@@ -327,20 +326,27 @@ function toggle_tables1($db1, $schema){
 
 // adds a column to a table if it not already exists
 function add_column_if_not_exists($db, $table, $column, $attribs) {
-     $column_exists = false;
-
-     $rows = query("SHOW COLUMNS FROM `$table` WHERE Field='$column'", $db, false);
-     while($c = mysqli_fetch_assoc($rows)){
-         if($c['Field'] == $column){
-             $column_exists = true;
-             break;
-         }
-     }
-
-     if(!$column_exists){
-         query("ALTER TABLE `$table` ADD `$column` $attribs", $db, false);
-     }
+	if(!column_exists($db, $table, $column)){
+		query("ALTER TABLE `$table` ADD `$column` $attribs", $db, false);
+	}
  }
+
+
+// checks existence of a column
+function column_exists($db, $table, $column) {
+	$column_exists = false;
+
+	$rows = query("SHOW COLUMNS FROM `$table` WHERE Field='$column'", $db, false);
+	while($c = mysqli_fetch_assoc($rows)){
+		if($c['Field'] == $column){
+			$column_exists = true;
+			break;
+		}
+	}
+
+	return $column_exists;
+ }
+
 
 // adds an index to a table if it not already exists
 function add_index_if_not_exists($db, $table, $keyname, $column, $attrib='') {

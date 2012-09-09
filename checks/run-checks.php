@@ -283,10 +283,10 @@ function run_checks($schema, $checks_to_run=array()) {
 			object_type public.type_object_type NOT NULL,
 			object_id bigint NOT NULL,
 			state type_error_state NOT NULL,
-			description text,
+			user_name text,
 			first_occurrence timestamp NOT NULL,
 			last_checked timestamp NOT NULL,
-			object_timestamp timestamp NOT NULL DEFAULT '1970-01-01',
+			object_timestamp timestamp,
 			lat int NOT NULL,
 			lon int NOT NULL,
 			msgid text,
@@ -299,8 +299,12 @@ function run_checks($schema, $checks_to_run=array()) {
 		", $db1, false);
 	}
 
-	// don't need that column any more:
-	drop_column('error_view', 'db_name', $db1, 'public');
+	// drop column description, reuse it for user_name
+	if (!column_exists('error_view', 'user_name', $db1, 'public'))
+		query("
+			ALTER TABLE public.error_view
+			RENAME COLUMN description TO user_name
+		", $db1);
 
 
 	// delete anything from this (sub-)database
@@ -364,9 +368,9 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	// first insert errors on nodes that don't have lat/lon
 	query("
-		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT e.error_id, '$schema', e.error_type, e.object_type, e.object_id,
-			e.state, e.first_occurrence, e.last_checked, n.tstamp,
+			e.state, e.first_occurrence, e.last_checked,
 			1e7*n.lat, 1e7*n.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
 		WHERE e.schema='$schema' AND e.object_type='node' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
@@ -375,9 +379,9 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	// second insert errors on ways that don't have lat/lon
 	query("
-		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, object_timestamp, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
+		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT e.error_id, '$schema', e.error_type, e.object_type, e.object_id,
-			e.state, e.first_occurrence, e.last_checked, w.tstamp,
+			e.state, e.first_occurrence, e.last_checked,
 			1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
 		WHERE e.schema='$schema' AND e.object_type='way' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
@@ -420,13 +424,6 @@ function run_checks($schema, $checks_to_run=array()) {
 	}
 
 
-	// build english description strings
-	query("
-		UPDATE public.error_view v SET description=replace(replace(replace(replace(replace(v.msgid, '$1', COALESCE(v.txt1, '')), '$2', COALESCE(v.txt2, '')), '$3', COALESCE(v.txt3, '')), '$4', COALESCE(v.txt4, '')), '$5', COALESCE(v.txt5, ''))
-		WHERE v.schema='$schema'
-	", $db1);
-
-
 
 
 	// finally add the error names
@@ -444,12 +441,16 @@ function run_checks($schema, $checks_to_run=array()) {
 	", $db1);
 
 
-	// fetch last modified timestamps of objects
+	// fetch last modified timestamps and user name of objects
 	foreach (array('node', 'way', 'relation') as $item) {
 		query("
-			UPDATE public.error_view v SET object_timestamp=t.tstamp
-			FROM ${item}s t
-			WHERE v.schema='$schema' AND v.object_timestamp='1970-01-01' AND v.object_type='$item' AND t.id=v.object_id
+			UPDATE public.error_view v
+			SET object_timestamp=t.tstamp,
+				user_name=u.user_name
+			FROM ${item}s t LEFT JOIN users u ON (t.user_id=u.id)
+			WHERE v.schema='$schema' AND
+				v.object_type='$item' AND
+				t.id=v.object_id
 		", $db1);
 	}
 
