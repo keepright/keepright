@@ -44,7 +44,7 @@ $co_error_id=0;
 
 // header line
 fwrite($dst, "schema\terror_id\terror_type\terror_name\tobject_type\tobject_id" .
-	"\tstate\tdescription\tfirst_occurrence\tlast_checked\tobject_timestamp" .
+	"\tstate\tfirst_occurrence\tlast_checked\tobject_timestamp\tuser_name" .
 	"\tlat\tlon\tcomment\tcomment_timestamp\tmsgid\ttxt1\ttxt2\ttxt3\ttxt4\ttxt5\n");
 
 
