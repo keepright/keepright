@@ -204,7 +204,7 @@ $schemas['40']['user']='cetest';
 $schemas['41']['left']=-180;
 $schemas['41']['right']=-108.3;
 $schemas['41']['top']=34;
-$schemas['41']['bottom']=20;
+$schemas['41']['bottom']=30;
 $schemas['41']['user']='pc9';
 
 $schemas['42']['left']=-108.3;
