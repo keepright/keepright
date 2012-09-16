@@ -260,7 +260,7 @@ parseData: function(ajaxRequest) {
 		data['overflow'] = feature.attributes.overflow || "auto";
 
 		var markerFeature = new OpenLayers.Feature(thisObject, location, data);
-		markerFeature.popupClass=OpenLayers.Class(OpenLayers.Popup.FramedCloud);
+		markerFeature.popupClass=OpenLayers.Popup.FramedCloud;
 
 
 		thisObject.features.push(markerFeature);
