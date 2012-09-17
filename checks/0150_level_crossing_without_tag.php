@@ -18,15 +18,19 @@ query("
 		node_id bigint NOT NULL
         )
 ", $db1);
+
 query("
 	INSERT INTO _tmp_railways
 	SELECT wn.way_id, wn.node_id
 	FROM way_tags wt INNER JOIN way_nodes wn USING (way_id)
-	WHERE wt.k='railway' AND wt.v NOT IN ('disused', 'abandoned', 'tram', 'tram:disused', 'tram;disused', 'platform', 'Platform', 'plattform', 'plateform')
+	WHERE wt.k='railway' AND
+		wt.v NOT IN ('disused', 'abandoned', 'tram', 'tram:disused', 'tram;disused', 'platform', 'Platform', 'plattform', 'plateform')
 	AND NOT EXISTS(
 		SELECT tmp.way_id
 		FROM way_tags tmp
-		WHERE tmp.k='disused' AND tmp.v IN ('yes', 'true', '1')
+		WHERE tmp.k='disused' AND
+			tmp.v IN ('yes', 'true', '1') AND
+			tmp.way_id=wn.way_id
 	)
 	GROUP BY wn.way_id, wn.node_id
 ", $db1);
@@ -41,20 +45,22 @@ query("
 	SELECT DISTINCT $error_type, CAST('node' as type_object_type), r.node_id, 'This crossing of a highway and a railway needs to be tagged as railway=crossing or railway=level_crossing', NOW()
 	FROM _tmp_railways r
 	WHERE EXISTS (
-		SELECT wn.way_id FROM way_nodes wn
+		SELECT wn.way_id
+		FROM way_nodes wn
 		WHERE wn.node_id=r.node_id AND wn.way_id<>r.way_id
 		AND EXISTS (
-			SELECT wt.k FROM way_tags wt
-			WHERE wt.way_id=wn.way_id AND wt.k='highway'
+			SELECT wt.k
+			FROM way_tags wt
+			WHERE wt.way_id=wn.way_id
+				AND wt.k='highway'
 		)
 	)
 	AND NOT EXISTS (
-		SELECT nt.k FROM node_tags nt
-		WHERE nt.node_id=r.node_id AND nt.k='railway' AND (nt.v='level_crossing' OR nt.v='crossing')
-	)
-	AND NOT EXISTS (
-		SELECT nt2.k FROM node_tags nt2
-		WHERE nt2.node_id=r.node_id AND nt2.k='railway' AND nt2.v='station'
+		SELECT nt.k
+		FROM node_tags nt
+		WHERE nt.node_id=r.node_id
+			AND nt.k='railway'
+			AND nt.v IN ('level_crossing', 'crossing', 'station')
 	)
 ", $db1);
 
