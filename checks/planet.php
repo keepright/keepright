@@ -122,14 +122,14 @@ function init_workingDir($schema) {
 	// now fix config file with appropriate URL and without limit of downloading files
 	$f=fopen("$workingDirectory/configuration.txt", 'w');
 	fwrite($f, "# The URL of the directory containing change files.\n");
-	fwrite($f, "baseUrl=http://planet.openstreetmap.org/hour-replicate\n\n");
+	fwrite($f, "baseUrl=http://planet.openstreetmap.org/replication/hour\n\n");
 	fwrite($f, "# Defines the maximum time interval in seconds to download in a single invocation.\n");
 	fwrite($f, "# Setting to 0 disables this feature.\n");
 	fwrite($f, "maxInterval = 0\n");
 	fclose($f);
 
 
-	echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/hour-replicate/ according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
+	echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/replication/hour according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
 }
 
 
