@@ -100,49 +100,83 @@ foreach ($ev_filenames as $ev_filename) {
 	fclose($ev);
 }
 fclose($co);
+fclose($dst);
 
 
 $remote_file="${dst_filename}.bz2";
 
-system ("bzip2 -c $dst_filename > $remote_file");
+system ("bzip2 -k -f $dst_filename");
+upload($dst_filename, $remote_file);
 
 
-// upload to ftp site
 
-// set up basic connection
-$conn_id = ftp_connect($config['upload']['ftp_host']);
+//-------------
+// pack and upload nodecounts
 
-if (!$conn_id) {
-	echo "couldn't conect to ftp server " . $config['upload']['ftp_host'] . "\n";
-	return;
+$dst_filename=$results . 'nodecount.txt';
+$remote_file='nodecount.txt.bz2';
+
+
+if (!$dst=fopen($dst_filename, 'w')) {
+        echo "could not open $dst_filename for writing\n";
+        exit;
 }
 
-// login with username and password
-if (!ftp_login($conn_id, $config['upload']['ftp_user'], $config['upload']['ftp_password'])) {
-	echo "Couldn't login to " . $config['upload']['ftp_host'] . " as " . $config['upload']['ftp_user'] ."\n";
 
+fwrite($dst, "schema\tlat\tlon\tcount\n");
+
+foreach (array_keys($schemas) as $k=>$schema) {
+	if ($schema!='at' && $schema!='md')
+	fwrite($dst, file_get_contents($results . "nodes_$schema.txt"));
+}
+
+fclose($dst);
+
+system ("bzip2 -k -f $dst_filename");
+upload($dst_filename . '.bz2', $remote_file);
+
+
+
+
+// upload a file to ftp site
+// destination dir is hardcoded with $config['upload']['ftp_path']
+function upload($local_file, $remote_file) {
+	global $config;
+
+	// set up basic connection
+	$conn_id = ftp_connect($config['upload']['ftp_host']);
+
+	if (!$conn_id) {
+		echo "couldn't conect to ftp server " . $config['upload']['ftp_host'] . "\n";
+		return;
+	}
+
+	// login with username and password
+	if (!ftp_login($conn_id, $config['upload']['ftp_user'], $config['upload']['ftp_password'])) {
+		echo "Couldn't login to " . $config['upload']['ftp_host'] . " as " . $config['upload']['ftp_user'] ."\n";
+
+		ftp_close($conn_id);
+		return;
+	}
+
+	// change to destination directory
+	if (!ftp_chdir($conn_id, '/' . $config['upload']['ftp_path'])) {
+		echo "Couldn't change directory on ftp server\n";
+
+		ftp_close($conn_id);
+		return;
+	}
+
+	// upload the file
+	if (ftp_put($conn_id, $remote_file, $local_file, FTP_BINARY)) {
+		echo "successfully uploaded $remote_file\n";
+	} else {
+		echo "There was a problem while uploading $remote_file\n";
+	}
+
+	// close the connection
 	ftp_close($conn_id);
-	return;
 }
-
-// change to destination directory
-if (!ftp_chdir($conn_id, '/' . $config['upload']['ftp_path'])) {
-	echo "Couldn't change directory on ftp server\n";
-
-	ftp_close($conn_id);
-	return;
-}
-
-// upload the file
-if (ftp_put($conn_id, "keepright_errors.txt.bz2", $remote_file, FTP_BINARY)) {
-	echo "successfully uploaded $remote_file\n";
-} else {
-	echo "There was a problem while uploading $remote_file\n";
-}
-
-// close the connection
-ftp_close($conn_id);
-
 
 /*
 

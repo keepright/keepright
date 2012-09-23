@@ -81,12 +81,12 @@ echo "
 " . T_gettext('Errors that were once cleared and come back at some point in time later are put in the <em>reopened</em> state. Please note that this may happen due to runtime-errors in the scripts. So you may just consider <em>new</em> and <em>reopened</em> the same.'); 
 
 echo "
-<li>" . T_gettext('description') . "</li>" . T_gettext('The verbose error message that comes out of the checking routine in English language. For translating the messages use the next columns') . "
 <li>" . T_gettext('msgid') . "</li>" . T_gettext('This is the scaffold for the error description where placeholders ("$i") stand in place of the actual values inserted by the concrete error instance. You may put this scaffold inside a GNU gettext() function to have it translated. GNU gettext requires  a .po file that holds original and translated strings. You may use existing .po files from here: ') . "<a href='locale/de.po'>de</a> <a href='locale/pt_BR.po'>pt_BR</a><br>" . T_gettext('find the GNU gettext template file here:') . " <a href='locale/keepright.pot'>keepright.pot</a>
 <li>txt1 ... txt5</li>" . T_gettext('These bits of text are the contents that have to be inserted in the error message after translation. txt1 will replace $1, etc.') . "
 <li>" . T_gettext('first_occurrence') . "</li>" . T_gettext('Timestamp (MESZ) of when this error was found the first time') . "
 <li>" . T_gettext('last_checked') . "</li>" . T_gettext('Timestamp (MESZ) of last time this error was (re-)checked by the scripts') . "
 <li>" . T_gettext('object_timestamp') . "</li>" . T_gettext('Timestamp of the object that was used when checking, as found in the official planet file.') . "
+<li>" . T_gettext('user_name') . "</li>" . T_gettext('User name of the user that last edited the given object.') . "
 <li>" . T_gettext('lat') . "</li>
 <li>" . T_gettext('lon') . "</li>" . T_gettext('Location on the planet. Coordinates are given in the same projection as found in the official planet file. Please note that numbers are displayed as int values. To convert back to real lon/lat you have to divide by 10^7') . "
 <li>" . T_gettext('comment') . "</li>" . T_gettext('User-comment (if any)') . "
@@ -107,10 +107,10 @@ CREATE TABLE IF NOT EXISTS `keepright_errors` (
   `object_type` enum('node','way','relation') NOT NULL,
   `object_id` bigint(64) NOT NULL,
   `state` enum('new','reopened','ignore_temporarily','ignore') NOT NULL,
-  `description` text NOT NULL,
   `first_occurrence` datetime NOT NULL,
   `last_checked` datetime NOT NULL,
   `object_timestamp` datetime NOT NULL,
+  `user_name` text NOT NULL,
   `lat` int(11) NOT NULL,
   `lon` int(11) NOT NULL,
   `comment` text,
@@ -134,6 +134,14 @@ echo T_gettext('Please note that <em>schema</em> is a reserved word in MySQL, so
 " . T_gettext('The natural primary key consists of error_type, object_type, object_id, lat, lon. That means one type of error may be found on multiple spots belonging to one single object (eg. self-intersections of ways).') . "</br>
 
 " . T_gettext('The artificial primary key consists of schema and error_id. It is used just for simplicity of referencing individual error instances and it is completely redundant.') . "</p>
+<br><br><b>" .
+
+T_gettext('querying node counts') . '</b><br><p>';
+
+echo T_gettext('As a waste-product the scripts create a file that contains the numer of nodes per square degree found in the planet file. Resolution is 0.1 degrees. You may download the file here:');
+echo " <a href='http://keepright.ipax.at/nodecount.txt.bz2'>http://keepright.ipax.at/nodecount.txt.bz2</a><br>";
+
+echo T_gettext('This dump file can be useful for statistics if you want to calculate an `errors per node` measure') . "</p>
 
 </body>
 </html>";
