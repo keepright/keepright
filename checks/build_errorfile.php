@@ -106,7 +106,7 @@ fclose($dst);
 $remote_file="${dst_filename}.bz2";
 
 system ("bzip2 -k -f $dst_filename");
-upload($dst_filename, $remote_file);
+upload($remote_file, 'keepright_errors.txt.bz2');
 
 
 
