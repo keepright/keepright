@@ -24,7 +24,10 @@ query("
 	SELECT wn.way_id, wn.node_id
 	FROM way_tags wt INNER JOIN way_nodes wn USING (way_id)
 	WHERE wt.k='railway' AND
-		wt.v NOT IN ('disused', 'abandoned', 'tram', 'tram:disused', 'tram;disused', 'platform', 'Platform', 'plattform', 'plateform')
+		wt.v NOT IN ('disused', 'dismantled', 'abandoned', 'proposed',
+		'tram', 'tram:disused', 'tram;disused',
+		'platform', 'Platform', 'plattform', 'plateform',
+		'station', 'abandoned_station', 'station_site', 'disused_station')
 	AND NOT EXISTS(
 		SELECT tmp.way_id
 		FROM way_tags tmp
