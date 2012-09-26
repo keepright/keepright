@@ -67,10 +67,10 @@ query("DROP VIEW tmp_tagged_ways", $db1);
 
 
 
-// quite similar for nodes: no tags, not member of a way.
-// basically ignore if the node is member of a relation.
-// only exception: some roles in relation don't require
-// a "physical" node eg. the placement hint for the label
+// quite similar for nodes: no tags, not member of a way,
+// not member of a relation (people draw for example
+// speed cameras as relation where the node acting as
+// role==device doesn't have any tag but it seems to be ok)
 query("
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
 	SELECT 2+$error_type, 'node', id,
@@ -88,8 +88,7 @@ query("
 		SELECT 1
 		FROM relation_members rm
 		WHERE rm.member_id=n.id AND
-		rm.member_type='N' AND
-		rm.member_role IN ('label', 'admin_center', 'admin_centre')
+		rm.member_type='N'
 	)
 ", $db1);
 
