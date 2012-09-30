@@ -13,13 +13,12 @@ This document explains how to run data consistency checks on your own database a
 PREREQUISITES
 -------------
 
-Packages required:
+Packages required on Linux:
 php5
 php5-cli
 apache
 postgis
-postgresql-8.3-postgis
-postgresql >= 8.3
+postgresql >= 8.3 with matching release of postgis (postgresql-8.3-postgis)
 postgres-client
 php5-mysql
 php5-pgsql
@@ -27,7 +26,7 @@ mysql-server
 mysql-client
 phpMyAdmin
 phpPgAdmin
-sun-java6-jre
+sun-java7-jre
 subversion
 wget
 wput
@@ -40,11 +39,13 @@ mc
 
 You will need both Postgres and MySQL because the checks require GIS functions and the error-presentation scripts rely on MySQL. They will not be recoded to use Postgres because you won't find Postgres on many webhosters.
 
-Using sun-java6-jre is not optional. You need java6 by Sun.
+Using sun-java7-jre is not optional. You need java7 by Sun (now Oracle), at least release 6.
 
 The checks depend on a copy of the OSM database, split up in parts. Using only a subset of the planet file will result in false-positives because ways are cut in two at the border. To avoid this the splitting is done with overlapping borders - the border regions are included in both adjacent dumps. In the end errors in the overlapping area are discarded.
+The planet is split up in currently 85 parts, so called 'schemas'. They are processed sequentially and independently.
 
-It looks like the osmosis plugin heavily depends on the osmosis version being used. The plugin is tested and works with osmosis_0.32.1 dated december 20th, 2009.
+
+It looks like the osmosis plugin heavily depends on the osmosis version being used. The plugin is tested and works with osmosis_0.39.
 
 
 THE BIG PICTURE
@@ -53,93 +54,92 @@ THE BIG PICTURE
 This is the whole process from getting the planet file, running the checks, publishing the check results and collecting user comments.
 error_view is the resulting table containing all errors. It's the source for the map presentation.
 
+backend scripts running on processing servers:
 
-updatedb.sh               download planet file, update an existing planet file
-                                                 |
-                                                 v
-osmosis plugin pl            convert and insert planet file into database
-pgsql_simple_load.sql                            |
-                                                 |
-                                                 v
-prepare_helpertables.php              update redundant columns
-                                                 |
-                                                 v
-run-checks.php             start all the check routines found in config
-0010_*.php ... 9999_*.php                        |
-                                                 |
-                                                 v
-run-checks.php            compare old and new errors, update error states
-                                                 |
-                                                 v
-run-checks.php                        rebuild the error_view
-                                    export error_view to MySQL
-                    export and compress error_view for upload to webspace provider
-                                                 |
-                                                 v
-webUpdateServer.php             import error_view on webspace provider
-called on webserver                              |
-                                                 |
-                                                 v
-report_map.php           main display script including the map and myText layer
-myText.js, myTextFormat.js                       |
-                                                 |
-                                                 v
-points.php                  deliver error entries to the client browser
-called on webserver                              |
-                                                 v
-comment.php        receive user feedback and store it on the webserver's comments table
-called on webserver
+main.php
+	update source code
+	loop over all database schemas and process them one by one
+	finally start all over
+
+process_schema.php
+	do all that is necessary for processing a single schema:
+	prepeare database (create db tables)
+	diff-update planet file
+	load database with planet file
+	run the checks
+	export & upload results to web server
+
+prepareDB.php
+	create database tables, activate postGIS
+
+planet.php
+	call osmosis with options for diff-updating a planet file part
+	let osmosis use a custom plugin called 'pl' that creates special dump files
+
+osmosis plugin 'pl'
+PostgreSqlMyDatasetDumpWriter.java
+	create dump files suitable for loading with COPY commands in PostgreSQL
+	the format mainly differs from the current 'snapshot' format in that all geometries
+	are in meters instead of lat/lon
+	it was established before the current 'snapshot' format evolved and cannot be changed
+	with realistic effort any more
+
+prepare_helpertables.php
+	update redundant columns
+
+prepare_countries.php
+	create structures needed for boundary processing
+
+run-checks.php
+	start all the check routines found in config file error_types.php
+	0010_*.php ... 9999_*.php
+	compare old and new errors, update error states
+	rebuild the error_view table
+
+export_errors.php
+	export error_view to dump file
+
+webUpdateClient.php
+	upload error_view to web server
+	start procedures on web server for loading the new file
+	communicating with webUpdateServer.php
 
 
-Everything needed for the webserver is also done locally. This way you always have a local copy of the site running for testing.
+
+frontend scripts running on web server:
 
 
+report_map.php
+myText.js, myTextFormat.js
+	main display script including the map and myText layer
+	derived from OpenLayers using an extended version of the Text layer
 
-DATABASE LAYOUT
----------------
+points.php
+	deliver error entries to the client browser
+	selecting errors matching error type selection and current viewport of map
 
-For historical reasons and for avoiding webserver overload the database is split in parts:
+comment.php
+	receive user feedback and store it on the webserver's comments table
 
-osm_EU Europe
-osm_US USA
-osm_CA Canada
-osm_XA Africa
-osm_XC South America
-osm_XD Asia
-osm_XG Central America
-osm_AU Australia
 
-Consider this splitting as logical groups, they don't actually have a special meaning. Inside all of these databases look the same.
-Inside the databases there is a finer grained splitting: schemas. The planet file is split in appriximately 70 rectangular areas represented by schemas in postgresql (have a look at config/planet.odg for the splitting layout).
-Each database has a public schema that contains the errors table for collecting all issues as well as an augmented version thereof (error_view) which is used on the web server. Besides the public schema there is a number of individual schemas containing the osm objects (ways, nodes, relations) for that specific area.
-
-osm_EU
-	public
-	schema1
-	schema2
-	schema3
-	...
-
-osm_XD
-	public
-	schema48
-	schema49
-
-Area-specific schemas are re-created on each run from scratch. They may be dropped immediately after each run. Only the public.errors table is persistent.
 
 
 PLANET FILE MANAGEMENT & SQUID
 ------------------------------
 
-The whole planet is split up in approximately 70 individual files. All of these files are diff-updated individually. That means you always work with the most recent version of each file but you end up downloading the same diff files over and over. That's where the web proxy squid comes into play: Squid caches all web access. It speeds up your downloads and avoids unnecessary traffic.
+The planet file is split in appriximately 85 rectangular areas called 'schemas' (this wrong term evolved in the early days, because every part of the planet resides in its own database schema). Have a look at config/planet.odg for the splitting layout.
+
+When processing a file osmosis will download all diffs since last update and apply them to the schema's planet file. As the planet diffs include updates for the whole planet osmosis includes objects out of scope to the current schema's planet file. That is why cutting the schema's planet file has to be repeated after the diff-update.
+
+All of these files are diff-updated individually. That means you always work with the most recent version of each file but you end up downloading the same diff files over and over. That's where the web proxy squid comes into play: Squid caches all web access. It speeds up your downloads and avoids unnecessary traffic (the saving is by a factor of 85 - 1).
 
 Setting up squid is quite easy. On Debian/ubuntu Linuxes do something like this:
 
 > aptitude install squid
 
-change the config file /etc/squid/squid.conf to increase overall cache size to 400MB if you like (default is 100MB which is a little bit small):
+change the config file /etc/squid/squid.conf to increase overall cache size to 1000MB if you like (default is 100MB which is a little bit small). Choose cache size big enough to hold all planet diffs that are needed for updating even the oldest schema in the loop (depending on loop cycle time).
 
-cache_dir ufs /var/spool/squid 400 16 256
+cache_dir ufs /var/spool/squid 1000 16 256
 
 restart squid
 >/etc/init.d/squid restart
@@ -150,7 +150,7 @@ add this line to ~/.osmosis:
 JAVACMD_OPTIONS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
 
 my ~/.osmosis looks like this:
-JAVACMD_OPTIONS=" -Xmx3000m -d32 -Djava.io.tmpdir=/media/big_harddisk/tmp/ -Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
+JAVACMD_OPTIONS=" -Xmx2500m -Djava.io.tmpdir=/media/big_harddisk/tmp/ -Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
 
 
 
@@ -165,7 +165,9 @@ The downside is, you cannot use a default database. And you have to use a modifi
 
 This is the short form of an article on the wiki http://wiki.openstreetmap.org/wiki/Mapnik/PostGIS
 
-These are setup parameters you should set before starting out manually:
+Tuning PostgreSQL configuration for performance of OSM databases is an adventure. Since PostgreSQL 9.0 you can use the pgtune tool. It creates a modified version of your postgresql.conf depending on main memory installed and depending on the usage type you provide (DW seems to be the best matching one).
+
+These are setup parameters you could set before starting out manually:
 
 >>>Tune database parameters
 edit /etc/postgresql/8.3/main/postgresql.conf and add/modify these parameters:
@@ -216,6 +218,14 @@ postgres=# ALTER ROLE keepright WITH PASSWORD 'shhh!';
 ALTER ROLE
 
 
+just in case the scripts don't work as expected: creating the database and installing postGIS is easy if you're using postgresql>=9.1
+
+CREATE DATABASE osm WITH OWNER = osm;
+
+inside the newly created database just run
+CREATE LANGUAGE plpgsql;		-- (should already be there)
+CREATE EXTENSION postgis;
+
 
 
 Wondering why the auto-vac-daemon ist shut off?
@@ -223,13 +233,13 @@ The daemon will start analyzing and vacuuming tables every few hours to keep ind
 
 For inserting actual data take a look at updateDB.sh, planet.php and config: These scripts download a planet dump from the net or diff-update an already existing set of planet excerpts and insert the planet files contents in a database. In config you can define the databases and the coordinates of the areas.
 
-Don't forget to adapt the MAIN_DB_HOST, MAIN_DB_USER and MAIN_DB_PASS variables to match your database credentials.
+Don't forget to adapt the appropriate configuration variables to match your database credentials in ~/keepright.conf.
 OSMOSIS_BIN has to point to the location where you have put the osmosis executable.
 
-Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new error types. You will want to make settings differ from the standard settings. Therefore you can change the file ~/keepright.config which includes only the system-specific settings (this file will be created upon the first run of updateDB.sh). ~/keepright.config will be read after the built-in config file so any settings made here will overwrite the default.
+Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new error types. You will want to make settings differ from the standard settings. Therefore you can change the file ~/keepright.config which includes only the system-specific settings (this file will be created upon the first run of main.php). ~/keepright.config will be read after the built-in config file so any settings made here will overwrite the default.
 
 
-Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts. Update ~/keepright.config and webconfig.inc.php with the new database credentials.
+Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts if you want to run a web server. Update ~/keepright.config and webconfig.inc.php with the new database credentials.
 
 
 
@@ -238,13 +248,13 @@ RUNNING THE CHECKS
 
 First of all you need to specify database credentials in ~/keepright.config.
 
-Second, take a look at the list of error types. Here you may specify which types of checks should be executed. Anything different from zero will enable a job.
+Second, take a look at the list of error types in config/error_types.php. Here you may specify which types of checks should be executed. Anything different from zero will enable a job.
 
 Assuming you already have a populated database you start checking by calling run-checks.php from the shell:
 > php run-checks.php 1 20 30 40
 will start the checks 20, 30 and 40 on the database schema called 1. Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in ~/keepright.config.
 
-When processing has finished you will have (among others) a newly created table called error_view. Here you can find records for all errors that exist. This postgres table will get transferred into MySQL by updateDB.sh (it will call updateWebDB.sh).
+When processing has finished you will have (among others) a newly created table called public.error_view. Here you can find records for all errors that exist. This postgres table will get transferred into MySQL by export_errors.php and webUpdateClient.php.
 
 As time goes by you will update your database and maybe errors are getting corrected. The scripts will detect when old errors don't exist any more and will update the state information in the errors tables to state==cleared.
 
@@ -252,11 +262,7 @@ As time goes by you will update your database and maybe errors are getting corre
 VISUALIZING RESULTS
 -------------------
 
-There are two ways of presentation: as ugly lists or graphically drawn into the map. Both take data out of the table error_view and display them.
-
-report.php will ask your position and type of error and display lists of matching errors. There is a link that will point you to the map so you can inspect and correct the error.
-
-The other way of displaying is report_map.php. This script displays a slippy map using an exra layer to draw icons. Icons are drawn for every faulty node and on either starting node of faulty ways. They display some hint about the error when hovered. Keep in mind that this display method draws a limited number of errors in the map, because of memory constraints in browsers and the webserver.
+report_map.php is used for displaying errors on the map. This script displays a slippy map using an exra layer to draw icons. Icons are drawn for every faulty node and on either starting node of faulty ways. They display some hint about the error when hovered. Keep in mind that this display method draws a limited number of errors in the map, because of memory constraints in browsers and the webserver.
 
 
 WRITING YOUR OWN CHECKS
@@ -270,6 +276,131 @@ Any checks run in the same scope, you are even allowed to declare functions (ins
 Maybe in the future I will change this into an oop-styled buch of classes, but up to now it is working great this way.
 
 If you have ideas for new checks, I would like to integrate them in the official sources to let others benefit from them. So please let me know! And please let me assign a unique check numer for your checks to avoid collisions.
+
+
+SCHEMA SPLITTING WORKFLOW
+--------------------------
+
+when planet schema files grow beyond certain limits it is necessary to further split them.
+e.g. splitting old schema '1' into '86' and '87'
+
+determine optimum splitting boundaries to achieve equally sized files of up to 4GB uncompressed xml data:
+
+/home/harald/OSM/osmosis-0.36/bin/osmosis --rx 1.osm --tee 2 --bb left=-30 top=85 right=1.8 bottom=52.3 idTrackerType=BitSet completeWays=yes completeRelations=yes --wx 86.osm --bb left=-30 top=52.3 right=1.8 bottom=49.3 idTrackerType=BitSet completeWays=yes completeRelations=yes --wx 87.osm > log 2>&1 &
+
+update config blocks in config/schemas.php
+use planet.php to get boundaries including padding:
+php planet.php --cut 1.osm 86 87
+again use osmosis to split files using definitive boundaries
+
+in planet directory copy config directory of old planet file to new directories
+
+in 0130_islands.php check that there is a starting point in every schema, add some as required
+
+copy old error records to both new schemas:
+
+first duplicate errors into secondary new schema:
+insert into public.errors(error_id, error_type, object_type, object_id,
+state, first_occurrence, last_checked, lat, lon, "schema", msgid, txt1,
+txt2, txt3, txt4, txt5)
+SELECT error_id, error_type, object_type, object_id, state,
+first_occurrence, last_checked, lat, lon, '87', msgid, txt1, txt2, txt3, txt4, txt5
+FROM public.errors
+where "schema"='1';
+
+last move errors from old schema into primary new schema:
+update public.errors set "schema"='86' where "schema"='1';
+
+update make.sh to include the new schemas and exclude the old ones
+run checks
+
+on webserver db:
+
+copy comments from old schema to new ones:
+INSERT INTO `comments`(`schema`, `error_id`, `state`, `comment`, `timestamp`, `ip`, `user_agent`)
+SELECT '86', `error_id`, `state`, `comment`, `timestamp`, `ip`, `user_agent` FROM `comments`
+WHERE `schema`='1'
+
+UPDATE comments SET `schema`='87' WHERE `schema`='1';
+
+update table schemata:
+drop old schema line and add new schema with updated boundaries
+
+delete old planet file, old error_view table from webserver, old config file sections
+
+
+
+
+RUNNING ON WINDOWS
+------------------
+
+install packages from these locations:
+
+PHP
+http://windows.php.net/download/
+
+PostgreSQL
+http://www.enterprisedb.com/products-services-training/pgdownload#windows
+choose PostgreSQL 9.2 or later
+
+PostGIS
+http://postgis.refractions.net/download/windows/
+choose version 2 or later
+install PostGIS using application stack builder shipping with PostgreSQL
+
+bzip2
+http://sourceforge.net/projects/gnuwin32/files/bzip2/1.0.5/bzip2-1.0.5-bin.zip/download
+
+SVN client (Apache SVN)
+http://www.sliksvn.com/en/download
+
+Java Runtime Environment
+http://www.oracle.com/technetwork/java/javase/downloads/
+make sure you catch the 64 bit version of Java
+
+
+Add some directories to PATH environment variable pointing to the programs you just installed (change paths accordingly to match your environment):
+
+C:\Program Files\SlikSvn\bin;C:\Program Files (x86)\bzip2\bin;C:\Program Files\php5;C:\Program Files (x86)\Java\jre7\bin
+
+
+Create an OSM directory (eg. C:\OSM\) and check out the source files. In a cmd window type
+C:
+cd \
+md OSM
+cd OSM
+mkdir keepright
+svn co https://keepright.svn.sourceforge.net/svnroot/keepright keepright
+
+Create a copy of the config.php file you find in C:\OSM\keepright\config\config.php.template and rename it to userconfig.php in the same directory.
+
+Open the file in your favourite text editor and change the paths accordingly.
+
+
+Create a file called C:\users\<your user name>\osmosis.bat and give it the following content:
+
+set JAVACMD=C:\Program Files\Java\jre7\bin\java.exe
+set JAVACMD_OPTIONS=-Xmx2500m -Djava.io.tmpdir=C:\temp\
+
+increase the memory limit in case osmosis should crash.
+
+in case you want to use a http proxy add this part to your JAVACMD_OPTIONS
+	" -Dhttp.proxyHost=<your.proxy.host> -Dhttp.proxyPort=3128 "
+
+
+in OSM\osmosis\bin\osmosis.bat you may have to change the next-to last line to include your JAVACMD in apos (") in case it contains spaces just like this:
+
+SET EXEC="%JAVACMD%" %JAVACMD_OPTIONS% -cp "%PLEXUS_CP%" -Dapp.home="%MYAPP_HOME%" -Dclassworlds.conf="%MYAPP_HOME%\config\plexus.conf" %MAINCLASS%  %OSMOSIS_OPTIONS% %*
+
+
+Create/modify your php.ini file to enable the PostgreSQL-Extension
+If you downloaded the non-installer version of php you need to create a php.ini file yourself. Just copy and rename php.ini-production in your php directory to php.ini. Find the extension_dir setting and point it to the ext directory in your php installation:
+
+extension_dir = "C:\Programme\php5\ext"
+
+find and uncomment the line loading the PostgreSQL-Extension:
+extension=php_pgsql.dll
+
 
 
 LEGAL STUFF
