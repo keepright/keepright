@@ -27,8 +27,8 @@ In general this query will return more than row; one for each admin level.
 
 SELECT name, admin_level
 FROM _tmp_boundaries
-WHERE ST_Touches(GeomFromText('POINT(48.0843 16.2975)', 4326), geom) OR
-ST_Within(GeomFromText('POINT(48.0843 16.2975)', 4326), geom)
+WHERE ST_Touches(ST_GeomFromText('POINT(48.0843 16.2975)', 4326), geom) OR
+ST_Within(ST_GeomFromText('POINT(48.0843 16.2975)', 4326), geom)
 
 
 */
@@ -571,7 +571,7 @@ function prepare_countries($schema) {
 	", $db1);
 
 
-	// this is ugly: doing an UPDATE t SET geom = GeomFromText('...')
+	// this is ugly: doing an UPDATE t SET geom = ST_GeomFromText('...')
 	// will stop and rollback if even one single geometry is non-closed
 	// so we have to do it one.by.one for every row:
 

@@ -164,7 +164,7 @@ query("
 // ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
 query("
 	INSERT INTO _tmp_error_candidates
-	SELECT w1.way_id as way_id1, w2.way_id as way_id2, asText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2,
+	SELECT w1.way_id as way_id1, w2.way_id as way_id2, ST_AsText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2,
 	CASE WHEN ST_crosses(w1.geom, w2.geom) THEN 'crosses' ELSE 'overlaps' END as action
 	FROM _tmp_ways w1, _tmp_ways w2
 	WHERE w1.layer=w2.layer AND

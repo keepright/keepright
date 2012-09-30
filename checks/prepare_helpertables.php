@@ -139,7 +139,7 @@ function prepare_helpertables($schema) {
 	query("SELECT AddGeometryColumn('ways', 'geom', 4326, 'LINESTRING', 2)", $db1);
 
 	query("UPDATE ways
-		SET geom=GeomFromText( 'LINESTRING(' || array_to_string(array(
+		SET geom=ST_GeomFromText( 'LINESTRING(' || array_to_string(array(
 			SELECT wn.x || ' ' || wn.y
 			FROM way_nodes wn
 			WHERE ways.id=wn.way_id
