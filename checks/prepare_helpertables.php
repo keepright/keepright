@@ -150,7 +150,7 @@ function prepare_helpertables($schema) {
 
 	//Update the bbox column of the way table 
 	//so that is a little bit larger than the linestring	
-	query("UPDATE ways SET bbox = Expand(geom, 10) WHERE bbox IS NULL", $db1);
+	query("UPDATE ways SET bbox = ST_Expand(geom, 10) WHERE bbox IS NULL", $db1);
 
 	//Index the way bounding box column.
 	query("CREATE INDEX idx_ways_bbox ON ways USING gist (bbox)", $db1);
