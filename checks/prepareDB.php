@@ -78,8 +78,9 @@ function createSchema($schema) {
 	// reconnect to the new database (using the new schema)
 	$db = pg_pconnect(connectstring($schema));
 
-	// add SRIDs into spatial_ref_sys table
-	query(file_get_contents($config['planet_dir'].'spatial_ref_sys.sql'), $db, false);
+	// assert spatial_ref_sys table exists
+	if (!table_exists($db, 'spatial_ref_sys'))
+		query(file_get_contents($config['planet_dir'].'spatial_ref_sys.sql'), $db, false);
 
 
 	// create openstreetmap tables for the non standard simple schema (old schema
