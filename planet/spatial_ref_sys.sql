@@ -1,6 +1,4 @@
 
-DROP TABLE IF EXISTS spatial_ref_sys;
-
 CREATE TABLE spatial_ref_sys (
     srid integer NOT NULL,
     auth_name character varying(256),
