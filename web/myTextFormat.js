@@ -115,6 +115,8 @@ OpenLayers.Format.myTextFormat = OpenLayers.Class(OpenLayers.Format, {
                                 attributes['comment'] = vals[valIndex];
                              else if (columns[valIndex] == 'state')
                                 attributes['state'] = vals[valIndex];
+                             else if (columns[valIndex] == 'partner_objects')
+                                attributes['partner_objects'] = vals[valIndex];
 			}
                     }
                     if (set) {

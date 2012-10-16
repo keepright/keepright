@@ -53,7 +53,7 @@ $where.=' AND lon >= ' . ($lon-3e6) . ' AND lon <= ' . ($lon+3e6);
 $error_view = error_view_subquery($db1, $lat, $lon, $where);
 
 
-echo "lat\tlon\terror_name\terror_type\tobject_type\tobject_type_EN\tobject_id\tobject_timestamp\tschema\terror_id\tdescription\tcomment\tstate\ticon\ticonSize\ticonOffset\n";
+echo "lat\tlon\terror_name\terror_type\tobject_type\tobject_type_EN\tobject_id\tobject_timestamp\tschema\terror_id\tdescription\tcomment\tstate\ticon\ticonSize\ticonOffset\tpartner_objects\n";
 
 if ($error_view=='') {
 	mysqli_close($db1);
@@ -98,6 +98,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 		$replacements = array('$1'=>translate($row['txt1']), '$2'=>translate($row['txt2']), '$3'=>translate($row['txt3']), '$4'=>translate($row['txt4']), '$5'=>translate($row['txt5']));
 	}
 
+	$partner_objects='';
+
 	// wrap node/way ids in hyperlinks
 	switch($row['error_type']) {
 
@@ -105,27 +107,36 @@ while ($row = mysqli_fetch_assoc($result)) {
 		// (eg. layer values)
 		case 20:
 		case 211:
-		case 294:	$replacements['$1'] = preg_replace('/(\d{3,15})/',
-			"<a target='_blank' href='http://www.openstreetmap.org/browse/node/$1'>$1</a>",
-			$replacements['$1']);
+		case 294:	preg_match_all('/(\d{3,15})/', $row['txt1'], $matches);
+				$partner_objects='node' . implode(',node', $matches[0]);
+
+				$replacements['$1'] = preg_replace('/(\d{3,15})/',
+				"<a target='_blank' href='http://www.openstreetmap.org/browse/node/$1'>$1</a>",
+				$replacements['$1']);
 		break;
 
 		// a list of way ids, possibly interstratified with numbers of up to two digits
 		// (eg. layer values)
-		case 231:	$replacements['$1'] = preg_replace('/(\d{3,15})/',
-			"<a target='_blank' href='http://www.openstreetmap.org/browse/way/$1'>$1</a>",
-			$replacements['$1']);
+		case 231:	preg_match_all('/(\d{3,15})/', $row['txt1'], $matches);
+				$partner_objects='way' . implode(',way', $matches[0]);
+
+				$replacements['$1'] = preg_replace('/(\d{3,15})/',
+				"<a target='_blank' href='http://www.openstreetmap.org/browse/way/$1'>$1</a>",
+				$replacements['$1']);
+
 		break;
 
 		// single node id in txt1
 		case 40:
 		case 41:
 		case 210:	$replacements['$1']=hyperlink('node', $replacements['$1']);
+				$partner_objects='node' . $row['txt1'];
 		break;
 
 		// single way id in txt1
 		case 50:
 		case 370:	$replacements['$1']=hyperlink('way', $replacements['$1']);
+				$partner_objects='way' . $row['txt1'];
 		break;
 
 		// single way id in txt3
@@ -145,11 +156,13 @@ while ($row = mysqli_fetch_assoc($result)) {
 		case 206:
 		case 207:
 		case 208:	$replacements['$3']=hyperlink('way', $replacements['$3']);
+				$partner_objects='way' . $row['txt3'];
 		break;
 
 		// way id in txt1 and txt2
 		case 401:	$replacements['$1']=hyperlink('way', $replacements['$1']);
 				$replacements['$2']=hyperlink('way', $replacements['$2']);
+				$partner_objects='way' . $row['txt1'] . ',way' . $row['txt2'];
 		break;
 	}
 
@@ -182,7 +195,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 		strtr($row['comment'], array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) . "\t" .
 		strtr($row['state'], array("\t"=>" ", 'ignore_temporarily'=>'ignore_t')) .
 		"\timg/zap" . $filenr . ".png".
-		"\t24,24\t1,-24\n";
+		"\t24,24\t1,-24\t".
+		$partner_objects . "\n";
 }
 
 mysqli_free_result($result);
