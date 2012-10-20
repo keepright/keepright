@@ -61,7 +61,7 @@ A ---------------------- B
 // include all ways tagged as highway but exclude some ways that are known to be jagged.
 // exclude further residential and unclassified highways. They are used in the countryside
 // and where driving speed is low so you won't find effective turning restrictions
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("
 	CREATE TABLE _tmp_ways AS
 	SELECT DISTINCT wt.way_id
@@ -79,7 +79,7 @@ query("ANALYZE _tmp_ways", $db1, false);
 // consider junctions only
 // junction nodes are nodes, that are used at least twice
 // in way_nodes but with different way_ids
-query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
+query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
 query("
 	CREATE TABLE _tmp_junctions AS
 	SELECT wn.node_id, COUNT(DISTINCT wn.way_id) as waycount
@@ -97,7 +97,7 @@ query("ANALYZE _tmp_junctions", $db1, false);
 // directly with the junction node
 // record driving direction (if you go in straight or opposite direction)
 // when going from junct to other node
-query("DROP TABLE IF EXISTS _tmp_jpartners", $db1);
+query("DROP TABLE IF EXISTS _tmp_jpartners", $db1, false);
 query("
 	CREATE TABLE _tmp_jpartners (
 		junction_id bigint NOT NULL,
@@ -120,7 +120,7 @@ query("
 	(B.sequence_id=wn.sequence_id+1 OR B.sequence_id=wn.sequence_id-1)
 ", $db1);
 
-query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
+query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
 query("CREATE INDEX idx_tmp_jpartners ON _tmp_jpartners (junction_id, other_id)", $db1);
 query("ANALYZE _tmp_jpartners", $db1, false);
 
@@ -175,7 +175,7 @@ query("ANALYZE _tmp_jpartners", $db1, false);
 
 
 
-query("DROP TABLE IF EXISTS _tmp_sharp_angles", $db1);
+query("DROP TABLE IF EXISTS _tmp_sharp_angles", $db1, false);
 query("
 	CREATE TABLE _tmp_sharp_angles (
 		junction_id bigint NOT NULL,
@@ -332,7 +332,7 @@ query("
 // this will further reduce the number of error candidates
 // we need a restiction that prevents driving from first to second way
 // AND the other way round
-query("DROP TABLE IF EXISTS _tmp_restrictions", $db1);
+query("DROP TABLE IF EXISTS _tmp_restrictions", $db1, false);
 query("
 	CREATE TABLE _tmp_restrictions (
 		relation_id bigint NOT NULL,
@@ -516,38 +516,92 @@ query("
 ", $db1);
 
 
-query("DROP TABLE IF EXISTS _tmp_wn", $db1);
+query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
 // only the way_nodes that are part of _tmp_ways
 // order table by way+sequence as needed by the following query
 query("
-	CREATE TABLE _tmp_wn AS
-	SELECT wn.way_id, wn.sequence_id, wn.lat, wn.lon, wn.x, wn.y
+	CREATE TABLE _tmp_wn (
+		way_id bigint NOT NULL,
+		sequence_id integer NOT NULL,
+		sequence_id1 integer NOT NULL,
+		sequence_id2 integer NOT NULL,
+		lon double precision NOT NULL,
+		lat double precision NOT NULL,
+		x double precision NOT NULL,
+		y double precision NOT NULL,
+		PRIMARY KEY (way_id, sequence_id)
+	)
+", $db1);
+
+
+query("DROP TABLE IF EXISTS _tmp_wn2", $db1, false);
+query("
+	CREATE TABLE _tmp_wn2 (
+		way_id bigint NOT NULL,
+		sequence_id integer NOT NULL,
+		Bx double precision NOT NULL,
+		By double precision NOT NULL,
+		Cx double precision NOT NULL,
+		Cy double precision NOT NULL,
+		lon double precision NOT NULL,
+		lat double precision NOT NULL,
+		PRIMARY KEY (way_id, sequence_id)
+	)
+", $db1);
+
+
+// fetch all relevant way_nodes
+// only ways consisting of at least 4 nodes can be relevant
+query("
+	INSERT INTO _tmp_wn (way_id, sequence_id, sequence_id1, sequence_id2,
+		x, y, lon, lat)
+	SELECT wn.way_id, wn.sequence_id, 1+wn.sequence_id, 2+wn.sequence_id,
+		wn.x, wn.y, wn.lon, wn.lat
 	FROM _tmp_ways w INNER JOIN way_nodes wn USING (way_id)
+		INNER JOIN ways ON w.way_id=ways.id
+	WHERE ways.node_count>=4
 	ORDER BY wn.way_id, wn.sequence_id
 ", $db1);
 
+query("CREATE UNIQUE INDEX idx_tmp_ways_seq1 ON _tmp_wn (way_id, sequence_id1)", $db1);
+query("CREATE UNIQUE INDEX idx_tmp_ways_seq2 ON _tmp_wn (way_id, sequence_id2)", $db1);
+
+
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
-query("CREATE INDEX idx_tmp_wn_pkey ON _tmp_wn (way_id, sequence_id)", $db1);
 query("ANALYZE _tmp_wn", $db1, false);
 
 
 $angle_limit = cos(80.0 * PI()/180.0);
 $length_limit = pow(80.0, 2);	// save one square root calculation
 
-query("
-	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, lat, lon, last_checked)
-	SELECT DISTINCT $error_type+2, CAST('way' AS type_object_type), A.way_id, 'this way bends in a very sharp angle here', 1e7*B.lat, 1e7*B.lon, NOW()
 
-	FROM _tmp_wn A, _tmp_wn B, _tmp_wn C, _tmp_wn D
-	WHERE A.way_id=B.way_id AND A.way_id=C.way_id AND A.way_id=D.way_id
-	AND B.sequence_id=1+A.sequence_id AND C.sequence_id=2+A.sequence_id AND D.sequence_id=3+A.sequence_id
-	AND ((A.x-B.x)*(C.x-B.x) + (A.y-B.y)*(C.y-B.y)) >
+// part 1: consider tupels of three nodes A, B and C
+query("
+	INSERT INTO _tmp_wn2(way_id, sequence_id, Bx, By, Cx, Cy, lon, lat)
+	SELECT A.way_id, A.sequence_id+3, B.x, B.y, C.x, C.y, B.lon, B.lat
+
+	FROM _tmp_wn A INNER JOIN _tmp_wn B ON (A.way_id=B.way_id AND A.sequence_id1=B.sequence_id)
+		INNER JOIN _tmp_wn C ON (A.way_id=C.way_id AND A.sequence_id2=C.sequence_id)
+	WHERE ((A.x-B.x)*(C.x-B.x) + (A.y-B.y)*(C.y-B.y)) >
 		SQRT(((A.x-B.x)^2 + (A.y-B.y)^2)*((C.x-B.x)^2 + (C.y-B.y)^2)) * ($angle_limit)
-	AND ((B.x-C.x)*(D.x-C.x) + (B.y-C.y)*(D.y-C.y)) >
-		SQRT(((D.x-C.x)^2 + (D.y-C.y)^2)*((B.x-C.x)^2 + (B.y-C.y)^2)) * ($angle_limit)
 	AND (C.x-B.x)^2 + (C.y-B.y)^2 < ($length_limit)
 ", $db1);
+query("ANALYZE _tmp_wn2", $db1, false);
 
-query("DROP TABLE IF EXISTS _tmp_wn", $db1);
+
+// part 2: join with 4th node D
+query("
+	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, lat, lon, last_checked)
+	SELECT DISTINCT $error_type+2, CAST('way' AS type_object_type), ABC.way_id, 'this way bends in a very sharp angle here', 1e7*ABC.lat, 1e7*ABC.lon, NOW()
+
+	FROM _tmp_wn2 ABC INNER JOIN _tmp_wn D ON (ABC.way_id=D.way_id AND ABC.sequence_id=D.sequence_id)
+	WHERE ((ABC.Bx-ABC.Cx)*(D.x-ABC.Cx) + (ABC.By-ABC.Cy)*(D.y-ABC.Cy)) >
+		SQRT(((D.x-ABC.Cx)^2 + (D.y-ABC.Cy)^2)*((ABC.Bx-ABC.Cx)^2 + (ABC.By-ABC.Cy)^2)) * ($angle_limit)
+", $db1);
+
+
+
+query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_wn2", $db1, false);
 
 ?>
