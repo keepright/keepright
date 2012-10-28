@@ -319,6 +319,15 @@ function toggle_tables1($db1, $schema){
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 
+	query("
+		CREATE TABLE IF NOT EXISTS error_counts (
+		`schema` varchar(6) NOT NULL,
+		error_type int(11) NOT NULL,
+		error_count int(1) NOT NULL,
+		UNIQUE schema_error_type (`schema`, error_type)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+	", $db1, false);
+
 
 	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
 	query("RENAME TABLE error_view_{$schema}_old TO error_view_{$schema}_shadow", $db1);
@@ -397,6 +406,14 @@ function toggle_tables2($db1, $schema){
 
 	query("DROP TABLE IF EXISTS error_view_{$schema}", $db1);
 	query("RENAME TABLE error_view_{$schema}_shadow TO error_view_{$schema}", $db1);
+
+
+	// update error counts
+	query("DELETE FROM error_counts WHERE `schema`='{$schema}'", $db1);
+	query("INSERT INTO error_counts (`schema`, error_type, error_count) " .
+		"SELECT '{$schema}', error_type, COUNT(error_id) " .
+		"FROM error_view_{$schema} " .
+		"GROUP BY error_type", $db1);
 
 	echo "done.\n";
 }
