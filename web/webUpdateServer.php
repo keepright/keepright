@@ -279,6 +279,12 @@ function toggle_tables1($db1, $schema){
 		user_name text,
 		lat int(11) NOT NULL,
 		lon int(11) NOT NULL,
+		msgid text,
+		txt1 text,
+		txt2 text,
+		txt3 text,
+		txt4 text,
+		txt5 text,
 		UNIQUE schema_error_id (`schema`, error_id),
 		KEY lat (lat),
 		KEY lon (lon),
@@ -300,6 +306,12 @@ function toggle_tables1($db1, $schema){
 		user_name text NOT NULL,
 		lat int(11) NOT NULL,
 		lon int(11) NOT NULL,
+		msgid text,
+		txt1 text,
+		txt2 text,
+		txt3 text,
+		txt4 text,
+		txt5 text,
 		UNIQUE schema_error_id (`schema`, error_id),
 		KEY lat (lat),
 		KEY lon (lon),
@@ -307,13 +319,6 @@ function toggle_tables1($db1, $schema){
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
 
-	foreach (array("error_view_{$schema}_old", "error_view_{$schema}") as $tbl) {
-		if (column_exists($db1, $tbl, 'description'))
-			query("ALTER TABLE $tbl DROP `description`");
-
-		if (!column_exists($db1, $tbl, 'user_name'))
-			query("ALTER TABLE $tbl ADD `user_name` TEXT AFTER `object_timestamp`");
-	}
 
 	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
 	query("RENAME TABLE error_view_{$schema}_old TO error_view_{$schema}_shadow", $db1);
