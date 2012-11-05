@@ -275,6 +275,7 @@ function checkways() {
 
 // include all ways tagged as highway (but exclude emergency_access_points and
 // highway=construction as they are left unconnected intentionally),
+// highway=services is applicable on nodes or areas, not "highways",
 // route=ferry or railway=platform (a platform may connect roads in rare cases),
 // don't forget about parking spaces as they can connect roads in some cases.
 // include furthermore ways that are part of a route=ferry relation even
@@ -283,7 +284,7 @@ query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
 	CREATE TABLE _tmp_ways AS
 	SELECT wt.way_id FROM way_tags wt WHERE (
-		(wt.k='highway' AND wt.v NOT IN ('emergency_access_point', 'construction')) OR
+		(wt.k='highway' AND wt.v NOT IN ('emergency_access_point', 'construction', 'services')) OR
 		(wt.k='route' AND wt.v='ferry') OR
 		(wt.k='man_made' AND wt.v='pier') OR
 		(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
