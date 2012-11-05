@@ -50,7 +50,7 @@ $replacement_list = array(
 	array("2010-09-1", "power_rating", "*", "generator:output=*", "Reorganised tagging for power generator related things (see Proposed features/generator rationalisation). "),
 	array("2011-10-27", "building", "entrance", "entrance=*", "Cleaning the semantics of the \"building\" tag; entrance=* approved (see Proposed_features/entrance)."),
 	array("2011-10-27", "building:type", "*", "building=*", "Please use building=<building typology>"),
-	array("2011-10-27", "natural", "land", "type=multipolygon or natural=coastline", "Use Relations/Multipolygon for islands in lakes and rivers, natural=coastline for islands in the sea."),
+	array("2011-10-27", "natural", "land", "type=multipolygon (islands in lakes and rivers) or natural=coastline (islands in the sea)", "Use Relations/Multipolygon for islands in lakes and rivers, natural=coastline for islands in the sea."),
 	array("2012-01-19", "bicycle_parking", "sheffield", "bicycle_parking=stand", "No real difference and sheffield is only used in UK, see Talk:Key:bicycle parking"),
 	array("2012-01-19", "highway", "ford", "ford=*", "")
 );
