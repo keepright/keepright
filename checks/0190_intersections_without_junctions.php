@@ -62,6 +62,7 @@ query("
 ", $db1);
 
 // now add waterways but not riverbanks(docks/boatyards)
+// never include weirs as they aren't waterways in narrower sense
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT id, geom, CAST('waterway' AS type_way_type)
@@ -69,7 +70,7 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock', 'boatyard') AND wt.way_id=ways.id
+		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock', 'boatyard', 'weir') AND wt.way_id=ways.id
 	)
 	AND NOT EXISTS (
 		SELECT id
