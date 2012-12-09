@@ -16,7 +16,7 @@ will be found so any name value will be ok
 // * characters used as fake namespace separator: |>
 // * colons (:) at the end of a key are bad
 
-global $false_positives, $never_complain_about, $force_irregular, $force_regular;
+global $false_positives, $never_complain_about, $force_irregular, $force_regular, $overrules;
 
 // list of key or value parts that sound very similar but are something completely different
 // please keep values in ascending order!
@@ -221,6 +221,7 @@ $never_complain_about = "
 // please note the special notation!
 
 $force_irregular = array(
+	'building:=farm_auxillary',
 	'hanger',
 	'usability:skate:=excelent',
 	'note_',
@@ -242,6 +243,12 @@ $force_regular = array(
 	'lengths:right:=',
 	'man_made:=cutline',
 	'usability:skate:=excellent',
+);
+
+// for known typos with more than one character wrong use this:
+// bad prefix, bad key, right prefix, right key
+$overrules = array (
+	array('building:=', 'farm_auxcillary', 'building:=', 'farm_auxiliary')
 );
 
 
@@ -410,7 +417,7 @@ function found_in($needle1, $needle2, $haystack) {
 
 // find keys that are rarely used and that are very similar to keys that are used very often
 function find_offending_keys($db1, $item, $keylen) {
-global $never_complain_about, $force_irregular, $force_regular;
+global $never_complain_about, $force_irregular, $force_regular, $overrules;
 
 	//find regular tags (i.e. tags that are used very frequently, currently at least 1/100000 of the whole number of tags)
 	$tag_count_limit = query_firstval("SELECT SUM(tag_count) FROM _tmp_keys", $db1, false) / 100000;
@@ -460,6 +467,18 @@ global $never_complain_about, $force_irregular, $force_regular;
 	// remember a pair if the difference is exactly one character
 	if (is_array($irregulars) && is_array($regulars)) {
 		foreach ($irregulars as $irreg_key) {
+
+			// lookup overrules
+			foreach ($overrules as $o) {
+				list($bad_prefix, $bad_key, $right_prefix, $right_key)=$o;
+
+				if ($irreg_key[0]==$bad_prefix && $irreg_key[1]==$bad_key) {
+					$offending_keys[$irreg_key[0]][$irreg_key[1]]=array($right_prefix, $right_key);
+					continue 2;		// skip next block
+				}					
+			}
+
+			// without overrules: lookup similar regulars for the irregular key (one character difference)
 			foreach ($regulars as $reg_key) {
 				// identical prefix plus exactly one character differently...
 				if (($irreg_key[0]==$reg_key[0]) && levenshtein($irreg_key[1], $reg_key[1])<=1) {
@@ -469,6 +488,7 @@ global $never_complain_about, $force_irregular, $force_regular;
 			}
 		}
 	}
+	//echo "OFFENDING KEYS:\n"; print_r($offending_keys);
 	return $offending_keys;
 }
 
