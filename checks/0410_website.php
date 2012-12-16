@@ -592,6 +592,8 @@ function queueURL(&$rc, $element, $url) {
 function run_standalone_callback($response, $info, $request) {
 	echo "Callback on $request->url\n";
 
+	$response=fix_charset($response);
+
 	if($info['http_code'] < 200 || $info['http_code'] > 299) {
 		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
 		return;
@@ -608,6 +610,8 @@ function run_keepright_callback($response, $info, $request) {
 
 	$obj = $request->callback_data;
 	//echo "callback for " . $request->url . "\n";
+
+	$response=fix_charset($response);
 
 	if($info['http_code'] == 0) {
 		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
@@ -656,6 +660,21 @@ function run_keepright_callback($response, $info, $request) {
 }
 
 
+function fix_charset($response) {
+	global $z;
+
+	// Try to get our copy of the page match the encoding of the OSM tags
+	$match = null;
+	if(preg_match("/meta${z}http-equiv$z=$z\"content-type\".*content$z=$z\".*?charset$z=$z([\w-]*)/i", $response,$match)) {
+		$http_encoding = strtolower($match[1]);
+		if($http_encoding !== 'utf-8') {
+			//echo "performing characterset conversion\n";
+			$response = iconv($http_encoding,'UTF-8//IGNORE',$response);
+		}
+	}
+	$response = html_entity_decode($response,ENT_NOQUOTES,'UTF-8');
+	return $response;
+}
 
 //  *******************************************************************
 //
@@ -685,16 +704,6 @@ function run_keepright_callback($response, $info, $request) {
 
 function fuzzy_compare($response, $osm_element, $http_eurl) {
 	global $keys_to_search_fixed, $keys_to_search_regex, $w, $z, $debug, $squat_strings;
-
-	// Try to get our copy of the page match the encoding of the OSM tags
-	$match = null;
-	if(preg_match("/meta${z}http-equiv$z=$z\"content-type\".*content$z=$z\".*?charset$z=$z([\w-]*)/i", $response,$match)) {
-		$http_encoding = strtolower($match[1]);
-		if($http_encoding !== 'utf-8') {
-			$response = iconv($http_encoding,'UTF-8//IGNORE',$response);
-		}
-	}
-	$response = html_entity_decode($response,ENT_NOQUOTES,'UTF-8');
 
 	//
 	// Heuristics to flag probable domain squatting
