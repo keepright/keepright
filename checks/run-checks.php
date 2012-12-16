@@ -83,7 +83,7 @@ function run_checks($schema, $checks_to_run=array()) {
 	// in the "real" errors-table at the end of this script
 
 	if (!type_exists($db1, 'type_error_state', 'public'))
-		query("CREATE TYPE public.type_error_state AS ENUM('new','cleared','ignored','reopened')", $db1, false);
+		query("CREATE TYPE public.type_error_state AS ENUM('new','cleared','ignored','reopened','preliminary')", $db1, false);
 
 	if (!type_exists($db1, 'type_object_type', 'public'))
 		query("CREATE TYPE public.type_object_type AS ENUM('node','way','relation')", $db1, false);
@@ -252,9 +252,14 @@ function run_checks($schema, $checks_to_run=array()) {
 
 
 	// add newly found errors
+	// for the website check newly found errors don't immediately jump into 'new' state
+	// instead they start in 'preliminary' and switch to 'new' only if they occur again
+	// in the next round
 	query("
 		INSERT INTO public.errors (schema, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
-		SELECT '$schema', e.error_type, e.object_type, e.object_id, CAST('new' AS type_error_state), e.last_checked, e.last_checked, e.lat, e.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
+		SELECT '$schema', e.error_type, e.object_type, e.object_id,
+		CAST(CASE WHEN e.error_type BETWEEN 410 AND 419 THEN 'preliminary' ELSE 'new' END AS type_error_state),
+		e.last_checked, e.last_checked, e.lat, e.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM _tmp_errors AS e LEFT JOIN public.errors ON (e.error_type=errors.error_type AND e.object_type=errors.object_type AND e.object_id=errors.object_id AND e.lat IS NOT DISTINCT FROM errors.lat AND e.lon IS NOT DISTINCT FROM errors.lon)
 		WHERE public.errors.object_id IS NULL AND ($checks_executed)
 	", $db1);
@@ -323,7 +328,7 @@ function run_checks($schema, $checks_to_run=array()) {
 		INSERT INTO _tmp_ev (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT DISTINCT e.error_id, '$schema', e.error_type, e.object_type, e.object_id, e.state, e.first_occurrence, e.last_checked, 0, 0, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e
-		WHERE e.schema='$schema' AND e.object_type='relation' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
+		WHERE e.schema='$schema' AND e.object_type='relation' AND state NOT IN ('cleared', 'preliminary') AND (e.lat IS NULL OR e.lon IS NULL)
 	", $db1);
 	query("CREATE INDEX idx_tmp_error_view_object_id ON _tmp_ev (object_id)", $db1, false);
 	query("CREATE INDEX idx_tmp_error_view_latlon ON _tmp_ev (lat,lon)", $db1, false);
@@ -373,7 +378,7 @@ function run_checks($schema, $checks_to_run=array()) {
 			e.state, e.first_occurrence, e.last_checked,
 			1e7*n.lat, 1e7*n.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e INNER JOIN nodes n ON (e.object_id = n.id)
-		WHERE e.schema='$schema' AND e.object_type='node' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
+		WHERE e.schema='$schema' AND e.object_type='node' AND state NOT IN ('cleared', 'preliminary') AND (e.lat IS NULL OR e.lon IS NULL)
 			AND n.lat IS NOT NULL AND n.lon IS NOT NULL
 	", $db1);
 
@@ -384,7 +389,7 @@ function run_checks($schema, $checks_to_run=array()) {
 			e.state, e.first_occurrence, e.last_checked,
 			1e7*w.first_node_lat AS lat, 1e7*w.first_node_lon AS lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e INNER JOIN ways w ON w.id=e.object_id
-		WHERE e.schema='$schema' AND e.object_type='way' AND state<>'cleared' AND (e.lat IS NULL OR e.lon IS NULL)
+		WHERE e.schema='$schema' AND e.object_type='way' AND state NOT IN ('cleared', 'preliminary') AND (e.lat IS NULL OR e.lon IS NULL)
 			AND w.first_node_lat IS NOT NULL AND w.first_node_lon IS NOT NULL
 		GROUP BY e.error_id, e.error_type, e.object_type, e.object_id, e.state,
 			e.first_occurrence, e.last_checked, w.tstamp,
@@ -399,7 +404,7 @@ function run_checks($schema, $checks_to_run=array()) {
 			e.object_type, e.object_id, e.state,
 			e.first_occurrence, e.last_checked, e.lat, e.lon, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e
-		WHERE e.schema='$schema' AND state<>'cleared' AND NOT(e.lat IS NULL OR e.lon IS NULL)
+		WHERE e.schema='$schema' AND state NOT IN ('cleared', 'preliminary') AND NOT(e.lat IS NULL OR e.lon IS NULL)
 	", $db1);
 
 

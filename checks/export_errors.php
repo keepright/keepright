@@ -58,7 +58,7 @@ function export_errors($schema) {
 		$result = query("
 			SELECT *, date_trunc('hour',first_occurrence) AS fo, date_trunc('hour',last_checked) AS lc, date_trunc('second',object_timestamp) AS ts
 			FROM public.error_view
-			WHERE NOT (state='cleared') AND schema='$schema'
+			WHERE state NOT IN ('preliminary', 'cleared') AND schema='$schema'
 			ORDER BY error_id
 		", $db1);
 
