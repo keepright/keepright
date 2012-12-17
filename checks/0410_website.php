@@ -48,7 +48,12 @@ $checkable_tags = array(
 	'website',
 	'url',
 	'website:mobile',
-	'contact:website'
+	'contact:website',
+	'contact:url',
+	'image',
+	'source:website',
+	'source:url'
+
 );
 
 // these tags may contain text which can validate the website matches the osm element:
