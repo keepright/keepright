@@ -45,7 +45,7 @@ printf(T_gettext('Data Checks for Asia%s (Starting point Tokio, Japan)'), "</a>"
 
 
 echo "<br><br>";
-printf(T_gettext("Developers have a look at the %sSourceForge%s site providing svn access to the sources."), "<a href='http://apps.sourceforge.net/trac/keepright/'>", '</a>');
+printf(T_gettext("Developers have a look at the %sSourceForge%s site providing svn access to the sources."), "<a href='http://sourceforge.net/projects/keepright'>", '</a>');
 echo "<br>";
 printf(T_gettext("If you want to export errors from KeepRight you will want to have a look at the %sinterfacing guide%s"), "<a href='interfacing.php'>", '</a>');
 
