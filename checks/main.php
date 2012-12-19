@@ -70,9 +70,10 @@ if (!$processed_a_schema) {
 
 
 // perform database maintenance on error tables only once per complete loop
+// FULL vacuuming necessary on 'error_view' only; in 'errors' rows are never dropped
 $db1 = pg_pconnect(connectstring(), PGSQL_CONNECT_FORCE_NEW);
 query("VACUUM ANALYZE public.errors", $db1);
-query("VACUUM ANALYZE public.error_view", $db1);
+query("VACUUM FULL ANALYZE public.error_view", $db1);
 pg_close($db1);
 
 
