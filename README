@@ -152,6 +152,7 @@ JAVACMD_OPTIONS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
 my ~/.osmosis looks like this:
 JAVACMD_OPTIONS=" -Xmx2500m -Djava.io.tmpdir=/media/big_harddisk/tmp/ -Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128 "
 
+The website check (#410) too benefits from an http proxy. Have a look at the respective options in you keepright user config file (~/.keepright). Increasing the cache size to 5000MB for use with the website check seems appropriate.
 
 
 SETTING UP LOCAL DATABASES
@@ -231,28 +232,28 @@ CREATE EXTENSION postgis;
 Wondering why the auto-vac-daemon ist shut off?
 The daemon will start analyzing and vacuuming tables every few hours to keep index performance up on a high level. But this consumes large amounts of IO bandwidth and disturbes normal operation. Vacuuming is done by hand throughout the scripts because there are many temporary tables that need analyzing and the daemon never comes at the right time. Basically it is done once after loading data and then manually after creation of temp tables and adding indexes.
 
-For inserting actual data take a look at updateDB.sh, planet.php and config: These scripts download a planet dump from the net or diff-update an already existing set of planet excerpts and insert the planet files contents in a database. In config you can define the databases and the coordinates of the areas.
+For inserting actual data take a look at updateDB.php, planet.php and config: These scripts download a planet dump from the net or diff-update an already existing set of planet excerpts and insert the planet files contents in a database. In config you can define the databases and the coordinates of the areas.
 
-Don't forget to adapt the appropriate configuration variables to match your database credentials in ~/keepright.conf.
+Don't forget to adapt the appropriate configuration variables to match your database credentials in ~/.keepright.
 OSMOSIS_BIN has to point to the location where you have put the osmosis executable.
 
-Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new error types. You will want to make settings differ from the standard settings. Therefore you can change the file ~/keepright.config which includes only the system-specific settings (this file will be created upon the first run of main.php). ~/keepright.config will be read after the built-in config file so any settings made here will overwrite the default.
+Configuration is split in two parts: config/config is the default file. This file will always be read first and it will be updated via svn to add new setup options. You will want to make settings differ from the standard settings. Therefore you can change the file ~/.keepright which includes only the system-specific settings (this file will be created upon the first run of main.php). ~/.keepright will be read after the built-in config file so any settings made here will overwrite the default.
 
 
-Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts if you want to run a web server. Update ~/keepright.config and webconfig.inc.php with the new database credentials.
+Finally you will have to setup a MySQL database and user for the destination tables needed by the presentation scripts if you want to run a web server. Update ~/.keepright and webconfig.inc.php with the new database credentials.
 
 
 
 RUNNING THE CHECKS
 ------------------
 
-First of all you need to specify database credentials in ~/keepright.config.
+First of all you need to specify database credentials in ~/.keepright.
 
 Second, take a look at the list of error types in config/error_types.php. Here you may specify which types of checks should be executed. Anything different from zero will enable a job.
 
 Assuming you already have a populated database you start checking by calling run-checks.php from the shell:
 > php run-checks.php 1 20 30 40
-will start the checks 20, 30 and 40 on the database schema called 1. Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in ~/keepright.config.
+will start the checks 20, 30 and 40 on the database schema called 1. Providing check numbers on the command line is optional. If none are given, all checks are run if they are enabled in ~/.keepright.
 
 When processing has finished you will have (among others) a newly created table called public.error_view. Here you can find records for all errors that exist. This postgres table will get transferred into MySQL by export_errors.php and webUpdateClient.php.
 
@@ -341,7 +342,7 @@ http://windows.php.net/download/
 
 PostgreSQL
 http://www.enterprisedb.com/products-services-training/pgdownload#windows
-choose PostgreSQL 9.2 or later
+choose PostgreSQL 9.2 or later, choose the x64 flavor
 
 PostGIS
 http://postgis.refractions.net/download/windows/
@@ -370,9 +371,9 @@ cd \
 md OSM
 cd OSM
 mkdir keepright
-svn co https://keepright.svn.sourceforge.net/svnroot/keepright keepright
+svn co svn://svn.code.sf.net/p/keepright/code/ keepright
 
-Create a copy of the config.php file you find in C:\OSM\keepright\config\config.php.template and rename it to userconfig.php in the same directory.
+Create a copy of the config.php file you find in C:\OSM\keepright\config\config.php.template and rename it to userconfig.php in the same directory. This file replaces the ~/.keepright file used on Linux environments and is never overwritten by svn updates.
 
 Open the file in your favourite text editor and change the paths accordingly.
 
