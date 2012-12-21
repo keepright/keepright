@@ -41,7 +41,7 @@ require_once('rolling-curl/RollingCurl.php');
 //	run with data from the database
 
 
-global $checkable_tags, $keys_to_search_fixed, $keys_to_search_regex, $whitelist, $curlopt, $w, $z, $debug, $squat_strings, $rc, $db1, $db2;
+global $checkable_tags, $check_accessibility_only, $keys_to_search_fixed, $keys_to_search_regex, $whitelist, $curlopt, $w, $z, $debug, $squat_strings, $rc, $db1, $db2;
 
 // these tags may contain URLs
 $checkable_tags = array(
@@ -54,6 +54,11 @@ $checkable_tags = array(
 	'source:website',
 	'source:url'
 
+);
+
+// it doesn't make sense comparing the contents of an image with text tags
+$check_accessibility_only = array(
+	'image'
 );
 
 // these tags may contain text which can validate the website matches the osm element:
@@ -415,7 +420,7 @@ if ($argc>=2 && is_readable($argv[1])) {
 
 
 function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
-	global $error_type, $checkable_tags, $whitelist, $error_count, $rc;
+	global $error_type, $checkable_tags, $check_accessibility_only, $whitelist, $error_count, $rc;
 
 
 	echo "checking on $table...\n";
@@ -440,7 +445,11 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 	while ($row1=pg_fetch_array($result1, NULL, PGSQL_ASSOC)) {
 
 
-		$obj=array('id'=>$row1[$object_type . '_id'], 'object_type'=>$object_type);
+		$obj=array(
+			'id'=>$row1[$object_type . '_id'],
+			'object_type'=>$object_type,
+			'check_content'=>true
+		);
 
 		// second: find all tags of those objects
 		$result2=query("SELECT k, v FROM $table
@@ -448,6 +457,7 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 
 		while ($row2=pg_fetch_array($result2, NULL, PGSQL_ASSOC)) {
 			$obj[$row2['k']]=$row2['v'];
+			if (in_array($row2['k'], $check_accessibility_only)) $obj['check_content']=false;
 		}
 		pg_free_result($result2);
 
@@ -597,16 +607,21 @@ function queueURL(&$rc, $element, $url) {
 function run_standalone_callback($response, $info, $request) {
 	echo "Callback on $request->url\n";
 
-	$response=fix_charset($response);
+	if ($obj['check_content'])			// makes no sense on an image
+		$response=fix_charset($response);
 
 	if($info['http_code'] < 200 || $info['http_code'] > 299) {
 		print_r(array('type'=>1, 'The URL ($1) cannot be opened (HTTP status code $2)', $request->url, $info['http_code']));
 		return;
 	}
-	if(!($response = check_redirects($response, $request->callback_data, $request->url))) {
-		return;
+
+	if ($obj['check_content']) {
+
+		if(!($response = check_redirects($response, $request->callback_data, $request->url))) {
+			return;
+		}
+		print_r(fuzzy_compare($response, $request->callback_data, $request->url));
 	}
-	print_r(fuzzy_compare($response, $request->callback_data, $request->url));
 }
 
 // handle http response in keepright mode
@@ -616,7 +631,8 @@ function run_keepright_callback($response, $info, $request) {
 	$obj = $request->callback_data;
 	//echo "callback for " . $request->url . "\n";
 
-	$response=fix_charset($response);
+	if ($obj['check_content'])			// makes no sense on an image
+		$response=fix_charset($response);
 
 	if($info['http_code'] == 0) {
 		echo "The URL (" . $request->url . ") cannot be opened (HTTP status code " . $info['http_code'] . ")\n";
@@ -636,31 +652,34 @@ function run_keepright_callback($response, $info, $request) {
 	return;
 	}
 
-	if(!($response = check_redirects($response, $request->callback_data, $request->url))) {
-        return;
-    }
 
-	$ret=fuzzy_compare($response, $obj, $request->url);
-	if ($ret !== null) {
-		$error_count++;
+	if ($obj['check_content']) {
 
-		// avoid apos crash the SQL-string
-		$msgid=pg_escape_string($db2, $ret[0]);
-		$txt1=pg_escape_string($db2, $ret[1]);
-		$txt2=pg_escape_string($db2, $ret[2]);
+		if(!($response = check_redirects($response, $request->callback_data, $request->url))) {
+			return;
+		}
 
-		query("
-			INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
-			VALUES ($error_type + " . $ret['type'] . ", '" . $obj['object_type'] . "', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
-		", $db2, false);
+		$ret=fuzzy_compare($response, $obj, $request->url);
+		if ($ret !== null) {
+			$error_count++;
 
-		/*
-		echo "error on URL " . $request->url . "\n";
-		print_r($obj);
-		echo "result:\n";
-		print_r($ret);
-		*/
+			// avoid apos crash the SQL-string
+			$msgid=pg_escape_string($db2, $ret[0]);
+			$txt1=pg_escape_string($db2, $ret[1]);
+			$txt2=pg_escape_string($db2, $ret[2]);
 
+			query("
+				INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
+				VALUES ($error_type + " . $ret['type'] . ", '" . $obj['object_type'] . "', " . $obj['id'] . ", '$msgid', '$txt1', '$txt2', NOW())
+			", $db2, false);
+
+			/*
+			echo "error on URL " . $request->url . "\n";
+			print_r($obj);
+			echo "result:\n";
+			print_r($ret);
+			*/
+		}
 	}
 }
 
