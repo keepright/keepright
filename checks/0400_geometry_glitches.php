@@ -69,7 +69,13 @@ query("
 	WHERE wt.k='highway' AND
 		wt.v NOT IN ('cycleway', 'service', 'track', 'path', 'footway',
 		'pedestrian', 'steps' ,'via_ferrata', 'emergency_access_point',
-		'unclassified', 'residential')
+		'unclassified', 'residential') AND
+	NOT EXISTS (
+		SELECT 1
+		FROM way_tags T
+		WHERE T.way_id=wt.way_id AND
+		T.k='area' AND T.v='yes'
+	)
 ", $db1);
 
 query("CREATE UNIQUE INDEX idx_tmp_ways_way_id ON _tmp_ways (way_id)", $db1);
@@ -487,11 +493,10 @@ query("DROP TABLE IF EXISTS _tmp_restrictions", $db1, false);
 // part 2:
 // travel along all ways and find pairs of sharp angles in between the linestrings
 // (not only considering junctions)
-// angles of approx. 90 degrees are common, so leave some tolerance and set the limit to 100 degrees
 // inspect tupels of 4 nodes in order. The typical case leads to two sharp-angled segments in a row
 // where the distance between B and C is usually very short, limit the length to 80 meters.
-// select ways where the angle AB - BC as well as BC - CD are sharper than 100 degrees
-// remember: totally straight means 180 degrees, so the effective limit is 180-100, that is 80 degrees.
+// select ways where the angle AB - BC as well as BC - CD are sharper than the limit
+// remember: totally straight means 180 degrees, so the effective limit is 180-x
 //
 //  * A
 //   \
@@ -503,6 +508,38 @@ query("DROP TABLE IF EXISTS _tmp_restrictions", $db1, false);
 //                 \
 //                  \
 //                   * D
+// 
+// finding the angle limit is a two-stage process:
+// first guess comes from highway class:
+//
+//  highway type                               min. angle
+// --------------------------------------------------------
+//  living_street, residential, unclassified          110
+//  primary, secondary, tertiary                       80
+//  primary_link, secondary_link, tertiary_link        60
+//  motorway_link, trunk_link                          60
+//  trunk                                              45 
+//  motorway                                           30 
+// 
+//
+// imagine a trunk road with maxspeed=50, here the min. angle originating
+// from a primary road is appropriate, so maxspeed tags may overrule
+// the first guess:
+//  
+//  maxspeed                                   min. angle
+// --------------------------------------------------------
+//  ??:living_street, zone:30, 30, 20 mph             110
+//  ??:urban, zone:50, 50, 30 mph                     100
+//  70. 40 mph, 50 mph                                 80
+//  ??:rural, 100, 60 mph                              60
+//  ??:motorway, 130, 70 mph                           30 
+// 
+// One mile per hour corresponds to 1.609 km/h
+//
+// sometimes there are roundabouts even on trunk roads without
+// a maxspeed limit. Increase the limit to 80 degrees in all roundabouts
+//
+
 
 
 // add some more way types for this check only
@@ -512,8 +549,80 @@ query("
 	FROM way_tags wt LEFT JOIN _tmp_ways w USING (way_id)
 	WHERE wt.k='highway' AND
 		wt.v IN ('unclassified', 'residential') AND
-		w.way_id IS NULL
+		w.way_id IS NULL AND
+	NOT EXISTS (
+		SELECT 1
+		FROM way_tags T
+		WHERE T.way_id=wt.way_id AND
+		T.k='area' AND T.v='yes'
+	)
 ", $db1);
+
+
+query("
+	ALTER TABLE _tmp_ways
+	ADD angle_limit double precision NOT NULL DEFAULT 100.0
+", $db1);
+
+
+// assign angle limits according to highway class
+query("
+	UPDATE _tmp_ways w
+	SET angle_limit=
+	CASE
+		WHEN wt.v IN ('living_street', 'residential', 'unclassified') THEN 110.0
+		WHEN wt.v IN ('primary', 'secondary', 'tertiary') THEN 80.0
+		WHEN wt.v IN ('primary_link', 'secondary_link', 'tertiary_link') THEN 60.0
+		WHEN wt.v IN ('motorway_link', 'trunk_link') THEN 60.0
+		WHEN wt.v IN ('trunk') THEN 45.0
+		WHEN wt.v IN ('motorway') THEN 30.0
+	ELSE
+		100.0
+	END
+	FROM way_tags wt
+	WHERE wt.way_id=w.way_id AND
+		wt.k='highway'
+", $db1);
+
+
+// assign angle limits according to maxspeed
+query("
+	UPDATE _tmp_ways w
+	SET angle_limit=
+	CASE
+		WHEN wt.v IN ('zone:30', '30', '20 mph', '20mph') OR wt.v LIKE '__:living_street' THEN 110.0
+		WHEN wt.v IN ('40', 'zone:50', '50', '60', '30 mph', '30mph') OR wt.v LIKE '__:urban' THEN 100.0
+		WHEN wt.v IN ('70', '80', '40 mph', '40mph', '50 mph', '50mph') THEN 80.0
+		WHEN wt.v IN ('90', '100', '60 mph', '60mph') OR wt.v LIKE '__:rural' THEN 60.0
+		WHEN wt.v IN ('110', '120', '130', '70 mph', '70mph') OR wt.v LIKE '__:motorway' THEN 30.0
+	ELSE
+		angle_limit
+	END
+	FROM way_tags wt
+	WHERE wt.way_id=w.way_id AND
+		wt.k='maxspeed'
+", $db1);
+
+// increase limit for roundabouts if necessary
+query("
+	UPDATE _tmp_ways w
+	SET angle_limit=80.0
+	FROM way_tags wt
+	WHERE wt.way_id=w.way_id AND
+		wt.k='junction' AND
+		wt.v='roundabout' AND
+		angle_limit<80.0
+", $db1);
+
+// convert to radians, calculate cosine as needed in further algorithm
+// remember: totally straight means 180 degrees, so the effective limit is 180-x
+query("
+	UPDATE _tmp_ways w
+	SET angle_limit=cos((180.0 - angle_limit) * PI()/180.0)
+", $db1);
+
+
+
 
 
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
@@ -529,6 +638,7 @@ query("
 		lat double precision NOT NULL,
 		x double precision NOT NULL,
 		y double precision NOT NULL,
+		angle_limit double precision NOT NULL,
 		PRIMARY KEY (way_id, sequence_id)
 	)
 ", $db1);
@@ -554,9 +664,9 @@ query("
 // only ways consisting of at least 4 nodes can be relevant
 query("
 	INSERT INTO _tmp_wn (way_id, sequence_id, sequence_id1, sequence_id2,
-		x, y, lon, lat)
+		x, y, lon, lat, angle_limit)
 	SELECT wn.way_id, wn.sequence_id, 1+wn.sequence_id, 2+wn.sequence_id,
-		wn.x, wn.y, wn.lon, wn.lat
+		wn.x, wn.y, wn.lon, wn.lat, w.angle_limit
 	FROM _tmp_ways w INNER JOIN way_nodes wn USING (way_id)
 		INNER JOIN ways ON w.way_id=ways.id
 	WHERE ways.node_count>=4
@@ -571,19 +681,18 @@ query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("ANALYZE _tmp_wn", $db1, false);
 
 
-$angle_limit = cos(80.0 * PI()/180.0);
 $length_limit = pow(80.0, 2);	// save one square root calculation
 
 
 // part 1: consider tupels of three nodes A, B and C
 query("
-	INSERT INTO _tmp_wn2(way_id, sequence_id, Bx, By, Cx, Cy, lon, lat)
+	INSERT INTO _tmp_wn2 (way_id, sequence_id, Bx, By, Cx, Cy, lon, lat)
 	SELECT A.way_id, A.sequence_id+3, B.x, B.y, C.x, C.y, B.lon, B.lat
 
 	FROM _tmp_wn A INNER JOIN _tmp_wn B ON (A.way_id=B.way_id AND A.sequence_id1=B.sequence_id)
 		INNER JOIN _tmp_wn C ON (A.way_id=C.way_id AND A.sequence_id2=C.sequence_id)
 	WHERE ((A.x-B.x)*(C.x-B.x) + (A.y-B.y)*(C.y-B.y)) >
-		SQRT(((A.x-B.x)^2 + (A.y-B.y)^2)*((C.x-B.x)^2 + (C.y-B.y)^2)) * ($angle_limit)
+		SQRT(((A.x-B.x)^2 + (A.y-B.y)^2)*((C.x-B.x)^2 + (C.y-B.y)^2)) * A.angle_limit
 	AND (C.x-B.x)^2 + (C.y-B.y)^2 < ($length_limit)
 ", $db1);
 query("ANALYZE _tmp_wn2", $db1, false);
@@ -596,7 +705,7 @@ query("
 
 	FROM _tmp_wn2 ABC INNER JOIN _tmp_wn D ON (ABC.way_id=D.way_id AND ABC.sequence_id=D.sequence_id)
 	WHERE ((ABC.Bx-ABC.Cx)*(D.x-ABC.Cx) + (ABC.By-ABC.Cy)*(D.y-ABC.Cy)) >
-		SQRT(((D.x-ABC.Cx)^2 + (D.y-ABC.Cy)^2)*((ABC.Bx-ABC.Cx)^2 + (ABC.By-ABC.Cy)^2)) * ($angle_limit)
+		SQRT(((D.x-ABC.Cx)^2 + (D.y-ABC.Cy)^2)*((ABC.Bx-ABC.Cx)^2 + (ABC.By-ABC.Cy)^2)) * D.angle_limit
 ", $db1);
 
 
