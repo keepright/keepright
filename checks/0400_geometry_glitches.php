@@ -69,6 +69,7 @@ query("
 	WHERE wt.k='highway' AND
 		wt.v NOT IN ('cycleway', 'service', 'track', 'path', 'footway',
 		'pedestrian', 'steps' ,'via_ferrata', 'emergency_access_point',
+		'raceway', 'proposed', 'construction',
 		'unclassified', 'residential') AND
 	NOT EXISTS (
 		SELECT 1
