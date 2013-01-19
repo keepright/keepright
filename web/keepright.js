@@ -17,15 +17,11 @@ function init() {
 	} );
 
 	// add the mapnik layer
-	var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+	var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik", {'attribution': '&copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> contributors'});
 	map.addLayer(layerMapnik);
 
-	// add the osmarender layer
-// 	var layerOsmarender = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
-// 	map.addLayer(layerOsmarender);
-
 	// add the open cycle map layer
-	var layerCycle = new OpenLayers.Layer.OSM.CycleMap("OSM Cycle Map");
+	var layerCycle = new OpenLayers.Layer.OSM.CycleMap("OSM Cycle Map", {'attribution': '&copy; <a href="http://www.openstreetmap.org">OpenStreetMap</a> contributors'});
 	map.addLayer(layerCycle);
 
 	// add point markers layer. This is not the standard text layer but a derived version!
