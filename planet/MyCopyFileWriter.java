@@ -114,6 +114,26 @@ public class MyCopyFileWriter implements Completable {
 	}
 
 
+        /**
+         * Writes data to the output file.
+         * 
+         * @param data
+         *            The data to be written.
+         */
+        public void writeField(long data) {
+                initialize();
+           
+                try {
+                        separateField();
+                        
+                        writer.write(Long.toString(data));
+                        
+                } catch (IOException e) {
+                        throw new OsmosisRuntimeException("Unable to write value (" + data + ")", e);
+                }
+        }  
+
+
 	/**
 	 * Writes data to the output file.
 	 *

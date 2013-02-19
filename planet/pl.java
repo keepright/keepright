@@ -21,19 +21,19 @@ some of the changes include:
 
 
 compile this with classpath pointing to osmosis.jar, postgis.jar and postgresql.jar:
-providing you downloaded osmosis from http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.39.zip
-and extracted it to /home/haraldk/OSM/osmosis-0.39/
+providing you downloaded osmosis from http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.42.zip
+and extracted it to /home/haraldk/OSM/osmosis-0.42/
 
 cd /home/haraldk/OSM/keepright/planet
 
-javac -cp "/home/haraldk/OSM/osmosis-0.39/lib/default/osmosis-core-0.39.jar:/home/haraldk/OSM/osmosis-0.39/lib/default/postgis-jdbc-1.3.3.jar:/home/haraldk/OSM/osmosis-0.39/lib/default/postgresql-8.4-701.jdbc4.jar:/home/haraldk/OSM/osmosis-0.39/lib/default/osmosis-pgsnapshot-0.39.jar:." *.java
+javac -cp "/home/haraldk/OSM/osmosis-0.42/lib/default/osmosis-core-0.42.jar:/home/haraldk/OSM/osmosis-0.42/lib/default/postgis-jdbc-1.3.3.jar:/home/haraldk/OSM/osmosis-0.42/lib/default/postgresql-9.1-901-1.jdbc4.jar:/home/haraldk/OSM/osmosis-0.42/lib/default/osmosis-pgsnapshot-0.42.jar:." *.java
 
 copy resulting .class files into osmosis.jar using your favourite zip program (!)
 
 zip plugins/pl.zip Mercator.class pl.class PostgreSqlMyDatasetDumpWriter.class MyCopyFileWriter.class plugin.xml PostgreSqlMyDatasetDumpWriterFactory.class
 
 run with
- ~/OSM/osmosis-0.39/bin/osmosis -p pl --read-xml file=planet.osm --pl
+ ~/OSM/osmosis-0.42/bin/osmosis -p pl --read-xml file=planet.osm --pl
 
 */
 

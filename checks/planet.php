@@ -69,7 +69,7 @@ function planet_update($schema, $mode='') {
 			' --simc ' .
 			' --rb "' . $planetfile . '" ' .
 			' --ac ' .
-			' --bb ' . get_bbox_parameters($schema) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes ';
+			' --bb ' . get_bbox_parameters($schema) . ' completeWays=yes completeRelations=yes ';
 
 		if ($mode=='update-only')		// just update the file and store it
 			$cmd.=	' --b bufferCapacity=10000 ' .

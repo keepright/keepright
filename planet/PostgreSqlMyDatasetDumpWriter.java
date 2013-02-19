@@ -4,6 +4,7 @@
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
 
 import org.openstreetmap.osmosis.core.container.v0_6.BoundContainer;
 import org.openstreetmap.osmosis.core.container.v0_6.EntityContainer;
@@ -64,6 +65,13 @@ public class PostgreSqlMyDatasetDumpWriter implements Sink, EntityProcessor {
 	private Mercator merc;
 	private Set<Integer> userSet;
 
+
+        /**
+         * {@inheritDoc}
+         */
+        public void initialize(Map<String, Object> metaData) {
+                // Nothing to do here
+        }
 
 	/**
 	 * Creates a new instance.
