@@ -93,12 +93,6 @@ $schemas['22']['top']=50;
 $schemas['22']['bottom']=46;
 $schemas['22']['user']='cetest';
 
-$schemas['23']['left']=-99;
-$schemas['23']['right']=-30;
-$schemas['23']['top']=50;
-$schemas['23']['bottom']=46;
-$schemas['23']['user']='pc9';
-
 $schemas['24']['left']=-117.3;
 $schemas['24']['right']=-111.6;
 $schemas['24']['top']=46;
@@ -542,5 +536,17 @@ $schemas['102']['right']=14;
 $schemas['102']['top']=50.6;
 $schemas['102']['bottom']=49.3;
 $schemas['102']['user']='pc9';
+
+$schemas['103']['left']=-99;
+$schemas['103']['right']=-74;
+$schemas['103']['top']=50;
+$schemas['103']['bottom']=46;
+$schemas['103']['user']='pc9';
+
+$schemas['104']['left']=-74;
+$schemas['104']['right']=-30;
+$schemas['104']['top']=50;
+$schemas['104']['bottom']=46;
+$schemas['104']['user']='pc9';
 
 ?>
