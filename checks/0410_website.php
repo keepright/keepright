@@ -489,7 +489,7 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 
 
 function run_standalone() {
-	global $argc, $argv, $checkable_tags, $curlopt, $rc;
+	global $argc, $argv, $checkable_tags, $curlopt, $rc, $check_accessibility_only;
 
 	$urls_queued=0;
 
@@ -533,6 +533,7 @@ function run_standalone() {
 					break;
 				case "tag":
 					$element[$reader->getAttribute("k")]=$reader->getAttribute("v");
+					$element['check_content']=!(in_array($reader->getAttribute("k"), $check_accessibility_only));
 					break;
 				}
 			break;
@@ -606,7 +607,9 @@ function queueURL(&$rc, $element, $url) {
 // handle http response in standalone mode
 function run_standalone_callback($response, $info, $request) {
 	echo "Callback on $request->url\n";
-
+	$obj = $request->callback_data;
+echo "x " . $obj['check_content'] . "\n";
+print_r($obj);	
 	if ($obj['check_content'])			// makes no sense on an image
 		$response=fix_charset($response);
 
@@ -833,10 +836,10 @@ function check_redirects($response, $osm_element, $http_eurl) {
 function match($haystack, $needle) {
 	global $z;
 
-	$searchedfor = "";
+	$searchedfor = array();
 
 	## Exact match? If only...
-	$searchedfor .= "✔".$needle;
+	$searchedfor[]=$needle;
 	if( stripos( $haystack, $needle ) ) {
 		return(null);   // Match!
 	}
@@ -849,7 +852,7 @@ function match($haystack, $needle) {
 	if(!( $temp = match_any($haystack,$needle) )) {
 		return(null);   // Match!
 	}
-	$searchedfor .= $temp;
+	$searchedfor[]=$temp;
 
 	// Strip out diacriticals and search again.
 	// Though, php's defective iconv makes this hard.
@@ -858,41 +861,53 @@ function match($haystack, $needle) {
 	//	  grussen!
 	$needle2 = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $needle);
 	$needle2 = str_replace("?",'',$needle2);
-	if( $needle2 !== $needle ) {
+	if(!in_array($needle2, $searchedfor)) {
 		if(!( $temp = match_any($haystack,$needle2) )) {
 			return(null);   // Match!
 		}
-		$searchedfor .= $temp;
+		$searchedfor[]=$temp;
 	}
+
+
+	// try with umlauts replaced by german generica
+	$needle2 = strtr($needle, array('Ä'=>'AE', 'Ö'=>'OE', 'Ü'=>'UE',
+		'ä'=>'ae', 'ö'=>'oe', 'ü'=>'ue', 'ß'=> 'ss'));
+	if(!in_array($needle2, $searchedfor)) {
+		if(!( $temp = match_any($haystack,$needle2) )) {
+			return(null);   // Match!
+		}
+		$searchedfor[]=$temp;
+	}
+
+
 
 	#   Let's try the match without punctuation
 	#           Rooney's == Rooneys
 	#           Case-Shiller == CaseShiller
 	$haystack2 = $haystack;
 	$needle2   = preg_replace("/\p{P}/u",'',$needle);
-	if( $needle2 !== $needle ) {
+	if(!in_array($needle2, $searchedfor)) {
 	if(!( $temp = match_any($haystack2,$needle2) )) {
 			return(null);   // Match!
 		}
-		$searchedfor .= $temp;
+		$searchedfor[]=$temp;
 	}
 
 	#   Let's try the match with punctuation converted to spaces:
 	#           Case-Shiller == Case Shiller
 	$haystack3  = preg_replace("/\p{P}/u",' ',$haystack);
-	$needle3    = $needle2;
-	if( $needle3 !== $needle ) {
+	if(!in_array($needle2, $searchedfor)) {
 	if(!( $temp = match_any($haystack3,$needle2) )) {
 			return(null);   // Match!
 		}
-		$searchedfor .= $temp;
+		$searchedfor[]=$temp;
 	}
 
 	#   Let's try the match with punctuation converted to spaces:
 	#       510-558-8770 == 510.558.8770 == +1 (510) 558-8770
 	#   TODO
 
-	return $searchedfor;
+	return implode("✔", array_unique($searchedfor));
 }
 
 ##
@@ -908,7 +923,7 @@ function match_any($haystack, $needle)
 		if ($word == "cafe")      {continue;}   # Except "cafe"
 		if ($word == "café")      {continue;}   # Except "café"
 
-		$searchedfor .= "✔".$word;
+ 		$searchedfor .= $word;
 		if( stripos( $haystack, $word ) ) {
 			return(null);
 		}
