@@ -16,13 +16,16 @@
 */
 
 
+$restriction_types = "'restriction', 'restriction:hgv', 'restriction:caravan', 'restriction:motorcar', 'restriction:bus', 'restriction:agricultural', 'restriction:motorcycle', 'restriction:bicycle', 'restriction:hazmat'";
+
+
 // find all restrictions
 query("DROP TABLE IF EXISTS _tmp_restrictions", $db1, false);
 query("
 	CREATE TABLE _tmp_restrictions AS
 	SELECT relation_id
 	FROM relation_tags t
-	WHERE t.k='type' and t.v='restriction'
+	WHERE t.k='type' and t.v IN ($restriction_types)
 ", $db1);
 query("CREATE INDEX idx_tmp_restrictions_relation_id ON _tmp_restrictions (relation_id)", $db1, false);
 query("ANALYZE _tmp_restrictions", $db1, false);
@@ -36,15 +39,16 @@ query("
 	FROM _tmp_restrictions r
 	WHERE NOT EXISTS (
 		SELECT v FROM relation_tags t
-		WHERE t.relation_id=r.relation_id AND t.k='restriction'
+		WHERE t.relation_id=r.relation_id AND t.k IN ($restriction_types)
 	)
 ", $db1);
+
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
 	SELECT $error_type+1, CAST('relation' AS type_object_type),
 	r.relation_id, 'This turn-restriction has no known restriction type', NOW()
 	FROM _tmp_restrictions r LEFT JOIN relation_tags t USING (relation_id)
-	WHERE t.k='restriction' AND t.v NOT IN (
+	WHERE t.k IN ($restriction_types) AND t.v NOT IN (
 		'no_left_turn','no_right_turn','no_u_turn',
 		'only_straight_on','no_straight_on',
 		'only_left_turn','only_right_turn'
