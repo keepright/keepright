@@ -15,7 +15,6 @@ $replacement_list = array(
 	array("2007-07-13", "amenity", "bakers", "shop=bakery ", "Shop introduced"),
 	array("2007-07-13", "amenity", "butchers", "shop=butcher ", "Shop introduced"),
 	array("2007-07-13", "amenity", "candle_stick_makers", "shop=chandler ", "Shop introduced"),
-	array("2010-11-04", "amenity", "nursing_home", "amenity=social_facility"),
 	array("2009-02-12", "amenity", "signpost", "information=guidepost"),
 	array("2007-07-16", "amenity", "store", "shop=* ", "Shop introduced"),
 	array("2007-07-13", "amenity", "supermarket", "shop=supermarket ", "Shop introduced"),
@@ -52,7 +51,9 @@ $replacement_list = array(
 	array("2011-10-27", "building:type", "*", "building=*", "Please use building=<building typology>"),
 	array("2011-10-27", "natural", "land", "type=multipolygon (islands in lakes and rivers) or natural=coastline (islands in the sea)", "Use Relations/Multipolygon for islands in lakes and rivers, natural=coastline for islands in the sea."),
 	array("2012-01-19", "bicycle_parking", "sheffield", "bicycle_parking=stand", "No real difference and sheffield is only used in UK, see Talk:Key:bicycle parking"),
-	array("2012-01-19", "highway", "ford", "ford=*", "")
+	array("2012-01-19", "highway", "ford", "ford=*", ""),
+	array("2012-11-28", "color", "*", "colour=*", "Usage of American form color probably mainly due to a bug in JOSM presets."),
+	array("2013-01-24", "power", "station", "power=sub_station", "'power=station' may be confused with 'power station' (= power plant) and is never used as a synonym for substation in English.")
 );
 
 
