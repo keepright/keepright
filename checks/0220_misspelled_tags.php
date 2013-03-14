@@ -30,7 +30,7 @@ $false_positives = array(
 	array('biking', 'hiking'),
 	array('Birke', 'Birne'),
 	array('bump', 'hump'),
-	array('cafe', 'cave'),
+	array('cafe', 'cape', 'cave'),
 	array('color', 'colour'),
 	array('county', 'country'),
 	array('DE:rural', 'DK:rural'),
@@ -48,6 +48,7 @@ $false_positives = array(
 	array('function', 'junction'),
 	array('game', 'name'),
 	array('garage', 'garages'),
+	array('glass', 'grass'),
 	array('gold', 'golf'),
 	array('good', 'wood'),
 	array('GR', 'VR'),
@@ -122,6 +123,7 @@ $never_complain_about = "
 	prefix LIKE 'capacity:persons:=%' OR
 	prefix LIKE 'code:=%' OR
 	prefix LIKE 'collection_times:=%' OR
+	prefix LIKE 'comment:=%' OR
 	prefix LIKE 'created_by:=%' OR
 	prefix LIKE 'dcgis:propid:=%' OR
 	prefix LIKE 'distance:=%' OR
