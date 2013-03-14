@@ -59,6 +59,7 @@ $false_positives = array(
 	array('hotel', 'hostel', 'motel'),
 	array('house', 'horse'),
 	array('http', 'https'),
+	array('Iraq', 'Iran'),
 	array('lamp', 'ramp'),
 	array('land', 'sand'),
 	array('lane', 'line'),
