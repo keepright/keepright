@@ -9,21 +9,24 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 	require_once('helpers.php');
 	require_once('../config/config.php');
 
-	if ($argc<=2 || $argv[1]!=='--update') {
+	if ($argc<=2 || ($argv[1]!=='--update' && $argv[1]!=='--cut')) {
+		logger('usage: $ php planet.php --cut planet.pbf schema result.pbf', KR_ERROR);
 		logger('usage: $ php planet.php --update schema', KR_ERROR);
 		exit(1);
 	}
 
-	planet_update($argv[2], 'update-only');
+	if ($argv[1]=='--update') planet_update($argv[2], 'update-only');
+
+	if ($argv[1]=='--cut') planet_cut($argv[2], $argv[3]);
+
 }
 
 
 
 
-function planet_cut($schema) {
+function planet_cut($planetfile, $schema) {
 	global $config;
 
-	$planetfile=$config['planet_dir'] . 'planet.pbf';
 	if (!file_exists($planetfile)) {
 
 		logger("Main planet file $planetfile not found.", KR_ERROR);
@@ -31,11 +34,11 @@ function planet_cut($schema) {
 		exit(1);
 	}
 
-	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' idTrackerType=BitSet completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf"';
+	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf" compress=none';
 
-	//shellcmd($cmd, 'osmosis');
+	shellcmd($cmd, 'osmosis');
 
-	init_workingDir($schema);
+	//init_workingDir($schema);
 }
 
 
