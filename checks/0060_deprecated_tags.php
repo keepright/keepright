@@ -53,7 +53,10 @@ $replacement_list = array(
 	array("2012-01-19", "bicycle_parking", "sheffield", "bicycle_parking=stand", "No real difference and sheffield is only used in UK, see Talk:Key:bicycle parking"),
 	array("2012-01-19", "highway", "ford", "ford=*", ""),
 	array("2012-11-28", "color", "*", "colour=*", "Usage of American form color probably mainly due to a bug in JOSM presets."),
+	/*
+	// removed at 2013-3-29 because http://wiki.openstreetmap.org/wiki/Key:power list it as valid
 	array("2013-01-24", "power", "station", "power=sub_station", "'power=station' may be confused with 'power station' (= power plant) and is never used as a synonym for substation in English.")
+	*/
 );
 
 
