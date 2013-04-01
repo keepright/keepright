@@ -34,7 +34,7 @@ function planet_cut($planetfile, $schema) {
 		exit(1);
 	}
 
-	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schemas[$i]) . ' completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf" compress=none';
+	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schema) . ' completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf" compress=none';
 
 	shellcmd($cmd, 'osmosis');
 
