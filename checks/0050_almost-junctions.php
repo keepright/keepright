@@ -148,7 +148,6 @@ query("ANALYZE _tmp_end_nodes", $db1);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-$bi=new BufferedInserter('_tmp_errors', $db4);
 
 
 // join end_nodes and ways on "node inside bounding box of way"
@@ -164,17 +163,22 @@ query("
 	)
 ", $db1, false);
 
+
+// end-node near way on the same layer
 $result=query("
 	INSERT INTO _tmp_error_candidates (way_id, node_id, node_x, node_y, nearby_way_id, distance)
 	SELECT en.way_id, en.node_id, en.x AS node_x, en.y AS node_y, w.way_id AS nearby_way_id, ST_distance(w.geom, en.geom) AS distance
 	FROM _tmp_end_nodes en, _tmp_ways w
-	WHERE w.bbox && en.geom AND
+	WHERE 
 	ST_DWithin(w.geom, en.geom, {$check0050_min_distance}) AND
 	en.way_id<>w.way_id AND
 	en.layer=w.layer
 ", $db1);
 
 
+// end-node near another end-node on a different layer
+// even though they reside on different layers, it seems likely they were meant to be connected
+// ("end-node near another end-node on the same layer" is covered by the first query)
 $result=query("
 	INSERT INTO _tmp_error_candidates (way_id, node_id, node_x, node_y, nearby_way_id, distance)
 	SELECT en1.way_id, en1.node_id, en1.x AS node_x, en1.y AS node_y, en2.way_id AS nearby_way_id, ST_distance(en2.geom, en1.geom) AS distance
@@ -185,66 +189,76 @@ $result=query("
 ", $db1);
 
 
-
-$result=query("
-	SELECT way_id, node_id, node_x, node_y, nearby_way_id, distance
-	FROM _tmp_error_candidates
-	ORDER BY node_id, distance
-", $db1);
-
-// examine nodes that are close to ways in more detail:
-// there are short final segments on dead ended roads that would end
-// up as false-positives.
-$last_node_id=-1;
-while ($row=pg_fetch_array($result)) {
-
-	if ($row['node_id'] == $last_node_id) continue;
-	if (connected_directly($row['nearby_way_id'], $row['way_id'], $row['node_x'], $row['node_y'], $db3)) {
-
-		//echo "way #{$row['nearby_way_id']} gets skipped\n";
-		continue;
-
-	} else {
-		//echo "way #{$row['nearby_way_id']} is too close\n";
-		$bi->insert("$error_type\tnode\t{$row['node_id']}\tNOW()\t\\N\t\\N\tThis node is very close but not connected to way #$1\t{$row['nearby_way_id']}\t\\N\t\\N\t\\N\t\\N");
-
-	}
-	$last_node_id=$row['node_id'];
-}
-pg_free_result($result);
-$bi->flush_buffer();
-
-print_index_usage($db1);
-
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
-query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1);
-query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+query("CREATE INDEX idx_tmp_error_candidates_way_id ON _tmp_error_candidates (way_id);", $db1);
+query("CREATE INDEX idx_tmp_error_candidates_nearby_way_id ON _tmp_error_candidates (nearby_way_id);", $db1);
+query("CREATE INDEX idx_tmp_error_candidates_node ON _tmp_error_candidates (node_id, distance);", $db1);
+query("ANALYZE _tmp_error_candidates", $db1);
 
 
 
-// this function does a very simplified lookup to find out if two ways
+
+query("DROP TABLE IF EXISTS _tmp_error_candidates2", $db1);
+query("
+	CREATE TABLE _tmp_error_candidates2 (
+		ID serial NOT NULL PRIMARY KEY,
+		node_id bigint NOT NULL,
+		nearby_way_id bigint NOT NULL,
+		distance double precision NOT NULL
+	)
+", $db1, false);
+
+
+// exclude error candidates that are connected by a way
+
+// this is a very simplified lookup to find out if two ways
 // are connected __directly__ (they share a common node)
 // and if the connection is not more than 3*$check0050_min_distance away from
 // the node under test
 // this is used to avoid false-positives on last-segments of ways
 // that are shorter than our threshold. They shall not be checked
 // against ways to which they ARE connected.
-function connected_directly($way_id1, $way_id2, $NuT_x, $NuT_y, $db) {
-	global $check0050_min_distance;
-	$conn=false;
+query("
+	INSERT INTO _tmp_error_candidates2 (node_id, nearby_way_id, distance)
+	SELECT node_id, nearby_way_id, distance
+	FROM _tmp_error_candidates C
+	WHERE NOT EXISTS (
 
-	$result=query("
-		SELECT COUNT(*) AS c
-		FROM way_nodes wn1 INNER JOIN way_nodes wn2 USING (node_id)
-		WHERE wn1.way_id=$way_id1 AND wn2.way_id=$way_id2 AND 
-		(wn1.x-($NuT_x)) ^ 2 + (wn1.y-($NuT_y)) ^ 2 <= (3*$check0050_min_distance) ^ 2
-	", $db, false);
+		SELECT 1
+		FROM 
+			(SELECT * FROM way_nodes WHERE way_id=C.nearby_way_id) wn1 
+		INNER JOIN 
+			(SELECT * FROM way_nodes WHERE way_id=C.way_id) wn2 
+		USING (node_id)
+		WHERE (wn1.x-C.node_x) ^ 2 + (wn1.y-C.node_y) ^ 2 <= (3*$check0050_min_distance) ^ 2
 
-	while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-		$conn=$row['c']>0;
-	}
-	pg_free_result($result);
-	return $conn;
-}
+	)
+", $db1);
+
+
+// in case of multiple candidates per node report the one with minimum distance only 
+query("
+	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, txt1, last_checked)
+	SELECT $error_type, 'node', C.node_id, 
+		'This node is very close but not connected to way #$1', C.nearby_way_id, NOW()
+	FROM _tmp_error_candidates2 C
+	WHERE ID=(
+
+		SELECT ID
+		FROM _tmp_error_candidates2 T
+		WHERE T.node_id=C.node_id
+		ORDER BY distance
+		LIMIT 1
+	)
+", $db1);
+
+
+
+print_index_usage($db1);
+
+
+query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1);
+query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+
 
 ?>
