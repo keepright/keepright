@@ -118,7 +118,7 @@ query("
 //	the other way is a service=parking_aisle
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
-	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, rest_area or construction. Service or unclassified is only valid if it has access=no/private or if it is a service=parking_aisle.', NOW()
+	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, rest_area or construction. Service or unclassified is only valid if it has access=no/private or it leads to a motorway service area or if it is a service=parking_aisle.', NOW()
 	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 	WHERE wn.way_id<>j.way_id AND EXISTS (
 
