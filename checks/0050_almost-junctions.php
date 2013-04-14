@@ -36,12 +36,11 @@ query("
 	)
 ", $db1);
 query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $db1, false);
-query("SELECT AddGeometryColumn('_tmp_ways', 'bbox', 4326, 'POLYGON', 2)", $db1, false);
 
 // find any highway-tagged way
 query("
-	INSERT INTO _tmp_ways (way_id, first_node_id, last_node_id, geom, bbox)
-	SELECT w.id, w.first_node_id, w.last_node_id, w.geom, w.bbox
+	INSERT INTO _tmp_ways (way_id, first_node_id, last_node_id, geom)
+	SELECT w.id, w.first_node_id, w.last_node_id, w.geom
 	FROM ways AS w
 	WHERE w.geom IS NOT NULL AND EXISTS (
 		SELECT way_id
@@ -51,9 +50,9 @@ query("
 ", $db1);
 
 
+query("CREATE INDEX idx_tmp_ways_geom ON _tmp_ways USING gist (geom)", $db1);
 query("CREATE INDEX idx_tmp_ways_first_node_id ON _tmp_ways (first_node_id)", $db1, false);
 query("CREATE INDEX idx_tmp_ways_last_node_id ON _tmp_ways (last_node_id)", $db1, false);
-query("CREATE INDEX idx_tmp_ways_bbox ON _tmp_ways USING gist (bbox);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
 find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
@@ -143,8 +142,41 @@ query("
 	FROM nodes n
 	WHERE en.node_id=n.id
 ", $db1);
-query("CREATE INDEX idx_tmp_end_nodes_geom ON _tmp_end_nodes USING gist (geom);", $db1);
+query("CREATE INDEX idx_tmp_end_nodes_geom ON _tmp_end_nodes USING gist (geom)", $db1);
 query("ANALYZE _tmp_end_nodes", $db1);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+query("DROP TABLE IF EXISTS _tmp_barriers", $db1);
+
+// find all barriers
+query("
+	CREATE TABLE _tmp_barriers (
+	way_id bigint NOT NULL,
+	layer text DEFAULT '0',
+	PRIMARY KEY (way_id)
+	)
+", $db1);
+query("SELECT AddGeometryColumn('_tmp_barriers', 'geom', 4326, 'LINESTRING', 2)", $db1, false);
+
+// find any barrier-tagged way
+query("
+	INSERT INTO _tmp_barriers (way_id, geom)
+	SELECT w.id, w.geom
+	FROM ways AS w
+	WHERE w.geom IS NOT NULL AND EXISTS (
+		SELECT way_id
+		FROM way_tags AS t
+		WHERE t.way_id=w.id AND t.k='barrier'
+	)
+", $db1);
+
+
+query("CREATE INDEX idx_tmp_ways_geom ON _tmp_barriers USING gist (geom)", $db1);
+query("ANALYZE _tmp_barriers", $db1);
+
+find_layer_values('_tmp_barriers', 'way_id', 'layer', $db1);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -165,6 +197,7 @@ query("
 
 
 // end-node near way on the same layer
+// but not intersecting any barrier
 $result=query("
 	INSERT INTO _tmp_error_candidates (way_id, node_id, node_x, node_y, nearby_way_id, distance)
 	SELECT en.way_id, en.node_id, en.x AS node_x, en.y AS node_y, w.way_id AS nearby_way_id, ST_distance(w.geom, en.geom) AS distance
@@ -172,7 +205,13 @@ $result=query("
 	WHERE 
 	ST_DWithin(w.geom, en.geom, {$check0050_min_distance}) AND
 	en.way_id<>w.way_id AND
-	en.layer=w.layer
+	en.layer=w.layer AND
+	NOT EXISTS (
+		SELECT 1
+		FROM _tmp_barriers b
+		WHERE b.layer=en.layer AND
+			ST_Intersects(b.geom, ST_ShortestLine(w.geom, en.geom))
+	)
 ", $db1);
 
 
@@ -185,16 +224,21 @@ $result=query("
 	FROM _tmp_end_nodes en1, _tmp_end_nodes en2
 	WHERE ST_DWithin(en1.geom, en2.geom, {$check0050_min_distance}) AND
 	en1.way_id<>en2.way_id AND
-	en1.layer<>en2.layer
+	en1.layer<>en2.layer AND
+	NOT EXISTS (
+		SELECT 1
+		FROM _tmp_barriers b
+		WHERE b.layer IN (en1.layer, en2.layer) AND
+			ST_Intersects(b.geom, ST_ShortestLine(en1.geom, en2.geom))
+	)
 ", $db1);
 
 
-query("CREATE INDEX idx_tmp_error_candidates_way_id ON _tmp_error_candidates (way_id);", $db1);
-query("CREATE INDEX idx_tmp_error_candidates_nearby_way_id ON _tmp_error_candidates (nearby_way_id);", $db1);
-query("CREATE INDEX idx_tmp_error_candidates_node ON _tmp_error_candidates (node_id, distance);", $db1);
+
+query("CREATE INDEX idx_tmp_error_candidates_way_id ON _tmp_error_candidates (way_id)", $db1);
+query("CREATE INDEX idx_tmp_error_candidates_nearby_way_id ON _tmp_error_candidates (nearby_way_id)", $db1);
+query("CREATE INDEX idx_tmp_error_candidates_node ON _tmp_error_candidates (node_id, distance)", $db1);
 query("ANALYZE _tmp_error_candidates", $db1);
-
-
 
 
 query("DROP TABLE IF EXISTS _tmp_error_candidates2", $db1);
