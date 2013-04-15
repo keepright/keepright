@@ -22,7 +22,7 @@ note ways that come closer than min_distance to the endpoint
 global $check0050_min_distance;
 $check0050_min_distance=10;
 
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 
 // tmp_ways will contain all highways with their first and last node id
 // as well as a linestring of all nodes and the bounding box
@@ -61,7 +61,7 @@ find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
 // find the first and last node of given ways
 
 // _tmp_end_nodes will store first- or last-nodes of given ways that are not connected to any other way
-query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1);
+query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1, false);
 query("
 	CREATE TABLE _tmp_end_nodes (
 	way_id bigint NOT NULL,
@@ -90,7 +90,7 @@ query("
 	SELECT w.way_id, w.last_node_id, w.layer
 	FROM _tmp_ways w INNER JOIN way_nodes wn ON w.last_node_id=wn.node_id
 	WHERE NOT EXISTS (
-		SELECT * FROM _tmp_end_nodes AS tmp
+		SELECT 1 FROM _tmp_end_nodes AS tmp
 		WHERE tmp.node_id=w.last_node_id
 	)
 	GROUP BY w.way_id, w.last_node_id, w.layer
@@ -148,7 +148,7 @@ query("ANALYZE _tmp_end_nodes", $db1);
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-query("DROP TABLE IF EXISTS _tmp_barriers", $db1);
+query("DROP TABLE IF EXISTS _tmp_barriers", $db1, false);
 
 // find all barriers
 query("
@@ -173,7 +173,7 @@ query("
 ", $db1);
 
 
-query("CREATE INDEX idx_tmp_ways_geom ON _tmp_barriers USING gist (geom)", $db1);
+query("CREATE INDEX idx_tmp_barriers_geom ON _tmp_barriers USING gist (geom)", $db1);
 query("ANALYZE _tmp_barriers", $db1);
 
 find_layer_values('_tmp_barriers', 'way_id', 'layer', $db1);
@@ -183,7 +183,7 @@ find_layer_values('_tmp_barriers', 'way_id', 'layer', $db1);
 
 
 // join end_nodes and ways on "node inside bounding box of way"
-query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1, false);
 query("
 	CREATE TABLE _tmp_error_candidates (
 		way_id bigint NOT NULL,
@@ -241,7 +241,7 @@ query("CREATE INDEX idx_tmp_error_candidates_node ON _tmp_error_candidates (node
 query("ANALYZE _tmp_error_candidates", $db1);
 
 
-query("DROP TABLE IF EXISTS _tmp_error_candidates2", $db1);
+query("DROP TABLE IF EXISTS _tmp_error_candidates2", $db1, false);
 query("
 	CREATE TABLE _tmp_error_candidates2 (
 		ID serial NOT NULL PRIMARY KEY,
@@ -269,9 +269,9 @@ query("
 
 		SELECT 1
 		FROM 
-			(SELECT * FROM way_nodes WHERE way_id=C.nearby_way_id) wn1 
+			(SELECT 1 FROM way_nodes WHERE way_id=C.nearby_way_id) wn1 
 		INNER JOIN 
-			(SELECT * FROM way_nodes WHERE way_id=C.way_id) wn2 
+			(SELECT 1 FROM way_nodes WHERE way_id=C.way_id) wn2 
 		USING (node_id)
 		WHERE (wn1.x-C.node_x) ^ 2 + (wn1.y-C.node_y) ^ 2 <= (3*$check0050_min_distance) ^ 2
 
@@ -300,9 +300,11 @@ query("
 print_index_usage($db1);
 
 
-query("DROP TABLE IF EXISTS _tmp_ways", $db1);
-query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1);
-query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_error_candidates2", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_barriers", $db1, false);
 
 
 ?>
