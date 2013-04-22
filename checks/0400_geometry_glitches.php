@@ -67,7 +67,7 @@ query("
 	SELECT DISTINCT wt.way_id
 	FROM way_tags wt
 	WHERE wt.k='highway' AND
-		wt.v NOT IN ('cycleway', 'service', 'track', 'path', 'footway',
+		wt.v NOT IN ('cycleway', 'service', 'track', 'path', 'bridleway', 'footway',
 		'pedestrian', 'steps' ,'via_ferrata', 'emergency_access_point',
 		'raceway', 'proposed', 'construction',
 		'unclassified', 'residential') AND
