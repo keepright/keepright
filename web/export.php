@@ -122,7 +122,13 @@ if ($_GET['format'] == 'rss') {
 		echo "\t<wpt lon=\"" . $row['lo'] . "\" lat=\"" . $row['la'] . "\">";
 		echo "<name><![CDATA[" . $title . $row['error_name'] . "]]></name>";
 		echo "<desc><![CDATA[" . $row['description'] . "]]></desc>";
-		echo "<extensions><schema>" . $row['schema'] . "</schema><id>" . $row['error_id'] . "</id></extensions></wpt>\n";
+		echo "<extensions>";
+		echo "<schema>" . $row['schema'] . "</schema>";
+		echo "<id>" . $row['error_id'] . "</id>";
+		if (strlen($row['comment'])>0) echo "<comment><![CDATA[" . $row['comment'] . "]]></comment>";
+		echo "<object_type>" . $row['object_type'] . "</object_type>";
+		echo "<object_id>" . $row['object_id'] . "</object_id>";
+		echo "</extensions></wpt>\n";
 	}
 
 	echo "</gpx>";
