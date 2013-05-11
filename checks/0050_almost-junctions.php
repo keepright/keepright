@@ -269,9 +269,9 @@ query("
 
 		SELECT 1
 		FROM 
-			(SELECT 1 FROM way_nodes WHERE way_id=C.nearby_way_id) wn1 
+			(SELECT * FROM way_nodes WHERE way_id=C.nearby_way_id) wn1 
 		INNER JOIN 
-			(SELECT 1 FROM way_nodes WHERE way_id=C.way_id) wn2 
+			(SELECT * FROM way_nodes WHERE way_id=C.way_id) wn2 
 		USING (node_id)
 		WHERE (wn1.x-C.node_x) ^ 2 + (wn1.y-C.node_y) ^ 2 <= (3*$check0050_min_distance) ^ 2
 
