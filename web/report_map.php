@@ -73,17 +73,9 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
    title="RSS" href="export.php" /> -->
 
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
-
-<script type="text/javascript" src="myPermalink.js"></script>
-<script type="text/javascript" src="myTextFormat.js"></script>
-<script type="text/javascript" src="myText.js"></script>
-<script type="text/javascript" src="keepright.js"></script>
-
+<script type="text/javascript" src="keepright-min.js"></script>
 <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-
 <link rel="stylesheet" type="text/css" href="style.css">
-<script type="text/javascript" src="outline.js"></script>
-<script type="text/javascript" src="tristate-0.9.2.js"></script>
 
 <script type="text/javascript">
 	var lat=<?php echo $lat/1e7; ?>;
