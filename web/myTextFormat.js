@@ -50,84 +50,58 @@ OpenLayers.Format.myTextFormat = OpenLayers.Class(OpenLayers.Format, {
      */
     read: function(text) {
         var lines = text.split('\n');
-        var columns;
         var features = [];
         // length - 1 to allow for trailing new line
-        for (var lcv = 0; lcv < (lines.length - 1); lcv++) {
+        for (var lcv = 1; lcv < (lines.length - 1); lcv++) {
             var currLine = lines[lcv].replace(/^\s*/,'').replace(/\s*$/,'');
 
             if (currLine.charAt(0) != '#') { /* not a comment */
 
-                if (!columns) {
-                    //First line is columns
-                    columns = currLine.split('\t');
-                } else {
-                    var vals = currLine.split('\t');
-                    var geometry = new OpenLayers.Geometry.Point(0,0);
-                    var attributes = {};
-                    var style = {};
-                    var icon, iconSize, iconOffset, overflow;
-                    var set = false;
-                    for (var valIndex = 0; valIndex < vals.length; valIndex++) {
-                        if (vals[valIndex]) {
-                            if (columns[valIndex] == 'lat') {
-                                geometry.y = parseFloat(vals[valIndex]);
-				attributes['lat'] = geometry.y;
-                                set = true;
-                            } else if (columns[valIndex] == 'lon') {
-                                geometry.x = parseFloat(vals[valIndex]);
-				attributes['lon'] = geometry.x;
-                                set = true;
-                            } else if (columns[valIndex] == 'title')
-                                attributes['title'] = vals[valIndex];
-                            else if (columns[valIndex] == 'image' ||
-                                     columns[valIndex] == 'icon')
-                                style['externalGraphic'] = vals[valIndex];
-                            else if (columns[valIndex] == 'iconSize') {
-                                var size = vals[valIndex].split(',');
-                                style['graphicWidth'] = parseFloat(size[0]);
-                                style['graphicHeight'] = parseFloat(size[1]);
-                            } else if (columns[valIndex] == 'iconOffset') {
-                                var offset = vals[valIndex].split(',');
-                                style['graphicXOffset'] = parseFloat(offset[0]);
-                                style['graphicYOffset'] = parseFloat(offset[1]);
-                            } else if (columns[valIndex] == 'description')
-                                attributes['description'] = vals[valIndex];
-                             else if (columns[valIndex] == 'overflow')
-                                attributes['overflow'] = vals[valIndex];
-                             else if (columns[valIndex] == 'error_name')
-                                attributes['error_name'] = vals[valIndex];
-                             else if (columns[valIndex] == 'error_type')
-                                attributes['error_type'] = vals[valIndex];
-                              else if (columns[valIndex] == 'schema')
-                                attributes['schema'] = vals[valIndex];
-                            else if (columns[valIndex] == 'error_id')
-                                attributes['error_id'] = vals[valIndex];
-                             else if (columns[valIndex] == 'object_timestamp')
-                                attributes['object_timestamp'] = vals[valIndex];
-                             else if (columns[valIndex] == 'object_type')
-                                attributes['object_type'] = vals[valIndex];
-                             else if (columns[valIndex] == 'object_type_EN')
-                                attributes['object_type_EN'] = vals[valIndex];
-                             else if (columns[valIndex] == 'object_id')
-                                attributes['object_id'] = vals[valIndex];
-                             else if (columns[valIndex] == 'comment')
-                                attributes['comment'] = vals[valIndex];
-                             else if (columns[valIndex] == 'state')
-                                attributes['state'] = vals[valIndex];
-                             else if (columns[valIndex] == 'partner_objects')
-                                attributes['partner_objects'] = vals[valIndex];
+		var vals = currLine.split('\t');
+		var geometry = new OpenLayers.Geometry.Point(0,0);
+		var attributes = {};
+		var style = {};
+		var icon, iconSize, iconOffset;
+				
+		geometry.y = parseFloat(vals[0]);
+		attributes['lat'] = geometry.y;
+			
+		geometry.x = parseFloat(vals[1]);
+		attributes['lon'] = geometry.x;	
+			
+		attributes['error_name'] = vals[2];
+		
+		attributes['error_type'] = vals[3];
+		attributes['object_type'] = vals[4];
+		attributes['object_type_EN'] = vals[5];
+		attributes['object_id'] = vals[6];
+		attributes['object_timestamp'] = vals[7];
+		attributes['user_name'] = vals[8];
+		attributes['schema'] = vals[9];
+		attributes['error_id'] = vals[10];
+		attributes['description'] = vals[11];
+		attributes['comment'] = vals[12];
+		attributes['state'] = vals[13];
+		style['externalGraphic'] = vals[14];
+		
+		var size = vals[15].split(',');				// icon size
+		style['graphicWidth'] = parseFloat(size[0]);
+		style['graphicHeight'] = parseFloat(size[1]);
+		
+		var offset = vals[16].split(',');			// icon offset
+		style['graphicXOffset'] = parseFloat(offset[0]);
+		style['graphicYOffset'] = parseFloat(offset[1]);
+			
+		attributes['partner_objects'] = vals[17];
+		
+		if (vals.length>1) {
+			if (this.internalProjection && this.externalProjection) {
+				geometry.transform(this.externalProjection, 
+						this.internalProjection); 
 			}
-                    }
-                    if (set) {
-                      if (this.internalProjection && this.externalProjection) {
-                          geometry.transform(this.externalProjection, 
-                                             this.internalProjection); 
-                      }
-                      var feature = new OpenLayers.Feature.Vector(geometry, attributes, style);
-                      features.push(feature);
-                    }
-                }
+			var feature = new OpenLayers.Feature.Vector(geometry, attributes, style);
+			features.push(feature);
+		}
             }
         }
         return features;

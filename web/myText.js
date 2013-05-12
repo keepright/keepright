@@ -226,6 +226,7 @@ parseData: function(ajaxRequest) {
 			var object_type_EN=feature.attributes.object_type_EN;
 			var object_id=feature.attributes.object_id;
 			var object_timestamp=feature.attributes.object_timestamp;
+			var user_name=feature.attributes.user_name;
 			var description=feature.attributes.description;
 			var comment=feature.attributes.comment.replace(/<br>/g, "\n");
 			var state=feature.attributes.state;
@@ -259,7 +260,7 @@ parseData: function(ajaxRequest) {
 			'<input type="button" value="'+txt11+'" onClick="javascript:saveComment('+schema+', '+error_id+', '+error_type+');">' +
 			'<input type="button" value="'+txt12+'" onClick="javascript:closeBubble('+schema+', '+error_id+');">' +
 			'</form><small><br>'+txt13+'</span>' +
-			txt14 + '<a href="report_map.php?schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>' + txt15 + ' ' + object_type + ': ' + object_timestamp + '</small>';
+			txt14 + '<a href="report_map.php?schema='+schema+'&error='+error_id+'">'+error_id+'</a><br>' + txt15 + ' ' + object_type + ': <a href="http://www.openstreetmap.org/user/' + user_name + '" target="_blank">' + user_name + '</a> ' + object_timestamp + '</small>';
 		}
 
 
