@@ -264,8 +264,10 @@ function toggle_tables1($db1, $schema){
 		PRIMARY KEY  (error_type)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
+
+	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
 	query("
-		CREATE TABLE IF NOT EXISTS error_view_{$schema}_old (
+		CREATE TABLE IF NOT EXISTS error_view_{$schema}_shadow (
 		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		error_type int(11) NOT NULL,
@@ -291,12 +293,13 @@ function toggle_tables1($db1, $schema){
 		KEY error_type (error_type)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
+	query("ALTER TABLE error_view_{$schema}_shadow DISABLE KEYS", $db1);
+
 	query("
 		CREATE TABLE IF NOT EXISTS error_view_{$schema} (
 		`schema` varchar(6) NOT NULL DEFAULT '',
 		error_id int(11) NOT NULL,
 		error_type int(11) NOT NULL,
-		error_name varchar(100) NOT NULL,
 		object_type enum('node','way','relation') NOT NULL,
 		object_id bigint(64) NOT NULL,
 		state enum('new','cleared','ignored','reopened') NOT NULL,
@@ -327,12 +330,6 @@ function toggle_tables1($db1, $schema){
 		UNIQUE schema_error_type (`schema`, error_type)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	", $db1, false);
-
-
-	query("DROP TABLE IF EXISTS error_view_{$schema}_shadow", $db1);
-	query("RENAME TABLE error_view_{$schema}_old TO error_view_{$schema}_shadow", $db1);
-	query("ALTER TABLE error_view_{$schema}_shadow DISABLE KEYS", $db1);
-	query("TRUNCATE error_view_{$schema}_shadow", $db1);
 
 	echo "done.\n";
 }
@@ -398,15 +395,56 @@ function toggle_tables2($db1, $schema){
 	echo "toggling back tables\n";
 
 	query("ALTER TABLE error_view_{$schema}_shadow ENABLE KEYS", $db1);
-	query("DROP TABLE IF EXISTS error_view_{$schema}_old", $db1);
 
-	// uncomment the following line to save old error_view tables
-	// after updating. comment out to save space on the web DB
-	//query("RENAME TABLE error_view_{$schema} TO error_view_{$schema}_old", $db1);
 
-	query("DROP TABLE IF EXISTS error_view_{$schema}", $db1);
-	query("RENAME TABLE error_view_{$schema}_shadow TO error_view_{$schema}", $db1);
+//////////////////////////////////////////////////////////////
+// compatibility section for dropping error_name column
+	query("DROP TABLE error_view_{$schema}", $db1);
+	query("
+		CREATE TABLE error_view_{$schema} (
+		`schema` varchar(6) NOT NULL DEFAULT '',
+		error_id int(11) NOT NULL,
+		error_type int(11) NOT NULL,
+		object_type enum('node','way','relation') NOT NULL,
+		object_id bigint(64) NOT NULL,
+		state enum('new','cleared','ignored','reopened') NOT NULL,
+		first_occurrence datetime NOT NULL,
+		last_checked datetime NOT NULL,
+		object_timestamp datetime NOT NULL,
+		user_name text NOT NULL,
+		lat int(11) NOT NULL,
+		lon int(11) NOT NULL,
+		msgid text,
+		txt1 text,
+		txt2 text,
+		txt3 text,
+		txt4 text,
+		txt5 text,
+		UNIQUE schema_error_id (`schema`, error_id),
+		KEY lat (lat),
+		KEY lon (lon),
+		KEY error_type (error_type)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+	", $db1, false);
+//////////////////////////////////////////////////////////////
 
+
+
+
+
+
+	query("TRUNCATE error_view_{$schema}", $db1);
+	query("INSERT INTO error_view_{$schema} " .
+		"(`schema`, error_id, error_type, object_type, object_id, state, " .
+			"first_occurrence, last_checked, object_timestamp, user_name, lat, lon, " .
+			"msgid, txt1, txt2, txt3, txt4, txt5) " .
+		"SELECT `schema`, error_id, error_type, object_type, object_id, state, " .
+			"first_occurrence, last_checked, object_timestamp, user_name, lat, lon, " .
+			"msgid, txt1, txt2, txt3, txt4, txt5 " .
+		"FROM error_view_{$schema}_shadow " .
+		"WHERE `schema` = '$schema'", $db1);
+
+	query("DROP TABLE error_view_{$schema}_shadow", $db1);
 
 	// update error counts
 	query("DELETE FROM error_counts WHERE `schema`='{$schema}'", $db1);
@@ -512,11 +550,6 @@ function load_dump($db1, $filename, $destination, $schema) {
 	query("LOAD DATA LOCAL INFILE '$fifoname' INTO TABLE $tbl", $db1);
 
 	unlink($fifoname);
-
-	// now check if only schemas were inserted that were given in the command line
-	if ($destination=='error_view')
-		query("DELETE FROM $tbl WHERE `schema` <> '$schema'", $db1, false);
-
 
 	echo "done.\n";
 }

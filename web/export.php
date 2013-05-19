@@ -46,8 +46,9 @@ if ($error_view=='') {
 // build SQL for fetching errors
 $sql="SELECT e.`schema`, e.error_id, e.error_type, COALESCE(c.state, e.state) as state, e.object_type, e.object_id,
 replace(replace(replace(replace(replace(e.msgid, '$1', COALESCE(e.txt1, '')), '$2', COALESCE(e.txt2, '')), '$3', COALESCE(e.txt3, '')), '$4', COALESCE(e.txt4, '')), '$5', COALESCE(e.txt5, '')) as description,
-e.lat/1e7 as la, e.lon/1e7 as lo, e.error_name, c.comment
+e.lat/1e7 as la, e.lon/1e7 as lo, t.error_name, c.comment
 FROM ($error_view) e LEFT JOIN $comments_name c ON (e.error_id=c.error_id)
+INNER JOIN $error_types_name t USING (error_type)
 WHERE TRUE ";
 
 if ($_GET['format'] == 'rss') {
