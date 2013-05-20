@@ -1113,6 +1113,10 @@ msgstr ""
 msgid "Potlatch"
 msgstr ""
 
+#: myText.js:239
+msgid "iD"
+msgstr ""
+
 #: myText.js:244
 msgid "keep this error open"
 msgstr ""

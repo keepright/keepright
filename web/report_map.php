@@ -99,6 +99,7 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
 	var txt13="<?php echo T_gettext('please click on the icon to fixate the bubble'); ?>";
 	var txt14="<?php echo T_gettext('link to here: error #'); ?>";
 	var txt15="<?php echo T_gettext('last edit of this'); ?>";
+	var txt16="<?php echo T_gettext('iD'); ?>";
 
 </script>
 </head>
