@@ -17,7 +17,7 @@ not enough roads connected (normally 3)
 query("DROP TABLE IF EXISTS _tmp_roundabout_parts", $db1);
 query("
 	CREATE TABLE _tmp_roundabout_parts (
-		part int,
+		part bigint,
 		sequence_id int,
 		way_id bigint NOT NULL,
 		first_node_id bigint,
