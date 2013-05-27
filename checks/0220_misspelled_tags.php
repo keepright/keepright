@@ -243,6 +243,7 @@ $force_regular = array(
 	'brand:=Shell',
 	'brand:=Tamoil',
 	'brand:=Total',
+	'building:=hotel',
 	'geometry_source_type:=Walking Papers/Misson GPS',
 	'gnis:county_name:=Cheyboygan',
 	'hangar',
