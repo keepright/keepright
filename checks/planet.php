@@ -49,6 +49,7 @@ function planet_update($schema, $mode='') {
 	$planetDirectory=$config['planet_dir'];
 	$workingDirectory=$planetDirectory . $schema;
 	$planetfile=$planetDirectory . $schema . '.pbf';
+	$statefile=$workingDirectory . '/state.txt';
 
 	if (!file_exists($planetfile)) {
 		logger("planet file $planetfile not found.", KR_ERROR);
@@ -86,7 +87,16 @@ function planet_update($schema, $mode='') {
 				' --pl directory="' . $config['temp_dir'] . '"';
 
 
-		shellcmd($cmd, 'osmosis');
+		copy($statefile, $statefile . '.old');
+
+		$errorlevel = shellcmd($cmd, 'osmosis', false);
+
+		if ($errorlevel) {
+			// in case osmosis crashes save the old state file as we will have to start over from there
+			copy($statefile . '.old', $statefile);
+			exit($errorlevel);
+		}
+
 		chdir($oldpath);
 
 		rename($planetfile, $planetfile . '.old');

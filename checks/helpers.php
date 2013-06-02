@@ -696,13 +696,15 @@ function platform() {
 
 // run shell command and check errorlevel
 // prepend $label in any error message
-function shellcmd($cmd, $label='') {
+function shellcmd($cmd, $label='', $exit_on_error=true) {
 	logger($cmd, KR_COMMANDS);
 	system($cmd, $errorlevel);
 	if ($errorlevel) {
 		logger("$label exit with errorlevel $errorlevel", KR_ERROR);
-		exit(1);
+		if ($exit_on_error) exit(1);
 	}
+
+	return $errorlevel;
 }
 
 
