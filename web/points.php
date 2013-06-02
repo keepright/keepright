@@ -65,7 +65,12 @@ $sql="SELECT e.schema, e.error_id, e.error_type, COALESCE(c.state, e.state) as s
 e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5";
 
 $sql .= " FROM ($error_view) e LEFT JOIN $comments_name c USING (`schema`, error_id)
-INNER JOIN $error_types_name t USING (error_type)
+LEFT JOIN $error_types_name t ON 
+	CASE WHEN e.error_type IN ($subtyped) THEN 
+		e.error_type
+	ELSE
+		10*floor(e.error_type/10)
+	END = t.error_type
 WHERE TRUE";
 
 if (!$show_ign) $sql.=' AND (c.state IS NULL OR c.state<>"ignore")';
@@ -77,8 +82,8 @@ $sql .= ' LIMIT 100';
 
 
 
-$result=mysqli_query($db1, $sql);
 //echo "$sql\n";
+$result=mysqli_query($db1, $sql);
 
 while ($row = mysqli_fetch_assoc($result)) {
 
