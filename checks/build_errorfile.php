@@ -168,11 +168,15 @@ function upload($local_file, $remote_file) {
 	}
 
 	// upload the file
-	if (ftp_put($conn_id, $remote_file, $local_file, FTP_BINARY)) {
+	if (ftp_put($conn_id, $remote_file . '.part', $local_file, FTP_BINARY)) {
 		echo "successfully uploaded $remote_file\n";
 	} else {
 		echo "There was a problem while uploading $remote_file\n";
 	}
+
+	// replace old file with new file
+	ftp_delete($conn_id, $remote_file);
+	ftp_rename($conn_id, $remote_file . '.part', $remote_file);
 
 	// close the connection
 	ftp_close($conn_id);
