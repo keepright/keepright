@@ -252,6 +252,7 @@ $force_irregular = array(
 	'building:=farm_auxillary',
 	'hanger',
 	'usability:skate:=excelent',
+	'name:botanical:=Cupressus sempervires',
 	'note_',
 	'Public'
 );
@@ -273,6 +274,7 @@ $force_regular = array(
 	'lengths:left:=',
 	'lengths:right:=',
 	'man_made:=cutline',
+	'name:botanical:=Cupressus sempervirens',
 	'usability:skate:=excellent',
 );
 
