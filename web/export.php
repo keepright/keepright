@@ -132,6 +132,7 @@ if ($_GET['format'] == 'rss') {
 		echo "<schema>" . $row['schema'] . "</schema>";
 		echo "<id>" . $row['error_id'] . "</id>";
 		if (strlen($row['comment'])>0) echo "<comment><![CDATA[" . $row['comment'] . "]]></comment>";
+		echo "<error_type>" . $row['error_type'] . "</error_type>";
 		echo "<object_type>" . $row['object_type'] . "</object_type>";
 		echo "<object_id>" . $row['object_id'] . "</object_id>";
 		echo "</extensions></wpt>\n";
