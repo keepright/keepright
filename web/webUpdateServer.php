@@ -397,42 +397,6 @@ function toggle_tables2($db1, $schema){
 	query("ALTER TABLE error_view_{$schema}_shadow ENABLE KEYS", $db1);
 
 
-//////////////////////////////////////////////////////////////
-// compatibility section for dropping error_name column
-	query("DROP TABLE error_view_{$schema}", $db1);
-	query("
-		CREATE TABLE error_view_{$schema} (
-		`schema` varchar(6) NOT NULL DEFAULT '',
-		error_id int(11) NOT NULL,
-		error_type int(11) NOT NULL,
-		object_type enum('node','way','relation') NOT NULL,
-		object_id bigint(64) NOT NULL,
-		state enum('new','cleared','ignored','reopened') NOT NULL,
-		first_occurrence datetime NOT NULL,
-		last_checked datetime NOT NULL,
-		object_timestamp datetime NOT NULL,
-		user_name text NOT NULL,
-		lat int(11) NOT NULL,
-		lon int(11) NOT NULL,
-		msgid text,
-		txt1 text,
-		txt2 text,
-		txt3 text,
-		txt4 text,
-		txt5 text,
-		UNIQUE schema_error_id (`schema`, error_id),
-		KEY lat (lat),
-		KEY lon (lon),
-		KEY error_type (error_type)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-	", $db1, false);
-//////////////////////////////////////////////////////////////
-
-
-
-
-
-
 	query("TRUNCATE error_view_{$schema}", $db1);
 	query("INSERT INTO error_view_{$schema} " .
 		"(`schema`, error_id, error_type, object_type, object_id, state, " .
