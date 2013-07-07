@@ -416,12 +416,17 @@ function run_checks($schema, $checks_to_run=array()) {
 	$bottom=$schemas[$schema]['bottom'];
 	if (isset($left) && isset($right) && isset($top) && isset($bottom)) {
 
+
+		// for errors sitting exactly on the boundary line between two schemas:
+		// make clipping inclusive on left and bottom coordinate but exclusive
+		// on right and top avoiding errors appearing in both schemas
+
 		logger('clipping of errors at boundaries.');
 		query("
 			DELETE FROM public.error_view e
 			WHERE e.schema='$schema' AND
-			(e.lat<1e7*$bottom OR e.lat>1e7*$top OR
-			e.lon<1e7*$left OR e.lon>1e7*$right)
+			(e.lat<1e7*$bottom OR e.lat>=1e7*$top OR
+			e.lon<1e7*$left OR e.lon>=1e7*$right)
 		", $db1);
 
 	} else {
