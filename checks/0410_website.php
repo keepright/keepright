@@ -382,9 +382,6 @@ $curlopt = array(
 
 if (isset($config['http_proxy']['enabled']) && $config['http_proxy']['enabled']) {
 	$curlopt[CURLOPT_PROXY]			= $config['http_proxy']['host'];
-	$curlopt[CURLOPT_PROXYAUTH]		= 'CURLAUTH_BASIC';
-	$curlopt[CURLOPT_PROXYUSERPWD]		= $config['http_proxy']['user'] . ':' . $config['http_proxy']['password'];
-	$curlopt[CURLOPT_HTTPPROXYTUNNEL]	= true;
 }
 
 

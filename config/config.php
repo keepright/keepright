@@ -124,10 +124,11 @@ $config['logfile_count']=9;
 
 # config options for using a http proxy
 # used in 410_website.php for checking website URLs
+# proxy authentication per user is not supported
+# use IP-based authentication via squid's acl
+# and http_access directives
 $config['http_proxy']['enabled']=false;
 $config['http_proxy']['host']='localhost:3128';
-$config['http_proxy']['user']='username';
-$config['http_proxy']['password']='shhh!';
 
 
 // ###########################################
