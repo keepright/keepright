@@ -360,7 +360,7 @@ $squat_strings = array(
 
 $curlopt = array(
 	CURLOPT_URL             => '',		// need to specify at least an empty URL here, otherwise nothing will be fetched
-	CURLOPT_USERAGENT	=> 'KeepRightBot/0.2 (KeepRight OpenStreetMap Checker; http://keepright.ipax.at)',
+	CURLOPT_USERAGENT	=> 'Mozilla/5.0 (KeepRight OpenStreetMap Checker; http://keepright.at) Gecko/20100101 Firefox/22.0',
 	CURLOPT_HTTPHEADER	=> array('Accept-Language: en'),
 	CURLOPT_HEADER          => false,	// don't include the http header in the result
 	CURLOPT_FOLLOWLOCATION	=> true,
