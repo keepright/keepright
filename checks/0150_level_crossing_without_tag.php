@@ -26,7 +26,7 @@ query("
 	WHERE wt.k='railway' AND
 		wt.v NOT IN ('disused', 'dismantled', 'abandoned', 'proposed',
 		'tram', 'tram:disused', 'tram;disused',
-		'platform', 'Platform', 'plattform', 'plateform',
+		'platform', 'Platform', 'plattform', 'plateform', 'razed',
 		'station', 'abandoned_station', 'station_site', 'disused_station')
 	AND NOT EXISTS(
 		SELECT tmp.way_id
