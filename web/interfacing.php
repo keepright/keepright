@@ -122,8 +122,10 @@ CREATE TABLE IF NOT EXISTS `keepright_errors` (
   `txt4` text,
   `txt5` text
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+</pre>
 
-LOAD DATA LOCAL INFILE 'keepright_errors.txt' INTO TABLE keepright_errors IGNORE 1 LINES;
+<pre>
+mysql --local-infile --password --user=root --execute \"LOAD DATA LOCAL INFILE 'keepright_errors.txt' INTO TABLE keepright_errors CHARACTER SET utf8 IGNORE 1 LINES;\" osm_EU 
 </pre>
 <p>";
 
