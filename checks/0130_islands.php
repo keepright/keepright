@@ -100,7 +100,7 @@ $islands = array(
 		'Port Lois, Mauritius' => 22821395,
 		'Kinshasa, Kongo' => 4450237,
 		'Addis Abeba, Ethiopia' => 8104263,
-		'Abijan, Ivory Coast' => 30613353,
+		'Abijan, Ivory Coast' => 30605308,
 		'Mogadishu, Somalia' => 5069961
 	),
 	'asia' => array(
@@ -146,7 +146,7 @@ $islands = array(
 	),
 	'north america' => array(
 		'Seattle, WA' => 4757176,	//47.4648998, -122.2422833
-		'Boise, ID' => 23483176,	//43.5895317, -116.2731857
+		'Boise, ID' => 13691966,	//43.5895317, -116.2731857
 		'Helena, MT' => 37334501,	//46.5973428, -112.0027184
 		'Bismarck, ND' => 9737740,	//46.8227032, -100.8320165
 		'Minneapolis, MN' => 125438266,	//44.978026, -93.232939
@@ -197,7 +197,7 @@ $islands = array(
 		'Nashville, TN' => 49577554,	//36.1490548, -86.7802671
 		'Knoxville, TN' => 49826007, 	//35.959582, -83.960007
 		'Honolulu, HI' => 32005193,	//21.30547, -157.84595
-		'Mauna Loa, HI' => 44483640,
+		'Mauna Loa, HI' => 208345015,
 		'Kauai, HI' => 45812082,
 		'Kahului, HI' => 44711139,
 		'Hilo, HI' => 45622102,
