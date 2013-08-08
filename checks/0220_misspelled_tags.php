@@ -36,12 +36,14 @@ $false_positives = array(
 	array('county', 'country'),
 	array('county_code', 'country_code'),
 	array('count', 'mount'),
+	array('customer', 'customers'),		// both are widely used
 	array('date', 'gate'),
 	array('DE:rural', 'DK:rural'),
 	array('DE:urban', 'DK:urban'),
 	array('derail', 'detail', 'retail'),
 	array('detention', 'retention'),	// both are valid values for key=basin
 	array('diet', 'dist'),
+	array('disable', 'disabled'),
 	array('dock', 'lock'),
 	array('door', 'moor'),
 	array('drain', 'train'),
@@ -49,7 +51,7 @@ $false_positives = array(
 	array('EIIR', 'EVIIR', 'EVIIIR'),
 	array('email', 'e-mail', 'mail'),
 	array('fenced', 'fence'),
-	array('food', 'ford', 'foot', 'wood'),
+	array('food', 'ford', 'fork', 'foot', 'wood'),
 	array('function', 'junction'),
 	array('game', 'name'),
 	array('garage', 'garages'),
@@ -146,6 +148,8 @@ $never_complain_about = "
 	prefix LIKE 'capacity:persons:=%' OR
 	prefix LIKE 'code:=%' OR
 	prefix LIKE 'collection_times:=%' OR
+	prefix LIKE 'color:=%' OR
+	prefix LIKE 'colour:=%' OR
 	prefix LIKE 'comment:=%' OR
 	prefix LIKE 'created_by:=%' OR
 	prefix LIKE 'dcgis:propid:=%' OR
@@ -156,6 +160,7 @@ $never_complain_about = "
 	prefix LIKE 'Fixme:=%' OR
 	prefix LIKE 'FIXME:=%' OR
 	prefix LIKE 'garmin_type:=%' OR
+	prefix LIKE 'generator:model:=%' OR
 	prefix LIKE 'generator:output:electricity:=%' OR
 	prefix LIKE 'generator:output:hot_water:=%' OR
 	prefix LIKE 'generator:output:hot_air:=%' OR
@@ -182,6 +187,7 @@ $never_complain_about = "
 	prefix LIKE 'kern:Comb_Zn:=%' OR
 	prefix LIKE 'line:=%' OR
 	prefix LIKE 'lines:=%' OR
+	prefix LIKE 'loc_ref:=%' OR
 	prefix LIKE 'massgis:BASE_MAP:=%' OR
 	prefix LIKE 'massgis:MANAGR_ABR:=%' OR
 	prefix LIKE 'massgis:OWNER_ABRV:=%' OR
@@ -190,10 +196,17 @@ $never_complain_about = "
 	prefix LIKE 'maxheight:=%' OR
 	prefix LIKE 'maxwidth:=%' OR
 	prefix LIKE 'maxspeed:=%' OR
+	prefix LIKE 'maxspeed:conditional:=%' OR
+	prefix LIKE 'maxspeed:lanes:=%' OR
 	prefix LIKE 'MGRS:=%' OR
+	prefix LIKE 'minspeed:=%' OR
+	prefix LIKE 'minspeed:conditional:=%' OR
+	prefix LIKE 'minspeed:lanes:=%' OR
 	prefix LIKE 'MP_TYPE:=%' OR
+	prefix LIKE 'ncn_ref:=%' OR
 	prefix LIKE 'nhd:fdate:=%' OR
 	prefix LIKE 'note:=%' OR
+	prefix LIKE 'old_ref:=%' OR
 	prefix LIKE 'opening_hours:=%' OR
 	prefix LIKE 'power_rating:=%' OR
 	prefix LIKE 'phone:=%' OR
@@ -206,10 +219,14 @@ $never_complain_about = "
 	prefix LIKE 'pcode:=%' OR
 	prefix LIKE 'PFM:garmin_type:=%' OR
 	prefix LIKE 'photo_url:=%' OR
+	prefix LIKE 'ref:%' OR
 	prefix LIKE 'ref:isil:=%' OR
 	prefix LIKE 'ref_catastral:=%' OR
 	prefix LIKE 'ref_no:=%' OR
 	prefix LIKE 'ref_num:=%' OR
+	prefix LIKE 'reg_ref:=%' OR
+	prefix LIKE 'roof:color:=%' OR
+	prefix LIKE 'roof:colour:=%' OR
 	prefix LIKE 'route_ref:=%' OR
 	prefix LIKE 'seats:=%' OR
 	prefix LIKE 'source:=%' OR
@@ -243,39 +260,43 @@ $never_complain_about = "
 
 // sometimes the misspelled tags come more often than the regular tag
 // use these lists to correct these cases.
-// please note the special notation!
+// please note the special notation:
+// always specify the complete key starting from the beginning until the level
+// you want to match. Consider the equals sign a level on its own in the 
+// hierarchy and delimit it with a colon just like all other levels
 
 $force_irregular = array(
-	'building:=appartments',
-	'building:=appartment',
-	'building:=apartment',
-	'building:=farm_auxillary',
-	'hanger',
-	'usability:skate:=excelent',
-	'name:botanical:=Cupressus sempervires',
-	'note_',
-	'Public'
+	'access:conditionnal',
+	'building:=:appartments',
+	'building:=:appartment',
+	'building:=:apartment',
+	'building:=:farm_auxillary',
+	'building:=:hanger',
+	'usability:skate:=:excelent',
+	'name:botanical:=:Cupressus sempervires',
+	'note_:'
 );
 
 $force_regular = array(
-	'addr:province:=British Columbia',
-	'building:=apartments',
-	'brand:=Agip',
-	'brand:=Esso',
-	'brand:=Metano',
-	'brand:=Shell',
-	'brand:=Tamoil',
-	'brand:=Total',
-	'building:=hotel',
-	'disable',
-	'geometry_source_type:=Walking Papers/Misson GPS',
-	'gnis:county_name:=Cheyboygan',
-	'hangar',
-	'lengths:left:=',
-	'lengths:right:=',
-	'man_made:=cutline',
-	'name:botanical:=Cupressus sempervirens',
-	'usability:skate:=excellent',
+	'access:conditional',
+	'addr:province:=:British Columbia',
+	'brand:=:Agip',
+	'brand:=:Esso',
+	'brand:=:Metano',
+	'brand:=:Shell',
+	'brand:=:Tamoil',
+	'brand:=:Total',
+	'building:=:apartments',
+	'building:=:hangar',
+	'building:=:hotel',
+	'geometry_source_type:=:Walking Papers/Misson GPS',
+	'gnis:county_name:=:Cheyboygan',
+	'lengths:',
+	'lengths:left:',
+	'lengths:right:',
+	'man_made:=:cutline',
+	'name:botanical:=:Cupressus sempervirens',
+	'usability:skate:=:excellent',
 );
 
 // for known typos with more than one character wrong use this:
@@ -480,10 +501,10 @@ global $never_complain_about, $force_irregular, $force_regular, $overrules;
 
 	while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 
-		if (in_array($row['prefix'] . $row['k'], $force_irregular)) {	// force to irreg?
+		if (in_array($row['prefix'] .':'. $row['k'], $force_irregular)) {	// force to irreg?
 			$irregulars[] = array($row['prefix'], $row['k']);
 
-		} else if (in_array($row['prefix'] . $row['k'], $force_regular)) {// force to regular?
+		} else if (in_array($row['prefix'] .':'. $row['k'], $force_regular)) {// force to regular?
 			$regulars[] = array($row['prefix'], $row['k']);
 
 		} else if ($row['tag_count']>=$tag_count_limit) {	// let numbers decide
