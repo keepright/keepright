@@ -533,7 +533,16 @@ function find_layer_values($table, $way_id_column, $layer_column, $db) {
 
 	find_bridge_or_tunnel($table, $way_id_column, $layer_column, $db);
 
-	// fetch layer tag and overwrite defaults
+	// fetch level tag and overwrite defaults.
+	// level is used for indoor mapping
+	query("
+		UPDATE $table c
+		SET $layer_column=t.v
+		FROM way_tags t
+		WHERE t.way_id=c.$way_id_column AND t.k='level'
+	", $db);
+
+	// fetch layer tag and overwrite defaults including level tag
 	query("
 		UPDATE $table c
 		SET $layer_column=t.v
