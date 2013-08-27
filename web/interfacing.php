@@ -37,7 +37,7 @@ echo "
 
 <br><br><b>" . T_gettext('URL format') . "</b><br>
 http://keepright.ipax.at/export.php?format=gpx&amp;ch=20,30,311,312&amp;left=-82.39&amp;bottom=30&amp;right=-82.1&amp;top=30.269<br>
-" . T_gettext('You can specify a list of error types you want to have in the file as well as a bounding box on the map. This export will return up to 100 waypoints. This limit could be increased, in case there is demand.') . "
+" . T_gettext('You can specify a list of error types you want to have in the file as well as a bounding box on the map. This export will return up to 10000 waypoints.') . "
 <br><br>" . T_gettext('There is a link on the lower left corner of the map-page pointing to the GPX service that always includes the current error type selection and view from the map.');
 
 echo "
@@ -55,12 +55,12 @@ http://keepright.ipax.at/export.php?format=rss&amp;ch=20,30,311,312&amp;left=-82
 echo "
 <a name='DUMP'><h3>" . T_gettext('getting the whole dump-file') . "</h3>
 <b>" . T_gettext('Purpose') . "</b><br>
-" . T_gettext('Doing something completely different with 10 millions of errors...') . "
+" . T_gettext('Doing something completely different with 25 millions of errors...') . "
 
 <br><br><b>" . T_gettext('URL format') . "</b><br>
 <a href='http://keepright.ipax.at/keepright_errors.txt.bz2'>http://keepright.ipax.at/keepright_errors.txt.bz2</a>
 
-" . T_gettext('This tab-separated file contains all errors currently open for the whole planet (currently >200MB). It is being updated daily.');
+" . T_gettext('This tab-separated file contains all errors currently open for the whole planet (currently >500MB). It is being updated daily.');
 
 echo "
 <br><br><b>" . T_gettext('Table layout') . "</b><br>

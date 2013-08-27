@@ -62,7 +62,7 @@ if ($_GET['format'] == 'rss') {
 }
 
 $sql.=' AND (c.state IS NULL OR (c.state<>"ignore" AND c.state<>"ignore_temporarily"))';
-$sql .= ' LIMIT 100';
+$sql .= ' LIMIT 10000';
 
 $result=mysqli_query($db1, $sql);
 //echo "$sql\n";
