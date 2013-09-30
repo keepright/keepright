@@ -36,7 +36,7 @@ $where.=' AND lat BETWEEN ' . min($top, $bottom) . ' AND ' . max($top, $bottom);
 $where.=' AND lon BETWEEN ' . min($left, $right) . ' AND ' . max($left, $right);
 
 // lookup the schemas that have to be queried for the given coordinates
-$error_view = error_view_subquery($db1, ($top+$bottom)/2, ($left+$right)/2, $where);
+$error_view = error_view_subquery($db1, $left, $top, $right, $bottom, $where);
 
 if ($error_view=='') {
 	echo "no errors found";

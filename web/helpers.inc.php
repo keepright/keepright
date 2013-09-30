@@ -94,17 +94,18 @@ function get_subtyped_error_types($db1, $ch) {
 }
 
 
-// check out which schemas to query for given coordinates (lat/lon)
-// and return a UNION query with an arbitrary WHERE part
-function error_view_subquery($db1, $lat, $lon, $where='TRUE'){
+// check out which schemas to query for given area.
+// and return a UNION query with an arbitrary WHERE part.
+// for querying just a point (lat/lon) specify top==bottom and left==right
+function error_view_subquery($db1, $left, $top, $right, $bottom, $where='TRUE'){
 
 	// lookup the schemas that have to be queried for the given coordinates
 	$error_view='';
 	$result=mysqli_query($db1, "
 		SELECT `schema` AS s
 		FROM `schemata`
-		WHERE `left_padded`<=$lon/1e7 AND `right_padded`>=$lon/1e7
-			AND `top_padded`>=$lat/1e7 AND `bottom_padded`<=$lat/1e7
+		WHERE `left_padded`<=$right/1e7 AND `right_padded`>=$left/1e7
+			AND `top_padded`>=$bottom/1e7 AND `bottom_padded`<=$top/1e7
 	");
 	while ($row = mysqli_fetch_assoc($result)) {
 

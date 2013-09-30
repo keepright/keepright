@@ -49,8 +49,8 @@ $where="(10*floor(error_type/10) IN ($nonsubtyped) OR error_type IN ($subtyped))
 $where.=' AND lat >= ' . ($lat-3e6) . ' AND lat <= ' . ($lat+3e6);
 $where.=' AND lon >= ' . ($lon-3e6) . ' AND lon <= ' . ($lon+3e6);
 
-// lookup the schemas that have to be queried for the given coordinates
-$error_view = error_view_subquery($db1, $lat, $lon, $where);
+// lookup the schemas that have to be queried for the given coordinates for the center of screen
+$error_view = error_view_subquery($db1, $lon, $lat, $lon, $lat, $where);
 
 
 echo "lat\tlon\terror_name\terror_type\tobject_type\tobject_type_EN\tobject_id\tobject_timestamp\tuser_name\tschema\terror_id\tdescription\tcomment\tstate\ticon\ticonSize\ticonOffset\tpartner_objects\n";
