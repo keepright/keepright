@@ -272,6 +272,7 @@ $force_irregular = array(
 	'building:=:apartment',
 	'building:=:farm_auxillary',
 	'building:=:hanger',
+	'gague:',
 	'usability:skate:=:excelent',
 	'name:botanical:=:Cupressus sempervires',
 	'note_:'
@@ -289,6 +290,7 @@ $force_regular = array(
 	'building:=:apartments',
 	'building:=:hangar',
 	'building:=:hotel',
+	'gauge:',
 	'geometry_source_type:=:Walking Papers/Misson GPS',
 	'gnis:county_name:=:Cheyboygan',
 	'lengths:',
