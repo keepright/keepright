@@ -51,7 +51,8 @@ query("
 	WHERE t.k IN ($restriction_types) AND t.v NOT IN (
 		'no_left_turn','no_right_turn','no_u_turn',
 		'only_straight_on','no_straight_on',
-		'only_left_turn','only_right_turn'
+		'only_left_turn','only_right_turn',
+		'no_entry', 'no_exit'
 	)
 ", $db1);
 
