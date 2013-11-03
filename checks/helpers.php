@@ -690,6 +690,7 @@ function logger($message, $loglevel=KR_INFO) {
 	global $config;
 
 	if ($loglevel & $config['loglevel']) echo $message . "\n";
+	system("echo $message >>".$config['main_logfile']);
 
 }
 
