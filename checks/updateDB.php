@@ -10,7 +10,7 @@ require('prepare_countries.php');
 function updateDB($schema) {
 
 	planet_update($schema);
-	postprocess_datafiles();
+	postprocess_datafiles($schema);
 
 	emptyDB($schema);
 
@@ -45,7 +45,7 @@ function emptyDB($schema) {
 
 function loadDB($schema) {
 	global $config;
-
+        $tmpdir = $config['temp_dir'].$schema."/"; 
 	$db = pg_pconnect(connectstring($schema));
 
 
@@ -65,27 +65,27 @@ function loadDB($schema) {
 
 	// Import the table data from the data files using the fast COPY method.
 	// replace temp-path for data files created by osmosis
-	query("copy users FROM '" . $config['temp_dir'] . "users.txt' WITH NULL AS 'NULL';", $db);
-	query("copy nodes FROM '" . $config['temp_dir'] . "nodes_sorted.txt' WITH NULL AS 'NULL';", $db);
-	query("copy node_tags FROM '" . $config['temp_dir'] . "node_tags.txt' WITH NULL AS 'NULL';", $db);
-	query("copy ways FROM '" . $config['temp_dir'] . "ways.txt' WITH NULL AS 'NULL';", $db);
-	query("copy way_tags FROM '" . $config['temp_dir'] . "way_tags.txt' WITH NULL AS 'NULL';", $db);
-	query("copy way_nodes FROM '" . $config['temp_dir'] . "way_nodes2.txt' WITH NULL AS 'NULL';", $db);
-	query("copy relations FROM '" . $config['temp_dir'] . "relations.txt' WITH NULL AS 'NULL';", $db);
-	query("copy relation_tags FROM '" . $config['temp_dir'] . "relation_tags.txt' WITH NULL AS 'NULL';", $db);
-	query("copy relation_members FROM '" . $config['temp_dir'] . "relation_members.txt' WITH NULL AS 'NULL';", $db);
+	query("copy users FROM '" . $tmpdir . "users.txt' WITH NULL AS 'NULL';", $db);
+	query("copy nodes FROM '" . $tmpdir . "nodes_sorted.txt' WITH NULL AS 'NULL';", $db);
+	query("copy node_tags FROM '" . $tmpdir . "node_tags.txt' WITH NULL AS 'NULL';", $db);
+	query("copy ways FROM '" . $tmpdir . "ways.txt' WITH NULL AS 'NULL';", $db);
+	query("copy way_tags FROM '" . $tmpdir . "way_tags.txt' WITH NULL AS 'NULL';", $db);
+	query("copy way_nodes FROM '" . $tmpdir . "way_nodes2.txt' WITH NULL AS 'NULL';", $db);
+	query("copy relations FROM '" . $tmpdir . "relations.txt' WITH NULL AS 'NULL';", $db);
+	query("copy relation_tags FROM '" . $tmpdir . "relation_tags.txt' WITH NULL AS 'NULL';", $db);
+	query("copy relation_members FROM '" . $tmpdir . "relation_members.txt' WITH NULL AS 'NULL';", $db);
 
 
 	// delete data files to save disk space
-	unlink($config['temp_dir'] . 'nodes_sorted.txt');
-	unlink($config['temp_dir'] . 'node_tags.txt');
-	unlink($config['temp_dir'] . 'relation_members.txt');
-	unlink($config['temp_dir'] . 'relations.txt');
-	unlink($config['temp_dir'] . 'relation_tags.txt');
-	unlink($config['temp_dir'] . 'users.txt');
-	unlink($config['temp_dir'] . 'way_nodes2.txt');
-	unlink($config['temp_dir'] . 'ways.txt');
-	unlink($config['temp_dir'] . 'way_tags.txt');
+	unlink($tmpdir . 'nodes_sorted.txt');
+	unlink($tmpdir . 'node_tags.txt');
+	unlink($tmpdir . 'relation_members.txt');
+	unlink($tmpdir . 'relations.txt');
+	unlink($tmpdir . 'relation_tags.txt');
+	unlink($tmpdir . 'users.txt');
+	unlink($tmpdir . 'way_nodes2.txt');
+	unlink($tmpdir . 'ways.txt');
+	unlink($tmpdir . 'way_tags.txt');
 
 
 	// Add the primary keys and indexes back again (except the way bbox index).
@@ -131,11 +131,11 @@ function loadDB($schema) {
 // can be inserted in postgres
 // manually join table way_nodes and nodes to add node coordinates to way_nodes2
 // manually join table ways with nodes to add node coordinates of first and last node to ways
-function postprocess_datafiles() {
+function postprocess_datafiles($schema) {
 	global $config;
-
-	$PATH=$config['temp_dir'];
-	$SORTOPTIONS='--temporary-directory="' . $config['temp_dir'] . '"';
+        $tmpdir = $config['temp_dir']."/".$schema."/"; 
+	$PATH=$tmpdir;
+	$SORTOPTIONS='--temporary-directory="' . $tmpdir . '"';
 	$SORT=$config['cmd_sort'];
 	$JOIN=$config['cmd_join'];
 	$lbl='postprocess_datafiles';
