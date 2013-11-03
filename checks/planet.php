@@ -38,7 +38,7 @@ function planet_cut($planetfile, $schema) {
 
 	shellcmd($cmd, 'osmosis');
 
-	//init_workingDir($schema);
+	init_workingDir($schema);
 }
 
 
@@ -47,6 +47,9 @@ function planet_update($schema, $mode='') {
 	global $config;
 
 	$planetDirectory=$config['planet_dir'];
+	$tmpdir = $config['temp_dir'].$schema."/";
+	shellcmd("mkdir -p ".$tmpdir,'');
+	
 	$workingDirectory=$planetDirectory . $schema;
 	$planetfile=$planetDirectory . $schema . '.pbf';
 	$statefile=$workingDirectory . '/state.txt';
@@ -84,11 +87,11 @@ function planet_update($schema, $mode='') {
 				' --b bufferCapacity=10000 ' .
 				' --wb "' . $planetfile . '.new" compress=none ' .
 				' --b bufferCapacity=10000 ' .
-				' --pl directory="' . $config['temp_dir'] . '"';
+				' --pl directory="'.$tmpdir.'"';
 
 
 		copy($statefile, $statefile . '.old');
-
+                print $cmd."\n";
 		$errorlevel = shellcmd($cmd, 'osmosis', false);
 
 		if ($errorlevel) {
@@ -111,7 +114,7 @@ function planet_update($schema, $mode='') {
 
 		$cmd='"' . $config['osmosis_bin'] . '"' .
 			' --rb "' . $planetfile . '" ' .
-			' --pl directory="' . $config['temp_dir'] . '"';
+			' --pl directory="' . $tmpdir . '"';
 
 
 		shellcmd($cmd, 'osmosis');
@@ -125,9 +128,9 @@ function init_workingDir($schema) {
 	global $config;
 	$workingDirectory=$config['planet_dir'] . $schema;
 
-	if (is_dir($workingDirectory)) return;
+ 	if (is_dir($workingDirectory)) return;
 
-	mkdir($workingDirectory);
+ 	mkdir($workingDirectory);
 
 	shellcmd($config['osmosis_bin'] . " --rrii workingDirectory=$workingDirectory", 'osmosis');
 
@@ -135,14 +138,14 @@ function init_workingDir($schema) {
 	// now fix config file with appropriate URL and without limit of downloading files
 	$f=fopen("$workingDirectory/configuration.txt", 'w');
 	fwrite($f, "# The URL of the directory containing change files.\n");
-	fwrite($f, "baseUrl=http://planet.openstreetmap.org/replication/hour\n\n");
+	fwrite($f, "baseUrl=http://planet.openstreetmap.org/replication/day\n\n");
 	fwrite($f, "# Defines the maximum time interval in seconds to download in a single invocation.\n");
 	fwrite($f, "# Setting to 0 disables this feature.\n");
 	fwrite($f, "maxInterval = 0\n");
 	fclose($f);
 
 
-	echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/replication/hour according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
+	echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/replication/day according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
 }
 
 
