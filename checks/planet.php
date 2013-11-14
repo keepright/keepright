@@ -34,7 +34,9 @@ function planet_cut($planetfile, $schema) {
 		exit(1);
 	}
 
-	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '" --bb ' . get_bbox_parameters($schema) . ' completeWays=yes completeRelations=yes --wb "' . $config['planet_dir'] . $schema . '.pbf" compress=none';
+	$cmd=$config['osmosis_bin'] . ' --rb "' . $planetfile . '"' .
+																 ' --bb ' . get_bbox_parameters($schema) . ' completeWays=yes completeRelations=yes '.
+																 ' --wb "' . $config['planet_dir'] . $schema . '.pbf" compress=none';
 
 	shellcmd($cmd, 'osmosis');
 
@@ -71,55 +73,59 @@ function planet_update($schema, $mode='') {
 		$oldpath=getcwd();
 		chdir($planetDirectory);
 
-		$cmd='"' . $config['osmosis_bin'] . '"' .
+	//Get diffs and apply them to the planet file
+		$cmd=$config['osmosis_bin'] .
 			' --rri workingDirectory="' . $workingDirectory . '" ' .
 			' --simc ' .
-			' --rb "' . $planetfile . '" ' .
-			' --ac ' .
-			' --bb ' . get_bbox_parameters($schema) . ' completeWays=yes completeRelations=yes ';
-
-		if ($mode=='update-only')		// just update the file and store it
-			$cmd.=	' --b bufferCapacity=10000 ' .
-				' --wb "' . $planetfile . '.new" compress=none ';
-
-		else
-			$cmd.=	' --tee 2 ' .		// update the file and create dump files for db loading
-				' --b bufferCapacity=10000 ' .
-				' --wb "' . $planetfile . '.new" compress=none ' .
-				' --b bufferCapacity=10000 ' .
-				' --pl directory="'.$tmpdir.'"';
-
+			' --rbf "' . $planetfile . '" ' .
+			' --ac '.
+/*			' --b bufferCapacity=10000 ' .
+			' --wb "' . $planetfile . '.new" compress=none ';
 
 		copy($statefile, $statefile . '.old');
-                print $cmd."\n";
 		$errorlevel = shellcmd($cmd, 'osmosis', false);
-
 		if ($errorlevel) {
 			// in case osmosis crashes save the old state file as we will have to start over from there
 			copy($statefile . '.old', $statefile);
 			exit($errorlevel);
+			}
+			
+	//Re-apply the bounding box to the updated planet file
+		$cmd= $config['osmosis_bin']  .
+			' --rbf "' . $planetfile . '.new" ' . */
+			' --bb ' . get_bbox_parameters($schema) . ' completeWays=yes ' .  //completeRelations=yes
+			' --b bufferCapacity=10000 ' .
+			' --wb "' . $planetfile . '.new2" compress=none ';
+
+		$errorlevel = shellcmd($cmd, 'osmosis', false);
+		
+		if ($errorlevel) {
+			
+			copy($statefile . '.old', $statefile);
+			exit($errorlevel);
 		}
 
-		chdir($oldpath);
-
+	//Finally, clean up planet files
 		rename($planetfile, $planetfile . '.old');
-		rename($planetfile . '.new', $planetfile);
+		rename($planetfile . '.new2', $planetfile);
+		unlink("$planetfile.new");
+		chdir($oldpath);
+	}
 
-	} else {
-
-		// just convert the planet file to textfiles suitable for db loading
-
+	// convert the planet file to textfiles suitable for db loading
+	if($mode!='update-only') {
 		$oldpath=getcwd();
 		chdir($planetDirectory);
 
-		$cmd='"' . $config['osmosis_bin'] . '"' .
-			' --rb "' . $planetfile . '" ' .
-			' --pl directory="' . $tmpdir . '"';
+		$cmd=$config['osmosis_bin'] .
+			  ' --rbf "' . $planetfile . '" ' .
+			  ' --b bufferCapacity=50000 ' .
+			  ' --pl directory="' . $tmpdir . '"';
 
 
 		shellcmd($cmd, 'osmosis');
 		chdir($oldpath);
-	}
+		}
 }
 
 
@@ -145,7 +151,7 @@ function init_workingDir($schema) {
 	fclose($f);
 
 
-	echo "please download the appropriate state.txt file from http://planet.openstreetmap.org/replication/day according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts\n";
+	logger("please download the appropriate state.txt file from http://planet.openstreetmap.org/replication/day according to the date of your planet file and place it into $workingDirectory/state.txt before updating your planet excerpts");
 }
 
 
