@@ -1,6 +1,5 @@
 <?php
 
-
 // prepareDB asserts an empty database ready for loading OSM data
 // TODO: maybe just connecting isn't enough to ensure postgis is installed in the DB
 function prepareDB($schema) {
@@ -17,17 +16,17 @@ function prepareDB($schema) {
 
 		logger('Cannot connect to database. Trying to create a database', KR_WARNING);
 
-		createDB();
+		createDB($schema);
 	}
 
 	createSchema($schema);
 }
 
 
-function createDB() {
+function createDB($schema) {
 	global $config;
 
-	$tmp_connecstr='host=' . $config['db']['host'] . ' dbname=template1 user=' . $config['db']['user'] . ' password=' . $config['db']['password'];
+	$tmp_connecstr='host=' . $config['db']['host'] . ' dbname=osm user=' . $config['db']['user'] . ' password=' . $config['db']['password'];
 	$db = pg_pconnect($tmp_connecstr);
 
 	if (!$db)  {
@@ -71,7 +70,7 @@ function createSchema($schema) {
 	global $config;
 
 	// reconnect to the new database (using schema public)
-	$db = pg_pconnect(connectstring());
+	$db = pg_pconnect(connectstring($schema));
 	query("CREATE SCHEMA schema$schema", $db);
 	pg_close($db);
 
@@ -105,7 +104,7 @@ function dropSchema($schema) {
 	global $config;
 
 	// connect using schema public
-	$db = pg_pconnect(connectstring());
+	$db = pg_pconnect(connectstring($schema));
 
 	query("DROP SCHEMA IF EXISTS schema$schema CASCADE", $db);
 
