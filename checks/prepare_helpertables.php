@@ -73,7 +73,7 @@ function prepare_helpertables($schema) {
 			", $db1, false);
 			$record_count=pg_affected_rows($result);
 		}
-		echo "dropped $record_count foreign relations\n";
+		logger("dropped $record_count foreign relations");
 		query("DROP TABLE IF EXISTS _tmp_foreign_relations", $db1, false);
 		query("DROP TABLE IF EXISTS _tmp_tmp", $db1, false);
 	}
@@ -100,7 +100,7 @@ function prepare_helpertables($schema) {
 		", $db1, false);
 		$record_count=pg_affected_rows($result);
 	}
-	echo "dropped $record_count empty relations\n";
+	logger("dropped $record_count empty relations");
 	query("DROP TABLE IF EXISTS _tmp_empty_relations", $db1, false);
 
 
@@ -109,7 +109,7 @@ function prepare_helpertables($schema) {
 	query("DELETE FROM way_nodes WHERE lat IS NULL", $db1);
 
 
-	echo "expand way_nodes with node data\n";
+	logger("expand way_nodes with node data");
 
 	// find node counts and update table ways
 	query("DROP TABLE IF EXISTS _tmp_nodecounts", $db1);

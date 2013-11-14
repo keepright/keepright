@@ -46,8 +46,8 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	global $config, $error_types, $schemas, $error_type, $db1, $db2, $db3, $db4, $db5, $db6;
 
-	echo "Running checks for $schema\n";
-
+	logger("Running checks for $schema");
+   
 	$db1 = pg_pconnect(connectstring($schema), PGSQL_CONNECT_FORCE_NEW);
 	$db2 = pg_pconnect(connectstring($schema), PGSQL_CONNECT_FORCE_NEW);
 	$db3 = pg_pconnect(connectstring($schema), PGSQL_CONNECT_FORCE_NEW);
@@ -161,7 +161,7 @@ function run_checks($schema, $checks_to_run=array()) {
 			", $db1, false);
 
 			// insert any subtype if some exist
-			if (is_array($error['subtype'])) foreach ($error['subtype'] as $subtype_id=>$subtype) {
+			if (isset($error['subtype']) && is_array($error['subtype'])) foreach ($error['subtype'] as $subtype_id=>$subtype) {
 				query("
 					INSERT INTO error_types(error_type, error_name, error_description)
 					VALUES(" . pg_escape_string($db1, $subtype_id) . ",'" . pg_escape_string($db1, $subtype) . "','" . pg_escape_string($db1, $error['description']) . "')
@@ -191,9 +191,9 @@ function run_checks($schema, $checks_to_run=array()) {
 		// two options here: a) no checks are called on commandline -> execute all enabled checks
 		// b) the check is found in the command line arguments -> execute it, no matter what $enabled says
 		if (($error['enabled'] && count($checks_to_run)==0) || in_array($error_type, $checks_to_run)) {
-			echo "-------------------------------------------------------------------\n";
 			$starttime=microtime(true);
-			echo strftime('%m/%d/%y %H:%M:%S') . ": starting check " . $error['source'] . "...\n";
+			logger( "-------------------------------------------------------------------\n".
+							"RunChecks: Starting check " . $error['source']);
 
 			// including the file means executing the job
 			if (strlen(trim($error['source']))>0)
@@ -203,7 +203,7 @@ function run_checks($schema, $checks_to_run=array()) {
 			$checks_executed.=',' . $error_type;
 
 			$checktime=format_time(microtime(true)-$starttime);
-			echo "\ntotal check time: $checktime\n";
+			logger("RunChecks: total check time: $checktime");
 			$jobreport[$error['source']]=$checktime;
 		}
 	}
@@ -468,9 +468,7 @@ function run_checks($schema, $checks_to_run=array()) {
 	// drop temporary table
 	//query("DROP TABLE _tmp_errors", $db1);
 
-	echo "-----------------------\n";
-	print_r($jobreport);
-	echo "-----------------------\n";
+  logger(print_r($jobreport));
 
 
 	// dump the number of nodes per square degree
@@ -499,7 +497,7 @@ function run_checks($schema, $checks_to_run=array()) {
 		fclose($f);
 
 	} else {
-		echo "dumping of node counts failed. Cannot open $fname for writing\n";
+		logger("dumping of node counts failed. Cannot open $fname for writing",KR_ERROR);
 	}
 
 
