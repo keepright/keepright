@@ -65,7 +65,7 @@ $tables = array('node'=>'node_tags', 'way'=>'way_tags', 'relation'=>'relation_ta
 
 // this loop will build up similar queries for node_tags, way_tags and relation_tags tables:
 foreach ($replacement_list as $replacement) {
-	echo "checking for {$replacement[1]} = {$replacement[2]}\n";
+	logger("checking for {$replacement[1]} = {$replacement[2]}");
 
 	$where = ' (k LIKE \'' . pg_escape_string($db2, $replacement[1]) . '\'';
 	if ($replacement[2]<>'*') 

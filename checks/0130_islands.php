@@ -47,6 +47,7 @@ $islands = array(
 		'Leipzig, Germany' => 3700745,
 		'Paderborn, Germany' => 30724055,
 		'Stuttgart, Germany' => 25239173,
+		'Memmingen, Germany' => 25480706,
 		'Athens, Greece' => 123272451,
 		'Lahti, Finland' => 24318266,
 		'Carhaix-Plouguer, France' => 32132329,
@@ -248,7 +249,7 @@ $islands = array(
 
 
 
-if ($argc=2 && $argv[1]=='checkways') {
+if (isset($argv) && $argc=2 && $argv[1]=='checkways') {
 
 	exit (checkways());
 
@@ -433,7 +434,7 @@ do {
 
 	// finally add newly found ways in collector table containing all ways
 	query("INSERT INTO _tmp_ways_found_before SELECT way_id FROM _tmp_ways_found_now ", $db1, false);
-	echo "found $count additional ways\n";
+	logger("found $count additional ways");
 } while ($count>0);
 
 
