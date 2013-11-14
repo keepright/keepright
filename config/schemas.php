@@ -18,21 +18,29 @@ $config['cutting_margin']=20000;
 // schema names are varchar(8) in errors-table and error_view-table
 
 
-// testing schema Mödling, Austria
-$schemas['md']['left']=16.20;
-$schemas['md']['right']=16.35;
-$schemas['md']['top']=48.08;
-$schemas['md']['bottom']=48.06;
-$schemas['md']['user']='testMD';
+// // testing schema Mödling, Austria
+// $schemas['md']['left']=16.20;
+// $schemas['md']['right']=16.35;
+// $schemas['md']['top']=48.08;
+// $schemas['md']['bottom']=48.06;
+// $schemas['md']['user']='testMD';
+// 
+// // testing schema Austria
+// $schemas['at']['left']=9.30;
+// $schemas['at']['right']=17.30;
+// $schemas['at']['top']=49.00;
+// $schemas['at']['bottom']=46.20;
+// $schemas['at']['user']='testAT';
 
-// testing schema Austria
-$schemas['at']['left']=9.30;
-$schemas['at']['right']=17.30;
-$schemas['at']['top']=49.00;
-$schemas['at']['bottom']=46.20;
-$schemas['at']['user']='testAT';
+//Frankfurt test schema
 
+$schemas['0']['left']=8.45;
+$schemas['0']['right']=8.8;
+$schemas['0']['top']=50.22;
+$schemas['0']['bottom']=50;
+$schemas['0']['user']='cetest';
 
+//The rest of the world
 $schemas['2']['left']=1.8;
 $schemas['2']['right']=12;
 $schemas['2']['top']=90;
