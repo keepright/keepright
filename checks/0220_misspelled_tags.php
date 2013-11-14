@@ -395,7 +395,7 @@ global $error_type, $false_positives, $db1, $db2;
 
 	for ($keylen=1; $keylen<6; $keylen++) {
 
-		echo "---------------------------------------------------\n$item -- $keylen\n";
+		logger("------     $item -- $keylen");
 		query("DROP TABLE IF EXISTS _tmp_keys", $db1, false);
 		query("
 			CREATE TABLE _tmp_keys(
@@ -433,7 +433,7 @@ global $error_type, $false_positives, $db1, $db2;
 				continue;
 			}
 
-			echo "$item '$irreg_prefix:$irreg_key' looks like '${reg_keys[0]}:${reg_keys[1]}'\n";
+			logger("$item '$irreg_prefix:$irreg_key' looks like '${reg_keys[0]}:${reg_keys[1]}'");
 
 			// find all original tags, where the modified tag version is the offending irregular key
 			// different original tags fall into the same modified tag by regexing, this the way back
@@ -478,14 +478,14 @@ global $never_complain_about, $force_irregular, $force_regular, $overrules;
 	//find regular tags (i.e. tags that are used very frequently, currently at least 1/100000 of the whole number of tags)
 	$tag_count_limit = query_firstval("SELECT SUM(tag_count) FROM _tmp_keys", $db1, false) / 100000;
 	if ($tag_count_limit<50) $tag_count_limit=50;
-	echo "tag count limit is $tag_count_limit\n";
+	logger("tag count limit is $tag_count_limit");
 
 	// tags like eg. the name tag do have many different value options. These many options
 	// may be close together but this is no error or at least there would be many false-positives.
 	// So we ignore key prefixes with many different values
 	$count = query_firstval("SELECT COUNT(*) FROM _tmp_keys", $db1, false);
 	$tag_diversity_limit = sqrt($count);
-	echo "count is $count, tag diversity limit is $tag_diversity_limit\n";
+	logger("count is $count, tag diversity limit is $tag_diversity_limit");
 
 	$result=query("
 		SELECT prefix, k, tag_count
