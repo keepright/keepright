@@ -32,12 +32,13 @@ if ($argc==2) $schema=$argv[1]; else {
 
 //create_authfile() will be needed in the future when osmosis accesses the database
 //create_authfile();
+$GLOBALS['schema']=$schema;
 
 prepareDB($schema);
 updateDB($schema);
 run_checks($schema);
 export_errors($schema);
-remote_command('--remote', '--upload_errors', $schema);
+remote_command('--local', '--upload_errors', $schema);
 
 if (!$config['keep_database_after_processing']) dropSchema($schema);
 
