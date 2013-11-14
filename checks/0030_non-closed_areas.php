@@ -55,7 +55,7 @@ foreach ($xml->xpath('//rule/area') as $area) {
 		$k=pg_escape_string($db1, (string) $rule['k']);
 		$v=pg_escape_string($db1, (string) $rule['v']);
 		$values=explode('|', $v);
-		foreach ($values as $dontcare=>$vv) if (!($dontcheck[$k]===$vv)) {
+		foreach ($values as $dontcare=>$vv) if (!array_key_exists($k,$dontcheck) || !($dontcheck[$k]===$vv)) {
 			query("INSERT INTO _tmp_way_tags(k,v) VALUES ('$k', '$vv');", $db1, false);
 		}
 
@@ -98,7 +98,7 @@ pg_free_result($result);
 
 function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	global $error_type;
-	echo "checking for $k=$v\n";
+	logger("checking for $k=$v");
 
 	query("DROP TABLE IF EXISTS _tmp_ways;", $db1, false);
 	query("
