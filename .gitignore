@@ -1,4 +1,9 @@
 *.pbf
+*.pbf.ne*
+*.pbf.*
 *.pbf.old
 *.log
 results
+*~
+.kate*
+dump
