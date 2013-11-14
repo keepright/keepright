@@ -18,10 +18,10 @@ function y2lat($y) {
 }
 
 function query($sql, &$link, $debug=true) {
-        if ($debug) {
-                echo "\n\n" . rtrim(preg_replace('/(\s)\s+/', '$1', $sql)) . "\n";
-                $starttime=microtime(true);
-        }
+	if ($debug) {
+		logger(rtrim(preg_replace('/(\s)\s+/', '$1', $sql)));
+		$starttime=microtime(true);
+		}
 
 	// one cannot EXPLAIN DDL-type SQL-statements
 /*        if ($debug && !preg_match("/CREATE|ALTER|DROP|TRUNCATE|ANALYZE/i", $sql)) {
@@ -30,21 +30,24 @@ function query($sql, &$link, $debug=true) {
 		pg_free_result($result);
 	}
 */
-        $result=pg_query($link, $sql);
+	$result=pg_query($link, $sql);
 
-        if ($result===false) {
-                $message  = 'Invalid query: ' . pg_result_error($result) . "\n";
-                $message .= 'Whole query: ' . $sql . "\n";
-                echo($message);
-        }
-
-        if ($debug) {
-		echo format_time(microtime(true)-$starttime) ."\n";
-
-		if (!preg_match("/CREATE|ALTER|DROP|TRUNCATE|ANALYZE/i", $sql))
-			echo pg_affected_rows($result) . " rows affected.\n";
+	if ($result===false) {
+		$message  = 'Invalid query: ' . pg_result_error($result) . "\n";
+		$message .= 'Whole query: ' . $sql;
+		logger($message);
 	}
-        return $result;
+
+	$output = "";
+	if ($debug) {
+		$output .= "Query took ".format_time(microtime(true)-$starttime).".\t";
+
+	if (!preg_match("/CREATE|ALTER|DROP|TRUNCATE|ANALYZE/i", $sql))
+		$output .= "Query affected ".pg_affected_rows($result) . " rows.\t";
+	}	
+  if($output != "")
+		logger($output);
+	return $result;
 }
 
 
@@ -467,7 +470,7 @@ function locate_relation($id, $db1, $depth=0) {
 
 	// emergency brake for recursion
 	if ($depth>100) {
-		echo "locate_relation($id) had to pull emergency brake after 100 recursions.\n";
+		logger("locate_relation($id) had to pull emergency brake after 100 recursions",KR_ERROR);
 		return array('lat' => 0, 'lon' =>0);
 	}
 
@@ -688,9 +691,14 @@ function find_oneways($db1, $way_table='', $include_node_locations=true) {
 // logs a message to stdout if loglevel is appropriate
 function logger($message, $loglevel=KR_INFO) {
 	global $config;
+  if(isset($GLOBALS['schema'])) { $s = 'S'.$GLOBALS['schema']; }
+    else { $s = 'none';}
+	$time = date("Y-m-d H:i:s",time());
+	$msg = str_replace("\n","\n$s\t\t\t\t",$message);
 
-	if ($loglevel & $config['loglevel']) echo $message . "\n";
-	system("echo $message >>".$config['main_logfile']);
+	if ($loglevel & $config['loglevel'])
+		echo "$s\t$time\t$msg\n";
+	system("echo \"$s\\t$time\\t$msg\" >>".$config['main_logfile']);
 
 }
 
@@ -767,7 +775,7 @@ function print_index_usage($db) {
 		ORDER BY idstat.relname, indexrelname;
 	", $db, false);
 
-	echo "index usage:\n\n";
+	logger("index usage:");
 	print_pg_result($result);
 	pg_free_result($result);
 }
@@ -778,7 +786,7 @@ function print_index_usage($db) {
 // print contents of a psql-resultset to the console
 // don't forget to pg_free_result your resultset afterwards!
 function print_pg_result($result) {
-
+  $output = "";
 	$colnum = pg_num_fields($result);
 	$rownum = pg_num_rows($result);
 	$colwidths=array();
@@ -803,17 +811,18 @@ function print_pg_result($result) {
 	for ($col=0; $col<$colnum; $col++) {
 		// format content left aligned
 		$fmtstrings[$col] = '|%-' . $colwidths[$col] . 's';
-		printf($fmtstrings[$col], $colnames[$col]);
+		$output .= sprintf($fmtstrings[$col], $colnames[$col]);
 	}
-	echo "|\n";
+	$output .= "|\n";
 
 	// echo data
 	while ($row=pg_fetch_array($result, NULL, PGSQL_NUM)) {
 
 		for ($col=0; $col<$colnum; $col++)
-			printf($fmtstrings[$col], $row[$col]);
-		echo "|\n";
+			$output .= sprintf($fmtstrings[$col], $row[$col]);
+		$output .= "|\n";
 	}
+	logger($output);
 }
 
 
