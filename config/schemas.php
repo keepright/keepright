@@ -16,6 +16,7 @@ $config['cutting_margin']=20000;
 
 
 // schema names are varchar(8) in errors-table and error_view-table
+// but treated as integer in Javascript
 
 
 // // testing schema Mödling, Austria
@@ -46,12 +47,6 @@ $schemas['2']['right']=12;
 $schemas['2']['top']=90;
 $schemas['2']['bottom']=55;
 $schemas['2']['user']='cetest';
-
-$schemas['4']['left']=7.5;
-$schemas['4']['right']=10;
-$schemas['4']['top']=55;
-$schemas['4']['bottom']=49.3;
-$schemas['4']['user']='pc9';
 
 $schemas['7']['left']=3.5;
 $schemas['7']['right']=6.7;
@@ -557,4 +552,31 @@ $schemas['104']['top']=50;
 $schemas['104']['bottom']=46;
 $schemas['104']['user']='pc9';
 
+//New schemas 2013-11-17
+$schemas['105']['left']=7.5;
+$schemas['105']['right']=10;
+$schemas['105']['top']=55;
+$schemas['105']['bottom']=52.3;
+$schemas['105']['user']='pc9';
+
+$schemas['106']['left']=7.5;
+$schemas['106']['right']=10;
+$schemas['106']['top']=52.3;
+$schemas['106']['bottom']=50.6;
+$schemas['106']['user']='pc9';
+
+$schemas['107']['left']=7.5;
+$schemas['107']['right']=10;
+$schemas['107']['top']=50.6;
+$schemas['107']['bottom']=49.3;
+$schemas['107']['user']='pc9';
+
+
+/*Split 2013-11-17
+$schemas['4']['left']=7.5;
+$schemas['4']['right']=10;
+$schemas['4']['top']=55;
+$schemas['4']['bottom']=49.3;
+$schemas['4']['user']='pc9';
+*/
 ?>
