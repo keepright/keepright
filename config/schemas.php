@@ -4,7 +4,7 @@
 // Cutting parameters for splitting the planet
 // ###########################################
 
-// please refer to config/planet.odg for an overview
+// please run drawmap.php to generate an overview map.
 
 // additional space around the borders (in meters)
 // used for overlapping the pieces.
@@ -17,6 +17,12 @@ $config['cutting_margin']=20000;
 
 // schema names are varchar(8) in errors-table and error_view-table
 // but treated as integer in Javascript
+
+
+//unused schema numbers:
+// 1  3  4  5  6  7  8  9
+// 10 11 12 13 14 16 17
+// 23 49 66 67 70 71
 
 
 // // testing schema Mödling, Austria
@@ -48,23 +54,11 @@ $schemas['2']['top']=90;
 $schemas['2']['bottom']=55;
 $schemas['2']['user']='cetest';
 
-$schemas['7']['left']=3.5;
-$schemas['7']['right']=6.7;
-$schemas['7']['top']=49.3;
-$schemas['7']['bottom']=45;
-$schemas['7']['user']='ceserver';
-
 $schemas['15']['left']=18.3;
 $schemas['15']['right']=51.4;
 $schemas['15']['top']=45;
 $schemas['15']['bottom']=35;
 $schemas['15']['user']='ceserver';
-
-$schemas['17']['left']=-30;
-$schemas['17']['right']=51.4;
-$schemas['17']['top']=35;
-$schemas['17']['bottom']=-90;
-$schemas['17']['user']='pc9';
 
 $schemas['18']['left']=12;
 $schemas['18']['right']=23;
@@ -553,6 +547,9 @@ $schemas['104']['bottom']=46;
 $schemas['104']['user']='pc9';
 
 //New schemas 2013-11-17
+//4 -> 105,106,107
+//7 -> 108,109,110
+//17 -> 111,112 113
 $schemas['105']['left']=7.5;
 $schemas['105']['right']=10;
 $schemas['105']['top']=55;
@@ -571,6 +568,42 @@ $schemas['107']['top']=50.6;
 $schemas['107']['bottom']=49.3;
 $schemas['107']['user']='pc9';
 
+$schemas['108']['left']=3.5;
+$schemas['108']['right']=6.7;
+$schemas['108']['top']=49.3;
+$schemas['108']['bottom']=48.1;
+$schemas['108']['user']='ceserver';
+
+$schemas['109']['left']=3.5;
+$schemas['109']['right']=6.7;
+$schemas['109']['top']=48.1;
+$schemas['109']['bottom']=46.5;
+$schemas['109']['user']='ceserver';
+
+$schemas['110']['left']=3.5;
+$schemas['110']['right']=6.7;
+$schemas['110']['top']=46.5;
+$schemas['110']['bottom']=45;
+$schemas['110']['user']='ceserver';
+
+$schemas['111']['left']=-30;
+$schemas['111']['right']=15;
+$schemas['111']['top']=35;
+$schemas['111']['bottom']=0;
+$schemas['111']['user']='pc9';
+
+$schemas['112']['left']=15;
+$schemas['112']['right']=51.4;
+$schemas['112']['top']=35;
+$schemas['112']['bottom']=0;
+$schemas['112']['user']='pc9';
+
+$schemas['113']['left']=-30;
+$schemas['113']['right']=51.4;
+$schemas['113']['top']=0;
+$schemas['113']['bottom']=-90;
+$schemas['113']['user']='pc9';
+
 
 /*Split 2013-11-17
 $schemas['4']['left']=7.5;
@@ -578,5 +611,19 @@ $schemas['4']['right']=10;
 $schemas['4']['top']=55;
 $schemas['4']['bottom']=49.3;
 $schemas['4']['user']='pc9';
+
+$schemas['7']['left']=3.5;
+$schemas['7']['right']=6.7;
+$schemas['7']['top']=49.3;
+$schemas['7']['bottom']=45;
+$schemas['7']['user']='ceserver';
+
+$schemas['17']['left']=-30;
+$schemas['17']['right']=51.4;
+$schemas['17']['top']=35;
+$schemas['17']['bottom']=-90;
+$schemas['17']['user']='pc9';
+
+
 */
 ?>
