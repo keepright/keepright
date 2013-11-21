@@ -284,7 +284,7 @@ function checkways() {
 // though the ways themselves are not tagged as ferry
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
-	CREATE TABLE _tmp_ways AS
+	CREATE TEMPORARY TABLE _tmp_ways AS
 	SELECT wt.way_id FROM way_tags wt WHERE (
 		(wt.k='highway' AND wt.v NOT IN ('emergency_access_point', 'construction', 'services')) OR
 		(wt.k='route' AND wt.v='ferry') OR
@@ -315,7 +315,7 @@ query("ANALYZE _tmp_ways", $db1);
 // select nodes of ways (and ferries) used at least twice
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
-	CREATE TABLE _tmp_junctions AS
+	CREATE TEMPORARY TABLE _tmp_junctions AS
 	SELECT wn.node_id
 	FROM way_nodes wn INNER JOIN _tmp_ways w USING (way_id)
 	GROUP BY wn.node_id
@@ -360,7 +360,7 @@ query("
 // this is our optimized (==reduced) version of way_nodes with junctions only
 query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
 query("
-	CREATE TABLE _tmp_wn AS
+	CREATE TEMPORARY TABLE _tmp_wn AS
 	SELECT wn.way_id, j.node_id
 	FROM _tmp_junctions j INNER JOIN way_nodes wn USING (node_id)
 	INNER JOIN _tmp_ways w ON (wn.way_id=w.way_id)
@@ -372,7 +372,7 @@ query("ANALYZE _tmp_wn", $db1);
 // store the newly found way ids for the current round
 query("DROP TABLE IF EXISTS _tmp_ways_found_now ", $db1, false);
 query("
-	CREATE TABLE _tmp_ways_found_now (
+	CREATE TEMPORARY TABLE _tmp_ways_found_now (
 	way_id bigint NOT NULL default 0,
 	PRIMARY KEY (way_id)
 	)
@@ -381,7 +381,7 @@ query("
 // store the way ids that were already known from the last rounds
 query("DROP TABLE IF EXISTS _tmp_ways_found_before", $db1, false);
 query("
-	CREATE TABLE _tmp_ways_found_before (
+	CREATE TEMPORARY TABLE _tmp_ways_found_before (
 	way_id bigint NOT NULL default 0,
 	PRIMARY KEY (way_id)
 	)
@@ -390,7 +390,7 @@ query("
 // temporary table used for newly found nodes
 query("DROP TABLE IF EXISTS _tmp_nodes", $db1, false);
 query("
-	CREATE TABLE _tmp_nodes (
+	CREATE TEMPORARY TABLE _tmp_nodes (
 	node_id bigint NOT NULL default 0
 	)
 ", $db1);
