@@ -13,27 +13,46 @@ require('export_errors.php');
 require('webUpdateClient.php');
 
 //Check command line arguments and/or print help
-$operation="process";
 
-if($argv[1] == "cut")
+$opt = getopt("s::c:t::f::");
+
+if (!isset($opt['c'])) $opt['c']="help";
+
+$schemalist = 0;
+if (isset($opt['s']))
+  $schemalist = preg_split('/,/',$opt['s']);
+
+
+if($opt['c'] == "cut")
   $operation= 'cut';
-elseif($argv[1] == "process")
+elseif($opt['c'] == "process")
   $operation='process';
-elseif($argv[1] == "processown")
+elseif($opt['c'] == "processown")
   $operation='processown';
-elseif($argv[1] == "update")
+elseif($opt['c'] == "update")
   $operation='update';
-elseif($argv[1] == "check")
+elseif($opt['c'] == "check")
   $operation='check';
 else {
-  echo "Runs an operation on all available and active schemata.\n";
-  echo "Valid operations:\n";
+  echo "Usage: makelist.php -c command [-s schema] [-t threads] [-f planetfile]\n\n";
+  echo "Runs an operation on all active or selected schemata with a given number of threads.\n";
+  echo "Separate several schemata with a ','.\n";
+  echo "Valid commands:\n";
   echo "process - processes the full schema\n";
   echo "update - updates planet files and loads data into the database\n";
   echo "check - runs the checks and exports the errors\n";
   echo "cut - cuts the planet file in small files, one for each schema. Add planet file name as second argument\n";
   exit();
   }
+
+
+if(isset($opt['t'])) 
+  $thread = $opt['t'];
+else if(isset($config['max_parallel_processes']))
+  $threads = $config['max_parallel_processes'];
+else
+  $threads = 1;
+
 
 
 $schema_arr = array();
@@ -49,30 +68,32 @@ foreach ($schemas as $k=>$v) {
  
 for($i=0; $i < count($schema_arr); $i++)  {
   //if too many processes are running - wait for one to finish
-  if(count($pid_arr) >= $config['max_parallel_processes']) {
+  if(count($pid_arr) >= $threads) {
     $s=-1;
     pcntl_waitpid(0,$s);
     array_pop($pid_arr);
     }
   else if ($i != 0) {
-	//sleep(900);
-	}
+  //sleep(900);
+  }
   
   //fork and execute next schema
   $pid = pcntl_fork();  
-  if(!$pid) {     
-		$GLOBALS['schema']=$schema_arr[$i];
+  if(!$pid) { 
+    if($schemalist!=0 && !in_array($schema_arr[$i],$schemalist))
+      exit($i);
+    $GLOBALS['schema']=$schema_arr[$i];
     if($operation == 'process')
       processschema($schema_arr[$i]);
     elseif($operation == 'processown')
       processown($schema_arr[$i]);
     elseif($operation == 'cut')
-      cut_planet($argv[2],$schema_arr[$i]);
-		elseif($operation == 'update')
+      cut_planet($opt['f'],$schema_arr[$i]);
+    elseif($operation == 'update')
       runupdate($schema_arr[$i]);
-		elseif($operation == 'check')
+    elseif($operation == 'check')
       runchecks($schema_arr[$i]);
-		logger("Finished schema ".$schema_arr[$i]);
+    logger("Finished schema ".$schema_arr[$i]);
     exit($i);
     }
   else {
