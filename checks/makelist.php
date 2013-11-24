@@ -33,6 +33,8 @@ elseif($opt['c'] == "update")
   $operation='update';
 elseif($opt['c'] == "check")
   $operation='check';
+elseif($opt['c'] == "upload")
+  $operation='upload';
 else {
   echo "Usage: makelist.php -c command [-s schema] [-t threads] [-f planetfile]\n\n";
   echo "Runs an operation on all active or selected schemata with a given number of threads.\n";
@@ -41,6 +43,7 @@ else {
   echo "process - processes the full schema\n";
   echo "update - updates planet files and loads data into the database\n";
   echo "check - runs the checks and exports the errors\n";
+  echo "upload - uploads the already exported error files\n");
   echo "cut - cuts the planet file in small files, one for each schema. Add planet file name as second argument\n";
   exit();
   }
@@ -120,6 +123,7 @@ function cut_planet($planetfile,$schema) {
 function processschema($schema) {
   runupdate($schema);
   runchecks($schema);
+  upload($schema);
   }
 
 function processown($schema) {
@@ -134,11 +138,12 @@ function runchecks($schema) {
 
   logger("Export Errors schema".$schema);
   export_errors($schema);
-  
+  } 
+
+function upload($schema) {
   logger("Uploading schema".$schema);
   remote_command('--local', '--upload_errors', $schema);
-  } 
- 
+  }
 
 //The function to run update only
 function runupdate($schema) {

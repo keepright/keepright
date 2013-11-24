@@ -1,6 +1,6 @@
 #!/usr/bin/php
 
-#Generates a map of error density of the whole world
+#Generates a map of node density of the whole world
 <?php
 
 echo "Reading input files\n";
@@ -23,8 +23,8 @@ for($x=-1800;$x<1800;$x++) {
     if(isset($store[$x][$y]))
       $val = $store[$x][$y];
     else
-      $val = 0;
-    fprintf($fout,"%d %d %u\n",$x,$y,$val);
+      $val = -1;
+    fprintf($fout,"%d %d %d\n",$x,$y,$val);
     }
   fprintf($fout,"\n");
   }
