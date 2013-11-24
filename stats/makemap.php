@@ -10,7 +10,7 @@ foreach(glob("../results/nodes*.txt") as $file) {
   $fin = fopen($file, "r");
   while(!feof($fin)) {
     $l = fscanf($fin,"%u %f %f %u");
-    $store[$l[2]*10][$l[1]*10] = $l[3];
+    $store[$l[2]*10][$l[1]*10] += $l[3];
     }
 
   fclose($fin);
