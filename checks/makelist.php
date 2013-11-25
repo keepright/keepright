@@ -14,14 +14,26 @@ require('webUpdateClient.php');
 
 //Check command line arguments and/or print help
 
-$opt = getopt("s::c:t::f::");
+$opt = getopt("s::c:t::f::r::");
 
 if (!isset($opt['c'])) $opt['c']="help";
 
 $schemalist = 0;
-if (isset($opt['s']))
+if (isset($opt['s'])) {
   $schemalist = preg_split('/,/',$opt['s']);
+  for($i=0; $i<count($schemalist);$i++) {
+    if(preg_match('/-/',$schemalist[$i])) {
+      $b = preg_split('/-/',$schemalist[$i]);
+      if($b[0]<$b[1]) {
+        for($j = $b[0];$j<=$b[1];$j++)
+          array_push($schemalist,$j);
+        }
+      }
+    }
+  }
 
+if (isset($opt['r']))
+  $checkstorun = preg_split('/,/',$opt['r']);
 
 if($opt['c'] == "cut")
   $operation= 'cut';
@@ -36,7 +48,7 @@ elseif($opt['c'] == "check")
 elseif($opt['c'] == "upload")
   $operation='upload';
 else {
-  echo "Usage: makelist.php -c command [-s schema] [-t threads] [-f planetfile]\n\n";
+  echo "Usage: makelist.php -c command [-s schema] [-t threads] [-f planetfile] [-r checks]\n\n";
   echo "Runs an operation on all active or selected schemata with a given number of threads.\n";
   echo "Separate several schemata with a ','.\n";
   echo "Valid commands:\n";
@@ -50,7 +62,7 @@ else {
 
 
 if(isset($opt['t'])) 
-  $thread = $opt['t'];
+  $threads = $opt['t'];
 else if(isset($config['max_parallel_processes']))
   $threads = $config['max_parallel_processes'];
 else
@@ -60,7 +72,7 @@ else
 
 $schema_arr = array();
 $pid_arr = array();
-
+$stop = 0;
 
 //Put all schemata in an array
 foreach ($schemas as $k=>$v) {
@@ -71,19 +83,20 @@ foreach ($schemas as $k=>$v) {
  
 for($i=0; $i < count($schema_arr); $i++)  {
   //if too many processes are running - wait for one to finish
-  if(count($pid_arr) >= $threads) {
+  while(count($pid_arr) >= $threads) {
     $s=-1;
     pcntl_waitpid(0,$s);
-    array_pop($pid_arr);
+    array_pop($pid_arr);  //just pop an entry - doesn't matter which one
     }
-  else if ($i != 0) {
-  //sleep(900);
-  }
   
   //fork and execute next schema
   $pid = pcntl_fork();  
+  include("../config/runtime.php");
   if(!$pid) { 
     if($schemalist!=0 && !in_array($schema_arr[$i],$schemalist))
+      exit($i);
+    include("../config/runtime.php");
+    if($stop)
       exit($i);
     $GLOBALS['schema']=$schema_arr[$i];
     if($operation == 'process')
@@ -95,7 +108,7 @@ for($i=0; $i < count($schema_arr); $i++)  {
     elseif($operation == 'update')
       runupdate($schema_arr[$i]);
     elseif($operation == 'check')
-      runchecks($schema_arr[$i]);
+      runchecks($schema_arr[$i],$checkstorun);
     logger("Finished schema ".$schema_arr[$i]);
     exit($i);
     }
@@ -106,7 +119,7 @@ for($i=0; $i < count($schema_arr); $i++)  {
  
 //Wait for all sub-processes before finishing
 while( pcntl_waitpid(0,$s) != -1) {
-  sleep(1);
+  //sleep(1);
   }
  
 
@@ -132,9 +145,9 @@ function processown($schema) {
   
 
 //The function to run checks only
-function runchecks($schema) {
+function runchecks($schema,$checkstorun) {
   logger("Run checks schema".$schema);
-  run_checks($schema);
+  run_checks($schema,$checkstorun);
 
   logger("Export Errors schema".$schema);
   export_errors($schema);
