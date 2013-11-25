@@ -468,7 +468,7 @@ function run_checks($schema, $checks_to_run=array()) {
 	// drop temporary table
 	//query("DROP TABLE _tmp_errors", $db1);
 
-  logger(print_r($jobreport));
+  logger(print_r($jobreport,1));
 
 
 	// dump the number of nodes per square degree
