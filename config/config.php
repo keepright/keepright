@@ -39,7 +39,7 @@ $config['db']['host']='localhost';
 $config['db']['port']='5432';
 $config['db']['database']='osm';
 $config['db']['user']='osm';
-$config['db']['password']='shhh!';
+$config['db']['password']='wulle';
 
 
 // the web servers database server.
@@ -50,7 +50,7 @@ $config['db']['password']='shhh!';
 $config['web_db']['host']='localhost';
 $config['web_db']['database']='osm';
 $config['web_db']['user']='osm';
-$config['web_db']['password']='shhh!';
+$config['web_db']['password']='wulle';
 
 
 
@@ -60,7 +60,7 @@ $config['web_db']['password']='shhh!';
 
 // absolute path pointing to the keepright directory
 // please provide a trailing slash
-$config['base_dir']='/home/haraldk/OSM/keepright/';
+$config['base_dir']='/data01/osm/keepright/';
 
 
 // a separate high speed partition preferably
@@ -82,7 +82,7 @@ $config['planet_file']=$config['planet_dir'] . 'planet.pbf';
 
 
 // the path of the osmosis calling script -- not the JAR-file!
-$config['osmosis_bin']='/home/haraldk/OSM/osmosis-0.39/bin/osmosis';
+$config['osmosis_bin']='/usr/bin/osmosis';
 
 
 // tools part of (gnuwin32)-coreutils
@@ -97,7 +97,7 @@ $config['cmd_join']='/usr/bin/join';
 
 // to turn off downloading the planet file and use
 // the old one set this parameter to false
-$config['update_source_data']=true;
+$config['update_source_data']=false;
 
 
 // set this option to false if you want the db schema
@@ -113,8 +113,11 @@ $config['stop_indicator']='/tmp/stop_keepright';
 
 
 // logfile for the main loop script
-$config['main_logfile']=$config['base_dir'] . 'checks/main.log';
+$config['main_logfile']=$config['base_dir'] . 'logs/main.log';
 
+
+//This many processes / schemata are allowed to run in parallel
+$config['max_parallel_processes'] = 8;
 
 // logging is done one file per database schema per update run.
 // specify the number of logfile versions that
@@ -127,7 +130,7 @@ $config['logfile_count']=9;
 # proxy authentication per user is not supported
 # use IP-based authentication via squid's acl
 # and http_access directives
-$config['http_proxy']['enabled']=false;
+$config['http_proxy']['enabled']=true;
 $config['http_proxy']['host']='localhost:3128';
 
 
