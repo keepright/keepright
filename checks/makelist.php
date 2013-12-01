@@ -55,7 +55,7 @@ else {
   echo "process - processes the full schema\n";
   echo "update - updates planet files and loads data into the database\n";
   echo "check - runs the checks and exports the errors\n";
-  echo "upload - uploads the already exported error files\n");
+  echo "upload - uploads the already exported error files\n";
   echo "cut - cuts the planet file in small files, one for each schema. Add planet file name as second argument\n";
   exit();
   }
