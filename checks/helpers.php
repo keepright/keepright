@@ -699,6 +699,7 @@ function logger($message, $loglevel=KR_INFO) {
 	if ($loglevel & $config['loglevel'])
 		echo "$s\t$time\t$msg\n";
 	system("echo \"$s\\t$time\\t$msg\" >>".$config['main_logfile']);
+	system("echo \"$time\\t$msg\" >>".$config['base_dir']."/logs/".$s.".log");
 
 }
 

@@ -8,3 +8,6 @@ results
 .kate*
 dump
 map.svg
+*.dat
+*swp
+logs
