@@ -31,7 +31,7 @@ $dontcheck = array(
 
 query("DROP TABLE IF EXISTS _tmp_way_tags;", $db1, false);
 query("
-	CREATE TABLE _tmp_way_tags (
+	CREATE TEMPORARY TABLE _tmp_way_tags (
 	id serial NOT NULL,
 	k varchar(255) NOT NULL,
 	v varchar(255) NOT NULL,
@@ -102,7 +102,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 
 	query("DROP TABLE IF EXISTS _tmp_ways;", $db1, false);
 	query("
-		CREATE TABLE _tmp_ways (
+		CREATE TEMPORARY TABLE _tmp_ways (
 		way_id bigint NOT NULL,
 		first_node_id bigint,
 		last_node_id bigint,
@@ -151,7 +151,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	// _tmp_way_nodes3 will contain any nodes that are used by area-ways
 	query("DROP TABLE IF EXISTS _tmp_way_nodes3", $db1, false);
 	query("
-		CREATE TABLE _tmp_way_nodes3 (
+		CREATE TEMPORARY TABLE _tmp_way_nodes3 (
 		way_id bigint NOT NULL,
 		node_id bigint NOT NULL)
 	", $db1, false);
@@ -169,7 +169,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	// and build _tmp_way_nodes
 	query("DROP TABLE IF EXISTS _tmp_way_nodes", $db1, false);
 	query("
-		CREATE TABLE _tmp_way_nodes (
+		CREATE TEMPORARY TABLE _tmp_way_nodes (
 		way_id bigint NOT NULL,
 		node_id bigint NOT NULL)
 	", $db1, false);
@@ -191,7 +191,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	// member_ways will contain all ways that are already connected
 	query("DROP TABLE IF EXISTS _tmp_members_ways", $db1, false);
 	query("
-		CREATE TABLE _tmp_members_ways (
+		CREATE TEMPORARY TABLE _tmp_members_ways (
 		way_id bigint NOT NULL default 0,
 		marker int NOT NULL default 0,
 		PRIMARY KEY (way_id)
@@ -204,7 +204,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	// temporary table used for newly found nodes
 	query("DROP TABLE IF EXISTS _tmp_members_nodes", $db1, false);
 	query("
-		CREATE TABLE _tmp_members_nodes (
+		CREATE TEMPORARY TABLE _tmp_members_nodes (
 		node_id bigint NOT NULL default 0,
 		marker int NOT NULL default 0,
 		PRIMARY KEY  (node_id)
@@ -217,7 +217,7 @@ function process_tag($k, $v, $check_strictly, $db1, $db2, $db4) {
 	// member_ways will contain all ways that are already connected
 	query("DROP TABLE IF EXISTS _tmp_members", $db1, false);
 	query("
-		CREATE TABLE _tmp_members (
+		CREATE TEMPORARY TABLE _tmp_members (
 		way_id bigint NOT NULL default 0,
 		last_way_id bigint NOT NULL default 0,
 		first_node_id bigint NOT NULL default 0,

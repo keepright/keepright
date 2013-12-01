@@ -87,7 +87,7 @@ query("
 
 query("DROP TABLE IF EXISTS _tmp_open_parts", $db1);
 query("
-	CREATE TABLE _tmp_open_parts (
+	CREATE TEMPORARY TABLE _tmp_open_parts (
 		name text,
 		admin_level text,
 		relation_id bigint,
@@ -180,7 +180,7 @@ query("
 
 query("DROP TABLE IF EXISTS _tmp_nodelists", $db1);
 query("
-	CREATE TABLE _tmp_nodelists (
+	CREATE TEMPORARY TABLE _tmp_nodelists (
 		name text,
 		admin_level text,
 		part integer,
@@ -204,7 +204,7 @@ query("
 
 query("DROP TABLE IF EXISTS _tmp_evil_nodes", $db1);
 query("
-	CREATE TABLE _tmp_evil_nodes AS
+	CREATE TEMPORARY TABLE _tmp_evil_nodes AS
 	SELECT name, admin_level, part, node_id
 	FROM _tmp_nodelists
 	GROUP BY name, admin_level, part, node_id
