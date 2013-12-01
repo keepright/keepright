@@ -10,7 +10,7 @@ INSERT INTO schema_info VALUES (1);
 
 
 -- Create a table for users.
-CREATE TABLE users (
+CREATE UNLOGGED TABLE users (
     id bigint NOT NULL,
     user_name text
 );
@@ -34,7 +34,7 @@ ALTER TABLE nodes
 
 
 -- Create a table for node tags.
-CREATE TABLE node_tags (
+CREATE UNLOGGED TABLE node_tags (
     node_id bigint NOT NULL,
     k text NOT NULL,
     v text
@@ -73,7 +73,7 @@ CREATE TABLE way_nodes (
 
 
 -- Create a table for way tags.
-CREATE TABLE way_tags (
+CREATE UNLOGGED TABLE way_tags (
     way_id bigint NOT NULL,
     k text NOT NULL,
     v text
@@ -89,7 +89,7 @@ CREATE TABLE relations (
 
 
 -- Create a table for representing relation member relationships.
-CREATE TABLE relation_members (
+CREATE UNLOGGED TABLE relation_members (
     relation_id bigint NOT NULL,
     member_id bigint NOT NULL,
     member_role text NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE relation_members (
 
 
 -- Create a table for relation tags.
-CREATE TABLE relation_tags (
+CREATE UNLOGGED TABLE relation_tags (
     relation_id bigint NOT NULL,
     k text NOT NULL,
     v text
