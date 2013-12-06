@@ -242,7 +242,7 @@ $error_types[400]['subtype'][402]='impossible angles';
 
 
 $error_types[410]['name']='websites';
-$error_types[410]['enabled']=true;
+$error_types[410]['enabled']=false;
 $error_types[410]['source']='0410_website.php';
 $error_types[410]['class']='error';
 $error_types[410]['description']='calls websites and tries to match website content with key tags from the osm element';
