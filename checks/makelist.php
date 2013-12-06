@@ -47,6 +47,8 @@ elseif($opt['c'] == "check")
   $operation='check';
 elseif($opt['c'] == "upload")
   $operation='upload';
+elseif($opt['c'] == "export")
+  $operation='export';
 else {
   echo "Usage: makelist.php -c command [-s schema] [-t threads] [-f planetfile] [-r checks]\n\n";
   echo "Runs an operation on all active or selected schemata with a given number of threads.\n";
@@ -56,6 +58,7 @@ else {
   echo "update - updates planet files and loads data into the database\n";
   echo "check - runs the checks and exports the errors\n";
   echo "upload - uploads the already exported error files\n";
+  echo "export - exports the errors\n";
   echo "cut - cuts the planet file in small files, one for each schema. Add planet file name as second argument\n";
   exit();
   }
@@ -100,13 +103,15 @@ for($i=0; $i < count($schema_arr); $i++)  {
       exit($i);
     $GLOBALS['schema']=$schema_arr[$i];
     if($operation == 'process')
-      processschema($schema_arr[$i]);
+      processschema($schema_arr[$i],$checkstorun);
     elseif($operation == 'processown')
       processown($schema_arr[$i]);
     elseif($operation == 'cut')
       cut_planet($opt['f'],$schema_arr[$i]);
     elseif($operation == 'update')
       runupdate($schema_arr[$i]);
+    elseif($operation == 'export')
+      runexport($schema_arr[$i]);
     elseif($operation == 'check')
       runchecks($schema_arr[$i],$checkstorun);
     logger("Finished schema ".$schema_arr[$i]);
@@ -133,9 +138,9 @@ function cut_planet($planetfile,$schema) {
  
  
 //The main function to fully process a schema
-function processschema($schema) {
+function processschema($schema,$checkstorun) {
   runupdate($schema);
-  runchecks($schema);
+  runchecks($schema,$checkstorun);
   upload($schema);
   }
 
@@ -149,10 +154,16 @@ function runchecks($schema,$checkstorun) {
   logger("Run checks schema".$schema);
   run_checks($schema,$checkstorun);
 
+  runexport($schema);
+  } 
+
+//Export errors to file
+function runexport($schema) {
   logger("Export Errors schema".$schema);
   export_errors($schema);
   } 
 
+//Upload errors to server
 function upload($schema) {
   logger("Uploading schema".$schema);
   remote_command('--local', '--upload_errors', $schema);
