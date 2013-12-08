@@ -141,7 +141,7 @@ function cut_planet($planetfile,$schema) {
 function processschema($schema,$checkstorun) {
   runupdate($schema);
   runchecks($schema,$checkstorun);
-  upload($schema);
+  //upload($schema);
   }
 
 function processown($schema) {
