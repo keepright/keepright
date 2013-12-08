@@ -63,6 +63,7 @@ $islands = array(
     'Clermont, France' => 25847180,
     'Nancy, France' => 4797115,
     'Besancon, France' => 30854188,
+    'Vierzon, France' => 4322989,
 		'London, Great Britain' => 144718992,
 		'Sheffield, Great Britain' => 93168220,
     'Inverness, Great Britain' => 26717646,
