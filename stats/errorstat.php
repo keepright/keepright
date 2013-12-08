@@ -2,6 +2,9 @@
 
 <?php
 
+
+$opt = getopt("t::");
+
 error_reporting(E_ALL ^ E_NOTICE);
 /*
 $nodes=array();
@@ -46,31 +49,38 @@ foreach(glob("../results/error_view*.txt") as $file) {
 
 
 foreach ($stats as $error_type=>$s) {
-//   if ($error_type != 130) continue;
-  $f=fopen('../tmp/' . $error_type . '.txt', 'w');
-  if ($f) {
-
-    for($lat=-900;$lat<=900;$lat++) {
-      for($lon=-1800;$lon<=1800;$lon++) {
-        if ($nodes[$lat][$lon]>0) {
-          $value=$s[$lat][$lon]/$nodes[$lat][$lon];
-          if ($value>1) $value=1;
-          $value=log($value, 10.0);
-        } else
-          $value=0;
-        fwrite($f, "$lon\t$lat\t$value\n");
-      }
-      fwrite($f, "\n");
+  if(array_key_exists('t',$opt) && $opt['t']>0)  {
+    $p = pcntl_fork();
     }
+  else {
+    $p = -1;
+    }
+  if($p<=0) {
+    $f=fopen('../tmp/' . $error_type . '.txt', 'w');
+    if ($f) {
+      for($lat=-900;$lat<=900;$lat++) {
+        for($lon=-1800;$lon<=1800;$lon++) {
+          if ($nodes[$lat][$lon]>0) {
+            $value=$s[$lat][$lon]/$nodes[$lat][$lon];
+            if ($value>1) $value=1;
+            $value=log($value, 10.0);
+            } 
+          else
+            $value=1;
+          fwrite($f, "$lon\t$lat\t$value\n");
+          }
+        fwrite($f, "\n");
+        }
 
-    fclose($f);
-
-    system("echo \"set pm3d map; set key off; set palette rgbformulae 21,22,23 negative;set terminal png size 2300,1500;set output 'content/$error_type.png';splot '../tmp/$error_type.txt';\" | gnuplot");
-
-
+      fclose($f);
+//      system("echo \"set pm3d map; set key off; set palette rgbformulae 21,22,23 negative;set terminal png size 2300,1500;set output 'content/$error_type.png';splot '../tmp/$error_type.txt';\" | gnuplot");
+      system("echo \"set pm3d map; set key off; set palette defined (-10 'white', -8 '#000088', -7 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 'black'); set terminal png size 2300,1500;set output 'content/$error_type.png';splot '../tmp/$error_type.txt';\" | gnuplot");
 //     fwrite($html, "<h3>$error_type - $error_types[$error_type]</h3><img src='../tmp/$error_type.png'><br>\n");
+      }
+    if($p==0)
+      exit();
+    }
   }
-}
 
 
 
