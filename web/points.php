@@ -141,6 +141,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 		// single way id in txt1
 		case 50:
+		case 297:
+		case 298:
 		case 370:	$replacements['$1']=hyperlink('way', $replacements['$1']);
 				$partner_objects='way' . $row['txt1'];
 		break;
@@ -169,6 +171,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 		case 401:	$replacements['$1']=hyperlink('way', $replacements['$1']);
 				$replacements['$2']=hyperlink('way', $replacements['$2']);
 				$partner_objects='way' . $row['txt1'] . ',way' . $row['txt2'];
+		break;
+		
+		// node id in txt1 and way id in txt2
+		case 295:	$replacements['$1']=hyperlink('node', $replacements['$1']);
+				$replacements['$2']=hyperlink('way', $replacements['$2']);
+				$partner_objects='node' . $row['txt1'] . ',way' . $row['txt2'];
 		break;
 	}
 

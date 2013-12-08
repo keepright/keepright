@@ -207,6 +207,22 @@ msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
 msgstr ""
 
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+
+msgid "restriction type is $1, but angle is $2 degrees. Maybe the restriction type is not appropriate?"
+msgstr ""
+
+msgid "wrong direction of to way $1"
+msgstr ""
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr ""
+
+
 msgid "missing maxspeed tag"
 msgstr ""
 

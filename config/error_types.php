@@ -175,6 +175,10 @@ $error_types[290]['subtype'][291]='missing type';
 $error_types[290]['subtype'][292]='missing from way';
 $error_types[290]['subtype'][293]='missing to way';
 $error_types[290]['subtype'][294]='from or to not a way';
+$error_types[290]['subtype'][295]='via is not on the way ends';
+$error_types[290]['subtype'][296]='wrong restriction angle';
+$error_types[290]['subtype'][297]='wrong direction of to member';
+$error_types[290]['subtype'][298]='already restricted by oneway';
 
 
 $error_types[300]['name']='missing maxspeed';
