@@ -12,14 +12,14 @@ to avoid false positives on highways crossing squares, areas are excluded here
 */
 
 
-if (!type_exists($db1, 'type_way_type'))
+  query("DROP TYPE IF EXISTS type_way_type CASCADE", $db1, false);
 	query("CREATE TYPE type_way_type AS ENUM('highway','cycleway/footpath','waterway','riverbank')", $db1);
 
 // tmp_ways will contain all highways with their linestring geometry and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
 	CREATE TABLE _tmp_ways (
-	way_id bigint NOT NULL,
+	way_id bigint UNIQUE NOT NULL,
 	layer text NOT NULL DEFAULT '0',
 	way_type type_way_type NOT NULL
 	)
@@ -111,42 +111,19 @@ query("
 // fetch layer tag
 find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
 
-
+query("ANALYZE _tmp_ways", $db1);
 query("CREATE INDEX idx_tmp_ways_layer ON _tmp_ways (layer)", $db1);
+query("CREATE UNIQUE INDEX idx_tmp_ways_id ON _tmp_ways (way_id)", $db1);
 query("CREATE INDEX idx_tmp_ways_way_type ON _tmp_ways (way_type)", $db1);
 query("CREATE INDEX idx_tmp_ways_geom ON _tmp_ways USING gist (geom)", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
 
-// create a helper table needed by connected_near() function
-// all junctions of ways and the location of junction
-// first include all crossings; remove crossings on ways not interesting
-query("DROP TABLE IF EXISTS _tmp_wn", $db1);
-query("
-	CREATE TABLE _tmp_wn AS
-	SELECT way_nodes.way_id, way_nodes.node_id, way_nodes.x, way_nodes.y
-	FROM way_nodes INNER JOIN _tmp_ways USING (way_id)
-", $db1);
-query("CREATE INDEX idx_tmp_wn_node_id ON _tmp_wn (node_id)", $db1);
-query("ANALYZE _tmp_wn", $db1);
-
-query("DROP TABLE IF EXISTS _tmp_xings", $db1);
-query("
-	CREATE TABLE _tmp_xings AS
-	SELECT wn1.way_id as way1, wn2.way_id as way2, wn1.x, wn1.y
-	FROM _tmp_wn wn1 INNER JOIN _tmp_wn wn2 USING (node_id)
-	WHERE wn1.way_id<wn2.way_id
-", $db1);
-query("DROP TABLE IF EXISTS _tmp_wn", $db1);
-query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
-query("ANALYZE _tmp_xings", $db1);
-
-
 
 // collect colliding ways here and check if they really are errors afterwards
-query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
+query("DROP TABLE IF EXISTS _tmp_error_candidates$schema", $db1);
 query("
-	CREATE TABLE _tmp_error_candidates (
+	CREATE TEMPORARY TABLE _tmp_error_candidates$schema (
 	way_id1 bigint NOT NULL,
 	way_id2 bigint NOT NULL,
 	geom text NOT NULL,
@@ -155,6 +132,30 @@ query("
 	action text NOT NULL
 	)
 ", $db1);
+query("ANALYZE _tmp_error_candidates$schema",$db1);
+query("VACUUM _tmp_error_candidates$schema", $db1);
+query("VACUUM FULL _tmp_ways", $db1);
+query("ANALYZE _tmp_ways", $db1);
+
+/*
+$result = query("
+  EXPLAIN INSERT INTO _tmp_error_candidates$schema
+  SELECT w1.way_id as way_id1, w2.way_id as way_id2, ST_AsText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2,
+  CASE WHEN ST_crosses(w1.geom, w2.geom) THEN 'crosses' ELSE 'overlaps' END as action
+  FROM _tmp_ways w1, _tmp_ways w2
+  WHERE w1.layer=w2.layer AND
+    w1.way_id<w2.way_id AND NOT (
+      (w1.way_type='waterway' AND w2.way_type='riverbank') OR
+      (w1.way_type='riverbank' AND w2.way_type='waterway') OR
+      (w1.way_type='riverbank' AND w2.way_type='riverbank')
+    ) AND (ST_crosses(w1.geom, w2.geom) OR ST_overlaps(w1.geom, w2.geom))
+", $db1);
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+  logger(join(" ",$row));
+  }
+pg_free_result($result);
+*/
+
 
 // find ways that graphically intersect (i.e. cross or overlap)
 // intersecting is not an error if ways share a common node; this will be checked later
@@ -163,8 +164,8 @@ query("
 
 // ignore crossings/overlappings of a riverbank with the river itself (there are thousands!)
 // ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
-query("
-	INSERT INTO _tmp_error_candidates
+$result = query("
+	EXPLAIN ANALYZE INSERT INTO _tmp_error_candidates$schema
 	SELECT w1.way_id as way_id1, w2.way_id as way_id2, ST_AsText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2,
 	CASE WHEN ST_crosses(w1.geom, w2.geom) THEN 'crosses' ELSE 'overlaps' END as action
 	FROM _tmp_ways w1, _tmp_ways w2
@@ -175,6 +176,38 @@ query("
 			(w1.way_type='riverbank' AND w2.way_type='riverbank')
 		) AND (ST_crosses(w1.geom, w2.geom) OR ST_overlaps(w1.geom, w2.geom))
 ", $db1);
+while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+  logger(join(" ",$row));
+  }
+pg_free_result($result);
+
+
+
+// create a helper table needed by connected_near() function
+// all junctions of ways and the location of junction
+// first include all crossings; remove crossings on ways not interesting
+query("DROP TABLE IF EXISTS _tmp_wn", $db1);
+query("
+  CREATE TEMPORARY TABLE _tmp_wn AS
+  SELECT way_nodes.way_id, way_nodes.node_id, way_nodes.x, way_nodes.y
+  FROM way_nodes INNER JOIN _tmp_ways USING (way_id)
+", $db1);
+query("CREATE INDEX idx_tmp_wn_node_id ON _tmp_wn (node_id)", $db1);
+query("ANALYZE _tmp_wn", $db1);
+
+query("DROP TABLE IF EXISTS _tmp_xings", $db1);
+query("
+  CREATE TEMPORARY TABLE _tmp_xings AS
+  SELECT wn1.way_id as way1, wn2.way_id as way2, wn1.x, wn1.y
+  FROM _tmp_wn wn1 INNER JOIN _tmp_wn wn2 USING (node_id)
+  WHERE wn1.way_id<wn2.way_id
+", $db1);
+query("DROP TABLE IF EXISTS _tmp_wn", $db1);
+query("CREATE INDEX idx_tmp_xings ON _tmp_xings (way1, way2)", $db1);
+query("ANALYZE _tmp_xings", $db1);
+
+
+
 
 // ST_intersection() may return one of the following geometry types:
 // POINT() for one single intersection point
@@ -183,8 +216,7 @@ query("
 // MULTILINESTRING() if more than one overlapping occurs
 // GEOMETRYCOLLECTION() if a combination of the above is found
 // This geometry is a container for different sub-geometries of above types.
-
-$result=query("SELECT * FROM _tmp_error_candidates WHERE action='crosses'", $db1);
+$result=query("SELECT * FROM _tmp_error_candidates$schema WHERE action='crosses'", $db1);
 while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 
 	$points = get_startingpoints($row['geom']);
@@ -219,7 +251,7 @@ pg_free_result($result);
 // that is ways that (partly) use the same sequences of nodes.
 // Such segments lie on top of each other and are not covered
 // by the intersections-test above
-$result=query("SELECT * FROM _tmp_error_candidates WHERE action='overlaps'", $db1);
+$result=query("SELECT * FROM _tmp_error_candidates$schema WHERE action='overlaps'", $db1);
 while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 
 	$points = get_startingpoints($row['geom']);
@@ -239,7 +271,7 @@ pg_free_result($result);
 
 print_index_usage($db1);
 
-query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1, false);
+query("DROP TABLE IF EXISTS _tmp_error_candidates$schema", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("DROP TABLE IF EXISTS _tmp_xings", $db1, false);
 query("DROP TYPE type_way_type", $db1, false);
