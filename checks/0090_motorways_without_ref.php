@@ -4,6 +4,7 @@
 /*
 inspired by maplint motorways are reported if they lack a 'ref', 'nat_ref' or 'int_ref' tag
 to ease tagging, only one of these is required
+indicating that a motorway doesn't have a ref by adding a noref tag
 
 including relations: It is valid not to have a ref tag if the motorway
 is member of at least one relation that has a ref tag
@@ -25,14 +26,14 @@ query("
 		SELECT wt.k
 		FROM way_tags wt
 		WHERE wt.way_id=b.way_id AND
-		wt.k IN ('ref', 'nat_ref', 'int_ref')
+		wt.k IN ('noref', 'ref', 'nat_ref', 'int_ref')
 
 	) AND NOT EXISTS (
 		SELECT rm.relation_id
 		FROM relation_members rm, relation_tags rt
 		WHERE rm.member_type='W' AND
 		rm.member_id=b.way_id AND rt.relation_id=rm.relation_id AND
-		rt.k IN ('ref', 'nat_ref', 'int_ref')
+		rt.k IN ('noref', 'ref', 'nat_ref', 'int_ref')
 	)
 ", $db1);
 
