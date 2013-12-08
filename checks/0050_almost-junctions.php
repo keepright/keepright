@@ -195,6 +195,9 @@ query("
 	)
 ", $db1, false);
 
+query("VACUUM _tmp_end_nodes", $db1);
+query("VACUUM _tmp_ways", $db1);
+
 
 // end-node near way on the same layer
 // but not intersecting any barrier
