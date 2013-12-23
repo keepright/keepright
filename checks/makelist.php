@@ -110,6 +110,8 @@ for($i=0; $i < count($schema_arr); $i++)  {
       cut_planet($opt['f'],$schema_arr[$i]);
     elseif($operation == 'update')
       runupdate($schema_arr[$i]);
+    elseif($operation == 'upload')
+      runupload($schema_arr[$i]);
     elseif($operation == 'export')
       runexport($schema_arr[$i]);
     elseif($operation == 'check')
@@ -164,7 +166,7 @@ function runexport($schema) {
   } 
 
 //Upload errors to server
-function upload($schema) {
+function runupload($schema) {
   logger("Uploading schema".$schema);
   remote_command('--local', '--upload_errors', $schema);
   }
