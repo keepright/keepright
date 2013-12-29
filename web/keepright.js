@@ -609,7 +609,7 @@ parseData: function(ajaxRequest) {
 
 			'<a href="http://www.openstreetmap.org/edit?lat=' + lat + '&lon=' + lon + '&zoom=18" target="_blank">'+txt7+'</a> ' +
 
-			'<a href="http://www.openstreetmap.org/edit?editor=id&lat=' + lat + '&lon=' + lon + '&zoom=18" target="_blank">'+txt16+'</a></p>' +
+			'<a href="http://www.openstreetmap.org/edit?editor=id&lat=' + lat + '&lon=' + lon + '&zoom=18&' +object_type_EN + '=' + object_id + '" target="_blank">'+txt16+'</a></p>' +
 
 			''+
 			'<form class="p3" name="errfrm_'+schema+'_'+error_id+'" target="hiddenIframe" method="get" action="comment.php">' +
