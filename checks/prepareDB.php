@@ -35,7 +35,7 @@ function createDB($schema) {
 	}
 
 
-	query('CREATE DATABASE ' . $config['db']['database'], $db);
+        query('CREATE DATABASE ' . $config['db']['database'] . " WITH ENCODING='UTF8'", $db);
 	pg_close($db);
 
 
