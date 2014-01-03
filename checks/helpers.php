@@ -892,7 +892,7 @@ function connectstring($schema='') {
 	// append the schema name to the connect string to make any connection
 	// use the given schema automatically
 	if ($schema!=='') {
-		$connectstring.=" options='--search_path=schema$schema,public'";
+		$connectstring.=" options='--client_encoding=UTF8 --search_path=schema$schema,public'";
 	} else {
 		$connectstring.=" options='--search_path=public'";
 	}
