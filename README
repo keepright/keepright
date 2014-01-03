@@ -22,12 +22,13 @@ postgresql >= 8.3 with matching release of postgis (postgresql-8.3-postgis)
 postgres-client
 php5-mysql
 php5-pgsql
+php5_intl     (support for utf-8)
+php5_idn      (support for IDN domain names)
 mysql-server
 mysql-client
 phpMyAdmin
 phpPgAdmin
 sun-java7-jre
-subversion
 wget
 wput
 bzip2
@@ -45,7 +46,7 @@ The checks depend on a copy of the OSM database, split up in parts. Using only a
 The planet is split up in currently 85 parts, so called 'schemas'. They are processed sequentially and independently.
 
 
-It looks like the osmosis plugin heavily depends on the osmosis version being used. The plugin is tested and works with osmosis_0.39.
+It looks like the osmosis plugin heavily depends on the osmosis version being used. The plugin is tested and works with osmosis_0.42.
 
 
 THE BIG PICTURE

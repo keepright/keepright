@@ -582,6 +582,33 @@ function whitelisted($URL) {
 	return false;
 }
 
+//escape non-ASCII characters in URL using punycode
+//source of this function: http://gauth.fr/2013/02/using-curl-with-multibyte-domain-names/
+//and php.net
+function convert_to_ascii($url)
+{
+  $parts = parse_url($url);
+  if (!isset($parts['host']))
+    return $url; // missing http? makes parse_url fails
+  // convert if domain name is non_ascii
+  if (mb_detect_encoding($parts['host']) != 'ASCII')
+  {
+    $parts['host'] = idn_to_ascii($parts['host']); 
+    //print " ".mb_detect_encoding($parts['host'])." ".$parts['host']."\n";
+        return 
+             ((isset($parts['scheme'])) ? $parts['scheme'] . '://' : '')
+            .((isset($parts['user'])) ? $parts['user'] . ((isset($parts['pass'])) ? ':' . $parts['pass'] : '') .'@' : '')
+            .((isset($parts['host'])) ? $parts['host'] : '')
+            .((isset($parts['port'])) ? ':' . $parts['port'] : '')
+            .((isset($parts['path'])) ? $parts['path'] : '')
+            .((isset($parts['query'])) ? '?' . $parts['query'] : '')
+            .((isset($parts['fragment'])) ? '#' . $parts['fragment'] : '')
+        ;
+  }
+  return $url;
+}
+
+
 
 // push an element onto the request queue
 function queueURL(&$rc, $element, $url) {
@@ -592,8 +619,11 @@ function queueURL(&$rc, $element, $url) {
 		$url = "http://".$url;
 	}
 
+	//Take care of URLs containing non-ASCII characters (IDN)
+	$url = convert_to_ascii($url);
 	// Queue for later
 	//print "Queue $url on ID $element[id]\n";
+	
 	$request = new RollingCurlRequest($url);
 	$request->callback_data = $element;
 	$rc->add($request);
