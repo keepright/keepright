@@ -22,8 +22,8 @@ postgresql >= 8.3 with matching release of postgis (postgresql-8.3-postgis)
 postgres-client
 php5-mysql
 php5-pgsql
-php5_intl     (support for utf-8)
-php5_idn      (support for IDN domain names)
+php5-intl     (support for utf-8)
+php5-idn      (support for IDN domain names)
 mysql-server
 mysql-client
 phpMyAdmin
