@@ -230,6 +230,7 @@ $never_complain_about = "
 	prefix LIKE 'route_ref:=%' OR
 	prefix LIKE 'seats:=%' OR
 	prefix LIKE 'source:=%' OR
+        prefix LIKE 'source:%' OR
 	(prefix LIKE 'source:name:=%' AND k LIKE 'Orange County plat book%') OR
 	(prefix LIKE 'source:old_name:=%' AND k LIKE 'Orange County plat book%') OR
 	prefix LIKE 'source_ref:=%' OR
