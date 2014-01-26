@@ -236,6 +236,7 @@ $islands = array(
 		'Havanna, Cuba' => 38448366,
 		'Ottawa, Canada' => 76434558,
 		'Quebec, Canada' => 16229066,
+		'Quebec, Canada' => 32969523,
 		'Calgary, Canada' => 5386816,
 		'Campbell River, Canada' => 62099057,
 		'Cortes Island, Canada' => 40576643,
