@@ -23,7 +23,16 @@
 
 .outline li {
 	cursor: auto;
-	margin-left: 0px;
+	margin: 0 0 0 3px;
+	padding: 0px;
+}
+
+.outline li input {
+	margin: 0px 0px 0px 3px;
+}
+
+h3 {
+	margin-bottom:0px;
 }
 
 .olink {

@@ -926,14 +926,29 @@ function closeBubble(schema, error_id) {
 
 // check/uncheck all checkboxes for error type selection
 function set_checkboxes(new_value) {
-
-	// update all the checkboxes
-	for (var i = 0; i < document.myform.elements.length; ++i) {
-		var el=document.myform.elements[i];
-		if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
-			el.checked=new_value;
+        if(new_value == 0 || new_value == 9) {
+		// update all the checkboxes
+		for (var i = 0; i < document.myform.elements.length; ++i) {
+			var el=document.myform.elements[i];
+			if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null) {
+				el.checked=new_value?true:false;
+				}
+			}
 		}
-	}
+	else {
+		if(new_value == 5) {
+			displayedTypes = new Array('ch40','ch70','ch90','ch130','ch191','ch195','ch196',
+						   'ch201','ch202','ch203','ch204','ch205','ch206','ch207',
+						   'ch208','ch231','ch232','ch291','ch292','ch293','ch294',
+						   'ch311','ch312','ch313','ch380','ch401','ch402');
+			}
+		for (var i = 0; i < document.myform.elements.length; ++i) {
+			var el=document.myform.elements[i];
+			if (el.type == "checkbox" && el.name.match(/ch[0-9]+/) != null ) {
+				el.checked=(displayedTypes.indexOf(el.name) != -1)?true:false;
+				}
+			}
+		}
 
 	// update the images that look like tristated checkboxes
 	// this was stolen from tristate.js, function onCheckboxClick()

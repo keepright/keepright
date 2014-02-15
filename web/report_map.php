@@ -73,7 +73,7 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
    title="RSS" href="export.php" /> -->
 
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<script type="text/javascript" src="keepright-min.js"></script>
+<script type="text/javascript" src="keepright.js"></script>
 <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -149,7 +149,7 @@ echo "<ul class='outline'>\n";
 foreach ($error_types as $et=>$e) {
 
 	if ($class!=$e[0]) {
-		echo "<li><i>" . T_gettext($e[0] . 's') ."</i></li>";
+		echo "<li><h3>" . T_gettext($e[0] . 's') ."</h3>";
 		$class=$e[0];
 	}
 
@@ -189,9 +189,10 @@ echo "
 <input type='hidden' name='lat' value='" . $lat/1e7 . "'>
 <input type='hidden' name='lon' value='" . $lon/1e7 . "'>
 <input type='hidden' name='zoom' value='$zoom'>
-
-<input type='button' value='" . T_gettext('all') . "' onClick='javascript:set_checkboxes(true); pois.loadText();'>
-<input type='button' value='" . T_gettext('none') . "' onClick='javascript:set_checkboxes(false); pois.loadText();'><br>
+<h3>" . T_gettext('predefined error sets') . "</h3>
+<input type='button' value='" . T_gettext('all') . "' onClick='javascript:set_checkboxes(9); pois.loadText();'>
+<input type='button' value='" . T_gettext('default') . "' onClick='javascript:set_checkboxes(5); pois.loadText();'>
+<input type='button' value='" . T_gettext('none') . "' onClick='javascript:set_checkboxes(0); pois.loadText();'><br>
 
 <input type='checkbox' id='show_ign' name='show_ign' value='1' onclick='javascript:checkbox_click();' " . ($show_ign ? 'checked="checked"' : '') . "><label for='show_ign'>" . T_gettext('show ignored errors') . "</label><br>
 
