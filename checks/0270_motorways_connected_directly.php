@@ -125,7 +125,7 @@ query("
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND (
 
-			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified', 'rest_area')
+			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'service', 'unclassified', 'rest_area', 'emergency_bay')
 
 			OR
 
