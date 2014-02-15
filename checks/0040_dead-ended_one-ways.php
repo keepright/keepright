@@ -40,7 +40,7 @@ query("
   NOT EXISTS(
     SELECT way_id
     FROM node_tags nt
-    WHERE nt.node_id=o.first_node_id AND nt.k='amenity' AND nt.v IN ('parking_entrance','parking')
+    WHERE nt.node_id=o.first_node_id AND nt.k='amenity' AND nt.v='parking_entrance'
     ) AND
 	NOT EXISTS(
 		SELECT way_id
