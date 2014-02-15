@@ -74,7 +74,18 @@ foreach ($stats as $error_type=>$s) {
 
       fclose($f);
 //      system("echo \"set pm3d map; set key off; set palette rgbformulae 21,22,23 negative;set terminal png size 2300,1500;set output 'content/$error_type.png';splot '../tmp/$error_type.txt';\" | gnuplot");
-      system("echo \"set pm3d map; set key off; set palette defined (-10 'white', -8 '#000088', -7 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 'black'); set terminal png size 2300,1500;set output 'content/$error_type.png';splot '../tmp/$error_type.txt';\" | gnuplot");
+      system("echo \"
+set pm3d map;
+set key off; 
+set cbrange [-8:0]; 
+set lmargin at screen 0.05;
+set rmargin at screen 0.90;
+set tmargin at screen 0.99;
+set bmargin at screen 0.05;
+set palette defined (-10.1 'black', -10 'white', -8 '#000088', -7 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 'black'); 
+set terminal png size 2300,1500;
+set output 'content/$error_type.png';
+splot '../tmp/$error_type.txt';\" | gnuplot");
 //     fwrite($html, "<h3>$error_type - $error_types[$error_type]</h3><img src='../tmp/$error_type.png'><br>\n");
       }
     if($p==0)
