@@ -6,7 +6,7 @@ missing *-tag on a bridge
 
 scenario: someone creates a bridge and forgets to tag it as highway.
 the bridge won't be seen by routing software.
-the problem applies to highway, railway any some more tags.
+the problem applies to highway, railway and some more tags.
 
 algorithm:
 1) find all bridges
@@ -17,7 +17,7 @@ algorithm:
 
 // special tags that need to be there at the bridge if they are present
 // on one of the neighbour ways
-$way_types="'highway', 'railway', 'cycleway', 'waterway', 'footway', 'piste', 'piste:type', 'aerialway', 'pipeline', 'building', 'via_ferrata'";
+$way_types="'highway', 'railway', 'cycleway', 'waterway', 'footway', 'piste', 'piste:type', 'aerialway', 'pipeline', 'building', 'via_ferrata', 'public_transport'";
 
 
 
