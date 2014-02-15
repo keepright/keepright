@@ -132,7 +132,7 @@ query("
 			t.v IN ('service', 'unclassified') AND
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
-				((t.k='access' AND t.v IN ('no', 'private')) OR
+				((t.k='access' AND t.v IN ('no', 'private', 'emergency')) OR
 				(t.k='service' AND t.v='parking_aisle'))
 			)
 		)
