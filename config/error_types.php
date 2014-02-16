@@ -256,7 +256,7 @@ $error_types[410]['subtype'][413]='non-match';
 
 $error_types[420]['name']='wrong numeric values';
 $error_types[420]['enabled']=true;
-$error_types[420]['source']='0420_wrong-number-and-unit-format.php';
+$error_types[420]['source']='0420_wrong_number_and_unit_format.php';
 $error_types[420]['class']='error';
 $error_types[420]['description']='Numeric values are checked for correct format and matching units';
 
