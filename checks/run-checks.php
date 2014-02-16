@@ -302,6 +302,9 @@ function run_checks($schema, $checks_to_run=array()) {
 			txt5 text
 			)
 		", $db1, false);
+    query("CREATE INDEX idx_object_id ON error_view (object_id)", $db1);
+    query("CREATE INDEX idx_schema_id ON error_view (schema)", $db1);
+    query("CREATE INDEX idx_error_id ON error_view (error_id)", $db1);
 	}
 
 	// drop column description, reuse it for user_name
