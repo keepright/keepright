@@ -254,11 +254,13 @@ $error_types[410]['subtype'][411]='http error';
 $error_types[410]['subtype'][412]='domain hijacking';
 $error_types[410]['subtype'][413]='non-match';
 
-$error_types[420]['name']='wrong numeric values';
+$error_types[420]['name']='suspicious values';
 $error_types[420]['enabled']=true;
-$error_types[420]['source']='0420_wrong_number_and_unit_format.php';
+$error_types[420]['source']='0420_suspicious_values.php';
 $error_types[420]['class']='error';
-$error_types[420]['description']='Numeric values are checked for correct format and matching units';
+$error_types[420]['description']='Check for correct units and inappropriate list of values';
+$error_types[421]['subtype'][421]='wrong units';
+$error_types[422]['subtype'][422]='list of values';
 
 
 $error_types[9000]['name']='test';
