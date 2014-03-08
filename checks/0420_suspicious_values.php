@@ -50,7 +50,7 @@ query("
     INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
     SELECT $curtype, 'way', way_id, 'This way is tagged $1=$2. A list of values does not match the purpose of this key',  b.k, b.v, NOW()
     FROM way_tags b
-    WHERE b.k IN ('maxspeed','oneway','cycleway','sidewalk','highway') 
+    WHERE b.k IN ('maxspeed','oneway','cycleway','sidewalk','highway','landuse','tracktype','layer','width','lanes','smoothness','trail_visibility') 
           AND b.v LIKE '%;%' 
   ", $db1);
 
