@@ -36,7 +36,7 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction')
+		WHERE wt.k = 'highway' AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction', 'services', 'rest_area')
 		AND wt.way_id=ways.id
 	)
 ", $db1);
