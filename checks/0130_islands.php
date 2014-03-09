@@ -314,7 +314,7 @@ query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
 	CREATE TEMPORARY TABLE _tmp_ways AS
 	SELECT wt.way_id FROM way_tags wt WHERE (
-		(wt.k='highway' AND wt.v NOT IN ('emergency_access_point', 'construction', 'services')) OR
+		(wt.k='highway' AND wt.v NOT IN ('emergency_access_point', 'construction', 'services', 'proposed', 'rest_area')) OR
 		(wt.k='route' AND wt.v='ferry') OR
 		(wt.k='man_made' AND wt.v='pier') OR
 		(wt.k='aeroway' AND wt.v IN ('taxiway', 'runway', 'apron')) OR
