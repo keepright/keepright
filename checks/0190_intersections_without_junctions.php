@@ -29,6 +29,7 @@ query("SELECT AddGeometryColumn('_tmp_ways', 'geom', 4326, 'LINESTRING', 2)", $d
 // find any highway-tagged way that is not a cycleway/footpath
 // exclude proposed and construction highways as they are intentionally not connected
 // preproposed highways are even less concrete than proposed highways
+// also exclude highway=ford (deprecated) and ford=*
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT id, geom, CAST('highway' AS type_way_type)
@@ -36,8 +37,15 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction', 'services', 'rest_area')
-		AND wt.way_id=ways.id
+		WHERE wt.k = 'highway'
+		AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction', 'services', 'rest_area', 'ford')
+		AND wt.way_id = ways.id
+	)
+	AND NOT EXISTS (
+		SELECT wt.v
+		FROM way_tags wt
+		WHERE wt.k = 'ford'
+		AND wt.way_id = ways.id
 	)
 ", $db1);
 
@@ -45,6 +53,7 @@ query("ALTER TABLE _tmp_ways ADD PRIMARY KEY (way_id);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
 // find any cycleway/footpaths
+// exclude ford=*
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
 	SELECT id, geom, CAST('cycleway/footpath' AS type_way_type)
@@ -52,12 +61,20 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'highway' AND wt.v IN ('cycleway', 'footpath') AND wt.way_id=ways.id
+		WHERE wt.k = 'highway'
+		AND wt.v IN ('cycleway', 'footpath')
+		AND wt.way_id = ways.id
 	)
 	AND NOT EXISTS (
 		SELECT id
 		FROM _tmp_ways tmp
-		WHERE tmp.way_id=ways.id
+		WHERE tmp.way_id = ways.id
+	)
+	AND NOT EXISTS (
+		SELECT wt.v
+		FROM way_tags wt
+		WHERE wt.k = 'ford'
+		AND wt.way_id = ways.id
 	)
 ", $db1);
 
