@@ -15,7 +15,7 @@ Postgresql-Dataset-Dump-Writer task.
 
 some of the changes include:
 * special formatting of node ids needed for joining files with bash's JOIN command
-* more redundand output of columns (eg. nodes' lat/lon plus x/y coordinates)
+* more redundant output of columns (eg. nodes' lat/lon plus x/y coordinates)
 * output of nodes' geometry is non-standard: coordinates are in meters, not lat/lon!
 * output first and last node for each way
 
