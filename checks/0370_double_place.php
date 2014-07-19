@@ -101,7 +101,7 @@ query("
 	INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
 	SELECT $error_type, 'node', T.node_id, 'This node has tags in common with the surrounding way #$1' ||
 		CASE WHEN wt2.v IS NOT NULL THEN ' (including the name ''$2'')' ELSE '' END ||
-		' and seems to be redundand', T.way_id, wt2.v, NOW()
+		' and seems to be redundant', T.way_id, wt2.v, NOW()
 	FROM (
 		SELECT i.*
 		FROM _tmp_inclusions i
