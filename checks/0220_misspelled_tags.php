@@ -38,6 +38,7 @@ $false_positives = array(
 	array('count', 'mount'),
 	array('customer', 'customers'),		// both are widely used
 	array('date', 'gate'),
+  array('day', 'days'),
 	array('DE:rural', 'DK:rural'),
 	array('DE:urban', 'DK:urban'),
 	array('derail', 'detail', 'retail'),
@@ -55,7 +56,7 @@ $false_positives = array(
 	array('function', 'junction'),
 	array('game', 'name'),
 	array('garage', 'garages'),
-	array('glass', 'grass'),
+	array('glass', 'grass', 'class'),
 	array('gold', 'golf'),
 	array('gone', 'zone'),
 	array('good', 'goods', 'wood'),
@@ -67,6 +68,7 @@ $false_positives = array(
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
+  array('hour', 'hours'),
 	array('house', 'horse'),
 	array('http', 'https'),
 	array('Iraq', 'Iran'),
@@ -143,6 +145,7 @@ $never_complain_about = "
 	prefix LIKE 'AND_a_nosr_r:=%' OR
 	prefix LIKE 'atm_ref:=%' OR
 	prefix LIKE 'bridge_ref:=%' OR
+	prefix LIKE 'building:colour:=%' OR
 	prefix LIKE 'bus_routes:=%' OR
 	prefix LIKE 'canvec:uuid:=%' OR
 	prefix LIKE 'capacity:=%' OR
@@ -154,6 +157,8 @@ $never_complain_about = "
 	prefix LIKE 'comment:=%' OR
 	prefix LIKE 'created_by:=%' OR
 	prefix LIKE 'dcgis:propid:=%' OR
+  prefix LIKE 'description:=%' OR
+	prefix LIKE 'destination:ref:=%' OR
 	prefix LIKE 'distance:=%' OR
 	prefix LIKE 'fdot:ref:=%' OR
 	prefix LIKE 'FDOT_ref:=%' OR
@@ -251,6 +256,7 @@ $never_complain_about = "
 	prefix LIKE 'tracktype:=%' OR
 	prefix LIKE 'traffic_sign:=%' OR
 	prefix LIKE 'ts_codigo:=%' OR
+	prefix LIKE 'turn:lanes:=%' OR
 	prefix LIKE 'UNIDAD_MAN:=%' OR
 	prefix LIKE 'waterway:kilometer:=%' OR
 	prefix LIKE 'website:=%' OR
@@ -277,9 +283,10 @@ $force_irregular = array(
 	'gague:',
 	'usability:skate:=:excelent',
 	'name:botanical:=:Cupressus sempervires',
-	'note_:'
+	'note_:',
+	'surface_material',
+	'surface.material',
 );
-
 $force_regular = array(
 	'access:conditional',
 	'addr:province:=:British Columbia',
@@ -300,13 +307,15 @@ $force_regular = array(
 	'lengths:right:',
 	'man_made:=:cutline',
 	'name:botanical:=:Cupressus sempervirens',
+	'surface:material',
 	'usability:skate:=:excellent',
 );
 
 // for known typos with more than one character wrong use this:
 // bad prefix, bad key, right prefix, right key
 $overrules = array (
-	array('building:=', 'farm_auxcillary', 'building:=', 'farm_auxiliary')
+	array('building:=', 'farm_auxcillary', 'building:=', 'farm_auxiliary'),
+  array('surface_material', '', 'surface:material', ''),
 );
 
 
