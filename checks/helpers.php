@@ -703,6 +703,15 @@ function logger($message, $loglevel=KR_INFO) {
 
 }
 
+function logfile_move() {
+  global $config;
+  if(isset($GLOBALS['schema'])) { $s = 'S'.$GLOBALS['schema']; }
+    else { $s = 'none';}
+  $name = $config['base_dir']."/logs/".$s.".log";
+  $time = date("YmdHi",time());
+  $newname = $config['base_dir']."/logs/".$s."_".$time.".log";
+  system("mv ".$name." ".$newname);
+  }
 
 // returns the operating system the script runs on
 // need to consider special requirements eg for
