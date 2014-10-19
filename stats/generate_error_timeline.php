@@ -27,13 +27,19 @@ if (array_key_exists('f',$opt)) {
 
   foreach ($schemas as $k => $v) {
     print "Checking Schema $k\n";
-
-    $result= query("INSERT INTO error_statistics (schema,error_type,count,date) SELECT schema, error_type, COUNT(1),  extract(epoch from now()) FROM error_view e WHERE schema = '$k' GROUP BY e.schema, e.error_type ORDER BY e.error_type",$db1);
-
-    pg_free_result($result);
+    print "Now included in export_errors\n";
+    //query("INSERT INTO error_statistics (schema,error_type,count,date) SELECT schema, error_type, COUNT(1),  extract(epoch from now()) FROM error_view e WHERE schema = '$k' GROUP BY e.schema, e.error_type ORDER BY e.error_type",$db1);
 
     }
   }
+else { 
+
+
+    //pg_free_result($result);
+  
+  }
+
+
 
 pg_close($db1);
 
