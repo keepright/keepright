@@ -18,7 +18,7 @@ to avoid false positives on highways crossing squares, areas are excluded here
 // tmp_ways will contain all highways with their linestring geometry and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
-	CREATE TABLE _tmp_ways (
+	CREATE TEMPORARY TABLE _tmp_ways (
 	way_id bigint UNIQUE NOT NULL,
 	layer text NOT NULL DEFAULT '0',
 	way_type type_way_type NOT NULL
@@ -38,7 +38,7 @@ query("
 		SELECT wt.v
 		FROM way_tags wt
 		WHERE wt.k = 'highway'
-		AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction', 'services', 'rest_area', 'ford')
+		AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction', 'services', 'rest_area', 'ford', 'razed')
 		AND wt.way_id = ways.id
 	)
 	AND NOT EXISTS (
@@ -182,7 +182,7 @@ pg_free_result($result);
 // ignore crossings/overlappings of a riverbank with the river itself (there are thousands!)
 // ignore crossings/overlappings of a riverbanks with each other (there are thousands too!)
 $result = query("
-	EXPLAIN ANALYZE INSERT INTO _tmp_error_candidates$schema
+	INSERT INTO _tmp_error_candidates$schema
 	SELECT w1.way_id as way_id1, w2.way_id as way_id2, ST_AsText(ST_intersection(w1.geom, w2.geom)) AS geom, w1.way_type as typ1, w2.way_type as typ2,
 	CASE WHEN ST_crosses(w1.geom, w2.geom) THEN 'crosses' ELSE 'overlaps' END as action
 	FROM _tmp_ways w1, _tmp_ways w2
