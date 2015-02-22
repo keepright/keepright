@@ -63,7 +63,7 @@ A ---------------------- B
 // and where driving speed is low so you won't find effective turning restrictions
 query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 query("
-	CREATE TABLE _tmp_ways AS
+	CREATE TEMPORARY TABLE _tmp_ways AS
 	SELECT DISTINCT wt.way_id
 	FROM way_tags wt
 	WHERE wt.k='highway' AND
@@ -88,7 +88,7 @@ query("ANALYZE _tmp_ways", $db1, false);
 // in way_nodes but with different way_ids
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1, false);
 query("
-	CREATE TABLE _tmp_junctions AS
+	CREATE TEMPORARY TABLE _tmp_junctions AS
 	SELECT wn.node_id, COUNT(DISTINCT wn.way_id) as waycount
 	FROM way_nodes wn INNER JOIN _tmp_ways w USING (way_id)
 	GROUP BY wn.node_id
@@ -106,7 +106,7 @@ query("ANALYZE _tmp_junctions", $db1, false);
 // when going from junct to other node
 query("DROP TABLE IF EXISTS _tmp_jpartners", $db1, false);
 query("
-	CREATE TABLE _tmp_jpartners (
+	CREATE TEMPORARY TABLE _tmp_jpartners (
 		junction_id bigint NOT NULL,
 		other_id bigint NOT NULL,
 		way_id bigint NOT NULL,
@@ -184,7 +184,7 @@ query("ANALYZE _tmp_jpartners", $db1, false);
 
 query("DROP TABLE IF EXISTS _tmp_sharp_angles", $db1, false);
 query("
-	CREATE TABLE _tmp_sharp_angles (
+	CREATE TEMPORARY TABLE _tmp_sharp_angles (
 		junction_id bigint NOT NULL,
 		first_way_id bigint NOT NULL,
 		first_reversed boolean NOT NULL,
@@ -341,7 +341,7 @@ query("
 // AND the other way round
 query("DROP TABLE IF EXISTS _tmp_restrictions", $db1, false);
 query("
-	CREATE TABLE _tmp_restrictions (
+	CREATE TEMPORARY TABLE _tmp_restrictions (
 		relation_id bigint NOT NULL,
 		from_way bigint NOT NULL,
 		to_way bigint NOT NULL,
@@ -630,7 +630,7 @@ query("DROP TABLE IF EXISTS _tmp_wn", $db1, false);
 // only the way_nodes that are part of _tmp_ways
 // order table by way+sequence as needed by the following query
 query("
-	CREATE TABLE _tmp_wn (
+	CREATE TEMPORARY TABLE _tmp_wn (
 		way_id bigint NOT NULL,
 		sequence_id integer NOT NULL,
 		sequence_id1 integer NOT NULL,
@@ -647,7 +647,7 @@ query("
 
 query("DROP TABLE IF EXISTS _tmp_wn2", $db1, false);
 query("
-	CREATE TABLE _tmp_wn2 (
+	CREATE TEMPORARY TABLE _tmp_wn2 (
 		way_id bigint NOT NULL,
 		sequence_id integer NOT NULL,
 		Bx double precision NOT NULL,

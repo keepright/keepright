@@ -22,7 +22,7 @@ having one node more than once, is also an error. (from Sebastiaan)
 
 query("DROP TABLE IF EXISTS _tmp_node_count", $db1, false);
 query("
-	CREATE TABLE _tmp_node_count(
+	CREATE TEMPORARY TABLE _tmp_node_count(
                 way_id bigint NOT NULL,
 		node_id bigint NOT NULL,
 		node_count bigint

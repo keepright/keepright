@@ -92,7 +92,7 @@ function run_checks($schema, $checks_to_run=array()) {
 
 	query("DROP TABLE IF EXISTS _tmp_errors", $db1, false);
 	query("
-		CREATE TABLE _tmp_errors (
+		CREATE TEMPORARY TABLE _tmp_errors (
 		error_type int NOT NULL,
 		object_type public.type_object_type NOT NULL,
 		object_id bigint NOT NULL,
@@ -222,10 +222,14 @@ function run_checks($schema, $checks_to_run=array()) {
 	// The workaround is to use 'IS NOT DISTINCT FROM' which will return false
 	// if one value is not null and return true if both are null
 
+
 	query("CREATE INDEX idx_tmp_errors_object_id ON _tmp_errors (object_id)", $db1);
 	query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type)", $db1);
 	query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type)", $db1);
 	query("CREATE INDEX idx_tmp_errors_latlon ON _tmp_errors (lat, lon)", $db1);
+
+        query("ANALYZE _tmp_errors", $db1);
+        query("ANALYZE public.errors", $db1);
 
 	// update last-checked timestamp for all errors that (still) exist
 	// set reopened-state for cleared errors that are now found in _tmp_errors again

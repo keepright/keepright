@@ -42,7 +42,7 @@ this is the only exception:
 // select all highways but ignore steps as they are meant for changing layers
 query("DROP TABLE IF EXISTS _tmp_highways", $db1);
 query("
-	CREATE TABLE _tmp_highways AS
+	CREATE TEMPORARY TABLE _tmp_highways AS
 	SELECT DISTINCT way_id
 	FROM way_tags
 	WHERE k='highway' AND v<>'steps'
@@ -57,7 +57,7 @@ query("ANALYZE _tmp_highways", $db1);
 // select nodes of ways used at least twice
 query("DROP TABLE IF EXISTS _tmp_junctions", $db1);
 query("
-	CREATE TABLE _tmp_junctions AS
+	CREATE TEMPORARY TABLE _tmp_junctions AS
 	SELECT node_id
 	FROM way_nodes wn INNER JOIN _tmp_highways USING (way_id)
 	GROUP BY node_id
@@ -70,7 +70,7 @@ query("ANALYZE _tmp_junctions", $db1);
 // tmp_ways will contain all highways with their nodes and layer tag
 query("DROP TABLE IF EXISTS _tmp_ways", $db1);
 query("
-	CREATE TABLE _tmp_ways (
+	CREATE TEMPORARY TABLE _tmp_ways (
 	way_id bigint NOT NULL,
 	node_id bigint NOT NULL,
 	end_node boolean NOT NULL DEFAULT FALSE,
@@ -112,7 +112,7 @@ query("ANALYZE _tmp_ways", $db1);
 // on different layers (at least 2)
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1);
 query("
-	CREATE TABLE _tmp_error_candidates AS
+	CREATE TEMPORARY TABLE _tmp_error_candidates AS
 	SELECT way_id, node_id, end_node, layer, false AS all_intermediate_nodes
 	FROM _tmp_ways
 	WHERE node_id IN (

@@ -593,7 +593,7 @@ function find_oneways($db1, $way_table='', $include_node_locations=true) {
 
 	query("DROP TABLE IF EXISTS _tmp_one_ways", $db1);
 	query("
-		CREATE TABLE _tmp_one_ways (
+		CREATE TEMPORARY TABLE _tmp_one_ways (
 		way_id bigint NOT NULL,
 		reversed boolean DEFAULT false, " .
 		(

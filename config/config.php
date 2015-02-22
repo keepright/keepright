@@ -97,7 +97,7 @@ $config['cmd_join']='/usr/bin/join';
 
 // to turn off downloading the planet file and use
 // the old one set this parameter to false
-$config['update_source_data']=false;
+$config['update_source_data']=true;
 
 
 // set this option to false if you want the db schema
