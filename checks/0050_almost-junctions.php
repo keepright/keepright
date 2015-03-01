@@ -27,7 +27,7 @@ query("DROP TABLE IF EXISTS _tmp_ways", $db1, false);
 // tmp_ways will contain all highways with their first and last node id
 // as well as a linestring of all nodes and the bounding box
 query("
-	CREATE TEMPORARY TABLE _tmp_ways (
+	CREATE UNLOGGED TABLE _tmp_ways (
 	way_id bigint NOT NULL,
 	first_node_id bigint,
 	last_node_id bigint,
@@ -45,7 +45,7 @@ query("
 	WHERE w.geom IS NOT NULL AND EXISTS (
 		SELECT way_id
 		FROM way_tags AS t
-		WHERE t.way_id=w.id AND t.k='highway' AND t.v NOT IN ('construction','proposed')
+		WHERE t.way_id=w.id AND t.k='highway' AND t.v NOT IN ('construction','proposed','platform')
 	)
 ", $db1);
 
@@ -63,7 +63,7 @@ find_layer_values('_tmp_ways', 'way_id', 'layer', $db1);
 // _tmp_end_nodes will store first- or last-nodes of given ways that are not connected to any other way
 query("DROP TABLE IF EXISTS _tmp_end_nodes", $db1, false);
 query("
-	CREATE TEMPORARY TABLE _tmp_end_nodes (
+	CREATE UNLOGGED TABLE _tmp_end_nodes (
 	way_id bigint NOT NULL,
 	node_id bigint NOT NULL,
 	x double precision,
@@ -152,7 +152,7 @@ query("DROP TABLE IF EXISTS _tmp_barriers", $db1, false);
 
 // find all barriers
 query("
-	CREATE TEMPORARY TABLE _tmp_barriers (
+	CREATE UNLOGGED TABLE _tmp_barriers (
 	way_id bigint NOT NULL,
 	layer text DEFAULT '0',
 	PRIMARY KEY (way_id)
@@ -185,7 +185,7 @@ find_layer_values('_tmp_barriers', 'way_id', 'layer', $db1);
 // join end_nodes and ways on "node inside bounding box of way"
 query("DROP TABLE IF EXISTS _tmp_error_candidates", $db1, false);
 query("
-	CREATE TEMPORARY TABLE _tmp_error_candidates (
+	CREATE UNLOGGED TABLE _tmp_error_candidates (
 		way_id bigint NOT NULL,
 		node_id bigint NOT NULL,
 		node_x double precision NOT NULL,
@@ -197,6 +197,7 @@ query("
 
 query("VACUUM FULL _tmp_end_nodes", $db1);
 query("VACUUM FULL _tmp_ways", $db1);
+query("VACUUM FULL _tmp_barriers", $db1);
 
 
 // end-node near way on the same layer
@@ -246,7 +247,7 @@ query("ANALYZE _tmp_error_candidates", $db1);
 
 query("DROP TABLE IF EXISTS _tmp_error_candidates2", $db1, false);
 query("
-	CREATE TEMPORARY TABLE _tmp_error_candidates2 (
+	CREATE UNLOGGED TABLE _tmp_error_candidates2 (
 		ID serial NOT NULL PRIMARY KEY,
 		node_id bigint NOT NULL,
 		nearby_way_id bigint NOT NULL,
