@@ -120,7 +120,9 @@ $false_positives = array(
 	array('trail', 'train'),
 	array('water_power', 'water_tower'),
 	array('wikimedia', 'wikipedia'),
-	array('wiki', 'wifi')
+	array('wiki', 'wifi'),
+	array('building:part', 'building:parts'),
+	array('h-frame', 'x-frame')
 );
 
 
