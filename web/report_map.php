@@ -86,7 +86,7 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
 	var map=null;
 	var plnk=null;
 
-<?php 	// these text snippets will be used in myText.js, where the bubbles are created ?>
+<?php 	// these text snippets will be used in keepright.js, where the bubbles are created ?>
 	var txt4="<?php echo T_gettext('edit in'); ?>";
 	var txt5="<?php echo T_gettext('JOSM'); ?>";
 	var txt6="<?php echo T_gettext('JOSM must be running and JOSM\'s remote control plugin must be enabled for this to work!'); ?>";
