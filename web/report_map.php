@@ -72,6 +72,8 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
 <!-- <link rel="alternate" type="application/rss+xml"
    title="RSS" href="export.php" /> -->
 
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 <script type="text/javascript" src="keepright.js"></script>
 <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
