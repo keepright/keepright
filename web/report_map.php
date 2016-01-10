@@ -201,7 +201,7 @@ echo "
 <input type='checkbox' id='show_tmpign' name='show_tmpign' value='1' onclick='javascript:checkbox_click();' " . ($show_tmpign ? 'checked="checked"' : '') . "><label for='show_tmpign'>" . T_gettext('show temp. ignored errors') . "</label><br>
 
 <a name='editierlink' id='editierlink' target='_blank' href='http://www.openstreetmap.org/edit?lat=" . $lat/1e7. "&lon=" . $lon/1e7 . "&zoom=$zoom'>" . T_gettext('Edit in Potlatch') . "</a>
-<a id='rsslink' href='export.php'>RSS</a> <a id='gpxlink' href='export.php'>GPX</a>
+<a id='rsslink' href='export.php'>RSS</a> <a id='gpxlink' href='export.php'>GPX</a> <a id='geojsonlink' href='export.php'>GeoJson</a>
 
 
 <div style='overflow:auto; width:20%'>";

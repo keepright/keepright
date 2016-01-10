@@ -29,8 +29,8 @@ mysqli_query($db1, "SET SESSION wait_timeout=60");
 $ch = $_GET['ch'];
 if (!$ch) $ch=0;
 $st = $_GET['st'];
-$lat = 1e7*$_GET['lat'];
-$lon = 1e7*$_GET['lon'];
+$lat = floor(1e7*$_GET['lat']);
+$lon = floor(1e7*$_GET['lon']);
 
 $show_ign=isset($_GET['show_ign']) && $_GET['show_ign']<>'0';
 $show_tmpign=isset($_GET['show_tmpign']) && $_GET['show_tmpign']<>'0';
