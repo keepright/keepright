@@ -108,9 +108,9 @@ if ($_GET['format'] == 'rss') {
 
 } elseif ($_GET['format'] == 'gpx') {
 
-
 	header('Content-type: application/gpx+xml');
 	header('Content-Disposition: attachment; filename="points.gpx"');
+	header('Access-Control-Allow-Origin: *');
 
 
 	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n";
@@ -145,6 +145,7 @@ if ($_GET['format'] == 'rss') {
 
 	header('Content-type: application/vnd.geo+json');
 	header('Content-Disposition: attachment; filename="points.geojson"');
+	header('Access-Control-Allow-Origin: *');
 
 
   echo '{"type": "FeatureCollection", "features": [';
