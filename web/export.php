@@ -143,8 +143,7 @@ if ($_GET['format'] == 'rss') {
 } elseif ($_GET['format'] == 'geojson') {
 
 
-	header('Content-Type: application/vnd.geo+json; charset=utf-8');
-	header('Content-Disposition: attachment; filename="points.geojson"');
+	header('Content-Type: application/json; charset=utf-8');
 	header('Access-Control-Allow-Origin: *');
 
 
