@@ -46,11 +46,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 	  $row['error_name'] . ', ' .
 	  $row['object_type'] . ' ' .
 	  $row['object_id'] . "\t" .
-	  $row['description'] . "<br>edit in <a href='http://localhost:8111/load_and_zoom?left=" . ($row['lo']-0.01) . "&right=" . ($row['lo']+0.01) . "&top=" . ($row['la']+0.01) . "&bottom=" . ($row['la']-0.01) . "&select=" . $row['object_type'] . $row['object_id'] . "' target='iframeForJOSM'>[JOSM]</a> <a href='http://openstreetmap.org/edit?lat=" . $row['la'] . "&lon=" . $row['lo'] . "&zoom=18' target='_blank'>Potlatch</a>" .
+	  $row['description'] . "<br>edit in <a href='http://localhost:8111/load_and_zoom?left=" . ($row['lo']-0.01) . "&right=" . ($row['lo']+0.01) . "&top=" . ($row['la']+0.01) . "&bottom=" . ($row['la']-0.01) . "&select=" . $row['object_type'] . $row['object_id'] . "' target='iframeForJOSM'>[JOSM]</a> <a href='http://openstreetmap.org/edit?lat=" . $row['la'] . "&lon=" . $row['lo'] . "&zoom=18' target='_blank'>Potlatch</a> <a href='http://level0.osmz.ru/?url=" . $row['object_type'] . $row['object_id'] . "' target='_blank'>Level0</a>" .
 	  "\timg/zap" . $row['error_type'] . ".png\t24,24\t1,-24\n";
 }
 
 mysqli_free_result($result);
 mysqli_close($db1);
-
-?>
