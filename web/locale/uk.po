@@ -1,0 +1,1812 @@
+# Ukrainian translation for keepright
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the keepright package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: keepright\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-05-08 18:12+0200\n"
+"PO-Revision-Date: 2014-03-27 15:16+0000\n"
+"Last-Translator: Сергій Дубик <dubyk@library.lviv.ua>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-04-04 19:48+0000\n"
+"X-Generator: Launchpad (build 16976)\n"
+
+msgid "There is more than one node in this spot. Offending node IDs: $1"
+msgstr "В цьому місті  більше ніж одна точка. ID точок: $1"
+
+msgid "This coastline-way is not part of a closed-loop"
+msgstr "Ця берегова лінія не є частиною замкненої ділянки"
+
+msgid "This way is tagged with '$1=$2' and should be closed-loop."
+msgstr "Ця лінія з тегами '$1=$2' повинна бути замкнена"
+
+msgid ""
+"The first node (id $1) of this one-way is not connected to any other way"
+msgstr ""
+"Перша точка (id $1) цієї дороги з одностороннім рухом не приєднана до будь-"
+"якої іншої лінії"
+
+msgid ""
+"The last node (id $1) of this one-way is not connected to any other way"
+msgstr ""
+"Остання точка (id $1) цієї дороги з одностороннім рухом не приєднана до будь-"
+"якої іншої лінії"
+
+msgid ""
+"This node cannot be reached, because one-ways only lead away from here"
+msgstr ""
+"До цієї точки не можливо дістатись, так як із цієї точки починається дорога "
+"з одностороннім рухом"
+
+msgid "You cannot escape from this node, because one-ways only lead to here"
+msgstr ""
+"Не можливо виїхати з цієї точки, так як до цієї точка веде дорога з "
+"одностороннім рухом"
+
+msgid "This node is very close but not connected to way #$1"
+msgstr "Ця точка знаходиться дуже близько, але не входить в лінію #$1"
+
+#. full mesage: "This way uses deprecated tag highway = viaduct."
+msgid "This $1 uses deprecated tag $2 = $3"
+msgstr "$1 використовує застарілі теґи $2 = $3"
+
+#. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
+msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
+msgstr ""
+"$1  використовує застарілі теґи $2 = $3. Будь ласка, використовуйте $4!"
+
+#. full mesage: "This way has an empty tag: name="
+msgid "This $1 has an empty tag: $2"
+msgstr "$1 має порожній теґ: $2"
+
+msgid "This way has no tags"
+msgstr "Ця лінія не має теґів"
+
+msgid "This node is not member of any way and does not have any tags"
+msgstr "Ця точка не входить в яку-небудь лінію і не має жодних теґів"
+
+msgid ""
+"This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
+"tag"
+msgstr ""
+"Ця лінія має теґ motorway і повинна бути доповнення теґами ref, nat_ref або "
+"int_ref"
+
+msgid ""
+"This $1 is tagged as place of worship and therefore needs a religion tag"
+msgstr ""
+"$1, позначено як культове місце й повинно мати теґи, що вказують релігію"
+
+msgid "This node is tagged as $1 and therefore needs a name tag"
+msgstr "Ця точка позначена як $1, її треба  доповнити теґом name"
+
+msgid ""
+"This node is tagged as $1 and therefore needs a name tag or an operator tag"
+msgstr "Ця точка позначена як $1, її треба  доповнити теґом name чи operator"
+
+msgid "This way has no nodes"
+msgstr "Ця лінія не містить точок"
+
+msgid "This way has just one single node"
+msgstr "Ця лінія містить тільки одну точку"
+
+msgid "This way is not connected to the rest of the map"
+msgstr "Ця лінія не з'єднана з іншими об’єктами на мапі"
+
+msgid ""
+"This crossing of a highway and a railway needs to be tagged as "
+"railway=crossing or railway=level_crossing"
+msgstr ""
+"Точка перетину дороги і залізниці повинна мати теґи переходу "
+"(railway=crossing) або переїзду (railway=level_crossing)"
+
+msgid ""
+"There are ways in different layers coming together in this railway crossing"
+msgstr ""
+"Лінії на різних рівнях з'єднуються в цій точці, позначеній як перехід "
+"(railway=crossing)"
+
+msgid ""
+"There are ways tagged as tunnel or bridge coming together in this railway "
+"crossing"
+msgstr ""
+"Лінії з теґами tunnel або bridge з'єднуються в цій точці, позначеній як "
+"перехід (railway=crossing)"
+
+#. full mesage: "This way is fixme-tagged: fixme=yes"
+msgid "This $1 is fixme-tagged: $2"
+msgstr "$1 позначена теґом fixme: $2"
+
+msgid "This relation has no type tag, which is mandatory for relations"
+msgstr "Цей зв’язок не має обов’язкового теґу, що визначає його тип"
+
+#. full message: "This highway intersects the waterway #17..."
+msgid "This $1 intersects the $2 #$3 but there is no junction node"
+msgstr "$1 перетинає $2 #$3, але вони не мають спільної точки"
+
+#. full message: "This highway intersects the waterway #17"
+msgid "This $1 intersects the $2 #$3"
+msgstr "$1 перетинає $2 #$3"
+
+#. full message: "This highway overlaps the waterway #17..."
+msgid "This $1 overlaps the $2 #$3"
+msgstr "$1 перекриває $2 #$3"
+
+msgid "This way contains node #$1 $2 times. This may or may not be an error"
+msgstr ""
+"Ця лінія містить точку #$1 $2 раз (а). Це допустимо, але, можливо, це "
+"помилка."
+
+msgid ""
+"This way contains more than one node at least twice. Nodes are $1. This may "
+"or may not be an error"
+msgstr ""
+"Лінія містить кілька точок як мінімум двічі. Ці точки $1. Це допустимо, але, "
+"можливо, це помилка."
+
+msgid ""
+"This way has only two different nodes and contains one of them more than once"
+msgstr ""
+"Лінія містить тільки дві різні точки, одна з яких включено до неї кілька "
+"разів"
+
+msgid "The key of this node's tag is 'key': $2"
+msgstr "Точка містить теґ з ключем: $2"
+
+msgid "The key of this way's tag is 'key': $2"
+msgstr "Лінія містить теґ з ключем: $2"
+
+msgid "The key of this relation's tag is 'key': $2"
+msgstr "Відношення містить теґ з ключем: $2"
+
+#. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
+msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
+msgstr "Елемент „$1“ позначений як, „$2=$3“, де „$4“ подібне на „$5“"
+
+#. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
+msgid "This node is a junction of ways on different layers: $1"
+msgstr "Ця точка є спільною для ліній на різних рівнях: $1"
+
+msgid ""
+"If this mini roundabout is in a country with left-hand traffic then it "
+"should have a tag 'direction=clockwise'"
+msgstr ""
+"Якщо це перехрестя з круговим рухом без внутрішнього кільця знаходиться в "
+"країні з лівостороннім рухом, то повинне мати теґ „direction=clockwise“"
+
+msgid ""
+"If this mini roundabout is in a country with right-hand traffic then it "
+"should not have a tag 'direction=clockwise'"
+msgstr ""
+"Якщо це перехрестя з круговим рухом без внутрішнього кільця знаходиться в "
+"країні з правостороннім рухом, то не повинне мати теґ „direction=clockwise“"
+
+msgid ""
+"This $1 is tagged with layer $2. This need not be an error, but it looks "
+"strange"
+msgstr ""
+"Елемент „$1“ позначений теґом рівня $2. Можливо це не помилка, але виглядає "
+"дивно."
+
+msgid ""
+"This node is a junction of a motorway and a highway other than motorway, "
+"motorway_link, trunk, rest_area or construction. Service or unclassified is "
+"only valid if it has access=no/private or if it is a service=parking_aisle."
+msgstr ""
+"У цій точці з’єднуються лінії з теґом „highway=motorway“ та „highway=*“ зі "
+"значенням відмінним від „motorway“, „motorway_link“, „trunk“, „rest_area“ чи "
+"„construction“. Лінії зі значеннями теґів „service“ чи „unclassified“, "
+"можливі тільки за присутності теґів „access=no/private“. Також можливі лінії "
+"позначені теґами „service=parking_aisle“."
+
+msgid "This boundary has no name"
+msgstr "Ця межа не має назви (name=*)"
+
+msgid "The boundary of $1 has no admin_level"
+msgstr "Кордон $1 не має обов’язкового теґа admin_level"
+
+msgid ""
+"The boundary of $1 has no valid numeric admin_level. Please do not use admin "
+"levels like for example 6;7. Always tag the lowest admin_level of all "
+"boundaries."
+msgstr ""
+"Кордон $1 не має коректного числового значення теґа „admin_level“. Будь "
+"ласка, не використовуйте подвійні значення для „admin_level“, наприклад, "
+"6;7. Завжди вибирайте найменше значення теґа  „admin_level“ для всіх "
+"кордонів."
+
+msgid "The boundary of $1 is not closed-loop"
+msgstr "Межа $1 не замкнута"
+
+msgid "The boundary of $1 splits here"
+msgstr "Межа $1 розірвана в цьому місці"
+
+msgid ""
+"This boundary-way has admin_level $1 but belongs to a relation with lower "
+"admin_level (higher priority); it should have the lowest admin_level of all "
+"relations"
+msgstr ""
+"Ця лінія межі має адміністративний рівень admin_level=$1, але включена у "
+"відношення нижчого адмін. рівня (що має більший пріоритет) і повинна мати "
+"адмін. рівень  з меншим значенням для усіх зв’язків, в які вона входить"
+
+msgid "This turn-restriction has no restriction type"
+msgstr "Це обмеження повороту не має типу обмеження"
+
+msgid "This turn-restriction has no known restriction type"
+msgstr "Це обмеження повороту має невідомий тип обмеження"
+
+msgid "A turn-restriction needs exactly one $1 member. This one has $2"
+msgstr ""
+"Для заборони повороту потрібен лише один учасник $1.  Ця заборона має $2"
+
+msgid "From- and To-members of turn restrictions need to be ways. $1"
+msgstr ""
+"Учасники „From“ та „To“ для обмеження повороту повинні бути лініями.  $1"
+
+msgid ""
+"from- via- and to- members of a turn resctriction need to be connected"
+msgstr ""
+"Учасники „From“, „Via“ та „To“ для заборони повороту повинні бути з’єднані"
+
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+"роль „via“ (точка $1) не є першим чи останнім учасником ролі „from“ (лінія "
+"2$)"
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+"роль „via“ (точка $1) не є першим чи останнім учасником ролі „to“ (лінія 2$)"
+
+msgid ""
+"restriction type is $1, but angle is $2 degrees. Maybe the restriction type "
+"is not appropriate?"
+msgstr ""
+"тип обмеження є $1, але кут $2 градусів.  Можливо, тип обмеження не є "
+"відповідним?"
+
+msgid "wrong direction of to way $1"
+msgstr "неправильний напрямок лінії $1 за роллю „to“"
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr "в’їзд вже заборонено теґом одностороннього руху на $1"
+
+msgid "missing maxspeed tag"
+msgstr "пропущений теґ обмеження швидкості (maxspeed=*)"
+
+msgid ""
+"This way is part of a roundabout but is not closed-loop. (split carriageways "
+"approaching a roundabout should not be tagged as roundabout)"
+msgstr ""
+"Ця лінія, частина перехрестя з круговим рухом, але не замкнута. Під’їзди до "
+"перехрестя з круговим рухом не повинні позначатися тегом „roundabout“"
+
+msgid ""
+"If this roundabout is in a country with right-hand traffic then its "
+"orientation goes the wrong way around"
+msgstr ""
+"Якщо це перехрестя з круговим рухом знаходиться в країні з правостороннім "
+"рухом, то напрямок обрано не вірно"
+
+msgid ""
+"If this roundabout is in a country with left-hand traffic then its "
+"orientation goes the wrong way around"
+msgstr ""
+"Якщо це перехрестя з круговим рухом знаходиться в країні з лівостороннім "
+"рухом, то напрямок обрано не вірно"
+
+msgid ""
+"This way is tagged as highway=$1_link but doesn't have a connection to any "
+"other $1 or $1_link"
+msgstr ""
+"Ця лінія позначена як highway=$1_link, але не з’єднана з іншими $1 або "
+"$1_link"
+
+msgid ""
+"This bridge does not have a tag in common with its surrounding ways that "
+"shows the purpose of this bridge. There should be one of these tags: $1"
+msgstr ""
+"Цей міст не має спільних теґів з охоплюючими його шляхами, що показують "
+"призначення цього моста.  Це повинен бути один з наступних теґів: $1"
+
+msgid "The URL ($1) cannot be opened (HTTP status code $2)"
+msgstr "Сторінку ($1) не вдається відкрита (HTTP-помилка: $2)"
+
+msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
+msgstr "Можлива окупація веб-домену: $1.  Підозрілий текст: „$2“"
+
+msgid "Content of the URL ($1) did not contain these keywords: ($2)"
+msgstr "Вміст URL-посилання ($1) не містить цих ключових слів: ($2)"
+
+#. translations for error type names
+#. please keep this as short as possible
+msgid "multiple nodes on the same spot"
+msgstr "кілька точок на тому ж місці"
+
+msgid ""
+"Try to find nodes that are (almost) on the same spot. Distances less than +/-"
+"0.5 meters are considered zero"
+msgstr ""
+"Спробуйте знайти занадто близько розташовані точки.  Відстань між точками "
+"менше половини метра вважається нульовою"
+
+#. please keep this as short as possible
+msgid "non-closed areas"
+msgstr "незамкнуті області"
+
+msgid ""
+"By convention ways tagged with special combinations of key and value pairs "
+"are considered to be areas and are drawn as such in the map. Therefore it is "
+"necessary that they form closed loops. Non-closed areas are invisible in the "
+"map! The standard.xml file is used to determine which key-value-combinations "
+"are drawn as areas; any instance of these has to be closed-loop."
+msgstr ""
+"За правилами, лінії зі спеціальними комбінаціями ключів та їх значень "
+"розглядаються як області, і відображаються на карті відповідним чином. Тому "
+"важливо, щоб такі лінії були замкнуті і не мали самоперетинів. Незамкнуті "
+"області не відображаються на карті. Стандартний .xml-файл використовується "
+"для визначення комбінації ключ-значення для об’єктів, що відображаються як "
+"області. Будь-які такі об’єкти повинні бути замкнуті і не мати самоперетинів."
+
+#. please keep this as short as possible
+msgid "dead-ended one-ways"
+msgstr "тупикові односторонні шляхи"
+
+msgid ""
+"Streets tagged as one-way must not be dead-ended (where should all the cars "
+"pile at the end of the road?). Nodes where just one-way streets begin (or "
+"end) cannot be reached (escaped from). Please note that motorways and "
+"motorway_links are considered one-way implicitly, so this check applies."
+msgstr ""
+"Вулиці, позначені як односторонні, не повинні бути тупіковими (тоді куди ж "
+"попрямують автомобілі в кінці такого шляху?).  Точки, в яких починається або "
+"закінчується рух, стають недоступними.  Зауважте, що лінії, які мають теги "
+"motorways (автомагістраль) та motorway_links (з’їзд з/на автомагістраль), "
+"від спочатку розглядаються як односторонні, тому й на них поширюється ця "
+"перевірка."
+
+#. please keep this as short as possible
+msgid "almost-junctions"
+msgstr "майже з'єднані"
+
+msgid ""
+"Streets that have (at least) one unconnected end are examined here. If such "
+"an end-node is very close to any other way an error is reported. Unconnected "
+"end-nodes should probably be connected to adjacent ways."
+msgstr ""
+"Перевірка для вулиць, у яких є, принаймні, одне тупікове закінчення.  Якщо "
+"така точка, розташована дуже близько до іншої лінії, то з'являється "
+"повідомлення про помилку.  Швидше за все, тупікові закінчення ліній повинні "
+"бути з’єднані з лініями по сусідству."
+
+#. please keep this as short as possible
+msgid "deprecated tags"
+msgstr "застарілі теґи"
+
+msgid ""
+"As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some "
+"tags get replaced by others as new tagging conventions evolve. Consider this "
+"as a notice, not as an error. The term 'deprecated' is deprecated; you're "
+"free to tag anything the way you like. This is just a hint for new tagging "
+"conventions that have evolved in the meantime."
+msgstr ""
+"У списку http://wiki.openstreetmap.org/index.php/Deprecated_features "
+"показані теґи, які були замінені на нові.  Це сповіщення, а не помилка.  "
+"Термін „застарілий“ означає застарілий.  Ви вільні використовувати будь "
+"теґи, які Вам сподобаються, не залежно від того, застаріли вони чи ні.  Це "
+"повідомлення – лише пропозиція того, щоб Ви використовували нові теґи."
+
+#. please keep this as short as possible
+msgid "missing tags"
+msgstr "відсутні теґи"
+
+msgid ""
+"Ways, nodes and relations should in most cases have at least one tag "
+"(besides created_by)"
+msgstr ""
+"Лінії, точки та зв’язки, у більшості випадків, повинні мати хоча б один теґ "
+"(окрім created_by)"
+
+#. please keep this as short as possible
+msgid "motorways without ref"
+msgstr "автомагістралі без № (ref=*)"
+
+msgid ""
+"The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
+"mandatory as they are very important information"
+msgstr ""
+"Тег ref описує номер автомагістралі (наприклад, „A 10“).  Це обов’язковий "
+"тег автомагістралей, тому що  ця інформація дуже важлива."
+
+#. please keep this as short as possible
+msgid "places of worship without religion"
+msgstr "місця богослужіння без вказівки релігії"
+
+msgid ""
+"Churches, mosques and synagogues etc. need an extra religion tag giving info "
+"about the religion"
+msgstr ""
+"Церкви, костели, мечеті, синагоги тощо повинні бути доповнені теґом релігії "
+"(religion=*)"
+
+#. please keep this as short as possible
+msgid "point of interest without name"
+msgstr "цікаві точки без назви (name=*)"
+
+msgid ""
+"The name tag should be specified for every point of interest as its content "
+"gets rendered in the map next to the POI symbol"
+msgstr ""
+"Кожна цікава точка повинна мати назву (name=*).  Назва відображається на "
+"мапі разом зі значком цікавої точки."
+
+#. please keep this as short as possible
+msgid "ways without nodes"
+msgstr "шляхи без точок"
+
+msgid ""
+"Ways that don't consist of at least two nodes don't make much sense as they "
+"won't get rendered."
+msgstr ""
+"Лінії, які не містять як мінімум двох точок, не мають сенсу і тому не будуть "
+"відображатися на мапі."
+
+#. please keep this as short as possible
+msgid "floating islands"
+msgstr "плаваючі острови"
+
+msgid ""
+"Any highways drawn on the map should be accessible by car starting anywhere "
+"in the world. Ferries and highways (even railway platforms) are included in "
+"this check, so almost any island in the sea should be reachable starting "
+"from the mainland."
+msgstr ""
+"Будь-яка дорога у світі, позначена на мапі, повинна мати під’їзди для "
+"автотранспорту.  У перевірку на „плаваючі острови“ включені дороги й пороми "
+"(а також залізничні платформи), тому більшість островів у відкритому морі "
+"повинні бути доступні з материка."
+
+#. please keep this as short as possible
+msgid "railway crossings without tag"
+msgstr "перетини залізничних шляхів без теґів"
+
+msgid ""
+"(Level)-Crossings of railways and highways should have a common node as "
+"junction that is tagged with 'railway=level_crossing' if it is a crossing "
+"where larger vehicles can cross or with 'railway=crossing' if it is a "
+"crossing just for pedestrians"
+msgstr ""
+"Перетин на одному рівні залізних та автомобільних доріг повинно мати спільну "
+"точку, і позначено як railway=level_crossing для переїздів або "
+"railway=crossing для переходів"
+
+#. please keep this as short as possible
+msgid "wrongly used railway crossing tag"
+msgstr "помилково вказаний теґ залізничного переїзду"
+
+msgid ""
+"Ways that take part in level-crossings of railways and highways have to be "
+"on the same layer and should in the normal case be not tagged as bridge or "
+"tunnel"
+msgstr ""
+"Лінії, які перетинають залізничні й автомобільні дороги на одному рівні, не "
+"можуть бути позначені як міст або тунель."
+
+#. please keep this as short as possible
+msgid "fixme-tagged items"
+msgstr "об’єкти з позначкою fixme=*"
+
+msgid ""
+"Nodes, ways or relations that are tagged with FIXME should be reviewed..."
+msgstr ""
+"Точки, лінії або зв’язки з позначкою fixme=*, повинні бути переглянуті та "
+"уточнені…"
+
+#. please keep this as short as possible
+msgid "relations without type"
+msgstr "зв’язок без типу (type=*)"
+
+msgid ""
+"Find any relation that has no type tag, wich is mandatory for relations."
+msgstr "Знаходить будь-який зв’язок без обов’язкового зазначення його типу"
+
+#. please keep this as short as possible
+msgid "intersections without junctions"
+msgstr "перетини без з’єднуючої точки"
+
+msgid ""
+"Streets that graphically intersect need a common node that represents the "
+"crossing. The only exception are intersections on different layers (eg. "
+"bridges or tunnels). Intersections of streets with other objects like "
+"waterways or riverbanks should be avoided"
+msgstr ""
+"Для коректної маршрутизації вулиці, що перетинаються, повинні мати спільну "
+"точку.  Винятки становлять ті випадки, коли вулиці знаходяться на різних "
+"рівнях (мости, тунелі тощо).  Слід уникати перетинів вулиць з іншими "
+"об’єктами, такими як водні шляхи чи широкі річки."
+
+#. please keep this as short as possible
+msgid "highway-highway"
+msgstr "дорога – дорога"
+
+#. please keep this as short as possible
+msgid "highway-waterway"
+msgstr "дорога – водний шлях"
+
+#. please keep this as short as possible
+msgid "highway-riverbank"
+msgstr "дорога – широка ріка"
+
+#. please keep this as short as possible
+msgid "waterway-waterway"
+msgstr "водний шлях – водний шлях"
+
+#. please keep this as short as possible
+msgid "cyclew/footp-cyclew/footp"
+msgstr "вело/пішо-доріжка – вело/пішо-доріжка"
+
+#. please keep this as short as possible
+msgid "highway-cyclew/footp"
+msgstr "дорога – вело/пішо-доріжка"
+
+#. please keep this as short as possible
+msgid "cyclew/footp-waterway"
+msgstr "вело/пішо-доріжка – водний шлях"
+
+#. please keep this as short as possible
+msgid "cyclew/footp-riverbank"
+msgstr "вело/пішо-доріжка – широка ріка"
+
+#. please keep this as short as possible
+msgid "overlapping ways"
+msgstr "шляхи, що частково збігаються"
+
+msgid ""
+"Segments of ways that lie on top of each other (the same nodes connected by "
+"different ways in the same order) are a problem for routing software. They "
+"happen accidently and are hard to find."
+msgstr ""
+"Фрагменти ліній, які накладені одна на одну (ті ж точки з’єднані різними "
+"лініями у тій же послідовності) — це проблема для навігаційних програм.  "
+"Зазвичай це виходить випадково, такі помилки складно виявити."
+
+#. please keep this as short as possible
+msgid "loopings"
+msgstr "петлі"
+
+msgid ""
+"Any way that contains any single node more than twice is considered an "
+"error. Any way may contain just one node twice. If more than one node is "
+"found twice it is considered an error."
+msgstr ""
+"Будь-яка лінія, яка містить одну точку більше двох разів, вважається "
+"помилкою.  Будь лінія може містити одну точку максимум двічі.  Якщо кілька "
+"точок містяться у лінії двічі, це теж вважається помилкою."
+
+#. please keep this as short as possible
+msgid "misspelled tags"
+msgstr "теґи з помилками"
+
+msgid ""
+"Tags that are used very seldom and almost look like very common tags (only "
+"one character difference) are reported as a warning."
+msgstr ""
+"Теґи, які використовуються рідко і дуже схожі на загальновживані "
+"(відмінність в одному символі), вказуються з попередженням."
+
+#. please keep this as short as possible
+msgid "layer conflicts"
+msgstr "конфлікти рівнів"
+
+msgid ""
+"Connected ways should be on the same layer. Crossings on intermediate nodes "
+"of ways on different layers are obviously wrong. Junctions on end-nodes of "
+"ways on different layers are also deprecated, but common practice. So you "
+"may ignore this part of the check and switch them off separately. Please "
+"note that bridges are set to layer +1, and tunnels to -1, anything else to "
+"layer 0 implicitly if no layer tag is present."
+msgstr ""
+"З’єднувані лінії повинні бути на одному рівні.  Перетин ліній на різних "
+"рівнях у спільній точці від початку не правильно.  З’єднання ліній на різних "
+"рівнях в кінцевих точках також не вірно, але це поширена практика. Ви можете "
+"ігнорувати цю частину перевірки і використовувати її окремо.  Зауважте, що "
+"мости мають рівень 1, тунелі -1, а все інше за замовчуванням 0 (якщо не "
+"вказаний теґ рівня)."
+
+#. please keep this as short as possible
+msgid "mixed layers intersections"
+msgstr "перетин об’єктів на різних рівнях"
+
+#. please keep this as short as possible
+msgid "strange layers"
+msgstr "дивні рівні"
+
+#. please keep this as short as possible
+msgid "motorways connected directly"
+msgstr "безпосереднє з’єднання з автомагістраллю"
+
+msgid ""
+"Motorways should only be connected to other motorways or motorway_links. "
+"They should especially not be directly connected to highway=primary or "
+"highway=residential roads. Please note: This check may produce false "
+"positives on motorways ending in cities but it can be a valuable tool for "
+"looking up unwanted connections of motorways and other roads."
+msgstr ""
+"Автомагістралі (highway=motorways) повинні з’єднуватися лище з motorways або "
+"motorway_links.  Особливо вони не повинні відразу з’єднуватися з дорогами "
+"highway=primary або highway=residential.  Зауважте, ця перевірка може "
+"викликати неправильну помилку на закінченні автомагістралей у містах, але це "
+"чудовий інструмент для пошуку не бажаних сполук автомагістралей та інших "
+"типів доріг."
+
+#. please keep this as short as possible
+msgid "boundaries"
+msgstr "межі"
+
+msgid ""
+"Administrative Boundaries can be expressed either by tagging ways or by "
+"adding them to a relation. They should be closed-loop sequences of ways, "
+"they must not self-intersect or split and they must have a name and an "
+"admin_level."
+msgstr ""
+"Адміністративні межі можуть бути позначені теґами на лініях або шляхом "
+"додавання їх у зв’язки.  Межі мають бути замкнуті, не мати самоперетинів і "
+"розривів; повинні мати теґи name та admin_level."
+
+#. please keep this as short as possible
+msgid "missing name"
+msgstr "не вказано назву"
+
+#. please keep this as short as possible
+msgid "missing admin_level"
+msgstr "не вказано admin_level=*"
+
+#. please keep this as short as possible
+msgid "not closed loop"
+msgstr "не замкнутий контур"
+
+#. please keep this as short as possible
+msgid "splitting boundary"
+msgstr "є розриви межі"
+
+#. please keep this as short as possible
+msgid "admin_level too high"
+msgstr "admin_level занадто високий"
+
+#. please keep this as short as possible
+msgid "restrictions"
+msgstr "обмеження"
+
+msgid ""
+"This check is about turn restrictions defined by relations. A turn "
+"restriction relation needs a valid type attribute, a way as 'from' member, "
+"another way as 'to' member and optionally one or more ways or nodes as via "
+"members that need to be connected to 'from' and 'to'"
+msgstr ""
+"Це перевірка обмежень поворотів, описаних зв’язками.  Для обмеження повороту "
+"необхідний опис прийнятого типу.  У зв’язок повинні бути обов’язково "
+"включені: одна лінія from, одна лінія to і додатково одна чи кілька ліній "
+"або точок via. Точки та лінії via повинні з’єднуватися з лініями from та to"
+
+#. please keep this as short as possible
+msgid "missing type"
+msgstr "відсутній тип (type=*)"
+
+#. please keep this as short as possible
+msgid "missing from way"
+msgstr "не вказано шлях для ролі „from“"
+
+#. please keep this as short as possible
+msgid "missing to way"
+msgstr "не вказано шлях для ролі „to“"
+
+#. please keep this as short as possible
+msgid "missing maxspeed"
+msgstr "відсутній теґ maxspeed=*"
+
+msgid ""
+"maxspeed tags are not mandatory but they are very helpful for successful "
+"routing. This check shall help users finding highways lacking the maxspeed "
+"tag. Please only add maxspeed tags if the allowed maxspeed differs from the "
+"default speed for the given highway!"
+msgstr ""
+"Тег maxspeed (максимальна швидкість) не обов’язковий, але він дуже корисний "
+"для правильної навігації.  Ця перевірка має допомогти користувачам знайти "
+"дороги з пропущеним теґом maxspeed.  Будь ласка, додавайте теґи maxspeed "
+"тільки для тих ділянок доріг, на яких встановлений нетиповий швидкісний "
+"режим!"
+
+#. please keep this as short as possible
+msgid "roundabouts"
+msgstr "круговий рух"
+
+msgid ""
+"roundabout are always one-way streets directed counter-clockwise in right-"
+"hand driving countries or clockwise in left-hand driving countries."
+msgstr ""
+"На перехрестях з круговим рухом завжди встановлено односторонній рух: проти "
+"годинникової стрілки для країн з правостороннім рухом і за годинниковою для "
+"країн з лівостороннім рухом."
+
+#. please keep this as short as possible
+msgid "wrong direction"
+msgstr "неправильний напрямок"
+
+#. please keep this as short as possible
+msgid "faintly connected"
+msgstr "слабо пов’язані"
+
+#. please keep this as short as possible
+msgid "*_link-connections"
+msgstr "з’єднання доріг * _link"
+
+msgid ""
+"Any highway tagged as (motorway|trunk|primary|secondary)_link should have at "
+"least one connection to a (motorway|trunk|primary|secondary) highway or a "
+"_link highway of the same type"
+msgstr ""
+"Будь-яка дорога, позначена теґами (motorway|trunk|primary|secondary)_link "
+"повинна мати, як мінімум, одне з’єднання з дорогами "
+"(motorway|trunk|primary|secondary) або дорогами _link такого ж типу."
+
+#. please keep this as short as possible
+msgid "bridge-tags"
+msgstr "теґи мостів"
+
+msgid ""
+"Someone draws a bridge and forgets to tag it as highway... A bridge should "
+"always have one of the 'major' tags that its direct neighbour ways have. "
+"Currently these are: highway, railway, cycleway, waterway, footway, piste, "
+"aerialway, pipeline, building, via_ferrata"
+msgstr ""
+"Хтось намалював міст і забув присвоїти йому теґ дороги… Міст завжди повинен "
+"мати „основний“ теґ, такий же, як у з’єднаної з ним дороги.  На даний час це "
+"може бути один з теґів highway, railway, cycleway, waterway, footway, piste, "
+"aerialway, pipeline, building, via_ferrata"
+
+#. please keep this as short as possible
+msgid "language unknown"
+msgstr "невідома основна мова"
+
+msgid ""
+"To help applications choose the best matching language they should know the "
+"language used for the name tag. It is therefore necessary to provide a "
+"name:XX tag with the same content as found in the name tag where XX "
+"specifies the language used for the name tag."
+msgstr ""
+"Щоб допомогти застосункам вибрати найбільш підходящу мову, вони повинні "
+"знати мову, використовувану для теґу name.  Для цього необхідно "
+"використовувати тег name: XX зі значенням коду мови, що й у тезі name, де XX "
+"вказує мову, яка використовується в тезі.  Наприклад, тег name:uk "
+"символізуватиме, що назву дано українською мовою."
+
+#. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
+msgid ""
+"It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
+"shows the language of its name ''$2''."
+msgstr ""
+"Буде краще якщо $1 буде мати додатково теґ „name:XX=$2“', де XX вказує мову "
+"внесеної назви „$2“'."
+
+#. this is about points of interest drawn inside a building of the same name
+#. please keep this as short as possible
+msgid "doubled places"
+msgstr "дублювання POI"
+
+msgid ""
+"a node inside of an area that is tagged with same name and representing the "
+"same physical entity leads to wrong statistics and doubled labels on the map"
+msgstr ""
+"точка всередині полігону з тим же ім’ям і представляє той же фізичний об’єкт "
+"призведе до неправильної статистики і дублювання теґів на мапі"
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 and seems to be "
+"redundand"
+msgstr ""
+"Ця точка має однакові теґи з оточуючою її лінією № $1 і тому це виглядає "
+"надлишковим"
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 (including the "
+"name '$2') and seems to be redundand"
+msgstr ""
+"Ця точка має однакові теґи з оточуючою її лінією № $1 (включаючи назву „$2“) "
+"і тому це виглядає надлишковим"
+
+#. please keep this as short as possible
+msgid "non-physical use of sport-tag"
+msgstr "вид спорту без фіз. об’єкта"
+
+msgid ""
+"&apos;sports&apos; is a non-physical tag that needs to be bound to some "
+"physical structure like for example a leisure-item or an amenity. Ways "
+"tagged with &apos;sports&apos; solely will be invisible on the map"
+msgstr ""
+"Теґ „sports“ самостійно не позначає який-небудь об’єкт на мапі, а надає лише "
+"надає деяку властивість об’єктам зазначеним за допомогою „leisure“ або "
+"„amenity“.  Лінії з одним лише теґом „sports“ не будуть видимі на мапі"
+
+#. full message: "This way is tagged sport=tennis but has no physical tag like e.g. leisure, building, amenity or highway"
+msgid ""
+"This way is tagged $1 but has no physical tag like e.g. leisure, building, "
+"amenity or highway"
+msgstr "Ця лінія позначена як $1, але не має теґу, що описує тип споруди"
+
+#. please keep this as short as possible
+msgid "missing tracktype"
+msgstr "відсутня класифікація ґрунтовки (tracktype=*)"
+
+msgid ""
+"highway=track ways should be added with more detail about the tracktype "
+"(grade1..grade5). The tracktype is included in rendering rules and makes "
+"maps more expressive"
+msgstr ""
+"дороги „highway=track“ слід доповнювати характеристиками („grade1…grade5“).  "
+"„tracktype“ промальовується за спеціальними правилами і робить мапи більш "
+"виразними"
+
+msgid "This track doesn't have a tracktype"
+msgstr ""
+"Ця дорога сільськогосподарського призначення чи лісова дорога не має коду "
+"класифікації „tracktype=*“ ( grade1…5)"
+
+#. please keep this as short as possible
+msgid "geometry glitches"
+msgstr "глюки геометрії"
+
+msgid ""
+"looks for impossible sharp angles on highways and junctions. These may be "
+"caused by missing turn restrictions on junctions or glitches along the "
+"linestring of ways"
+msgstr ""
+"занадто гострий кут перетину доріг.  Можливо тут помилка або не зазначено "
+"обмеження для повороту"
+
+#. please keep this as short as possible
+msgid "missing turn restriction"
+msgstr "немає обмежень поворотів"
+
+#. please keep this as short as possible
+msgid "impossible angles"
+msgstr "неймовірні кути"
+
+msgid "this way bends in a very sharp angle here"
+msgstr "ця лінія згинається тут під дуже гострим кутом"
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $2 to $1"
+msgstr ""
+"шляхи $1 та $2 сходяться під дуже гострим кутом і немає обмеження повороту "
+"або не зазначена одностороння дорога, що обмежило б поворот з шляху $2 на $1"
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $1 to $2"
+msgstr ""
+"шляхи $1 та $2 сходяться під дуже гострим кутом і немає обмеження повороту "
+"або не зазначена одностороння дорога, що обмежило б поворот з шляху $1 на $2"
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning"
+msgstr ""
+"лінії $1 та $2 сходяться під дуже гострим кутом і немає обмеження повороту "
+"або не зазначена одностороння дорога"
+
+#. please keep this as short as possible
+msgid "website"
+msgstr "веб-сайти з помилками"
+
+#. please keep this as short as possible
+msgid "http error"
+msgstr "HTTP-помилки"
+
+#. please keep this as short as possible
+msgid "domain hijacking"
+msgstr "домен захоплений"
+
+#. please keep this as short as possible
+msgid "non-match"
+msgstr "не збігається за змістом"
+
+msgid ""
+"calls websites and tries to match website content with key tags from the osm "
+"element"
+msgstr ""
+"опитує веб-сайти і намагається зіставити зміст веб-сайтів із ключем теґу "
+"елемента OSM"
+
+#. full message: "The URL (http://www.belgian-beer-cafe.com.au/heritage) cannot be opened (HTTP status code 404)"
+msgid ""
+"The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP "
+"status code $2)"
+msgstr ""
+"Посилання (<a target=\"_blank\" href=\"$1\">$1</a>) не відкривається (HTTP-"
+"помилка № $2)"
+
+msgid ""
+"Possible domain squatting: <a target=\"_blank\" href=\"$1\">$1</a>. "
+"Suspicious text is: \"$2\""
+msgstr ""
+"Можлива окупація домену: <a target=\"_blank\" href=\"$1\">$1</a>. Підозрілий "
+"текст: „$2“"
+
+#. full message: "Content of the URL (http://www.yha.com.au) did not contain these keywords: (*Bondi Beachouse YHA*Bondi)"
+msgid ""
+"Content of the URL (<a target=\"_blank\" href=\"$1\">$1</a>) did not contain "
+"these keywords: ($2)"
+msgstr ""
+"Вміст URL-посилання (<a target=\"_blank\" href=\"$1\">$1</a>)  не містить "
+"цих ключових слів: ($2)"
+
+#. translations for the web pages
+#: index.php:9
+msgid "data consistency checks for OSM"
+msgstr "перевірка відповідності даних для OSM"
+
+#: index.php:11
+msgid "keep-right logo"
+msgstr "логотип Keep-Right"
+
+#: index.php:13
+#, php-format
+msgid "data consistency checks for %sOSM%s"
+msgstr "перевірка відповідності даних для %sOSM%s"
+
+#: index.php:20
+msgid ""
+"These pages show checks that are run on a local excerpt database filled with "
+"OSM data."
+msgstr ""
+"Ці сторінки відображають перевірку, яка проводилася для локально обраної "
+"бази даних, що містить дані з OSM."
+
+#: index.php:23
+#, php-format
+msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
+msgstr "Перевірка даних для Європи%s (початкова точка Відень, Австрія)"
+
+#: index.php:27
+msgid "Data Checks for Australia%s (Starting point Sydney)"
+msgstr "Перевірка даних для Австралії%s (початкова точка Сідней)"
+
+#: index.php:30
+#, php-format
+msgid "Data Checks for Africa%s (Starting point Cairo, Egypt)"
+msgstr "Перевірка даних для Африки%s (початкова точка Каїр, Єгипет)"
+
+#: index.php:33
+#, php-format
+msgid "Data Checks for Canada%s (Starting point Québec)"
+msgstr "Перевірка даних для Канади%s (початкова точка Квебек)"
+
+#: index.php:36
+#, php-format
+msgid "Data Checks for USA%s (Starting point Philadelphia, PA)"
+msgstr "Перевірка даних для США%s (початкова точка Філадельфія)"
+
+#: index.php:39
+#, php-format
+msgid ""
+"Data Checks for Central America%s (Starting point Santo Domingo, Republica "
+"Dominicana)"
+msgstr ""
+"Перевірка даних для Центральної Америки%s (початкова точка Санто-Домінго, "
+"Домініканська Республіка)"
+
+#: index.php:42
+#, php-format
+msgid "Data Checks for South America%s (Starting point São Paulo, Brazil)"
+msgstr ""
+"Перевірка даних для Південної Америки%s (початкова точка Сан-Паулу, Бразилія)"
+
+#: index.php:45
+#, php-format
+msgid "Data Checks for Asia%s (Starting point Tokio, Japan)"
+msgstr "Перевірка даних для Азії%s (початкова точка Токіо, Японія)"
+
+#: index.php:47
+msgid "Europe Data Checks as ugly list"
+msgstr "Перевірка даних для Європи (список дурних помилок)"
+
+#: index.php:49
+#, php-format
+msgid ""
+"Developers have a look at the %sSourceForge%s site providing svn access to "
+"the sources."
+msgstr ""
+"Розробникам варто глянути на сайт %sSourceForge%s, що забезпечує "
+"централізовану систему управління версіями (SVN) для проекту."
+
+#: index.php:52
+msgid "logfile"
+msgstr "журнальний файл"
+
+#: index.php:56
+#, php-format
+msgid ""
+"If you want to export errors from KeepRight you will want to have a look at "
+"the %sinterfacing guide%s"
+msgstr ""
+"Якщо Ви хочете експортувати помилки з KeepRight, Вам варто глянути "
+"на%sкерівництво користувача%s"
+
+#, php-format
+msgid ""
+"Today I fixed the annoying OpenLayers-damaged-bubbles-issues. The bubbles "
+"look OK now and I made the switch to OL2.12. Empty your browser&apos;s cache "
+"(try any combination of Ctrl, Shift, Alt plus &apos;R&apos; as well as "
+"&apos;F5&apos;) if the site doesn&apos;t work for you."
+msgstr ""
+"Сьогодні я виправив дратівливий „OpenLayers-damaged-bubbles-issues“.  Все "
+"виглядає гаразд і тепер я зробив перехід до OL2.12.  Очистіть кеш браузера "
+"(спробуйте будь-яку комбінацію Ctrl/Shift/Alt + „R“ або „F5“), якщо сайт не "
+"працює у Вас."
+
+#, php-format
+msgid ""
+"To all consumers of KeepRight error dump files: The file format is going to "
+"change: I will drop the &quot;description&quot;-column. It is redundant, you "
+"can recreate it from &quot;msgid&quot; plus &quot;txt1&quot;-"
+"&quot;txt5&quot; <br>Second: there is a new column in the file including the "
+"user name of the last editor of the object containing the error.<br>This "
+"change will take full effect during this week as all parts of the planet are "
+"going to be reprocessed"
+msgstr ""
+"Для всіх споживачів дамп-файлів помилок KeepRight: формат файлу буде "
+"мінятися: я позбудуся стовпчика &quot;description&quot;. Він є надлишковим, "
+"Ви зможете відтворити його з &quot;msgid&quot; та на додаток "
+"&quot;txt1&quot;-&quot;txt5&quot; <br>Друге: є новий стовпець у файлі, що "
+"включає ім’я користувача останнього редагування об’єкта, що містить помилку. "
+"<br> Ця зміна буде впроваджена у повному обсязі протягом цього тижня, як всі "
+"частини планети будуть перероблені."
+
+#, php-format
+msgid ""
+"Australia is back online again!<br>KeepRight's Australia partner site is "
+"closed by now, error checks for Australia are run on the main site. I'm very "
+"sorry I could not rescue all the comments and ignore-states on errors. The "
+"remote database is not accessible any more so any comments and states are "
+"reset and we are starting from scratch.<br>Anyway, thank you, Peter, for "
+"providing that service for more than three years!"
+msgstr ""
+"Австралія повернулася в онлайн знову!<br> Австралійський партнерський сайт "
+"KeepRight-а тепер закритий, перевірки помилок для Австралії будуть працювати "
+"на основному сайті.  Я дуже жалкую, що не зміг врятувати усі коментарі та "
+"стани ігнорування помилок.  Віддалена база даних не доступна вже, отож "
+"коментарі та стани обнулені і ми починаємо з нуля. <br> У всякому разі, "
+"спасибі Пітеру за надання цієї послуги протягом більш ніж трьох років!"
+
+#, php-format
+msgid ""
+"There is a new, great document that describes recipes for fixing errors "
+"reported by KeepRight. It was written by user Popei82. Thank you very "
+"much!<br>Find the document in the OSM <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>wiki</a>."
+msgstr ""
+"Доступний новий, відмінний документ, що описує рецепти для виправлення "
+"помилок, прозвітованих KeepRight-ом.  Він був написаний користувачем "
+"Popei82.  Велике спасибі! <br> Знайдіть документ у  <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>OSM-вікі</a>."
+
+#, php-format
+msgid ""
+"There is a new check calles &apos;geometry glitches&apos;: This one looks "
+"for spikes in ways and makes guesses about missing turn restrictions: "
+"Highways joining in a very sharp angle should have some sort of turn "
+"restriction (explicit or implicit by means of oneway tags) that prohibits "
+"turing around the sharp angle"
+msgstr ""
+"З’явилася нова перевірка з назвою „глюки геометрії“: вона оглядає гострі "
+"відхилення на дорозі та робить припущення про відсутні обмеження на "
+"повороти: дороги, що з’єднують під дуже гострим кутом, повинні мати якісь "
+"варіанти обмежень на повороти (явно або неявно за допомогою теґів "
+"одностороннього руху), що забороняють повороти під гострим кутом"
+
+#, php-format
+msgid ""
+"There is a new check called &apos;doubled places&apos; that looks for nodes "
+"placed inside of a closed-loop way (usually a building) where the node and "
+"the way have some tags in common. Such situations lead to doubled labels on "
+"the map and wrong statistics (counting amenities doesn't work)"
+msgstr ""
+"З’явилася нова перевірка з назвою „дублювання POI“, що оглядає точки, "
+"розташовані всередині замкнутого контуру (зазвичай будівлі), де точка та "
+"лінія мають деякі однакові теґи.  Такі ситуації призводять до подвоєння "
+"міток на мапі та невірних статистичних даних (обрахунок послуг /amenyty/ не "
+"працює)"
+
+#, php-format
+msgid ""
+"KeepRight now has its own domain name! You may now access KeepRight using "
+"the short URL <b><a href='http://keepright.at/'>http://keepright.at/</a></b>"
+msgstr ""
+"Тепер у KeepRight є власне доменне ім’я!  Ви можете отримати доступ до "
+"KeepRight за коротким URL <b><a "
+"href='http://keepright.at/'>http://keepright.at/</a></b>"
+
+#, php-format
+msgid ""
+"You'll notice some improvements on two checks and one completely new one "
+"coming up during the next days:<br> <em>faintly connected roundabouts</em> "
+"is a new sub-check for the roundabout check that will complain about "
+"roundabouts with less than three connections to other roads. This need not "
+"be an error, but at least it is questionable what faintly connected "
+"roundabouts are built for<br> <em>language unknown</em> is a new warning-"
+"type check that tries to improve localization by complaining about name tags "
+"where the language code cannot be deferred from other tags. Thank you, Ed, "
+"for the idea!<br> <em>motorways connected directly</em>-check had many false "
+"positives at rest areas (these are service highways that intentionally don't "
+"have an access restriction). I eliminated these using a heuristic method: "
+"service roads are OK if they lead to a parking area, a fuel station, a "
+"toilet or a restaurant. BTW: highway=services is something completely "
+"different and should not be used on ways. Thank you, Johan, for making me "
+"think about the problem again!"
+msgstr ""
+"Ви помітите деякі поліпшення на двох перевірках та одну повністю нову, що "
+"з’являться протягом наступних днів:<br> <em>слабо пов’язані перехрестя з "
+"круговим рухом</em> — це нова суб-перевірка для перевірки перехресть з "
+"круговим рухом, що містить менше трьох зв’язків з іншими дорогами. Це може "
+"не бути помилкою, але, принаймні сумнівно, що перехрестя з круговим рухом "
+"будуються у цьому разі.<br> <em>невідома основна мова</em> — новий тип "
+"попередження, яке намагається поліпшити локалізацію, скаржачись на теґи "
+"name, для яких код мови не може бути визначений з інших теґів.  Спасибі, Ед, "
+"за ідею! <br> <em>безпосереднє з’єднання з автомагістраллю</em> — перевірка "
+"мала багато помилкових спрацьовувань на відпочинкових областях (це є "
+"службові дороги, які спеціально не мають обмеження доступу). Я усунув їх, "
+"використовуючи евристичний метод: службові дороги сприймаються добре, якщо "
+"вони підводять до стоянки, заправної станції, туалету або ресторації. До "
+"речі: highway=services це зовсім інше і не повинно використовуватися на "
+"шляхах.  Спасибі, Йохану, що змушує мене думати про проблему знову!"
+
+#: index.php:56
+msgid ""
+"There are a few more languages in the select box now. You can help "
+"translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
+msgstr ""
+"В панелі вибору з’являється більше мов.  Ви можете допомогти перекласти "
+"KeepRight на сайті %slaunchpad%s.  Спасибі усім, хто допомагає!"
+
+#: index.php:56
+#, php-format
+msgid ""
+"To avoid routing errors like %sthis one%s I changed the check 'highways "
+"connected directly'. It will now complain about any connections of a "
+"motorway with a highway=service or highway=unclassified if it lacks an "
+"access=no or access=private tag or if it is not a "
+"service=parking_aisle.<br>I hope you agree that this inconvenience is "
+"necessary. Thank you, Nathan, for telling me about this!"
+msgstr ""
+"Щоб уникнути %sтаких%s помилок була змінена перевірка „безпосереднє "
+"з’єднання з автомагістраллю“. Тепер ця перевірка буде поширюватися на дороги "
+"з тегами highway=motorway, з’єднані з дорогами highway=service або "
+"highway=unclassified у наступних випадках: якщо відсутні теґи access=no або "
+"access=private, якщо це не service=parking_aisle.<br /> Автор сподівається , "
+"що Ви згодні — така невідповідність неприйнятна. Спасибі, Nathan-у, за те "
+"що, вказав на цю проблему!"
+
+#. this will be the news item announcing i18n-capabilities for KeepRight.
+#. this section should appear in all three languages regardless what language
+#. is chosen. So just add your part in the msgid
+#: index.php:57
+msgid ""
+"KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
+"se tornou multilíngue!"
+msgstr ""
+"KeepRight стає багатомовним! — KeepRight becomes multilingual! — KeepRight "
+"wird mehrsprachig! — O KeepRight se tornou multilingue!"
+
+#. this will be the news item announcing i18n-capabilities for KeepRight.
+#. this section should appear in all three languages regardless what language
+#. is chosen. So just add your part in the msgid
+#: index.php:58
+#, php-format
+msgid ""
+"As a start KeepRight may be used in english, german and brazilian portugese. "
+"New translations are welcome! The gettext template file is $1right here$2. "
+"Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es "
+"KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere "
+"Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank "
+"an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode "
+"ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem "
+"vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
+"Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
+msgstr ""
+"As a start KeepRight may be used in english, german and brazilian portugese. "
+"New translations are welcome! The gettext template file is $1right here$2. "
+"Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es "
+"KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere "
+"Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank "
+"an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode "
+"ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem "
+"vindas! O arquivo com o modelo para gettext está $1bem aqui$2. "
+"Agradecimentos especiais para o usuário Rodrigo, por esta grande "
+"ideia!<br><br>Для початку, KeepRight, перекладений  англійською, німецькою "
+"та португальською (Бразилія).  Переклади іншими мовами вітаються!  "
+"Завантажте шаблон $1 прямо тут $2.  Окреме спасибі Rodrigo за цю геніальну "
+"ідею."
+
+#: index.php:59
+msgid "Getting rid of the evil db-parameter"
+msgstr "Чистка шкідливих параметрів бази даних"
+
+#: index.php:60
+msgid ""
+"You may have noticed that you couldn&apos;t pan around the whole world in "
+"KeepRight as you liked. There were invisible boundaries and you always had "
+"to take care about the db-parameter in the URLs to be appropriate for the "
+"current position.<br>This is over now! The db-parameter is gone. So have fun "
+"panning around the whole world and fixing errors easier than ever!"
+msgstr ""
+"Може бути, Ви помічали, щоб було неможливо здійснювати одночасну перевірку "
+"усіх частин світу в KeepRight.  Були невидимі межі й Вам завжди доводилося "
+"враховувати параметри бази даних у посиланні для вибору поточної позиції. "
+"<br> Тепер це закінчилося!  Ці параметри бази даних зникли.  Тепер "
+"виправляти помилки по усьому світу легше, ніж було раніше!"
+
+#: index.php:63
+msgid ""
+"During the next updates you will see an increased number of floating islands "
+"errors. This is because up to now the check routine didn&apos;t complain "
+"about ways that don&apos;t have a single connection with any other way(!). "
+"Sometimes it takes months until you see the most obvious things..."
+msgstr ""
+"При оновленні Ви побачите збільшення числа помилок „плаваючі острови“.  Досі "
+"перевірка маршрутизації не враховує лінії, що мають єдине з’єднання з іншими "
+"лініями!  Іноді проходять місяці, і тільки тоді, ти помічаєш очевидні речі…"
+
+#: index.php:66
+#, php-format
+msgid ""
+"This is my FOSSGIS-present for you: KeepRight will remember the position and "
+"the error types you selected when you left the site last time (how could "
+"you?). Just open %s without any parameters!"
+msgstr ""
+"Це мій FOSSGIS-подарунок для Вас: KeepRight буде запам’ятовувати Ваше "
+"останні місце розташування та типи помилок, які Ви вибрали під час "
+"останнього відвідування сайту.  Як це робиться?  Просто відкрийте %s без "
+"параметрів."
+
+#: index.php:70
+#, php-format
+msgid "For archeologists: %sOld log entries%s have moved."
+msgstr "Для археологів: %sстарі журнальні записи%s були переміщені."
+
+#: index.php:73
+msgid "a few words on the new comment feature"
+msgstr "кілька слів про нові особливості коментарів"
+
+#: index.php:74
+msgid ""
+"Please give a comment that helps me improve the check routines if you find a "
+"false-positive. Don't confuse the comment box with an editing feature. This "
+"is not Potlatch! You cannot add missing tags via KeepRight!"
+msgstr ""
+"Будь ласка, залишайте коментарі, які допоможуть мені поліпшити роботу "
+"KeepRight на предмет помилкових спрацьовувань.  Не використовуйте форму для "
+"коментарів, щоб додати відсутні теги: це не Potlatch!  На KeepRight немає "
+"можливості виправляти знайдені помилки!"
+
+#: index.php:77
+msgid ""
+"Please note that in order to make the JOSM link work, JOSM must already be "
+"running when you hit the JOSM-link. Furthermore you have to enable the "
+"&apos;remote control&apos;-plugin in JOSMs options."
+msgstr ""
+"Зауважте, що для роботи посилань для JOSM, Ви повинні запустити JOSM перед "
+"натисканням на посилання.  Також у налаштуваннях JOSM потрібно включити "
+"модуль віддаленого управління JOSM."
+
+#: index.php:79
+msgid "Currently the following checking procedures are implemented"
+msgstr "На даний час, застосовуються такі процедури перевірки"
+
+#: index.php:102
+msgid ""
+"If you find an error in my errors lists I would definitely like to hear "
+"about it!"
+msgstr ""
+"Якщо Ви знайшли недоліки в моєму листі помилок, то я неодмінно хочу про них "
+"знати!"
+
+#: index.php:104
+msgid "Impressum"
+msgstr "Контакти"
+
+#: index.php:105
+msgid ""
+"This work is done without commercial background, just for my personal "
+"pleasure. I would be very happy if it was helpful for the OSM Project."
+msgstr ""
+"Ця робота пророблена без комерційної вигоди, просто для задоволення.  Автор "
+"буде дуже щасливий, якщо це допоможе проекту OSM."
+
+#: index.php:106
+msgid ""
+"If you like to contact me, my mailbox at the austrian server of gmx is "
+"labelled KeepRight."
+msgstr ""
+"Ви можете зв’язатися зі мною, мій ящик на австрійському сервері gmx c "
+"позначкою KeepRight."
+
+#: index.php:106
+msgid ""
+"Please understand that I will not always be able to immediately respond to "
+"your mail on weekdays."
+msgstr ""
+"Будь ласка, врахуйте, що я не зможу завжди відповідати відразу на Ваші "
+"електронні листи в будні дні."
+
+#: report_map.php:155
+msgid "errors"
+msgstr "помилки"
+
+#: report_map.php:155
+msgid "warnings"
+msgstr "застереження"
+
+#: report_map.php:182
+msgid "all"
+msgstr "усі"
+
+#: report_map.php:183
+msgid "none"
+msgstr "жодного"
+
+#: report_map.php:185
+msgid "show ignored errors"
+msgstr "показувати проігноровані помилки"
+
+#: report_map.php:187
+msgid "show temp. ignored errors"
+msgstr "показувати тимч. проігноровані помилки"
+
+#: report_map.php:189
+msgid "Edit in Potlatch"
+msgstr "Редагувати у Potlatch"
+
+#: report_map.php:194
+#, php-format
+msgid ""
+"You will see up to %d error markers starting in the center of the map. "
+"Please allow a few seconds for the error markers to appear after panning."
+msgstr ""
+"Ви будете бачити до %d позначень помилок навколо центру мапи.  Будь ласка, "
+"зачекайте кілька секунд для відображення маркерів помилок після зміни "
+"масштабу мапи."
+
+#: report_map.php:196
+#, php-format
+msgid "Site updated at %s"
+msgstr "Місцевість оновлена %s"
+
+#: points.php:114
+msgid "node"
+msgstr "точка"
+
+#: points.php:114
+msgid "way"
+msgstr "лінія"
+
+#: points.php:114
+msgid "relation"
+msgstr "зв’язок"
+
+#. full message: "edit in JOSM / Potlatch"
+#: myText.js:237
+msgid "edit in"
+msgstr "редагувати у"
+
+#: myText.js:237
+msgid "JOSM"
+msgstr "JOSM"
+
+#: myText.js:237
+msgid ""
+"JOSM must be running and JOSM's remote control plugin must be enabled for "
+"this to work!"
+msgstr ""
+"Повинен бути запущений редактор JOSM та повинен бути включений модуль "
+"віддаленого управління JOSM!"
+
+#: myText.js:239
+msgid "Potlatch"
+msgstr "Potlatch"
+
+#: myText.js:239
+msgid "iD"
+msgstr "iD"
+
+#: myText.js:244
+msgid "keep this error open"
+msgstr "залишити цю помилку відкритою"
+
+#: myText.js:246
+msgid "ignore temporarily (error corrected)"
+msgstr "тимчасово ігнорувати (помилка виправлена)"
+
+#: myText.js:248
+msgid "ignore (false-positive)"
+msgstr "ігнорувати (хибна помилка)"
+
+#: myText.js:252
+msgid "save"
+msgstr "зберегти"
+
+#: myText.js:253
+msgid "cancel"
+msgstr "скасувати"
+
+#: myText.js:254
+msgid "please click on the icon to fixate the bubble"
+msgstr "для фіксації підказки натисніть на іконку"
+
+#: myText.js:255
+msgid "link to here: error #"
+msgstr "посилання сюди: помилка №"
+
+#. full message: "last edit of this node: 2009-04-01 5:22"
+#: myText.js:255
+msgid "last edit of this"
+msgstr "остання редакція об’єкта –"
+
+#: interfacing.php:4
+msgid "interfacing KeepRight"
+msgstr "використання KeepRight"
+
+#: interfacing.php:11
+msgid "Interfacing with KeepRight"
+msgstr "Робота з KeepRight"
+
+#: interfacing.php:13
+msgid "You may use KeepRight&apos;s results in a number of ways:"
+msgstr ""
+"Ви можете використовувати результати перевірки KeepRight різними способами:"
+
+#: interfacing.php:17
+#, php-format
+msgid "by means of the %smap web page%s"
+msgstr "за допомогою %sінтерактивної мапи%s"
+
+#: interfacing.php:18
+#, php-format
+msgid "exporting %sGPX waypoints%s"
+msgstr "експорт %sшляхових точок GPX%s"
+
+#: interfacing.php:19
+#, php-format
+msgid "exporting new errors as %sRSS feed%s"
+msgstr "експорт нових помилок як %sRSS стрічку%s"
+
+#: interfacing.php:20
+#, php-format
+msgid "getting the whole errors %sdump file%s"
+msgstr "отримати %sдамп-файл%s з усіма помилками"
+
+#: interfacing.php:24
+msgid "exporting GPX waypoints"
+msgstr "експорт шляхових точок GPX"
+
+#: interfacing.php:25 interfacing.php:35 interfacing.php:47
+msgid "Purpose"
+msgstr "Мета"
+
+#: interfacing.php:26
+msgid ""
+"Exporting a section of the map into a GPX-styled list of waypoints for use "
+"with GPS units"
+msgstr ""
+"Експорт фрагмента мапи у треки формату GPX для використання з пристроями GPS"
+
+#: interfacing.php:28 interfacing.php:38 interfacing.php:50
+msgid "URL format"
+msgstr "Формат URL"
+
+#: interfacing.php:30
+msgid ""
+"You can specify a list of error types you want to have in the file as well "
+"as a bounding box on the map. This export will return up to 10000 waypoints. "
+msgstr ""
+"Ви можете вказати список типів помилок, які Ви хочете мати у файлі, а також "
+"обмежувальну рамку на мапі.  Це експорт повертає до 10000 точок. "
+
+#: interfacing.php:31
+msgid ""
+"There is a link on the lower left corner of the map-page pointing to the GPX "
+"service that always includes the current error type selection and view from "
+"the map."
+msgstr ""
+"У нижньому лівому куті мапи поміщена посилання для експорту помилок обраних "
+"типів для видимого фрагмента мапи у формат GPX."
+
+#: interfacing.php:34
+msgid "exporting new errors as RSS feed"
+msgstr "експортувати нові помилки як RSS-стрічку"
+
+#: interfacing.php:36
+msgid "Watching a section of the map for newly found errors"
+msgstr "Перегляд фрагмента мапи з новознайденими помилками"
+
+#: interfacing.php:41
+msgid ""
+"The URL format is the same as for GPX exports, just the format parameter is "
+"different. The RSS feed will include error entries that were first found "
+"within the last three weeks."
+msgstr ""
+"Формат URL такий же, як для експорту в GPX, лише параметри формату різні.  "
+"RSS стрічка буде включати усі помилки, які були вперше знайдені за останні "
+"три тижні."
+
+#: interfacing.php:42
+msgid ""
+"There is a link on the lower left corner of the map-page pointing to the RSS "
+"service that always includes the current error type selection and view from "
+"the map."
+msgstr ""
+"У нижньому лівому кутку мапи також поміщена посилання на RSS стрічку, в яку "
+"експортуються вибрані дані для видимого фрагмента мапи."
+
+#: interfacing.php:46
+msgid "getting the whole dump-file"
+msgstr "отримання всього дамп-файлу"
+
+#: interfacing.php:48
+msgid "Doing something completely different with 25 millions of errors..."
+msgstr "Робить щось зовсім інше з 25 мільйонами помилок…"
+
+#: interfacing.php:53
+msgid ""
+"This tab-separated file contains all errors currently open for the whole "
+"planet (currently >500MB). It is being updated daily."
+msgstr ""
+"Цей, розділений табуляціями, файл містить усі помилки, в даний час відкриті, "
+"для усієї планети (наразі > 500 Мб).  Він в даний час оновлюється щодня."
+
+#: interfacing.php:56
+msgid "Table layout"
+msgstr "Опис таблиці"
+
+#: interfacing.php:59
+#, php-format
+msgid ""
+"The schema is an identifier naming a region on the planet. According to the "
+"%splanet splitting map%s the planet is split in rectangular parts to get "
+"roughly equally sized dump files. Consider the schema as a prefix for the "
+"error_id."
+msgstr ""
+"Схема — це ідентифікатор імені регіону на планеті.  Відповідно з %sмапою "
+"нарізки планети%s, планета розрізається на прямокутні ділянки для отримання "
+"файлів дампу приблизно рівних розмірів.  Розглядайте схему, як префікс для "
+"номера помилки."
+
+#: interfacing.php:60
+msgid ""
+"A number identifying errors, starting from 1 for each schema. An error_id is "
+"worth nothing if you don&apos;t know the schema!"
+msgstr ""
+"Нумерація помилок починається з 1 для кожної схеми.  Номер помилки нічого не "
+"означає, якщо Ви не знаєте номер схеми."
+
+#: interfacing.php:61
+msgid ""
+"numeric representation of the type of error. Error types are assigned in "
+"blocks of 10s (20, 30, 40...). They correspond with the name of the script "
+"file doing the checking."
+msgstr ""
+"числове представлення типу помилки.  Типи помилок зібрані в блоки по 10 (20, "
+"30, 40…).  Вони відповідають імені файлу скрипта, що проводить перевірку."
+
+#: interfacing.php:62
+msgid ""
+"Error types may be sub-typed (281, 282 etc.). Subtyped error checking "
+"routines test for different aspects related to a single topic (in the "
+"example 280 means &quot;boundaries&quot;, 281 means &quot;missing name[ for "
+"boundaries]&quot; and 282 means &quot;missing admin level[ for "
+"boundaries]&quot;). Subtyped error types are rendered as groups that may be "
+"collapsed on the web site."
+msgstr ""
+"Типи помилок можуть мати підтипи (281, 282 і т.д.).  Підтипи помилок "
+"отримуються при тесті на маршрутизацію для різних однотипних помилок "
+"(наприклад, 280 — quot;межіquot;, 281 — quot;пропущена назва у межіquot; і "
+"282 — quot;пропущений теґ admin_level у межіquot ;).  Підтипи помилок "
+"відображаються як список, який може бути згорнутий."
+
+#: interfacing.php:64
+msgid ""
+"textual representation (short name) of the type of error. On sub-typed error "
+"types you may want to prepend the error_name that belongs to the main number "
+"to make the name complete."
+msgstr ""
+"текстове представлення (коротке ім’я) типу помилки.  До підтипів Ви можете "
+"додати ім’я групи і отримати повне ім’я помилки."
+
+#: interfacing.php:65
+msgid "one of node/way/relation"
+msgstr "одна з точок / ліній / зв’язків"
+
+#: interfacing.php:66
+msgid "an OSM node_id, way_id or relation_id"
+msgstr "номер точки, лінії чи зв’язка через OSM"
+
+#: interfacing.php:67
+msgid ""
+"one of new, reopened, ignore_temporarily, ignore. You won&apos;t see any "
+"&apos;cleared&apos; errors because the dump contains active errors only. "
+"Temporarily ignored errors are issues fixed by a user who really hopes to "
+"have fixed it. Temporarily ignored errors will jump back in the "
+"&apos;new&apos; state with the next update if the error isn&apos;t really "
+"fixed. Ignored errors are issues that are simply false positives and should "
+"never come back just because KeepRight is wrong and this exception cannot be "
+"included in the ruleset."
+msgstr ""
+"може бути новою , повторною , тимчасово ігнорованою чи проігнорованою "
+"помилкою. Ви не побачите виправлені помилки у дампі , тому що він містить "
+"лише активні помилки. Тимчасово ігноровані помилки розглядаються як "
+"виправлені користувачем (так як є надія , що він найближчим часом виправить "
+"їх). Тимчасово ігноровані помилки з’являться у статусі „нова помилка“ при "
+"наступному оновленні , якщо помилка була виправлена. Ігноровані помилки "
+"розглядаються як помилкові і не з’являються знову. Якщо KeepRight помилився, "
+"це, швидше, виняток, і не може бути визнано правилом."
+
+#: interfacing.php:68
+msgid ""
+"Errors that were once cleared and come back at some point in time later are "
+"put in the <em>reopened</em> state. Please note that this may happen due to "
+"runtime-errors in the scripts. So you may just consider <em>new</em> and "
+"<em>reopened</em> the same."
+msgstr ""
+"Помилки, які були виправлені і з’явилися знову в тому ж місці, мають статус "
+"„повторна“.  Зазвичай це трапляється через помилки скриптів.  Ви можете "
+"вважати, що повторна помилка — це нова помилка."
+
+#: interfacing.php:69
+msgid ""
+"The verbose error message that comes out of the checking routine in English "
+"language. For translating the messages use the next columns"
+msgstr ""
+"Довгі повідомлення про помилки з’являються для маршрутизації англійською "
+"мовою.  Для перекладу використовуйте наступну колонку"
+
+#: interfacing.php:70
+msgid ""
+"This is the scaffold for the error description where placeholders (\"$i\") "
+"stand in place of the actual values inserted by the concrete error instance. "
+"You may put this scaffold inside a GNU gettext() function to have it "
+"translated. GNU gettext requires  a .po file that holds original and "
+"translated strings. You may use existing .po files from here: "
+msgstr ""
+"Це підтримка для опису помилок, коли покажчик („$i“) залишається в тому ж "
+"значенні і вставляється в конкретний приклад помилки.  Ви можете "
+"використовувати цю підтримку з функцією GNU gettext() для перекладу.  Для "
+"функції GNU gettext() необхідний .po-файл, який містить оригінальні та "
+"перекладені рядки.  Ви можете використовувати існуючий .po-файл звідси: "
+
+#: interfacing.php:70
+msgid "find the GNU gettext template file here:"
+msgstr "знайти GNU gettext-шаблон можна тут:"
+
+#: interfacing.php:71
+msgid ""
+"These bits of text are the contents that have to be inserted in the error "
+"message after translation. txt1 will replace $1, etc."
+msgstr ""
+"Ці частини тексту будуть вставлені e повідомлення про помилки, і після "
+"перекладу . txt1 буде замінений на $1 і т.п."
+
+#: interfacing.php:72
+msgid "Timestamp (MESZ) of when this error was found the first time"
+msgstr "Час (MESZ), коли ця помилка була виявлена ​​вперше."
+
+#: interfacing.php:73
+msgid ""
+"Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
+msgstr ""
+"Час (MESZ), коли ця помилка останній раз була переперевірена скриптом."
+
+#: interfacing.php:74
+msgid ""
+"Timestamp of the object that was used when checking, as found in the "
+"official planet file."
+msgstr ""
+"Час, коли у файлі планети був знайдений об`єкт, який використовується для "
+"перевірки."
+
+#: interfacing.php:76
+msgid ""
+"Location on the planet. Coordinates are given in the same projection as "
+"found in the official planet file. Please note that numbers are displayed as "
+"int values. To convert back to real lon/lat you have to divide by 10^7"
+msgstr ""
+"Місцезнаходження на планеті. Координати задані в тій же системі координат, "
+"як і у файлі планети. Зауважте, що значення відображаються цілими числами.  "
+"Для зворотного перетворення у реальні координати довгота/широта необхідно "
+"розділити на 10^7"
+
+#: interfacing.php:77
+msgid "User-comment (if any)"
+msgstr "Коментар користувача (якщо є)"
+
+#: interfacing.php:78
+msgid "Timestamp (MESZ) of when the comment was given (if any)"
+msgstr "Час (MESZ), коли був доданий коментар (якщо є)"
+
+#: interfacing.php:89
+msgid "User name of the user that last edited the given object."
+msgstr "Ім’я користувача, хто останнім редагував даний об’єкт."
+
+#: interfacing.php:82
+msgid "loading the errors table"
+msgstr "завантаження таблиці помилок"
+
+#: interfacing.php:85
+msgid "This is the schema definition for use with MySQL databases:"
+msgstr ""
+"Це алгоритм опису помилок, який використовується у базах даних MySQL:"
+
+#: interfacing.php:108
+msgid ""
+"Please note that <em>schema</em> is a reserved word in MySQL, so you always "
+"have to quote it like this: `schema`"
+msgstr ""
+"Зверніть увагу, що <em>schema</em> — зарезервоване слово в MySQL, тому, для "
+"його використання Вам необхідно виділяти його одинарними (англійськими) "
+"лапками: `schema`"
+
+#: interfacing.php:110
+msgid ""
+"There are two primary keys in this table: a natural one and an artificial "
+"one:"
+msgstr ""
+"Є два основні ключі у даній таблиці: один — природний (natural), другий — "
+"штучний (artificial):"
+
+#: interfacing.php:112
+msgid ""
+"The natural primary key consists of error_type, object_type, object_id, lat, "
+"lon. That means one type of error may be found on multiple spots belonging "
+"to one single object (eg. self-intersections of ways)."
+msgstr ""
+"Природний ключ містить: error_type, object_type, object_id, lat, lon.  Ключ "
+"може показати ситуацію, коли кілька разів помилково використовується один "
+"єдиний елемент (наприклад на самоперетині ліній)."
+
+#: interfacing.php:114
+msgid ""
+"The artificial primary key consists of schema and error_id. It is used just "
+"for simplicity of referencing individual error instances and it is "
+"completely redundant."
+msgstr ""
+"Штучний ключ складається з schema та error_id.  Він використовується лише "
+"для спрощення опису помилки, і є надлишковим ключем."
+
+#: interfacing.php:139
+msgid "querying node counts"
+msgstr "запитується кількість точок"
+
+#: interfacing.php:141
+msgid ""
+"As a waste-product the scripts create a file that contains the numer of "
+"nodes per square degree found in the planet file. Resolution is 0.1 degrees. "
+"You may download the file here:"
+msgstr ""
+"Як продукт відпрацювання, скрипти створять файл, що містить число точок на "
+"квадратний градус, знайдений у файлі планети.  Роздільна здатність складає "
+"0.1 градуса.  Ви можете звантажити файл тут:"
+
+#: interfacing.php:144
+msgid ""
+"This dump file can be useful for statistics if you want to calculate an "
+"`errors per node` measure"
+msgstr ""
+"Цей дамп-файл може бути корисно для статистики, якщо Ви хочете, щоб "
+"обчислити міру „помилок на точку“"

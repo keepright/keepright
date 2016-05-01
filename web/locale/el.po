@@ -1,16 +1,16 @@
-# Estonian translation for keepright
-# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# Greek translation for keepright
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the keepright package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2013-08-20 20:17+0000\n"
-"Last-Translator: e9625163 <Unknown>\n"
-"Language-Team: Estonian <et@li.org>\n"
+"PO-Revision-Date: 2013-10-04 09:39+0000\n"
+"Last-Translator: aitolos <Unknown>\n"
+"Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,181 +18,194 @@ msgstr ""
 "X-Generator: Launchpad (build 16976)\n"
 
 msgid "There is more than one node in this spot. Offending node IDs: $1"
-msgstr "Selles kohas on rohkem kui üks punkt. Vigaste punktide ID&apos;d: $1"
+msgstr ""
+"Υπάρχουν περισσότεροι από ένας κόμβος σε αυτό το σημείο. ID του "
+"προβληματικού κόμβου: $1"
 
 msgid "This coastline-way is not part of a closed-loop"
-msgstr "See rannajoon ei ole osa suletud ringist"
+msgstr "Αυτή η ακτογραμμή δεν είναι μέρος κάποιου κλειστού βρόγχου"
 
 msgid "This way is tagged with '$1=$2' and should be closed-loop."
-msgstr "See joon on sildistatud '$1=$2' ja peaks olema suletud ring."
+msgstr ""
+"Αυτή η διαδρομή είναι σεσημασμένη με '$1=$2' και πρέπει να είναι κλειστός "
+"βρόχος."
 
 msgid ""
 "The first node (id $1) of this one-way is not connected to any other way"
 msgstr ""
-"Selle ühesuunalise joone esimene punkt (id $1)  ei ole ühendatud ühegi teise "
-"joonega."
+"Ο πρώτος κόμβος (id $1) αυτού του μονόδρομου δεν είναι συνδεδεμένος σε "
+"κάποιο άλλο δρόμο"
 
 msgid ""
 "The last node (id $1) of this one-way is not connected to any other way"
 msgstr ""
-"Selle ühesuunalise joone viimane punkt (id $1)  ei ole ühendatud ühegi teise "
-"joonega."
+"Ο τελευταίος κόμβος (id $1) αυτού του μονόδρομου δεν είναι συνδεδεμένος σε "
+"κάποιο άλλο δρόμο"
 
 msgid ""
 "This node cannot be reached, because one-ways only lead away from here"
 msgstr ""
-"See punkt ei ole ligipääsetav kuna vaid ühesuunalised jooned viivad sellest "
-"punktist välja"
+"Αυτός ο κόμβος δεν μπορεί να προσεγγιστεί, επειδή οι μονόδρομοι οδηγούν "
+"εκτός αυτού."
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
 msgstr ""
-"Te ei saa sellest punktist väljuda kuna vaid ühesuunalised jooned toovad siia"
+"Δεν μπορείς να μετακινηθείς από αυτόν τον κόμβο, επειδή μονόδρομοι οδηγούν "
+"εδώ"
 
 msgid "This node is very close but not connected to way #$1"
-msgstr "See punkt on väga lähedal kuid mitte ühendatud joonega #$1"
+msgstr ""
+"Αυτός ο κόμβος είναι πολύ κοντά αλλά δεν είναι συνδεδεμένος στη διαδρομή #$1"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct."
 msgid "This $1 uses deprecated tag $2 = $3"
-msgstr "See $1 kasutab iganenud silti $2 = $3"
+msgstr "Αυτός(η) ο(η) $1 χρησιμοποιεί παρωχημένη ετικέτα $2 = $3"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
 msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
 msgstr ""
-"See $1 kasutab iganenud silti $2 = $3. Palun kasuta selle asemel $4 !"
+"Αυτός(η) ο(η) $1 χρησιμοποιεί παρωχημένη ετικέτα $2 = $3. Παρακαλώ "
+"χρησιμοποιήστε $4 αντί γι'αυτό"
 
 #. full mesage: "This way has an empty tag: name="
 msgid "This $1 has an empty tag: $2"
-msgstr "See $1 omab tühja silti: $2"
+msgstr "Αυτός(η) ο(η) $1 έχει μια άδεια ετικέτα: $2"
 
 msgid "This way has no tags"
-msgstr "Sellel joonel pole ühtegi silti"
+msgstr "Αυτή η διαδρομή δεν έχει ετικέτες"
 
 msgid "This node is not member of any way and does not have any tags"
-msgstr "See sõlm ei ole ühegi joone liige ning ei oma ühtegi silti"
+msgstr ""
+"Αυτός ο κόμβος δεν είναι μέλος κάποιας διαδρομής και δεν έχει καμία ετικέτα"
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
 "tag"
 msgstr ""
-"See joon on sildistatud kui motorway ja seetõttu vajab ref, nat_ref või "
-"int_ref silte"
+"Αυτή η διαδρομή έχει ετικέτα αυτοκινητόδρομου και άρα χρειάζεται ετικέτα "
+"ref, nat_ref ή int_ref"
 
 msgid ""
 "This $1 is tagged as place of worship and therefore needs a religion tag"
-msgstr "See $1 on sildistatud kui palvepaik ja seetõttu vajab silti religion"
+msgstr ""
+"Αυτός(η) ο(η) $1 είναι σεσημασμένο ως τόπος λατρείας, άρα χρειάζεται μια "
+"ετικέτα θρησκείας"
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
-msgstr "See punkt on sildistatud kui $1 ja seetõttu vajab name silti"
+msgstr ""
+"Αυτός ο κόμβος είναι σεσημασμένο ως $1 άρα χρειάζεται μια ετικέτα ονόματος"
 
 msgid ""
 "This node is tagged as $1 and therefore needs a name tag or an operator tag"
 msgstr ""
-"See punkt on sildistatud kui $1 ja seetõttu vajab name silti või operator "
-"silti"
+"Αυτός ο κόμβος είναι σεσημασμένο ως $1 άρα χρειάζεται μια ετικέτα ονόματος ή "
+"μια ετικέτα λειτουργού"
 
 msgid "This way has no nodes"
-msgstr "Sellel joonel pole ühtegi punkti"
+msgstr "Αυτή η διαδρομή δεν έχει κόμβους"
 
 msgid "This way has just one single node"
-msgstr "Sellel joonel on vaid üks punkt"
+msgstr "Αυτή η διαδρομή έχει ένα μόνο κόμβο"
 
 msgid "This way is not connected to the rest of the map"
-msgstr "See joon pole ühendatud ülejäänud kaardiga"
+msgstr "Αυτή η διαδρομή δεν είναι συνδεδεμένη στον υπόλοιπο χάρτη"
 
 msgid ""
 "This crossing of a highway and a railway needs to be tagged as "
 "railway=crossing or railway=level_crossing"
 msgstr ""
-"See tee ja raudtee ülesõidukoht tuleb sildistada kui railway=crossing või "
-"railway=level_crossing"
+"Αυτή η διασταύρωση δρόμου και σιδηρόδρομου χρειάζεται ετικέτα  "
+"railway=crossing ή railway=level_crossing"
 
 msgid ""
 "There are ways in different layers coming together in this railway crossing"
 msgstr ""
-"Selles raudtee ülesõidukohas saavad kokku erinevatelt kihtidelt tulevad "
-"jooned"
+"Υπάρχουν διαδρομές σε διαφορετικά επίπεδα που ενώνονται σε αυτή τη "
+"διασταύρωση σιδηρόδρομου"
 
 msgid ""
 "There are ways tagged as tunnel or bridge coming together in this railway "
 "crossing"
 msgstr ""
-"Selles raudtee ülesõidukohas saavad kokku jooned, mis on sildistatud kui "
-"tunnel või bridge (sild)"
+"Υπάρχουν διαδρομές με ετικέτες σήραγγα ή γέφυρα που ενώνονται σε αυτή τη "
+"διασταύρωση σιδηρόδρομου"
 
 #. full mesage: "This way is fixme-tagged: fixme=yes"
 msgid "This $1 is fixme-tagged: $2"
-msgstr "See $1 on sildistatud kui paranda-mind: $2"
+msgstr "Αυτή(ος) η(ο) $1 έχει ετικέτα fixme: $2"
 
 msgid "This relation has no type tag, which is mandatory for relations"
 msgstr ""
-"Sellel relatsioonil ei ole tüübi (type) silti, mis on kohustuslik "
-"relatsioonidele"
+"Αυτή η σχέση δεν έχει ετικέτα τύπος, η οποία είναι υποχρεωτική στις σχέσεις"
 
 #. full message: "This highway intersects the waterway #17..."
 msgid "This $1 intersects the $2 #$3 but there is no junction node"
-msgstr "See $1 ristub $2 $3 kuid ühenduspunkt puudub"
+msgstr ""
+"Αυτή(ος) η(ο)  $1 διασταυρώνεται με το(η) $2 #$3 αλλά δεν υπάρχει "
+"συνδετήριος κόμβος"
 
 #. full message: "This highway intersects the waterway #17"
 msgid "This $1 intersects the $2 #$3"
-msgstr "See $1 ristub $2 $3"
+msgstr "Αυτή(ος) η(ο)  $1 διασταυρώνεται με το(η) $2 #$3"
 
 #. full message: "This highway overlaps the waterway #17..."
 msgid "This $1 overlaps the $2 #$3"
-msgstr "See $1 kattub $2 $3"
+msgstr "Αυτή(ος) η(ο)  $1 αλληλοεπικαλύπτεται με το(η) $2 #$3"
 
 msgid "This way contains node #$1 $2 times. This may or may not be an error"
 msgstr ""
-"See joon omab punkti  #$1 $2 korda. See võib ja võib ka mitte olla viga"
+"Αυτή η διαδρομή περιέχει τον κόμβο #$1 $2 φορές, Αυτό ίσως να είναι λάθος"
 
 msgid ""
 "This way contains more than one node at least twice. Nodes are $1. This may "
 "or may not be an error"
 msgstr ""
-"See joon omab enam kui üht punkti vähemalt kaks korda. Punktid on $1. See "
-"võib ja võib ka mitte olla viga"
+"Αυτή η διαδρομή περιέχει περισσότερους από ένα κόμβο τουλάχιστον 2 φορές, Οι "
+"κόμβοι είναι  $1. Αυτό ίσως να είναι λάθος"
 
 msgid ""
 "This way has only two different nodes and contains one of them more than once"
 msgstr ""
-"See joon omab ainult kaht erinevat punkti ja sisaldab üht neist enam kui üks "
-"kord"
+"Αυτή η διαδρομή έχει μόνο δυο διαφορετικούς κόμβους και περιέχει τον ένα από "
+"αυτούς πάνω από μία φορά"
 
 msgid "The key of this node's tag is 'key': $2"
-msgstr "Selle punkti sildi väärtus on 'key' :$2"
+msgstr "Το κλειδί της ετικέτας αυτού του κόμβου είναι 'key': $2"
 
 msgid "The key of this way's tag is 'key': $2"
-msgstr "Selle joone sildi väärtus on 'key' :$2"
+msgstr "Το κλειδί της ετικέτας αυτής της διαδρομής είναι 'key': $2"
 
 msgid "The key of this relation's tag is 'key': $2"
-msgstr "Selle relatsiooni sildi väärtus on 'key' :$2"
+msgstr "Το κλειδί της ετικέτας αυτής της σχέσης είναι 'key': $2"
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
-msgstr "See $1 on sildistatud '$2=$3' kus $4 võiks olla $5"
+msgstr "Αυτή η $1 έχει ετικέτα '$2=$3' όπου $4 μοιάζει ως $5"
 
 #. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
 msgid "This node is a junction of ways on different layers: $1"
-msgstr "See punkt on erinevatel kihtidel olevate joonte ühendus: $1"
+msgstr "Αυτός ο κόμβος είναι διακλάδωση διαδρομών σε διαφορετικά επίπεδα: $1"
 
 msgid ""
 "If this mini roundabout is in a country with left-hand traffic then it "
 "should have a tag 'direction=clockwise'"
 msgstr ""
-"Kui see väike ringristmik on riigis, kus on vasaku käeline liiklus, siis "
-"peaks sellel olema silt 'direction=clockwise'"
+"Αν αυτός ο μικρός κυκλικός κόμβος είναι σε χώρα με οδήγηση αριστερά θα "
+"πρέπει να έχει ετικέτα 'direction=clockwise'"
 
 msgid ""
 "If this mini roundabout is in a country with right-hand traffic then it "
 "should not have a tag 'direction=clockwise'"
 msgstr ""
-"Kui see väike ringristmik on riigis, kus on parema käeline liiklus, siis ei "
-"peaks sellel olema silti 'direction=clockwise'"
+"Αν αυτός ο μικρός κυκλικός κόμβος είναι σε χώρα με οδήγηση δεξιά δεν πρέπει "
+"να έχει ετικέτα 'direction=clockwise'"
 
 msgid ""
 "This $1 is tagged with layer $2. This need not be an error, but it looks "
 "strange"
 msgstr ""
-"See $1 on sildistatud kihiga $2. See ei pea olema viga, kuid tundub kummaline"
+"Αυτή η $1 έχει ετικέτα με επίπεδο $2. Αυτό δεν είναι σίγουρα σφάλμα, αλλά "
+"φαίνεται περίεργο"
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
@@ -201,53 +214,47 @@ msgid ""
 msgstr ""
 
 msgid "This boundary has no name"
-msgstr "Sellel piiril pole nime"
+msgstr "Αυτό το όριο δεν έχει όνομα"
 
 msgid "The boundary of $1 has no admin_level"
-msgstr "$1 piiril ei ole admin_level silti"
+msgstr "Το όριο του $1 δεν έχει admin_level"
 
 msgid ""
 "The boundary of $1 has no valid numeric admin_level. Please do not use admin "
 "levels like for example 6;7. Always tag the lowest admin_level of all "
 "boundaries."
 msgstr ""
-"$1 piiril ei ole õiget numbrilist sildi admin_level väärtust. Palun ära "
-"kasuta tasemeid nagu näiteks 6;7. Alati sildista kõigi piiride madalaim tase "
-"(admin_level)."
 
 msgid "The boundary of $1 is not closed-loop"
-msgstr "$1 piir ei ole suletud ring"
+msgstr "Το όριο του $1 δεν είναι κλειστός βρόγχος"
 
 msgid "The boundary of $1 splits here"
-msgstr "$1 piir pooldub siin"
+msgstr "Το όριο του $1 διακόπτεται εδώ"
 
 msgid ""
 "This boundary-way has admin_level $1 but belongs to a relation with lower "
 "admin_level (higher priority); it should have the lowest admin_level of all "
 "relations"
 msgstr ""
-"See piiri joon on admin_level $1 kuid kuulub relatsiooni, mis on madalama "
-"admin_level väärtusega(kõrgema prioriteediga); Sellel peaks olema kõigi "
-"relatsioonide madalaim admin_level"
 
 msgid "This turn-restriction has no restriction type"
-msgstr "Sellel pööramise piirangul pole piirangu tüüpi"
+msgstr "Αυτός ο περιορισμός στροφής δεν έχει κάποιο τύπο περιορισμού"
 
 msgid "This turn-restriction has no known restriction type"
-msgstr "Sellel pööramise piirangul pole tuntud piirangu tüüpi"
+msgstr "Αυτός ο περιορισμός στροφής δεν έχει κάποιο γνωστό τύπο περιορισμού"
 
 msgid "A turn-restriction needs exactly one $1 member. This one has $2"
-msgstr "Pööramise piirang vajab täpselt ühte $1 liiget. Sellel on $2"
+msgstr "Ο περιορισμός στροφής χρειάζεται ακριβώς ένα μέλος $1. Αυτός έχει $2"
 
 msgid "From- and To-members of turn restrictions need to be ways. $1"
 msgstr ""
-"Pööramise piirnagute Kust-(From) ja Kuhu-(To) liikmed peavad olema jooned. $1"
+"Τα μέλη Από- και Προς- ενός περιορισμού στροφής πρέπει να είναι διαδρομές. $1"
 
 msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
 msgstr ""
-"Pööramise piirnagute Kust-(From), Läbi-(Via) ja Kuhu-(To) liikmed peavad "
-"olema ühendatud"
+"Τα μέλη Από- Μέσω- και Προς- ενός περιορισμού στροφής πρέπει να είναι "
+"συνδεμένα"
 
 msgid "via (node #$1) is not the first or the last member of from (way #$2)"
 msgstr ""
@@ -267,67 +274,61 @@ msgid "entry already prohibited by oneway tag on $1"
 msgstr ""
 
 msgid "missing maxspeed tag"
-msgstr "puuduv maksimaalse kiiruse (maxspeed) silt"
+msgstr "Απουσία ετικέτας maxspeed"
 
 msgid ""
 "This way is part of a roundabout but is not closed-loop. (split carriageways "
 "approaching a roundabout should not be tagged as roundabout)"
 msgstr ""
-"See joon on osa ringristmikustkuid ei ole suletud ring. (ristmikule tulevad "
-"sõiduteed ei peaks olema sildistatud kui ringristmikud (roundabout))"
 
 msgid ""
 "If this roundabout is in a country with right-hand traffic then its "
 "orientation goes the wrong way around"
 msgstr ""
-"Kui see ringristmik on parema käelise liiklusega riigis siis selle suund on "
-"valepidine"
+"Αν αυτός ο κυκλικός κόμβος βρίσκεται σε χώρα με οδήγηση δεξιά τότε η "
+"κατεύθυνσή του πάει ανάποδα"
 
 msgid ""
 "If this roundabout is in a country with left-hand traffic then its "
 "orientation goes the wrong way around"
 msgstr ""
-"Kui see ringristmik on vasaku käelise liiklusega riigis siis selle suund on "
-"valepidine"
+"Αν αυτός ο κυκλικός κόμβος βρίσκεται σε χώρα με οδήγηση αριστερά τότε η "
+"κατεύθυνσή του πάει ανάποδα"
 
 msgid ""
 "This way is tagged as highway=$1_link but doesn't have a connection to any "
 "other $1 or $1_link"
 msgstr ""
-"See joon on sildistatud kui highway=$1_link kuid ei oma ühendust ühegi teise "
-"$1 või $1_link"
 
 msgid ""
 "This bridge does not have a tag in common with its surrounding ways that "
 "shows the purpose of this bridge. There should be one of these tags: $1"
 msgstr ""
-"See sild ei oma ühist silti seda ümbritsevate joontega, mis näitaks silla "
-"eesmärki.  Sillal peaks olema üks neist siltidest: $1"
 
 msgid "The URL ($1) cannot be opened (HTTP status code $2)"
-msgstr "URL'i ($1) ei ole võimalik avada (HTTP seisundi kood $2)"
+msgstr ""
 
 msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
 msgstr ""
 
 msgid "Content of the URL ($1) did not contain these keywords: ($2)"
-msgstr "URL'i ($1)sisus ei olnud neid võtmesõnu: ($2)"
+msgstr ""
 
 #. translations for error type names
 #. please keep this as short as possible
 msgid "multiple nodes on the same spot"
-msgstr "mitu punkti ühes kohas"
+msgstr "Πολλαπλοί κόμβοι στο ίδιο σημείο"
 
 msgid ""
 "Try to find nodes that are (almost) on the same spot. Distances less than +/-"
 "0.5 meters are considered zero"
 msgstr ""
-"Proovi leida punktid, mis on (peaaegu) ühes kohas. Vahemaid vähem kui +/-0,5 "
-"meetrit loetakse nulliks"
+"Προσπάθεια να βρεθούν κόμβοι που είναι (σχεδόν) στο ίδιο σημείο. Αποστάσεις "
+"μικρότερες από +/-0.5 μέτρα θεωρούνται μηδέν."
 
 #. please keep this as short as possible
 msgid "non-closed areas"
-msgstr "mitte suletud alad"
+msgstr "μή-κλειστές περιοχές"
 
 msgid ""
 "By convention ways tagged with special combinations of key and value pairs "
@@ -336,16 +337,10 @@ msgid ""
 "map! The standard.xml file is used to determine which key-value-combinations "
 "are drawn as areas; any instance of these has to be closed-loop."
 msgstr ""
-"Kokkuleppe kohaselt jooni, mis on sildistatud erilise atribuudi ja väärtuse "
-"paariga loetakse aladeks ja joonistatakse ka nii kaardile. Seetõttu on "
-"vajalik, et need moodustaks suletud ringi. Mitte suletud alad on kaardil "
-"nähtamatud! Faili standard.xml kasutatakse teada saamaks, missuguseid "
-"atribuudi-väärtuse paare koheldakse kui alasid. Kõik need peavad olema "
-"suletud ringid."
 
 #. please keep this as short as possible
 msgid "dead-ended one-ways"
-msgstr "tupik ühesuunalised"
+msgstr "Αδιέξοδοι μονόδρομοι"
 
 msgid ""
 "Streets tagged as one-way must not be dead-ended (where should all the cars "
@@ -353,28 +348,20 @@ msgid ""
 "end) cannot be reached (escaped from). Please note that motorways and "
 "motorway_links are considered one-way implicitly, so this check applies."
 msgstr ""
-"Tänavad, mis on sildistatud kui ühesuunalised ei tohi olla tupikud (kuhu "
-"kuhjatakse kõik autod tee lõpus?). Punktid, kus vaid ühesuunalised teed "
-"algavad (või lõppevad) ei ole ligipääsetavad (väljapääsetavad). Märkus: "
-"Kiirteed (motorway) ja Kiirtee peale-/mahasõiduteid (motorway_links) "
-"koheldakse kui ühesuunalisi, seega seda kontrolli reakendatakse."
 
 #. please keep this as short as possible
 msgid "almost-junctions"
-msgstr "pea-aegu ühendused"
+msgstr "σχεδόν-διακλάδωση"
 
 msgid ""
 "Streets that have (at least) one unconnected end are examined here. If such "
 "an end-node is very close to any other way an error is reported. Unconnected "
 "end-nodes should probably be connected to adjacent ways."
 msgstr ""
-"Siin kontrollitakse tänavaid, mis omavad (vähemalt) ühte ühendamata lõppu. "
-"Kui selline lõpu punkt on väga lähedal teisele joonele, teatatakse veast. "
-"Ühendamata lõpu punktid tuleks arvatavasti ühendada lähedalasuva joonega."
 
 #. please keep this as short as possible
 msgid "deprecated tags"
-msgstr "iganenud sildid"
+msgstr "Παρωχημένες ετικέτες"
 
 msgid ""
 "As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some "
@@ -383,71 +370,61 @@ msgid ""
 "free to tag anything the way you like. This is just a hint for new tagging "
 "conventions that have evolved in the meantime."
 msgstr ""
-"Nagu näidatud veebilehel "
-"http://wiki.openstreetmap.org/index.php/Deprecated_features mõned sildid "
-"asenduvad teistega kui uued sildistamise kokkulepped tekivad. Võta seda kui "
-"märkust, mitte kui viga. Termin 'iganenud' on iganenud; sa oled vaba "
-"sildistama kõike nii nagu soovid. See on lihtsalt vihje uutele sildistamis "
-"kokkulepetele, mis on vahepeal tekkinud."
 
 #. please keep this as short as possible
 msgid "missing tags"
-msgstr "puuduvad sildid"
+msgstr "Απούσες ετικέτες"
 
 msgid ""
 "Ways, nodes and relations should in most cases have at least one tag "
 "(besides created_by)"
 msgstr ""
-"Jooned, punktid ja relatsioonid peaksid enamikel juhtudel omama vähemalt üht "
-"silti (peale created_by)"
+"Διαδρομές, κόμβοι και σχέσεις πρέπει στις περισσότερες περιπτώσεις να έχουν "
+"τουλάχιστον μία ετικέτα (εκτός του created_by)"
 
 #. please keep this as short as possible
 msgid "motorways without ref"
-msgstr "Kiirteed ilma ref"
+msgstr "Αυτοκινητόδρομος χωρίς ref"
 
 msgid ""
 "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
 "mandatory as they are very important information"
 msgstr ""
-"ref silt näitab kiirteede viidet (nt. 'A 10'). Need on kohustuslikud kuna "
-"need on väga oluliseks infoks"
 
 #. please keep this as short as possible
 msgid "places of worship without religion"
-msgstr "palvekohad ilma religioonita"
+msgstr "χώροι λατρείας χωρίς θρησκεία"
 
 msgid ""
 "Churches, mosques and synagogues etc. need an extra religion tag giving info "
 "about the religion"
 msgstr ""
-"Kirikud, mošeed ja sünagoogid jne. vajavad lisaks religiooni (religion) "
-"silti andmaks infot religiooni kohta"
+"Ναοί, τεμένη, συναγωγές κλπ, χρειάζονται μια ετικέτα θρησκεία δίνοντας "
+"πληροφορίες σχετικά με τη θρησκεία"
 
 #. please keep this as short as possible
 msgid "point of interest without name"
-msgstr "huvikohad ilma nimeta"
+msgstr "σημείο ενδιαφέροντος χωρίς όνομα"
 
 msgid ""
 "The name tag should be specified for every point of interest as its content "
 "gets rendered in the map next to the POI symbol"
 msgstr ""
-"Nime silt peaks olema igal huvikohal seatud kuna see kujutatakse kaardile "
-"huvikoha sümboli kõrvale"
 
 #. please keep this as short as possible
 msgid "ways without nodes"
-msgstr "punktideta jooned"
+msgstr "διαδρομές χωρίς κόμβους"
 
 msgid ""
 "Ways that don't consist of at least two nodes don't make much sense as they "
 "won't get rendered."
 msgstr ""
-"Jooned, mis ei koosne vähemalt kahest punktist, ei oma suurt mõtet, kuna "
-"neid ei kuvata."
+"Διαδρομές που δεν αποτελούνται από τουλάχιστον δυο κόμβους δεν έχουν και "
+"πολύ σημασία καθότι δεν εμφανίζονται."
 
 #. please keep this as short as possible
 msgid "floating islands"
-msgstr "ujuvad saared"
+msgstr "επιπλέουσες νησίδες"
 
 msgid ""
 "Any highways drawn on the map should be accessible by car starting anywhere "
@@ -455,13 +432,10 @@ msgid ""
 "this check, so almost any island in the sea should be reachable starting "
 "from the mainland."
 msgstr ""
-"Iga tee, mis on joonistatud kaardile peaks olema maismaalt ligipääsetav. "
-"Praamid ja teed (isegi raudtee platvormid) on selle kontrolliga hõlmatud, "
-"seega pea iga saar meres peaks olema maismaalt ligipääsetav"
 
 #. please keep this as short as possible
 msgid "railway crossings without tag"
-msgstr "sildita raudtee ületuskohad"
+msgstr "Διασταύρωση σιδηροτροχιάς χωρίς ετικέτα"
 
 msgid ""
 "(Level)-Crossings of railways and highways should have a common node as "
@@ -469,46 +443,40 @@ msgid ""
 "where larger vehicles can cross or with 'railway=crossing' if it is a "
 "crossing just for pedestrians"
 msgstr ""
-"Raudteede ja teede ristumised peaksid omama ühist punkti, mis on sildistatud "
-"'railway=level_crossing' kui selles kohas saavad suuremad sõidukid üle sõita "
-"või sildiga 'railway=crossing' kui see on vaid ülekäigukoht jalakäijatele"
 
 #. please keep this as short as possible
 msgid "wrongly used railway crossing tag"
-msgstr "valesti kasutatud raudtee ületuse silt"
+msgstr "λάθος χρήση ετικέτας διασταύρωσης σιδηροτροχιάς"
 
 msgid ""
 "Ways that take part in level-crossings of railways and highways have to be "
 "on the same layer and should in the normal case be not tagged as bridge or "
 "tunnel"
 msgstr ""
-"jooned, mis võtavad osa raudteede ja teede samatasandilistest ristumistest "
-"peavad olema samal kihil ja tavaliselt mitte olema sildistatud kui sild "
-"(bridge) või tunnel"
 
 #. please keep this as short as possible
 msgid "fixme-tagged items"
-msgstr "paranda-mind sildistatud asjad"
+msgstr "στοιχεία με ετικέτα fixme"
 
 msgid ""
 "Nodes, ways or relations that are tagged with FIXME should be reviewed..."
 msgstr ""
-"Punktid, jooned või relatsioonid, mis on sildistatud kui paranda-mind tuleks "
-"üle vaadata..."
+"Κόμβοι, διαδρομές ή σχέσεις τα οποία είναι σεσημασμένα με ετικέτα FIXME "
+"πρέπει να επανεξετάζονται..."
 
 #. please keep this as short as possible
 msgid "relations without type"
-msgstr "ilma tüübita relatsioonid"
+msgstr "σχέση χωρίς τύπο"
 
 msgid ""
 "Find any relation that has no type tag, wich is mandatory for relations."
 msgstr ""
-"Leia mõni relatsioon, millel pole tüübi (type) silti, mis on kohustuslik "
-"relatsioonidele."
+"Αναζήτησε κάθε σχέση η οποία δεν έχει ετικέτα τύπος (type), η οποία είναι "
+"υποχρεωτική για τις σχέσεις."
 
 #. please keep this as short as possible
 msgid "intersections without junctions"
-msgstr "ühenduseta ristmikud"
+msgstr "διασταυρώσεις χωρίς σύνδεση"
 
 msgid ""
 "Streets that graphically intersect need a common node that represents the "
@@ -516,83 +484,75 @@ msgid ""
 "bridges or tunnels). Intersections of streets with other objects like "
 "waterways or riverbanks should be avoided"
 msgstr ""
-"Tänavad, mis visuaalselt ristuvad vajavad ühist punkti mis tähistaks "
-"ristumist. Ainukene erand on eri kihtidel olevad ristmikud (nt sillad või "
-"tunnelid). Tänavate ristumisi teiste objektide nagu veeteed ja jõekaldad, "
-"tuleks vältida."
+"Οδοί οι οποίοι γραφιστικά διασταυρώνονται χρειάζονται ένα κοινό κόμβο ο "
+"οποίος αναπαριστά τη διασταύρωση. Η μόνη εξαίρεση είναι οι διασταυρώσεις σε "
+"διαφορετικά επίπεδα (π.χ. γέφυρες ή στοές). Διασταυρώσεις οδών με άλλα "
+"αντικείμενα όπως υδατοδιαδρομές ή όχθες ποταμών πρέπει να αποφεύγονται"
 
 #. please keep this as short as possible
 msgid "highway-highway"
-msgstr "tee-tee"
+msgstr "δρόμος-δρόμος"
 
 #. please keep this as short as possible
 msgid "highway-waterway"
-msgstr "tee-veetee"
+msgstr "δρόμος-υδατοδιαδρομή"
 
 #. please keep this as short as possible
 msgid "highway-riverbank"
-msgstr "tee-jõekallas"
+msgstr "δρόμος-όχθη ποταμού"
 
 #. please keep this as short as possible
 msgid "waterway-waterway"
-msgstr "veetee-veetee"
+msgstr "υδατοδιαδρομή-υδατοδιαδρομή"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-cyclew/footp"
-msgstr "rattat/jalgt-rattat/jalgt"
+msgstr ""
 
 #. please keep this as short as possible
 msgid "highway-cyclew/footp"
-msgstr "tee-rattat/jalgt"
+msgstr ""
 
 #. please keep this as short as possible
 msgid "cyclew/footp-waterway"
-msgstr "rattat/jalgt-veetee"
+msgstr ""
 
 #. please keep this as short as possible
 msgid "cyclew/footp-riverbank"
-msgstr "rattat/jalgt-jõekallas"
+msgstr ""
 
 #. please keep this as short as possible
 msgid "overlapping ways"
-msgstr "kattuvad jooned"
+msgstr "αλληλεπικαλυπτόμενες διαδρομές"
 
 msgid ""
 "Segments of ways that lie on top of each other (the same nodes connected by "
 "different ways in the same order) are a problem for routing software. They "
 "happen accidently and are hard to find."
 msgstr ""
-"Joone tükid, mis asetsevad üksteise peal (samad punktid on ühendatud "
-"erinevate joontega samas järjekorras) on probleemiks marsruutimise "
-"tarkvarale. Need kattumised juhtuvad kogemata ning neid on raske leida."
 
 #. please keep this as short as possible
 msgid "loopings"
-msgstr "ringid"
+msgstr "Βρόγχοι"
 
 msgid ""
 "Any way that contains any single node more than twice is considered an "
 "error. Any way may contain just one node twice. If more than one node is "
 "found twice it is considered an error."
 msgstr ""
-"Iga joon, mis sisaldab mõnda punkti enam kui 2 korda, loetakse veaks. Iga "
-"tee võib sisaldada vaid ühte punkti kaks korda. Kui leitakse enam kui üks "
-"punkt kaks korda, loetakse seda veaks."
 
 #. please keep this as short as possible
 msgid "misspelled tags"
-msgstr "valesti kirjutatud sildid"
+msgstr "ανορθόγραφες ετικέτες"
 
 msgid ""
 "Tags that are used very seldom and almost look like very common tags (only "
 "one character difference) are reported as a warning."
 msgstr ""
-"Sildid, mida kasutatakse väga harva ja mis peaaegu paistavad kui väga sageli "
-"kasutatavad sildid (vahe vaid ühes tähes), teatatakse kui hoiatused."
 
 #. please keep this as short as possible
 msgid "layer conflicts"
-msgstr "kihtide konfliktid"
+msgstr "Διενέξεις επιπέδου"
 
 msgid ""
 "Connected ways should be on the same layer. Crossings on intermediate nodes "
@@ -602,23 +562,18 @@ msgid ""
 "note that bridges are set to layer +1, and tunnels to -1, anything else to "
 "layer 0 implicitly if no layer tag is present."
 msgstr ""
-"Ühendatud teed peaks olema samal kihil. Ilmselgelt on eri kihtidel pu nktiga "
-"ühendatud joonte ühendused valed. Ristmikud eri kihtidel joonte lõpu "
-"punktidel on samuti iganenud kuid sageli kasutuses. Seega võid sa seda "
-"kontrolli ignoreerida ja eraldi välja lülitada. Märkus: sillad asuvad kihil "
-"+1 ja tunnelid kihil -1. Kõik muu kihil 0 kui kihi(layer) silti pole seatud."
 
 #. please keep this as short as possible
 msgid "mixed layers intersections"
-msgstr "ristumised eri kihtidel"
+msgstr "Διασταύρωση σε διαφορετικά επίπεδα"
 
 #. please keep this as short as possible
 msgid "strange layers"
-msgstr "imelikud kihid"
+msgstr "ασυνήθιστα επίπεδα"
 
 #. please keep this as short as possible
 msgid "motorways connected directly"
-msgstr "vahetult ühendatud kiirteed"
+msgstr "αυτοκινητόδρομοι συνδεδεμένοι απευθείας"
 
 msgid ""
 "Motorways should only be connected to other motorways or motorway_links. "
@@ -627,16 +582,10 @@ msgid ""
 "positives on motorways ending in cities but it can be a valuable tool for "
 "looking up unwanted connections of motorways and other roads."
 msgstr ""
-"Kiirteed peaks olema ühendatud vaid kiirteedega või kiirteede peale-"
-"/mahasõiduteedega. Need ei tohiks veel eriti olla ühendatud teedega mis on "
-"sildistatud kui: highway=primary või highway=residential. Märkus: See "
-"kontroll võib tekitada vale-positiivseid kiirteedel, mis lõppevad linnades "
-"kuid see võib olla väärtuslik tääriist otsimaks ebasoovitud ühendusi "
-"kiirteede ja muude teedega."
 
 #. please keep this as short as possible
 msgid "boundaries"
-msgstr "piirid"
+msgstr "όρια"
 
 msgid ""
 "Administrative Boundaries can be expressed either by tagging ways or by "
@@ -644,34 +593,30 @@ msgid ""
 "they must not self-intersect or split and they must have a name and an "
 "admin_level."
 msgstr ""
-"Administratiiv piire saab väljendada, kas sildistades jooni või lisades need "
-"relatsiooni. Need peavad olema suletud ringid joonte jadast, need ei tohi "
-"iseendaga ristuda või jaguneda ning peavad omama nime(name) ja admin_level "
-"silti"
 
 #. please keep this as short as possible
 msgid "missing name"
-msgstr "puuduv nimi"
+msgstr "Απουσία ονόματος"
 
 #. please keep this as short as possible
 msgid "missing admin_level"
-msgstr "puuduv admin_level"
+msgstr "απουσία admin_level"
 
 #. please keep this as short as possible
 msgid "not closed loop"
-msgstr "mitte suletud ring"
+msgstr "μη κλειστός βρόχος"
 
 #. please keep this as short as possible
 msgid "splitting boundary"
-msgstr "jagunev piir"
+msgstr "κομμένο όριο"
 
 #. please keep this as short as possible
 msgid "admin_level too high"
-msgstr "liiga kõrge admin_level"
+msgstr "πολύ υψηλό admin_level"
 
 #. please keep this as short as possible
 msgid "restrictions"
-msgstr "piirangud"
+msgstr "περιορισμοί"
 
 msgid ""
 "This check is about turn restrictions defined by relations. A turn "
@@ -679,27 +624,22 @@ msgid ""
 "another way as 'to' member and optionally one or more ways or nodes as via "
 "members that need to be connected to 'from' and 'to'"
 msgstr ""
-"See kontroll on relatsioonide poolt defineeritud pööramis piirangute kohta. "
-"Pööramis piirangu relatsioon vajab õiget tüübi (type) atribuuti, joont kust "
-"(from) liikmena, teist joont kuhu (to) liikmena ja valikuliselt veel jooni "
-"või punkte kui läbi (via) liikmetena, mis peavad olema ühendatud kust ja "
-"kuhu joontega."
 
 #. please keep this as short as possible
 msgid "missing type"
-msgstr "puuduv tüüp"
+msgstr "απουσία τύπου"
 
 #. please keep this as short as possible
 msgid "missing from way"
-msgstr "puuduv kust (from) joon"
+msgstr "απουσία διαδρομής από"
 
 #. please keep this as short as possible
 msgid "missing to way"
-msgstr "puuduv kuhu (to) joon"
+msgstr "απουσία διαδρομής πρός"
 
 #. please keep this as short as possible
 msgid "missing maxspeed"
-msgstr "puuduv maksimaalne kiirus"
+msgstr "Απουσία μέγιστης ταχύτητας"
 
 msgid ""
 "maxspeed tags are not mandatory but they are very helpful for successful "
@@ -707,25 +647,19 @@ msgid ""
 "tag. Please only add maxspeed tags if the allowed maxspeed differs from the "
 "default speed for the given highway!"
 msgstr ""
-"Maksimaalse kiiruse (maxspeed) sildid pole kohustuslikud kuid on väga "
-"abistavad edukaks marsruutimiseks. See kontroll aitab leida kasutajatel teid "
-"ilma maksimaalse kiiruse sildita. Palun lisa maksimaalse kiiruse silt vaid "
-"juhul kui see erineb teel lubatud vaikeväärtusest."
 
 #. please keep this as short as possible
 msgid "roundabouts"
-msgstr "ringristmikud"
+msgstr "Κυκλικοί κόμβοι"
 
 msgid ""
 "roundabout are always one-way streets directed counter-clockwise in right-"
 "hand driving countries or clockwise in left-hand driving countries."
 msgstr ""
-"Ringristmikud on alati ühesuunalised teed vastukella parema käelise "
-"liiklusega maades ja kella suunas vasaku käelise lliiklusega maades."
 
 #. please keep this as short as possible
 msgid "wrong direction"
-msgstr "vale suund"
+msgstr "λάθος κατεύθυνση"
 
 #. please keep this as short as possible
 msgid "faintly connected"
@@ -733,20 +667,17 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "*_link-connections"
-msgstr "*_link-ühendused"
+msgstr ""
 
 msgid ""
 "Any highway tagged as (motorway|trunk|primary|secondary)_link should have at "
 "least one connection to a (motorway|trunk|primary|secondary) highway or a "
 "_link highway of the same type"
 msgstr ""
-"Iga tee sildistatud kui (motorway|trunk|primary|secondary)_link peaks omama "
-"vähemalt üht ühendust (motorway|trunk|primary|secondary) teele või ühendust "
-"_link teele samast tüübist."
 
 #. please keep this as short as possible
 msgid "bridge-tags"
-msgstr "silla sildid"
+msgstr ""
 
 msgid ""
 "Someone draws a bridge and forgets to tag it as highway... A bridge should "
@@ -754,14 +685,10 @@ msgid ""
 "Currently these are: highway, railway, cycleway, waterway, footway, piste, "
 "aerialway, pipeline, building, via_ferrata"
 msgstr ""
-"Keegi joonistab silla ja unustab selle sildistada kui tee... Sild peaks "
-"alati omama ühte peamist silti mida selle naaberjooned omavad. Hetkel need "
-"on: highway, railway, cycleway, waterway, footway, piste, aerialway, "
-"pipeline, building, via_ferrata"
 
 #. please keep this as short as possible
 msgid "language unknown"
-msgstr "keel teadmata"
+msgstr "άγνωστη γλώσσα"
 
 msgid ""
 "To help applications choose the best matching language they should know the "
@@ -775,11 +702,13 @@ msgid ""
 "It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
 "shows the language of its name ''$2''."
 msgstr ""
+"Θα ήταν καλύτερα αν αυτός(η) ο(η) $1 είχε μια πρόσθετη ετικέτα "
+"''name:XX=$2'' όπου το ΧΧ δείχνει τη γλώσσα του ονόματος ''$2''."
 
 #. this is about points of interest drawn inside a building of the same name
 #. please keep this as short as possible
 msgid "doubled places"
-msgstr "topeltkohad"
+msgstr "διπλά μέρη"
 
 msgid ""
 "a node inside of an area that is tagged with same name and representing the "
@@ -798,7 +727,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "non-physical use of sport-tag"
-msgstr ""
+msgstr "αφύσικη χρήση ετικέτας αθλήματος"
 
 msgid ""
 "&apos;sports&apos; is a non-physical tag that needs to be bound to some "
@@ -814,7 +743,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "missing tracktype"
-msgstr ""
+msgstr "απουσία τύπου χωματόδρομου"
 
 msgid ""
 "highway=track ways should be added with more detail about the tracktype "
@@ -823,11 +752,11 @@ msgid ""
 msgstr ""
 
 msgid "This track doesn't have a tracktype"
-msgstr ""
+msgstr "Αυτός ο χωματόδρομος δεν έχει τύπο χωματόδρομου"
 
 #. please keep this as short as possible
 msgid "geometry glitches"
-msgstr ""
+msgstr "γεωμετρικές ανωμαλίες"
 
 msgid ""
 "looks for impossible sharp angles on highways and junctions. These may be "
@@ -837,14 +766,14 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "missing turn restriction"
-msgstr ""
+msgstr "απουσία περιορισμού στροφής"
 
 #. please keep this as short as possible
 msgid "impossible angles"
-msgstr ""
+msgstr "αδύνατες γωνίες"
 
 msgid "this way bends in a very sharp angle here"
-msgstr ""
+msgstr "αυτή η διαδρομή στρίβει σε πολύ απότομη γωνία εδώ"
 
 msgid ""
 "ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
@@ -863,11 +792,11 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "website"
-msgstr ""
+msgstr "ιστότοπος"
 
 #. please keep this as short as possible
 msgid "http error"
-msgstr ""
+msgstr "σφάλμα http"
 
 #. please keep this as short as possible
 msgid "domain hijacking"
@@ -902,29 +831,29 @@ msgstr ""
 #. translations for the web pages
 #: index.php:9
 msgid "data consistency checks for OSM"
-msgstr "andmete terviklikkuse kontrollid OSM'i jaoks"
+msgstr "Έλεγχος συνέπειας δεδομένων OSM"
 
 #: index.php:11
 msgid "keep-right logo"
-msgstr "keep-right logo"
+msgstr "λογότυπο keep-right"
 
 #: index.php:13
 #, php-format
 msgid "data consistency checks for %sOSM%s"
-msgstr "andmete terviklikkuse kontrollid %sOSM%s"
+msgstr "Έλεγχος συνέπειας δεδομένων %sOSM%s"
 
 #: index.php:20
 msgid ""
 "These pages show checks that are run on a local excerpt database filled with "
 "OSM data."
 msgstr ""
-"Need leheküljed näitavad kontrolle, mida jooksutatakse kohaliku OSM "
-"andmetega andmebaasi peal."
+"Αυτές οι σελίδες εμφανίζουν ελέγχους που τρέχουν σε ένα τοπικό απόσπασμα "
+"βάσης δεδομένων γεμισμένη με δεδομένα OSM"
 
 #: index.php:23
 #, php-format
 msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
-msgstr "Andmekontrollid Euroopa jaoks%s (Alguspunkt Viin,Austria)"
+msgstr "Έλεγχος δεδομένων για την Ευρώπη%s (Σημείο έναρξης Βιένη, Αυστρία)"
 
 #: index.php:27
 msgid "Data Checks for Australia%s (Starting point Sydney)"
@@ -933,17 +862,18 @@ msgstr ""
 #: index.php:30
 #, php-format
 msgid "Data Checks for Africa%s (Starting point Cairo, Egypt)"
-msgstr "Andmekontrollid Aafrika jaoks%s (Alguspunkt Kairo, Egiptus)"
+msgstr "Έλεγχος δεδομένων για την Αφρική%s (Σημείο έναρξης Κάιρο, Αίγυπτος)"
 
 #: index.php:33
 #, php-format
 msgid "Data Checks for Canada%s (Starting point Québec)"
-msgstr "Andmekontrollid Kanada jaoks%s (Alguspunkt Québec)"
+msgstr "Έλεγχος δεδομένων για τον Καναδά%s (Σημείο έναρξης Κεμπέκ)"
 
 #: index.php:36
 #, php-format
 msgid "Data Checks for USA%s (Starting point Philadelphia, PA)"
-msgstr "Andmekontrollid USA jaoks%s (Alguspunkt Philadelphia, PA)"
+msgstr ""
+"Έλεγχος δεδομένων για τις ΗΠΑ%s (Σημείο έναρξης Φιλαδέλφεια, Πενσιλβανία)"
 
 #: index.php:39
 #, php-format
@@ -951,23 +881,24 @@ msgid ""
 "Data Checks for Central America%s (Starting point Santo Domingo, Republica "
 "Dominicana)"
 msgstr ""
-"Andmekontrollid Kesk Ameerika jaoks%s (Alguspunkt Santo Domingo, Dominikaani "
-"Vabariik)"
+"Έλεγχος δεδομένων για την Κεντρική Αμερική%s (Σημείο έναρξης Σάντο "
+"Ντομίνγκο, Δομινικανή Δημοκρατία)"
 
 #: index.php:42
 #, php-format
 msgid "Data Checks for South America%s (Starting point São Paulo, Brazil)"
 msgstr ""
-"Andmekontrollid Lõuna Ameerika jaoks%s (Alguspunkt São Paulo, Brasiilia)"
+"Έλεγχος δεδομένων για την Νότια Αμερική%s (Σημείο έναρξης Σάο Πάολο, "
+"Βραζιλία)"
 
 #: index.php:45
 #, php-format
 msgid "Data Checks for Asia%s (Starting point Tokio, Japan)"
-msgstr "Andmekontrollid Aasia jaoks%s (Alguspunkt Tokio, Jaapan)"
+msgstr "Έλεγχος δεδομένων για την Ασία%s (Σημείο έναρξης Τόκιο, Ιαπωνία)"
 
 #: index.php:47
 msgid "Europe Data Checks as ugly list"
-msgstr "Euroopa andmekontrollid jubeda nimekirjana"
+msgstr ""
 
 #: index.php:49
 #, php-format
@@ -975,12 +906,10 @@ msgid ""
 "Developers have a look at the %sSourceForge%s site providing svn access to "
 "the sources."
 msgstr ""
-"Arendajad vaadake %sSourceForge%s leheküljele, sealt saab svn ligipääsu "
-"lähtekoodile."
 
 #: index.php:52
 msgid "logfile"
-msgstr "logifail"
+msgstr ""
 
 #: index.php:56
 #, php-format
@@ -988,8 +917,6 @@ msgid ""
 "If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
 msgstr ""
-"Kui sa tahad vigasid KeepRight'ist eksportida, tahad sa ka vaadata "
-"%sliidestamise juhendit%s"
 
 #, php-format
 msgid ""
@@ -1076,6 +1003,9 @@ msgid ""
 "There are a few more languages in the select box now. You can help "
 "translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
 msgstr ""
+"Υπάρχουν λίγες παραπάνω γλώσσες στο κουτί επιλογής τώρα. Μπορείς να "
+"βοηθήσεις μεταφράζοντας το KeepRight στο %slaunchpad site%s. Ευχαριστώ όλους "
+"όσους βοήθησαν!"
 
 #: index.php:56
 #, php-format
@@ -1095,7 +1025,7 @@ msgstr ""
 msgid ""
 "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
 "se tornou multilíngue!"
-msgstr ""
+msgstr "Το KeepRight γίνεται πολύγλωσσο!"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -1113,6 +1043,10 @@ msgid ""
 "vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
 "Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
 msgstr ""
+"Σαν αρχή το KeepRight θα μπορεί να χρησιμοποιηθεί στα Αγγλικά, Γερμανικά και "
+"πορτογαλικά Βραζιλίας. Νέες μεταφράσεις είναι ευπρόσδεκτες! Το πρότυπο "
+"αρχείο  gettext είναι $1εδώ$2. Πολλές ευχαριστίες στον Rodrigo για αυτή την "
+"υπέροχη ιδέα!"
 
 #: index.php:59
 msgid "Getting rid of the evil db-parameter"
@@ -1146,11 +1080,11 @@ msgstr ""
 #: index.php:70
 #, php-format
 msgid "For archeologists: %sOld log entries%s have moved."
-msgstr "Arheoloogidele: %sVanad logi sissekanded%s on teise kohta liigutatud"
+msgstr "Για αρχαιολόγους: %sτα παλιά logs%s έχουν μετακινηθεί."
 
 #: index.php:73
 msgid "a few words on the new comment feature"
-msgstr "mõned sõnad uuest kommenteeerimise võimalusest"
+msgstr ""
 
 #: index.php:74
 msgid ""
@@ -1158,10 +1092,6 @@ msgid ""
 "false-positive. Don't confuse the comment box with an editing feature. This "
 "is not Potlatch! You cannot add missing tags via KeepRight!"
 msgstr ""
-"Kui sa leiad valepositiivse, palun jäta kommentaar, mis aitaks minul "
-"parandada kontrollrutiine. Ära aja kommenteerimise kasti segi redigeerimise "
-"võimalusega. See ei ole Potlatch! Sa ei saa lisada puuduvaid silte "
-"KeepRight&apos;i kaudu!"
 
 #: index.php:77
 msgid ""
@@ -1169,21 +1099,16 @@ msgid ""
 "running when you hit the JOSM-link. Furthermore you have to enable the "
 "&apos;remote control&apos;-plugin in JOSMs options."
 msgstr ""
-"Märkus: selleks, et JOSM&apos;i linki töötavaks muuta, peab JOSM käima "
-"JOSM&apos;i lingile vajutamise hetkel. Lisaks pead sa lubama JOSM&apos;i "
-"valikutest kaugjuhtimise (remote control) pistikprogrammi kasutamise"
 
 #: index.php:79
 msgid "Currently the following checking procedures are implemented"
-msgstr "Hetkel on järgnevad kontroll protseduurid rakendatud"
+msgstr "Προς το παρόν εφαρμόζονται οι ακόλουθες διαδικασίες ελέγχου"
 
 #: index.php:102
 msgid ""
 "If you find an error in my errors lists I would definitely like to hear "
 "about it!"
 msgstr ""
-"Kui sa leiad vea minu vigade nimekirjas, sooviksin ma sellest kindlasti "
-"kuulda!"
 
 #: index.php:104
 msgid "Impressum"
@@ -1194,16 +1119,14 @@ msgid ""
 "This work is done without commercial background, just for my personal "
 "pleasure. I would be very happy if it was helpful for the OSM Project."
 msgstr ""
-"See töö on tehtud ilma kommerts taustata, lihtsalt enda heameeleks. Ma "
-"oleksin väga õnnelik, kui see oleks abiks OSM projektile."
+"Αυτή η δουλειά έγινε χωρίς επαγγελματικό υπόβαθρο, μόνο για προσωπική "
+"ευχαρίστηση. Θα είμαι πολύ ευχαριστημένος αν ήταν χρήσιμο για το έργο OSM."
 
 #: index.php:106
 msgid ""
 "If you like to contact me, my mailbox at the austrian server of gmx is "
 "labelled KeepRight."
 msgstr ""
-"Kui sa soovid minuga ühendust võtta, siis minu postkast austria gmx serveris "
-"on nimega KeepRight."
 
 #: index.php:106
 msgid ""
@@ -1213,31 +1136,31 @@ msgstr ""
 
 #: report_map.php:155
 msgid "errors"
-msgstr "vead"
+msgstr "σφάλματα"
 
 #: report_map.php:155
 msgid "warnings"
-msgstr "hoiatused"
+msgstr "προειδοποιήσεις"
 
 #: report_map.php:182
 msgid "all"
-msgstr "kõik"
+msgstr "όλα"
 
 #: report_map.php:183
 msgid "none"
-msgstr "mitte ükski"
+msgstr "κανένα"
 
 #: report_map.php:185
 msgid "show ignored errors"
-msgstr "näita ignoreeritud vigu"
+msgstr "εμφάνιση αγνοημένων σφαλμάτων"
 
 #: report_map.php:187
 msgid "show temp. ignored errors"
-msgstr "näita ajutiselt ignoreeritud vigu"
+msgstr "εμφάνιση προσωρινά αγνοημένων σφαλμάτων"
 
 #: report_map.php:189
 msgid "Edit in Potlatch"
-msgstr "Muuda Potlatch'is"
+msgstr "Επεξεργασία στο Potlatch"
 
 #: report_map.php:194
 #, php-format
@@ -1245,30 +1168,31 @@ msgid ""
 "You will see up to %d error markers starting in the center of the map. "
 "Please allow a few seconds for the error markers to appear after panning."
 msgstr ""
-"Te näete kuni %d vea markerit alustades kaardi keskosast. Andke mõni sekund "
-"vea markeritele ilmumiseks peale kaardi liigutamist."
+"Εμφανίζονται μέχρι %d σημάδια λάθους ξεκινώντας από το κέντρο του χάρτη. "
+"Παρακαλώ δώστε λίγο χρόνο για την εμφάνιση των σημαδιών μετά απο τη "
+"μετακίνηση του χάρτη."
 
 #: report_map.php:196
 #, php-format
 msgid "Site updated at %s"
-msgstr "Leht uuendatud %s"
+msgstr "Ενημέρωση ιστότοπου %s"
 
 #: points.php:114
 msgid "node"
-msgstr "punkt"
+msgstr "κόμβος"
 
 #: points.php:114
 msgid "way"
-msgstr "joon"
+msgstr "διαδρομή"
 
 #: points.php:114
 msgid "relation"
-msgstr "relatsioon"
+msgstr "σχέση"
 
 #. full message: "edit in JOSM / Potlatch"
 #: myText.js:237
 msgid "edit in"
-msgstr "muuda:"
+msgstr "επεξεργασία στο"
 
 #: myText.js:237
 msgid "JOSM"
@@ -1279,8 +1203,6 @@ msgid ""
 "JOSM must be running and JOSM's remote control plugin must be enabled for "
 "this to work!"
 msgstr ""
-"JOSM peab töötama ja JOSM'i kaugkontrolli (remote control) pistikprogramm "
-"peab olema lubatud, et see oleks võimalik!"
 
 #: myText.js:239
 msgid "Potlatch"
@@ -1288,52 +1210,52 @@ msgstr "Potlatch"
 
 #: myText.js:239
 msgid "iD"
-msgstr ""
+msgstr "iD"
 
 #: myText.js:244
 msgid "keep this error open"
-msgstr "jäta see viga avatuks"
+msgstr "κράτα αυτό το σφάλμα ανοικτό"
 
 #: myText.js:246
 msgid "ignore temporarily (error corrected)"
-msgstr "ignoreerti ajutiselt (viga parandatud)"
+msgstr "αγνόησε προσωρινά (το σφάλμα διορθώθηκε)"
 
 #: myText.js:248
 msgid "ignore (false-positive)"
-msgstr "ignoreeri (vale-positiivne)"
+msgstr "αγνόησε (λάθος σήμανση)"
 
 #: myText.js:252
 msgid "save"
-msgstr "salvesta"
+msgstr "αποθήκευση"
 
 #: myText.js:253
 msgid "cancel"
-msgstr "loobu"
+msgstr "ακύρωση"
 
 #: myText.js:254
 msgid "please click on the icon to fixate the bubble"
-msgstr "palun vajuta ikoonile fikseerimaks mulli"
+msgstr ""
 
 #: myText.js:255
 msgid "link to here: error #"
-msgstr "viit siia: viga #"
+msgstr "σύνδεσμος εδώ:σφάλμα #"
 
 #. full message: "last edit of this node: 2009-04-01 5:22"
 #: myText.js:255
 msgid "last edit of this"
-msgstr ""
+msgstr "Τελευταία επεξεργασία:"
 
 #: interfacing.php:4
 msgid "interfacing KeepRight"
-msgstr "KeepRight'i liidestamine"
+msgstr ""
 
 #: interfacing.php:11
 msgid "Interfacing with KeepRight"
-msgstr "Liidestamine KeepRight&apos;ga"
+msgstr ""
 
 #: interfacing.php:13
 msgid "You may use KeepRight&apos;s results in a number of ways:"
-msgstr "Sa võid kasutada KeepRight&apos;i tulemusi mitmel viisil:"
+msgstr ""
 
 #: interfacing.php:17
 #, php-format
@@ -1348,12 +1270,12 @@ msgstr ""
 #: interfacing.php:19
 #, php-format
 msgid "exporting new errors as %sRSS feed%s"
-msgstr "uute vigade eksportimine %sRSS voona%s"
+msgstr ""
 
 #: interfacing.php:20
 #, php-format
 msgid "getting the whole errors %sdump file%s"
-msgstr "kõikide vigade %sdump faili%s saamine"
+msgstr ""
 
 #: interfacing.php:24
 msgid "exporting GPX waypoints"
@@ -1361,7 +1283,7 @@ msgstr ""
 
 #: interfacing.php:25 interfacing.php:35 interfacing.php:47
 msgid "Purpose"
-msgstr "Eesmärk"
+msgstr "Σκοπός"
 
 #: interfacing.php:26
 msgid ""
@@ -1371,7 +1293,7 @@ msgstr ""
 
 #: interfacing.php:28 interfacing.php:38 interfacing.php:50
 msgid "URL format"
-msgstr "URL formaat"
+msgstr ""
 
 #: interfacing.php:30
 msgid ""
@@ -1385,16 +1307,14 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
-"Kaardilehe all vaskus nurgas on link GPX teenusele, mis sisaldab alati "
-"parasjagu valitud vigasid ja kaardiala."
 
 #: interfacing.php:34
 msgid "exporting new errors as RSS feed"
-msgstr "uute vigade eksportimine RSS voona"
+msgstr ""
 
 #: interfacing.php:36
 msgid "Watching a section of the map for newly found errors"
-msgstr "Jälgida uusi leitud vigu kaardi sektsioonil"
+msgstr "Παρακολούθηση ενός τομέα του χάρτη για εύρεση νέων σφαλμάτων"
 
 #: interfacing.php:41
 msgid ""
@@ -1402,9 +1322,6 @@ msgid ""
 "different. The RSS feed will include error entries that were first found "
 "within the last three weeks."
 msgstr ""
-"URL formaat on sama, mis GPX ekspordil, lihtsalt formaadi parameeter on "
-"erinev. RSS voog sisaldab vigade kirjeid, mis esmaleiti eelneva kolme nädala "
-"jooksul."
 
 #: interfacing.php:42
 msgid ""
@@ -1412,12 +1329,10 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
-"Kaardi vasakus alumises nurgas on link RSS teenusele, mis sisaldab alati "
-"parasjagu valitud veatüüpe ja vaadet kaardil."
 
 #: interfacing.php:46
 msgid "getting the whole dump-file"
-msgstr "terve dump faili saamine"
+msgstr ""
 
 #: interfacing.php:48
 msgid "Doing something completely different with 25 millions of errors..."
@@ -1431,7 +1346,7 @@ msgstr ""
 
 #: interfacing.php:56
 msgid "Table layout"
-msgstr "Tabeli kujundus"
+msgstr ""
 
 #: interfacing.php:59
 #, php-format
@@ -1441,17 +1356,12 @@ msgid ""
 "roughly equally sized dump files. Consider the schema as a prefix for the "
 "error_id."
 msgstr ""
-"Schema on planeedi mingi regiooni identifikaator. %sPlaneedi jagamise "
-"kaardi%s järgi jagatakse planeet nelinurkseteks tükkideks, saamaks enam-"
-"vähem võrdse suurusega dump faile. Võta schema't kui error_id prefiksit."
 
 #: interfacing.php:60
 msgid ""
 "A number identifying errors, starting from 1 for each schema. An error_id is "
 "worth nothing if you don&apos;t know the schema!"
 msgstr ""
-"Number, mis identifitseerib vigasid, algab ühest iga schema puhul. error_id "
-"ei ole väärt midagi, kui sa ei tea schema&apos;t!"
 
 #: interfacing.php:61
 msgid ""
@@ -1459,9 +1369,6 @@ msgid ""
 "blocks of 10s (20, 30, 40...). They correspond with the name of the script "
 "file doing the checking."
 msgstr ""
-"Vea tüübi numbriline esitus. Vea tüübid on omistatud kümmnestes blokkides "
-"(20, 30, 40...). Need on vastavasuses kontrolli teostava skripti faili "
-"nimega."
 
 #: interfacing.php:62
 msgid ""
@@ -1482,11 +1389,11 @@ msgstr ""
 
 #: interfacing.php:65
 msgid "one of node/way/relation"
-msgstr ""
+msgstr "ένα απο κόμβο/διαδρομή/σχέση"
 
 #: interfacing.php:66
 msgid "an OSM node_id, way_id or relation_id"
-msgstr "OSM&apos;i node_id, way_id või relation_id"
+msgstr ""
 
 #: interfacing.php:67
 msgid ""
@@ -1525,34 +1432,28 @@ msgstr ""
 
 #: interfacing.php:70
 msgid "find the GNU gettext template file here:"
-msgstr "siit leiad GNU gettext mall faili:"
+msgstr ""
 
 #: interfacing.php:71
 msgid ""
 "These bits of text are the contents that have to be inserted in the error "
 "message after translation. txt1 will replace $1, etc."
 msgstr ""
-"Need teksti tükid sisestatakse peale tõlkimist vea teadetesse. txt1 asendab "
-"$1, jne."
 
 #: interfacing.php:72
 msgid "Timestamp (MESZ) of when this error was found the first time"
-msgstr "Ajatempel(MESZ) selle kohta, millal see viga esmakordselt leiti"
+msgstr ""
 
 #: interfacing.php:73
 msgid ""
 "Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
 msgstr ""
-"Ajatempel(MESZ) selle kohta, millal seda viga kontrolliti scriptide poolt "
-"(uuesti) üle"
 
 #: interfacing.php:74
 msgid ""
 "Timestamp of the object that was used when checking, as found in the "
 "official planet file."
 msgstr ""
-"Ajatempel objektist, mida kasutati kontrollimisel, mis leiti ametlikust "
-"planeedi failist."
 
 #: interfacing.php:76
 msgid ""
@@ -1560,18 +1461,14 @@ msgid ""
 "found in the official planet file. Please note that numbers are displayed as "
 "int values. To convert back to real lon/lat you have to divide by 10^7"
 msgstr ""
-"Asukoht planeedil. Kordinaadid on antud samas projektsioonis nagu ametlikus "
-"planeedi failis. Märkus: numbreid kuvatakse kui täisarvulisi väärtusi. "
-"Konverteerimaks tagasi reaalseteks pikkus ja laiuskraadideks pead sa jagama "
-"arvuga 10^7"
 
 #: interfacing.php:77
 msgid "User-comment (if any)"
-msgstr "Kasutaja kommentaar (kui on mõni)"
+msgstr ""
 
 #: interfacing.php:78
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
-msgstr "Ajatempel(MESZ) selle kohta, millal kommentaar anti (kui on mõni)"
+msgstr ""
 
 #: interfacing.php:89
 msgid "User name of the user that last edited the given object."
@@ -1579,25 +1476,23 @@ msgstr ""
 
 #: interfacing.php:82
 msgid "loading the errors table"
-msgstr "vigade tabeli laadimine"
+msgstr "φόρτωση του πίνακα σφαλμάτων"
 
 #: interfacing.php:85
 msgid "This is the schema definition for use with MySQL databases:"
-msgstr "See on MySQL andmebaasi schema definitsioon"
+msgstr ""
 
 #: interfacing.php:108
 msgid ""
 "Please note that <em>schema</em> is a reserved word in MySQL, so you always "
 "have to quote it like this: `schema`"
 msgstr ""
-"Märkus: <em>schema</em> on reserveeritud sõna MySQL'is, seega pead sa alati "
-"panema selle ülakomade vahele nii: `schema`"
 
 #: interfacing.php:110
 msgid ""
 "There are two primary keys in this table: a natural one and an artificial "
 "one:"
-msgstr "Tabelis on kaks primaarvõtit: üks loomulik ja üks tehislik:"
+msgstr ""
 
 #: interfacing.php:112
 msgid ""
@@ -1605,9 +1500,6 @@ msgid ""
 "lon. That means one type of error may be found on multiple spots belonging "
 "to one single object (eg. self-intersections of ways)."
 msgstr ""
-"Loomulik primaarvõti koosneb veergudest error_type, object_type, object_id, "
-"lat, lon. See tähendab, et samale objektile kuuluvaid üht tüüpi vigu "
-"võidakse leida erinevates kohtades (nt. joonte endaga ristumised)."
 
 #: interfacing.php:114
 msgid ""
@@ -1615,8 +1507,6 @@ msgid ""
 "for simplicity of referencing individual error instances and it is "
 "completely redundant."
 msgstr ""
-"Tehislik primaarvõti koosneb veergudest schema ja error_id. Seda kasutakakse "
-"erinevatele vigadele viitamise lihtsuse pärast ja see on täiesti liigne."
 
 #: interfacing.php:139
 msgid "querying node counts"

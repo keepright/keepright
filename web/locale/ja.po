@@ -1,16 +1,16 @@
-# Estonian translation for keepright
-# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# Japanese translation for keepright
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the keepright package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2013-08-20 20:17+0000\n"
-"Last-Translator: e9625163 <Unknown>\n"
-"Language-Team: Estonian <et@li.org>\n"
+"PO-Revision-Date: 2013-10-19 08:18+0000\n"
+"Last-Translator: Yuki Shira <Unknown>\n"
+"Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,236 +18,204 @@ msgstr ""
 "X-Generator: Launchpad (build 16976)\n"
 
 msgid "There is more than one node in this spot. Offending node IDs: $1"
-msgstr "Selles kohas on rohkem kui üks punkt. Vigaste punktide ID&apos;d: $1"
+msgstr "このスポットにはひとつ以上のノードがあります。問題のあるノードID: $1"
 
 msgid "This coastline-way is not part of a closed-loop"
-msgstr "See rannajoon ei ole osa suletud ringist"
+msgstr "この海岸線ウェイは閉じたループの一部ではありません"
 
 msgid "This way is tagged with '$1=$2' and should be closed-loop."
-msgstr "See joon on sildistatud '$1=$2' ja peaks olema suletud ring."
+msgstr "このウェイは'$1=$2' でタグ付けられ、閉じたループであるべきです。"
 
 msgid ""
 "The first node (id $1) of this one-way is not connected to any other way"
-msgstr ""
-"Selle ühesuunalise joone esimene punkt (id $1)  ei ole ühendatud ühegi teise "
-"joonega."
+msgstr "この一方通行の最初のノード(ID $1) は他のウェイに接続していません"
 
 msgid ""
 "The last node (id $1) of this one-way is not connected to any other way"
-msgstr ""
-"Selle ühesuunalise joone viimane punkt (id $1)  ei ole ühendatud ühegi teise "
-"joonega."
+msgstr "この一方通行の最後のノード(ID $1) は他のウェイに接続していません"
 
 msgid ""
 "This node cannot be reached, because one-ways only lead away from here"
-msgstr ""
-"See punkt ei ole ligipääsetav kuna vaid ühesuunalised jooned viivad sellest "
-"punktist välja"
+msgstr "このノードから出ていく一方通行路しか無いので、ここには到達できません"
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
-msgstr ""
-"Te ei saa sellest punktist väljuda kuna vaid ühesuunalised jooned toovad siia"
+msgstr "このノードに入ってくる一方通行路しか無いので、ここから出られません"
 
 msgid "This node is very close but not connected to way #$1"
-msgstr "See punkt on väga lähedal kuid mitte ühendatud joonega #$1"
+msgstr "このノードは、ウェイ #$1 の非常に近くにありますが、接続していません"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct."
 msgid "This $1 uses deprecated tag $2 = $3"
-msgstr "See $1 kasutab iganenud silti $2 = $3"
+msgstr "この $1 は、非推奨タグ $2 = $3 を使用しています"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
 msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
-msgstr ""
-"See $1 kasutab iganenud silti $2 = $3. Palun kasuta selle asemel $4 !"
+msgstr "この $1 は、非推奨タグ $2 = $3 を使っています。代わりに $4 を使って下さい！"
 
 #. full mesage: "This way has an empty tag: name="
 msgid "This $1 has an empty tag: $2"
-msgstr "See $1 omab tühja silti: $2"
+msgstr "この $1 に付けられている $2 タグには値がありません"
 
 msgid "This way has no tags"
-msgstr "Sellel joonel pole ühtegi silti"
+msgstr "このウェイにはタグがありません"
 
 msgid "This node is not member of any way and does not have any tags"
-msgstr "See sõlm ei ole ühegi joone liige ning ei oma ühtegi silti"
+msgstr ""
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
 "tag"
-msgstr ""
-"See joon on sildistatud kui motorway ja seetõttu vajab ref, nat_ref või "
-"int_ref silte"
+msgstr "このウェイは motorway とタグが付けられていますので、ref もしくは nat_ref, int_ref タグが必要です"
 
 msgid ""
 "This $1 is tagged as place of worship and therefore needs a religion tag"
-msgstr "See $1 on sildistatud kui palvepaik ja seetõttu vajab silti religion"
+msgstr "この $1 には礼拝所のタグが付けれらていますので、religion （宗教、宗派）タグが必要です"
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
-msgstr "See punkt on sildistatud kui $1 ja seetõttu vajab name silti"
+msgstr "このノードには $1 のタグが付けられていますので、name タグが必要です"
 
 msgid ""
 "This node is tagged as $1 and therefore needs a name tag or an operator tag"
-msgstr ""
-"See punkt on sildistatud kui $1 ja seetõttu vajab name silti või operator "
-"silti"
+msgstr "このノードには $1 のタグが付けられていますので、name タグか operator タグが必要です"
 
 msgid "This way has no nodes"
-msgstr "Sellel joonel pole ühtegi punkti"
+msgstr "このウェイにはノードがありません"
 
 msgid "This way has just one single node"
-msgstr "Sellel joonel on vaid üks punkt"
+msgstr "このウェイは、たったひとつのノードから成っています"
 
 msgid "This way is not connected to the rest of the map"
-msgstr "See joon pole ühendatud ülejäänud kaardiga"
+msgstr "このウェイはどこともつながっていません"
 
 msgid ""
 "This crossing of a highway and a railway needs to be tagged as "
 "railway=crossing or railway=level_crossing"
-msgstr ""
-"See tee ja raudtee ülesõidukoht tuleb sildistada kui railway=crossing või "
-"railway=level_crossing"
+msgstr "道路と線路との交差点には railway=crossing か railway=level_crossing が必要です"
 
 msgid ""
 "There are ways in different layers coming together in this railway crossing"
-msgstr ""
-"Selles raudtee ülesõidukohas saavad kokku erinevatelt kihtidelt tulevad "
-"jooned"
+msgstr "違うレイヤのウェイがこの踏切で接続しています"
 
 msgid ""
 "There are ways tagged as tunnel or bridge coming together in this railway "
 "crossing"
-msgstr ""
-"Selles raudtee ülesõidukohas saavad kokku jooned, mis on sildistatud kui "
-"tunnel või bridge (sild)"
+msgstr "踏切がトンネルの中もしくは橋の上になっています"
 
 #. full mesage: "This way is fixme-tagged: fixme=yes"
 msgid "This $1 is fixme-tagged: $2"
-msgstr "See $1 on sildistatud kui paranda-mind: $2"
+msgstr "この $1 には fixme タグが付いています $2"
 
 msgid "This relation has no type tag, which is mandatory for relations"
-msgstr ""
-"Sellel relatsioonil ei ole tüübi (type) silti, mis on kohustuslik "
-"relatsioonidele"
+msgstr "このリレーションにはtype タグがありません。リレーションには必須です"
 
 #. full message: "This highway intersects the waterway #17..."
 msgid "This $1 intersects the $2 #$3 but there is no junction node"
-msgstr "See $1 ristub $2 $3 kuid ühenduspunkt puudub"
+msgstr "この $1 は $2 #$3 と交差していますが、交点にノードがありません"
 
 #. full message: "This highway intersects the waterway #17"
 msgid "This $1 intersects the $2 #$3"
-msgstr "See $1 ristub $2 $3"
+msgstr "この $1 は $2 #$3 と交差しています"
 
 #. full message: "This highway overlaps the waterway #17..."
 msgid "This $1 overlaps the $2 #$3"
-msgstr "See $1 kattub $2 $3"
+msgstr "この $1 は $2 #$3 と重なっています"
 
 msgid "This way contains node #$1 $2 times. This may or may not be an error"
-msgstr ""
-"See joon omab punkti  #$1 $2 korda. See võib ja võib ka mitte olla viga"
+msgstr "このウェイにはノード #$1 が $2 回含まれています。これはエラーではないかもしれません"
 
 msgid ""
 "This way contains more than one node at least twice. Nodes are $1. This may "
 "or may not be an error"
-msgstr ""
-"See joon omab enam kui üht punkti vähemalt kaks korda. Punktid on $1. See "
-"võib ja võib ka mitte olla viga"
+msgstr "このウェイは1ノード以上を少なくとも2回含んでいます。ノードは $1 です。これはエラーかもしれませんし、エラーでないかもしれません。"
 
 msgid ""
 "This way has only two different nodes and contains one of them more than once"
-msgstr ""
-"See joon omab ainult kaht erinevat punkti ja sisaldab üht neist enam kui üks "
-"kord"
+msgstr "このウェイには2つの異なるノードだけがあり、そのひとつを1回以上含んでいます"
 
 msgid "The key of this node's tag is 'key': $2"
-msgstr "Selle punkti sildi väärtus on 'key' :$2"
+msgstr "このノードのタグのキーは key': $2"
 
 msgid "The key of this way's tag is 'key': $2"
-msgstr "Selle joone sildi väärtus on 'key' :$2"
+msgstr "このウェイのタグのキーは key': $2"
 
 msgid "The key of this relation's tag is 'key': $2"
-msgstr "Selle relatsiooni sildi väärtus on 'key' :$2"
+msgstr "このリレーションのタグのキーは key': $2"
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
-msgstr "See $1 on sildistatud '$2=$3' kus $4 võiks olla $5"
+msgstr "この $1 には '$2=$3' とタグが付けられていますが、$4 は $5 ではないかと思われます"
 
 #. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
 msgid "This node is a junction of ways on different layers: $1"
-msgstr "See punkt on erinevatel kihtidel olevate joonte ühendus: $1"
+msgstr "このノードは、異なったレイヤ: $1 が交差しています"
 
 msgid ""
 "If this mini roundabout is in a country with left-hand traffic then it "
 "should have a tag 'direction=clockwise'"
-msgstr ""
-"Kui see väike ringristmik on riigis, kus on vasaku käeline liiklus, siis "
-"peaks sellel olema silt 'direction=clockwise'"
+msgstr "左側通行の国では、このロータリーに 'direction=clockwise' が必要です"
 
 msgid ""
 "If this mini roundabout is in a country with right-hand traffic then it "
 "should not have a tag 'direction=clockwise'"
-msgstr ""
-"Kui see väike ringristmik on riigis, kus on parema käeline liiklus, siis ei "
-"peaks sellel olema silti 'direction=clockwise'"
+msgstr "右側通行の国では、このロータリーに 'direction=clockwise' を付けてはいけません"
 
 msgid ""
 "This $1 is tagged with layer $2. This need not be an error, but it looks "
 "strange"
-msgstr ""
-"See $1 on sildistatud kihiga $2. See ei pea olema viga, kuid tundub kummaline"
+msgstr "この$1 には layer $2 とタグが付けられています。これはエラーではないかもしれません"
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
 "motorway_link, trunk, rest_area or construction. Service or unclassified is "
 "only valid if it has access=no/private or if it is a service=parking_aisle."
 msgstr ""
+"このノードでは highway=motorway と motorway, motorway_link, trunk, rest_area, "
+"construction 以外の道路とが接続しています。highway=service や highway=unclassified "
+"は、access=no/private や  service=parking_aisle との組合せ時だけ有効です"
 
 msgid "This boundary has no name"
-msgstr "Sellel piiril pole nime"
+msgstr "この境界には name タグがありません"
 
 msgid "The boundary of $1 has no admin_level"
-msgstr "$1 piiril ei ole admin_level silti"
+msgstr "この $1 境界には admin_level タグがありません"
 
 msgid ""
 "The boundary of $1 has no valid numeric admin_level. Please do not use admin "
 "levels like for example 6;7. Always tag the lowest admin_level of all "
 "boundaries."
 msgstr ""
-"$1 piiril ei ole õiget numbrilist sildi admin_level väärtust. Palun ära "
-"kasuta tasemeid nagu näiteks 6;7. Alati sildista kõigi piiride madalaim tase "
-"(admin_level)."
+"この $1 境界には有効な数字の admin_level タグがありません。admin_level タグには 6;7 "
+"のような指定はしないでください。admin_level は境界の一番低い値を指定します"
 
 msgid "The boundary of $1 is not closed-loop"
-msgstr "$1 piir ei ole suletud ring"
+msgstr "境界 $1 は、閉じていません"
 
 msgid "The boundary of $1 splits here"
-msgstr "$1 piir pooldub siin"
+msgstr "境界 $1 は、ここで切れています"
 
 msgid ""
 "This boundary-way has admin_level $1 but belongs to a relation with lower "
 "admin_level (higher priority); it should have the lowest admin_level of all "
 "relations"
 msgstr ""
-"See piiri joon on admin_level $1 kuid kuulub relatsiooni, mis on madalama "
-"admin_level väärtusega(kõrgema prioriteediga); Sellel peaks olema kõigi "
-"relatsioonide madalaim admin_level"
+"この境界線は、admin_level として $1 が設定されていますが、小さい（優先度が高い） admin_level "
+"を持つリレーションに属しています。リレーション全部が小さい admin_level で統一されるべきです"
 
 msgid "This turn-restriction has no restriction type"
-msgstr "Sellel pööramise piirangul pole piirangu tüüpi"
+msgstr "この転回制限には制限のtype がありません"
 
 msgid "This turn-restriction has no known restriction type"
-msgstr "Sellel pööramise piirangul pole tuntud piirangu tüüpi"
+msgstr "この転回制限には既知の制限type がありません"
 
 msgid "A turn-restriction needs exactly one $1 member. This one has $2"
-msgstr "Pööramise piirang vajab täpselt ühte $1 liiget. Sellel on $2"
+msgstr "転回制限には正確にひとつの $1 メンバーが必要です。これには $2 あります。"
 
 msgid "From- and To-members of turn restrictions need to be ways. $1"
-msgstr ""
-"Pööramise piirnagute Kust-(From) ja Kuhu-(To) liikmed peavad olema jooned. $1"
+msgstr "転回制限のFrom- 及び To- メンバーはウェイである必要があります。$1"
 
 msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
-msgstr ""
-"Pööramise piirnagute Kust-(From), Läbi-(Via) ja Kuhu-(To) liikmed peavad "
-"olema ühendatud"
+msgstr "転回制限のfrom-via- 及び To- メンバーは接続されている必要があります"
 
 msgid "via (node #$1) is not the first or the last member of from (way #$2)"
 msgstr ""
@@ -267,67 +235,57 @@ msgid "entry already prohibited by oneway tag on $1"
 msgstr ""
 
 msgid "missing maxspeed tag"
-msgstr "puuduv maksimaalse kiiruse (maxspeed) silt"
+msgstr "maxspeed タグがありません"
 
 msgid ""
 "This way is part of a roundabout but is not closed-loop. (split carriageways "
 "approaching a roundabout should not be tagged as roundabout)"
 msgstr ""
-"See joon on osa ringristmikustkuid ei ole suletud ring. (ristmikule tulevad "
-"sõiduteed ei peaks olema sildistatud kui ringristmikud (roundabout))"
+"このウェイはロータリーの一部ですが、閉じたループになっていません。(ロータリーに向かう分割された車線はロータリーとしてタグ付けすべきではありません)"
 
 msgid ""
 "If this roundabout is in a country with right-hand traffic then its "
 "orientation goes the wrong way around"
-msgstr ""
-"Kui see ringristmik on parema käelise liiklusega riigis siis selle suund on "
-"valepidine"
+msgstr "もし右側通行であれば、このロータリーは回転方向が逆です"
 
 msgid ""
 "If this roundabout is in a country with left-hand traffic then its "
 "orientation goes the wrong way around"
-msgstr ""
-"Kui see ringristmik on vasaku käelise liiklusega riigis siis selle suund on "
-"valepidine"
+msgstr "もし左側通行であれば、このロータリーは回転方向が逆です"
 
 msgid ""
 "This way is tagged as highway=$1_link but doesn't have a connection to any "
 "other $1 or $1_link"
-msgstr ""
-"See joon on sildistatud kui highway=$1_link kuid ei oma ühendust ühegi teise "
-"$1 või $1_link"
+msgstr "このウェイには highway=$1_link のタグが付いていますが、他の $1 にも $1_link にも接続していません"
 
 msgid ""
 "This bridge does not have a tag in common with its surrounding ways that "
 "shows the purpose of this bridge. There should be one of these tags: $1"
 msgstr ""
-"See sild ei oma ühist silti seda ümbritsevate joontega, mis näitaks silla "
-"eesmärki.  Sillal peaks olema üks neist siltidest: $1"
+"このbridge には、その周囲にこのbridge の目的を表示するのに一般的なタグがありません。これらのタグのひとつがあるべきです: $1"
 
 msgid "The URL ($1) cannot be opened (HTTP status code $2)"
-msgstr "URL'i ($1) ei ole võimalik avada (HTTP seisundi kood $2)"
+msgstr "URL ($1) を開けません (HTTP ステータス コード $2)"
 
 msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
 msgstr ""
 
 msgid "Content of the URL ($1) did not contain these keywords: ($2)"
-msgstr "URL'i ($1)sisus ei olnud neid võtmesõnu: ($2)"
+msgstr ""
 
 #. translations for error type names
 #. please keep this as short as possible
 msgid "multiple nodes on the same spot"
-msgstr "mitu punkti ühes kohas"
+msgstr "同一地点に複数のノードが置かれています"
 
 msgid ""
 "Try to find nodes that are (almost) on the same spot. Distances less than +/-"
 "0.5 meters are considered zero"
-msgstr ""
-"Proovi leida punktid, mis on (peaaegu) ühes kohas. Vahemaid vähem kui +/-0,5 "
-"meetrit loetakse nulliks"
+msgstr "（ほぼ）同じ位置のノードを探してみてください。±0.5m 以内は同じ位置とみなされます"
 
 #. please keep this as short as possible
 msgid "non-closed areas"
-msgstr "mitte suletud alad"
+msgstr "閉じていないエリア"
 
 msgid ""
 "By convention ways tagged with special combinations of key and value pairs "
@@ -336,16 +294,13 @@ msgid ""
 "map! The standard.xml file is used to determine which key-value-combinations "
 "are drawn as areas; any instance of these has to be closed-loop."
 msgstr ""
-"Kokkuleppe kohaselt jooni, mis on sildistatud erilise atribuudi ja väärtuse "
-"paariga loetakse aladeks ja joonistatakse ka nii kaardile. Seetõttu on "
-"vajalik, et need moodustaks suletud ringi. Mitte suletud alad on kaardil "
-"nähtamatud! Faili standard.xml kasutatakse teada saamaks, missuguseid "
-"atribuudi-väärtuse paare koheldakse kui alasid. Kõik need peavad olema "
-"suletud ringid."
+"キーと値との特別な組合せがあるタグが付けられているウェイは、通常、エリアとして描かれるべきと考えられ、地図上ではエリアとしてレンダリングされます。\r\n"
+"よって、それは、閉じたループから成っていなければなりません。閉じていないエリアは、マップ上では見えません。\r\n"
+"standard.xml ファイルに、エリアとして描かれるべきキーと値との組合せが記述されていて、それらは閉じたループから成っていなければなりません"
 
 #. please keep this as short as possible
 msgid "dead-ended one-ways"
-msgstr "tupik ühesuunalised"
+msgstr "一方通行の行き止まり"
 
 msgid ""
 "Streets tagged as one-way must not be dead-ended (where should all the cars "
@@ -353,28 +308,26 @@ msgid ""
 "end) cannot be reached (escaped from). Please note that motorways and "
 "motorway_links are considered one-way implicitly, so this check applies."
 msgstr ""
-"Tänavad, mis on sildistatud kui ühesuunalised ei tohi olla tupikud (kuhu "
-"kuhjatakse kõik autod tee lõpus?). Punktid, kus vaid ühesuunalised teed "
-"algavad (või lõppevad) ei ole ligipääsetavad (väljapääsetavad). Märkus: "
-"Kiirteed (motorway) ja Kiirtee peale-/mahasõiduteid (motorway_links) "
-"koheldakse kui ühesuunalisi, seega seda kontrolli reakendatakse."
+"一方通行(one-way=yes)のタグが付けられたウェイは行き止まりであってはいけません（行き止まりに車を積み重ねろというの？笑）\r\n"
+"一方通行路の開始（もしくは終了）地点のノードは、到達（もしくは脱出）できなければなりません。\r\n"
+"通常、自動車道（highway=motorways） や 自動車道の取り付け道路（highway=motorway_links）は、一方通行(one-"
+"way=yes)であることに気をつけてください。この場合にもこのチェックは当てはまります"
 
 #. please keep this as short as possible
 msgid "almost-junctions"
-msgstr "pea-aegu ühendused"
+msgstr "ほとんどくっついています"
 
 msgid ""
 "Streets that have (at least) one unconnected end are examined here. If such "
 "an end-node is very close to any other way an error is reported. Unconnected "
 "end-nodes should probably be connected to adjacent ways."
 msgstr ""
-"Siin kontrollitakse tänavaid, mis omavad (vähemalt) ühte ühendamata lõppu. "
-"Kui selline lõpu punkt on väga lähedal teisele joonele, teatatakse veast. "
-"Ühendamata lõpu punktid tuleks arvatavasti ühendada lähedalasuva joonega."
+"他と接続されていない道路の終端があります。このように、終端のノードが他のウェイと非常に近い場合は、エラーとしてレポートされます。接続されていない終端ノード"
+"は、殆どの場合、近接する他のウェイに接続するべきです"
 
 #. please keep this as short as possible
 msgid "deprecated tags"
-msgstr "iganenud sildid"
+msgstr "非推奨タグ"
 
 msgid ""
 "As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some "
@@ -383,71 +336,59 @@ msgid ""
 "free to tag anything the way you like. This is just a hint for new tagging "
 "conventions that have evolved in the meantime."
 msgstr ""
-"Nagu näidatud veebilehel "
-"http://wiki.openstreetmap.org/index.php/Deprecated_features mõned sildid "
-"asenduvad teistega kui uued sildistamise kokkulepped tekivad. Võta seda kui "
-"märkust, mitte kui viga. Termin 'iganenud' on iganenud; sa oled vaba "
-"sildistama kõike nii nagu soovid. See on lihtsalt vihje uutele sildistamis "
-"kokkulepetele, mis on vahepeal tekkinud."
+"http://wiki.openstreetmap.org/index.php/Deprecated_features "
+"に示されている通り、幾つかのタグは他のタグに置き換えられました。\r\n"
+"このページをお知らせと解釈するなら、これはエラーではありません。反対するなら、あなたは自由にあなたの好きなようにタグを付けることができます。これは、新しい"
+"タグ付けルールの単なるヒントです"
 
 #. please keep this as short as possible
 msgid "missing tags"
-msgstr "puuduvad sildid"
+msgstr "タグが見つからない"
 
 msgid ""
 "Ways, nodes and relations should in most cases have at least one tag "
 "(besides created_by)"
-msgstr ""
-"Jooned, punktid ja relatsioonid peaksid enamikel juhtudel omama vähemalt üht "
-"silti (peale created_by)"
+msgstr "ウェイ、ノード、リレーションは、殆どの場合、少なくともひとつの（created_by 以外の）タグを持つべきです"
 
 #. please keep this as short as possible
 msgid "motorways without ref"
-msgstr "Kiirteed ilma ref"
+msgstr "ref の無い自動車道"
 
 msgid ""
 "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
 "mandatory as they are very important information"
-msgstr ""
-"ref silt näitab kiirteede viidet (nt. 'A 10'). Need on kohustuslikud kuna "
-"need on väga oluliseks infoks"
+msgstr "ref タグは、自動車道の番号（例：'A 10) を表します。よって、大変重要な情報として、必須です"
 
 #. please keep this as short as possible
 msgid "places of worship without religion"
-msgstr "palvekohad ilma religioonita"
+msgstr "religionのない礼拝所"
 
 msgid ""
 "Churches, mosques and synagogues etc. need an extra religion tag giving info "
 "about the religion"
-msgstr ""
-"Kirikud, mošeed ja sünagoogid jne. vajavad lisaks religiooni (religion) "
-"silti andmaks infot religiooni kohta"
+msgstr "教会、モスクおよびシナゴーグその他にはその宗教についての情報を補足する特別なreligion タグが必要です"
 
 #. please keep this as short as possible
 msgid "point of interest without name"
-msgstr "huvikohad ilma nimeta"
+msgstr "名前の無いPOI"
 
 msgid ""
 "The name tag should be specified for every point of interest as its content "
 "gets rendered in the map next to the POI symbol"
-msgstr ""
-"Nime silt peaks olema igal huvikohal seatud kuna see kujutatakse kaardile "
-"huvikoha sümboli kõrvale"
+msgstr "name タグはその内容がマップ上でPOI のシンボルの隣に表示されるように、全てのPOIに対して指定すべきです"
 
 #. please keep this as short as possible
 msgid "ways without nodes"
-msgstr "punktideta jooned"
+msgstr "ノードのないウェイ"
 
 msgid ""
 "Ways that don't consist of at least two nodes don't make much sense as they "
 "won't get rendered."
-msgstr ""
-"Jooned, mis ei koosne vähemalt kahest punktist, ei oma suurt mõtet, kuna "
-"neid ei kuvata."
+msgstr "ウェイは最低でも2つのノードが無いとレンダリングされないので無意味です。"
 
 #. please keep this as short as possible
 msgid "floating islands"
-msgstr "ujuvad saared"
+msgstr "浮島"
 
 msgid ""
 "Any highways drawn on the map should be accessible by car starting anywhere "
@@ -455,13 +396,12 @@ msgid ""
 "this check, so almost any island in the sea should be reachable starting "
 "from the mainland."
 msgstr ""
-"Iga tee, mis on joonistatud kaardile peaks olema maismaalt ligipääsetav. "
-"Praamid ja teed (isegi raudtee platvormid) on selle kontrolliga hõlmatud, "
-"seega pea iga saar meres peaks olema maismaalt ligipääsetav"
+"地図上に描かれている全ての道路は、世界中のどこから出発した車ででも到達できなければなりません。フェリーの航路と道路（駅のホームでさえも）はこのチェックに含"
+"まれます。よって、ほぼ全ての離島の道は、本土から到達できなければなりません"
 
 #. please keep this as short as possible
 msgid "railway crossings without tag"
-msgstr "sildita raudtee ületuskohad"
+msgstr "タグの無い踏切"
 
 msgid ""
 "(Level)-Crossings of railways and highways should have a common node as "
@@ -469,46 +409,38 @@ msgid ""
 "where larger vehicles can cross or with 'railway=crossing' if it is a "
 "crossing just for pedestrians"
 msgstr ""
-"Raudteede ja teede ristumised peaksid omama ühist punkti, mis on sildistatud "
-"'railway=level_crossing' kui selles kohas saavad suuremad sõidukid üle sõita "
-"või sildiga 'railway=crossing' kui see on vaid ülekäigukoht jalakäijatele"
+"踏切には道路と踏切とが交差するノードが必要で、大きな車でも通れる踏切には 'railway=level_crossing' "
+"というタグが、歩行者しか通れない踏切には 'railway=crossing' というタグが必要です"
 
 #. please keep this as short as possible
 msgid "wrongly used railway crossing tag"
-msgstr "valesti kasutatud raudtee ületuse silt"
+msgstr "踏切（railway crossing）タグの使い方が間違っている"
 
 msgid ""
 "Ways that take part in level-crossings of railways and highways have to be "
 "on the same layer and should in the normal case be not tagged as bridge or "
 "tunnel"
-msgstr ""
-"jooned, mis võtavad osa raudteede ja teede samatasandilistest ristumistest "
-"peavad olema samal kihil ja tavaliselt mitte olema sildistatud kui sild "
-"(bridge) või tunnel"
+msgstr "踏切で交わる線路と道路は同じレイヤであるべきで、また、橋やトンネルのタグの付いていない普通の道路であるべき"
 
 #. please keep this as short as possible
 msgid "fixme-tagged items"
-msgstr "paranda-mind sildistatud asjad"
+msgstr "fixme タグの付いたアイテム"
 
 msgid ""
 "Nodes, ways or relations that are tagged with FIXME should be reviewed..."
-msgstr ""
-"Punktid, jooned või relatsioonid, mis on sildistatud kui paranda-mind tuleks "
-"üle vaadata..."
+msgstr "FIXME タグのあるノード、ウェイおよびリレーションはレビューが必要です..."
 
 #. please keep this as short as possible
 msgid "relations without type"
-msgstr "ilma tüübita relatsioonid"
+msgstr "type の無いリレーション"
 
 msgid ""
 "Find any relation that has no type tag, wich is mandatory for relations."
-msgstr ""
-"Leia mõni relatsioon, millel pole tüübi (type) silti, mis on kohustuslik "
-"relatsioonidele."
+msgstr "type タグの無いリレーションを探します。これはリレーションには必須です。"
 
 #. please keep this as short as possible
 msgid "intersections without junctions"
-msgstr "ühenduseta ristmikud"
+msgstr "交差点のない交差"
 
 msgid ""
 "Streets that graphically intersect need a common node that represents the "
@@ -516,83 +448,77 @@ msgid ""
 "bridges or tunnels). Intersections of streets with other objects like "
 "waterways or riverbanks should be avoided"
 msgstr ""
-"Tänavad, mis visuaalselt ristuvad vajavad ühist punkti mis tähistaks "
-"ristumist. Ainukene erand on eri kihtidel olevad ristmikud (nt sillad või "
-"tunnelid). Tänavate ristumisi teiste objektide nagu veeteed ja jõekaldad, "
-"tuleks vältida."
+"交差する道路は、交差点を表す共通のノードが必要です。唯一の例外は、異なるレイヤでの交差です（例：橋やトンネル）。道路と、水路や川のような別の線との交点は、"
+"無視されるべきです"
 
 #. please keep this as short as possible
 msgid "highway-highway"
-msgstr "tee-tee"
+msgstr "highway-highway"
 
 #. please keep this as short as possible
 msgid "highway-waterway"
-msgstr "tee-veetee"
+msgstr "highway-waterway"
 
 #. please keep this as short as possible
 msgid "highway-riverbank"
-msgstr "tee-jõekallas"
+msgstr "highway-riverbank"
 
 #. please keep this as short as possible
 msgid "waterway-waterway"
-msgstr "veetee-veetee"
+msgstr "waterway-waterway"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-cyclew/footp"
-msgstr "rattat/jalgt-rattat/jalgt"
+msgstr "cyclew/footp-cyclew/footp"
 
 #. please keep this as short as possible
 msgid "highway-cyclew/footp"
-msgstr "tee-rattat/jalgt"
+msgstr "highway-cyclew/footp"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-waterway"
-msgstr "rattat/jalgt-veetee"
+msgstr "cyclew/footp-waterway"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-riverbank"
-msgstr "rattat/jalgt-jõekallas"
+msgstr "cyclew/footp-riverbank"
 
 #. please keep this as short as possible
 msgid "overlapping ways"
-msgstr "kattuvad jooned"
+msgstr "重なったウェイ"
 
 msgid ""
 "Segments of ways that lie on top of each other (the same nodes connected by "
 "different ways in the same order) are a problem for routing software. They "
 "happen accidently and are hard to find."
 msgstr ""
-"Joone tükid, mis asetsevad üksteise peal (samad punktid on ühendatud "
-"erinevate joontega samas järjekorras) on probleemiks marsruutimise "
-"tarkvarale. Need kattumised juhtuvad kogemata ning neid on raske leida."
+"他のウェイの上に重なっている部分（同じ位置の複数のノードが、別の同じ位置の複数のノードと同じ順で接続されてウェイを構成している）は、ナビゲーションソフトウ"
+"ェアに深刻な問題を引き起こします。これは、ふとしたことから発生し、見つけるのは大変むずかしい"
 
 #. please keep this as short as possible
 msgid "loopings"
-msgstr "ringid"
+msgstr "循環"
 
 msgid ""
 "Any way that contains any single node more than twice is considered an "
 "error. Any way may contain just one node twice. If more than one node is "
 "found twice it is considered an error."
 msgstr ""
-"Iga joon, mis sisaldab mõnda punkti enam kui 2 korda, loetakse veaks. Iga "
-"tee võib sisaldada vaid ühte punkti kaks korda. Kui leitakse enam kui üks "
-"punkt kaks korda, loetakse seda veaks."
+"一つのノードが二回以上含まれるすべてのウェイは、エラーと考えられます。すべてのウェイは、たったひとつのノードが二回含まれます。二つ以上のノードが二回含まれ"
+"ると、それはエラーと考えられます"
 
 #. please keep this as short as possible
 msgid "misspelled tags"
-msgstr "valesti kirjutatud sildid"
+msgstr "綴り間違いのあるタグ"
 
 msgid ""
 "Tags that are used very seldom and almost look like very common tags (only "
 "one character difference) are reported as a warning."
-msgstr ""
-"Sildid, mida kasutatakse väga harva ja mis peaaegu paistavad kui väga sageli "
-"kasutatavad sildid (vahe vaid ühes tähes), teatatakse kui hoiatused."
+msgstr "滅多に使われないタグで、一般的なタグに似ている（1字違い）ものは警告としてレポートされます。"
 
 #. please keep this as short as possible
 msgid "layer conflicts"
-msgstr "kihtide konfliktid"
+msgstr "レイヤのぶつかり"
 
 msgid ""
 "Connected ways should be on the same layer. Crossings on intermediate nodes "
@@ -602,23 +528,21 @@ msgid ""
 "note that bridges are set to layer +1, and tunnels to -1, anything else to "
 "layer 0 implicitly if no layer tag is present."
 msgstr ""
-"Ühendatud teed peaks olema samal kihil. Ilmselgelt on eri kihtidel pu nktiga "
-"ühendatud joonte ühendused valed. Ristmikud eri kihtidel joonte lõpu "
-"punktidel on samuti iganenud kuid sageli kasutuses. Seega võid sa seda "
-"kontrolli ignoreerida ja eraldi välja lülitada. Märkus: sillad asuvad kihil "
-"+1 ja tunnelid kihil -1. Kõik muu kihil 0 kui kihi(layer) silti pole seatud."
+"接続されるウェイは、同じレイヤであるべきです。複数のノードの中間で違うレイヤのウェイが交差しているのは、明らかに間違いです。違うレイヤのウェイの端点の交差"
+"点もあってはなりません。よって、このチェックを無視しても構いません。参考：もし layer タグが付けられていないと、橋は layer = +1、 "
+"トンネルは layer = -1 その他は layer = 0 がデフォルトで付加されます"
 
 #. please keep this as short as possible
 msgid "mixed layers intersections"
-msgstr "ristumised eri kihtidel"
+msgstr "異なるレイヤの交差"
 
 #. please keep this as short as possible
 msgid "strange layers"
-msgstr "imelikud kihid"
+msgstr "おかしなレイヤ"
 
 #. please keep this as short as possible
 msgid "motorways connected directly"
-msgstr "vahetult ühendatud kiirteed"
+msgstr "自動車道の直接接続"
 
 msgid ""
 "Motorways should only be connected to other motorways or motorway_links. "
@@ -627,16 +551,14 @@ msgid ""
 "positives on motorways ending in cities but it can be a valuable tool for "
 "looking up unwanted connections of motorways and other roads."
 msgstr ""
-"Kiirteed peaks olema ühendatud vaid kiirteedega või kiirteede peale-"
-"/mahasõiduteedega. Need ei tohiks veel eriti olla ühendatud teedega mis on "
-"sildistatud kui: highway=primary või highway=residential. Märkus: See "
-"kontroll võib tekitada vale-positiivseid kiirteedel, mis lõppevad linnades "
-"kuid see võib olla väärtuslik tääriist otsimaks ebasoovitud ühendusi "
-"kiirteede ja muude teedega."
+"自動車専用道路は他の自動車専用道路（motorway)か自動車専用道路の取り付け道路（motorway_link)と接続されるべきです。自動車専用道路は、"
+"国道や生活道路などと直接接続するべきではありません。\r\n"
+"ただし、自動車専用道路が街中で終わっている場合、間違った指摘をする場合があることをご承知おきください。でも、それは自動車専用道路と他の道路との望まない接続"
+"の検出ツールとして有用です"
 
 #. please keep this as short as possible
 msgid "boundaries"
-msgstr "piirid"
+msgstr "境界"
 
 msgid ""
 "Administrative Boundaries can be expressed either by tagging ways or by "
@@ -644,34 +566,30 @@ msgid ""
 "they must not self-intersect or split and they must have a name and an "
 "admin_level."
 msgstr ""
-"Administratiiv piire saab väljendada, kas sildistades jooni või lisades need "
-"relatsiooni. Need peavad olema suletud ringid joonte jadast, need ei tohi "
-"iseendaga ristuda või jaguneda ning peavad omama nime(name) ja admin_level "
-"silti"
 
 #. please keep this as short as possible
 msgid "missing name"
-msgstr "puuduv nimi"
+msgstr "name が無い"
 
 #. please keep this as short as possible
 msgid "missing admin_level"
-msgstr "puuduv admin_level"
+msgstr "admin_level が無い"
 
 #. please keep this as short as possible
 msgid "not closed loop"
-msgstr "mitte suletud ring"
+msgstr "閉じていないループ"
 
 #. please keep this as short as possible
 msgid "splitting boundary"
-msgstr "jagunev piir"
+msgstr "切れ目のある境界"
 
 #. please keep this as short as possible
 msgid "admin_level too high"
-msgstr "liiga kõrge admin_level"
+msgstr "admin_level が高すぎる"
 
 #. please keep this as short as possible
 msgid "restrictions"
-msgstr "piirangud"
+msgstr "制限"
 
 msgid ""
 "This check is about turn restrictions defined by relations. A turn "
@@ -679,27 +597,24 @@ msgid ""
 "another way as 'to' member and optionally one or more ways or nodes as via "
 "members that need to be connected to 'from' and 'to'"
 msgstr ""
-"See kontroll on relatsioonide poolt defineeritud pööramis piirangute kohta. "
-"Pööramis piirangu relatsioon vajab õiget tüübi (type) atribuuti, joont kust "
-"(from) liikmena, teist joont kuhu (to) liikmena ja valikuliselt veel jooni "
-"või punkte kui läbi (via) liikmetena, mis peavad olema ühendatud kust ja "
-"kuhu joontega."
+"このチェックは、リレーションで定義されている転回禁止に関係するものです。転回禁止のリレーションは、有効な型の属性、'from' と 'to' "
+"のウェイ、それにオプションとして一つ以上の 'from' と 'to'  に接続された 'via' ウェイもしくはノードを必要とします。"
 
 #. please keep this as short as possible
 msgid "missing type"
-msgstr "puuduv tüüp"
+msgstr "type が見つかりません"
 
 #. please keep this as short as possible
 msgid "missing from way"
-msgstr "puuduv kust (from) joon"
+msgstr "from way が見つかりません"
 
 #. please keep this as short as possible
 msgid "missing to way"
-msgstr "puuduv kuhu (to) joon"
+msgstr "to way が見つかりません"
 
 #. please keep this as short as possible
 msgid "missing maxspeed"
-msgstr "puuduv maksimaalne kiirus"
+msgstr "maxspeed がない"
 
 msgid ""
 "maxspeed tags are not mandatory but they are very helpful for successful "
@@ -707,46 +622,41 @@ msgid ""
 "tag. Please only add maxspeed tags if the allowed maxspeed differs from the "
 "default speed for the given highway!"
 msgstr ""
-"Maksimaalse kiiruse (maxspeed) sildid pole kohustuslikud kuid on väga "
-"abistavad edukaks marsruutimiseks. See kontroll aitab leida kasutajatel teid "
-"ilma maksimaalse kiiruse sildita. Palun lisa maksimaalse kiiruse silt vaid "
-"juhul kui see erineb teel lubatud vaikeväärtusest."
+"maxspeed タグは必須ではありません。しかし、ナビゲーションには非常に有用です。このチェックは maxspeed "
+"タグが漏れているウェイを発見するのを容易にします。法定速度でない速度制限があるウェイにのみ maxspeed タグを付けてください"
 
 #. please keep this as short as possible
 msgid "roundabouts"
-msgstr "ringristmikud"
+msgstr "ロータリー"
 
 msgid ""
 "roundabout are always one-way streets directed counter-clockwise in right-"
 "hand driving countries or clockwise in left-hand driving countries."
-msgstr ""
-"Ringristmikud on alati ühesuunalised teed vastukella parema käelise "
-"liiklusega maades ja kella suunas vasaku käelise lliiklusega maades."
+msgstr "ロータリーは、通常一方通行で、右側通行の場合は反時計まわり、左側通行の場合は時計回りです"
 
 #. please keep this as short as possible
 msgid "wrong direction"
-msgstr "vale suund"
+msgstr "誤った方向"
 
 #. please keep this as short as possible
 msgid "faintly connected"
-msgstr ""
+msgstr "くっつきそう"
 
 #. please keep this as short as possible
 msgid "*_link-connections"
-msgstr "*_link-ühendused"
+msgstr "*_link の接続"
 
 msgid ""
 "Any highway tagged as (motorway|trunk|primary|secondary)_link should have at "
 "least one connection to a (motorway|trunk|primary|secondary) highway or a "
 "_link highway of the same type"
 msgstr ""
-"Iga tee sildistatud kui (motorway|trunk|primary|secondary)_link peaks omama "
-"vähemalt üht ühendust (motorway|trunk|primary|secondary) teele või ühendust "
-"_link teele samast tüübist."
+"(motorway|trunk|primary|secondary)_link タグは、少なくともひとつの同じタイプの "
+"(motorway|trunk|primary|secondary) highway と接続していなければなりません"
 
 #. please keep this as short as possible
 msgid "bridge-tags"
-msgstr "silla sildid"
+msgstr "bridge-タグ"
 
 msgid ""
 "Someone draws a bridge and forgets to tag it as highway... A bridge should "
@@ -754,14 +664,12 @@ msgid ""
 "Currently these are: highway, railway, cycleway, waterway, footway, piste, "
 "aerialway, pipeline, building, via_ferrata"
 msgstr ""
-"Keegi joonistab silla ja unustab selle sildistada kui tee... Sild peaks "
-"alati omama ühte peamist silti mida selle naaberjooned omavad. Hetkel need "
-"on: highway, railway, cycleway, waterway, footway, piste, aerialway, "
-"pipeline, building, via_ferrata"
+"橋にウェイ等のタグが付けられていない。橋には直接接続する highway, railway, cycleway, waterway, footway, "
+"piste, aerialway, pipeline, building, via_ferrata といったタグを付けなければならない"
 
 #. please keep this as short as possible
 msgid "language unknown"
-msgstr "keel teadmata"
+msgstr "不明な言語"
 
 msgid ""
 "To help applications choose the best matching language they should know the "
@@ -774,12 +682,12 @@ msgstr ""
 msgid ""
 "It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
 "shows the language of its name ''$2''."
-msgstr ""
+msgstr "$1 には、$2 での言語XXを使って ''name:XX=$2'' というタグが付けられると素晴らしいものになります"
 
 #. this is about points of interest drawn inside a building of the same name
 #. please keep this as short as possible
 msgid "doubled places"
-msgstr "topeltkohad"
+msgstr ""
 
 msgid ""
 "a node inside of an area that is tagged with same name and representing the "
@@ -902,29 +810,27 @@ msgstr ""
 #. translations for the web pages
 #: index.php:9
 msgid "data consistency checks for OSM"
-msgstr "andmete terviklikkuse kontrollid OSM'i jaoks"
+msgstr "OSM用のデータ一貫性チェック"
 
 #: index.php:11
 msgid "keep-right logo"
-msgstr "keep-right logo"
+msgstr "keep-right ロゴ"
 
 #: index.php:13
 #, php-format
 msgid "data consistency checks for %sOSM%s"
-msgstr "andmete terviklikkuse kontrollid %sOSM%s"
+msgstr "%sOSM%s 用のデータ一貫性チェック"
 
 #: index.php:20
 msgid ""
 "These pages show checks that are run on a local excerpt database filled with "
 "OSM data."
-msgstr ""
-"Need leheküljed näitavad kontrolle, mida jooksutatakse kohaliku OSM "
-"andmetega andmebaasi peal."
+msgstr "これらのページは、OSMデータの入ったローカルに抜き取ったデータベース上で実行したチェックを表示しています。"
 
 #: index.php:23
 #, php-format
 msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
-msgstr "Andmekontrollid Euroopa jaoks%s (Alguspunkt Viin,Austria)"
+msgstr "ヨーロッパ向けデータチェック%s (開始点はVienna, Austria)"
 
 #: index.php:27
 msgid "Data Checks for Australia%s (Starting point Sydney)"
@@ -933,41 +839,38 @@ msgstr ""
 #: index.php:30
 #, php-format
 msgid "Data Checks for Africa%s (Starting point Cairo, Egypt)"
-msgstr "Andmekontrollid Aafrika jaoks%s (Alguspunkt Kairo, Egiptus)"
+msgstr "アフリカ用データチェック%s (開始点は Cairo, Egypt)"
 
 #: index.php:33
 #, php-format
 msgid "Data Checks for Canada%s (Starting point Québec)"
-msgstr "Andmekontrollid Kanada jaoks%s (Alguspunkt Québec)"
+msgstr "カナダ用データチェック%s (開始点は Québec)"
 
 #: index.php:36
 #, php-format
 msgid "Data Checks for USA%s (Starting point Philadelphia, PA)"
-msgstr "Andmekontrollid USA jaoks%s (Alguspunkt Philadelphia, PA)"
+msgstr "USA用データチェック%s (開始点は Philadelphia, PA)"
 
 #: index.php:39
 #, php-format
 msgid ""
 "Data Checks for Central America%s (Starting point Santo Domingo, Republica "
 "Dominicana)"
-msgstr ""
-"Andmekontrollid Kesk Ameerika jaoks%s (Alguspunkt Santo Domingo, Dominikaani "
-"Vabariik)"
+msgstr "中央アメリカ用データチェック%s (開始点は Santo Domingo, Republica Dominicana)"
 
 #: index.php:42
 #, php-format
 msgid "Data Checks for South America%s (Starting point São Paulo, Brazil)"
-msgstr ""
-"Andmekontrollid Lõuna Ameerika jaoks%s (Alguspunkt São Paulo, Brasiilia)"
+msgstr "南アメリカ用データチェック%s (開始点は São Paulo, Brazil)"
 
 #: index.php:45
 #, php-format
 msgid "Data Checks for Asia%s (Starting point Tokio, Japan)"
-msgstr "Andmekontrollid Aasia jaoks%s (Alguspunkt Tokio, Jaapan)"
+msgstr "アジア用データチェック%s (開始点は東京、日本)"
 
 #: index.php:47
 msgid "Europe Data Checks as ugly list"
-msgstr "Euroopa andmekontrollid jubeda nimekirjana"
+msgstr ""
 
 #: index.php:49
 #, php-format
@@ -975,21 +878,17 @@ msgid ""
 "Developers have a look at the %sSourceForge%s site providing svn access to "
 "the sources."
 msgstr ""
-"Arendajad vaadake %sSourceForge%s leheküljele, sealt saab svn ligipääsu "
-"lähtekoodile."
 
 #: index.php:52
 msgid "logfile"
-msgstr "logifail"
+msgstr "ログファイル"
 
 #: index.php:56
 #, php-format
 msgid ""
 "If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
-msgstr ""
-"Kui sa tahad vigasid KeepRight'ist eksportida, tahad sa ka vaadata "
-"%sliidestamise juhendit%s"
+msgstr "KeepRight のエラーのエクスポートの方法は、%sinterfacing guide%s に記述されています"
 
 #, php-format
 msgid ""
@@ -1076,6 +975,8 @@ msgid ""
 "There are a few more languages in the select box now. You can help "
 "translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
 msgstr ""
+"現在のところ選択ボックスで選べる言語は少ししかありません。 %slaunchpad サイト%s でKeepRight "
+"の翻訳を手伝って頂けます。全ての支援者に感謝します！"
 
 #: index.php:56
 #, php-format
@@ -1095,7 +996,7 @@ msgstr ""
 msgid ""
 "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
 "se tornou multilíngue!"
-msgstr ""
+msgstr "KeepRight が多国語対応になりました！"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -1116,7 +1017,7 @@ msgstr ""
 
 #: index.php:59
 msgid "Getting rid of the evil db-parameter"
-msgstr ""
+msgstr "有害なDBパラメータを除去"
 
 #: index.php:60
 msgid ""
@@ -1142,15 +1043,17 @@ msgid ""
 "the error types you selected when you left the site last time (how could "
 "you?). Just open %s without any parameters!"
 msgstr ""
+"これは、私からあなたへの FOSSGIS のプレゼントです。KeepRight は、あなたが前回単に開いただけの %s "
+"の位置とエラーのタイプを覚えています"
 
 #: index.php:70
 #, php-format
 msgid "For archeologists: %sOld log entries%s have moved."
-msgstr "Arheoloogidele: %sVanad logi sissekanded%s on teise kohta liigutatud"
+msgstr "考古学者のために：%s 古いログのエントリ %s は、移動されました"
 
 #: index.php:73
 msgid "a few words on the new comment feature"
-msgstr "mõned sõnad uuest kommenteeerimise võimalusest"
+msgstr "新しいコメント機能についての説明を少し"
 
 #: index.php:74
 msgid ""
@@ -1158,10 +1061,6 @@ msgid ""
 "false-positive. Don't confuse the comment box with an editing feature. This "
 "is not Potlatch! You cannot add missing tags via KeepRight!"
 msgstr ""
-"Kui sa leiad valepositiivse, palun jäta kommentaar, mis aitaks minul "
-"parandada kontrollrutiine. Ära aja kommenteerimise kasti segi redigeerimise "
-"võimalusega. See ei ole Potlatch! Sa ei saa lisada puuduvaid silte "
-"KeepRight&apos;i kaudu!"
 
 #: index.php:77
 msgid ""
@@ -1169,75 +1068,69 @@ msgid ""
 "running when you hit the JOSM-link. Furthermore you have to enable the "
 "&apos;remote control&apos;-plugin in JOSMs options."
 msgstr ""
-"Märkus: selleks, et JOSM&apos;i linki töötavaks muuta, peab JOSM käima "
-"JOSM&apos;i lingile vajutamise hetkel. Lisaks pead sa lubama JOSM&apos;i "
-"valikutest kaugjuhtimise (remote control) pistikprogrammi kasutamise"
+"JOSM を連動させようとすると、JOSM連動ボタンをクリックした時に JOSM は既に起動している必要があることに注意して下さい。さらには、JOSM "
+"のオプションである &apos;remote control&apos; プラグインが有効になっていなければなりません"
 
 #: index.php:79
 msgid "Currently the following checking procedures are implemented"
-msgstr "Hetkel on järgnevad kontroll protseduurid rakendatud"
+msgstr "現在は次のチェック手続きが実装されています"
 
 #: index.php:102
 msgid ""
 "If you find an error in my errors lists I would definitely like to hear "
 "about it!"
-msgstr ""
-"Kui sa leiad vea minu vigade nimekirjas, sooviksin ma sellest kindlasti "
-"kuulda!"
+msgstr "私のエラーリスト内にエラーを見つけたら、是非とも知らせてください！"
 
 #: index.php:104
 msgid "Impressum"
-msgstr ""
+msgstr "Impressum"
 
 #: index.php:105
 msgid ""
 "This work is done without commercial background, just for my personal "
 "pleasure. I would be very happy if it was helpful for the OSM Project."
-msgstr ""
-"See töö on tehtud ilma kommerts taustata, lihtsalt enda heameeleks. Ma "
-"oleksin väga õnnelik, kui see oleks abiks OSM projektile."
+msgstr "この作業は商業的な背景無しに、私の個人的な楽しみでやっています。OSMプロジェクトの役に立てれば幸いです。"
 
 #: index.php:106
 msgid ""
 "If you like to contact me, my mailbox at the austrian server of gmx is "
 "labelled KeepRight."
 msgstr ""
-"Kui sa soovid minuga ühendust võtta, siis minu postkast austria gmx serveris "
-"on nimega KeepRight."
+"もしあなたが私にコンタクトを取りたいなら、オーストリアのサーバにある gmx の私のメールボックスは KeepRight とラベリングされています"
 
 #: index.php:106
 msgid ""
 "Please understand that I will not always be able to immediately respond to "
 "your mail on weekdays."
-msgstr ""
+msgstr "平日、あなたのメールに必ずしも即座に反応できるわけではないことをご理解ください。"
 
 #: report_map.php:155
 msgid "errors"
-msgstr "vead"
+msgstr "エラー"
 
 #: report_map.php:155
 msgid "warnings"
-msgstr "hoiatused"
+msgstr "警告"
 
 #: report_map.php:182
 msgid "all"
-msgstr "kõik"
+msgstr "すべて"
 
 #: report_map.php:183
 msgid "none"
-msgstr "mitte ükski"
+msgstr "なし"
 
 #: report_map.php:185
 msgid "show ignored errors"
-msgstr "näita ignoreeritud vigu"
+msgstr "無視したエラーを表示"
 
 #: report_map.php:187
 msgid "show temp. ignored errors"
-msgstr "näita ajutiselt ignoreeritud vigu"
+msgstr "temp.ignored のエラーを表示"
 
 #: report_map.php:189
 msgid "Edit in Potlatch"
-msgstr "Muuda Potlatch'is"
+msgstr "Potlatch で編集"
 
 #: report_map.php:194
 #, php-format
@@ -1245,30 +1138,29 @@ msgid ""
 "You will see up to %d error markers starting in the center of the map. "
 "Please allow a few seconds for the error markers to appear after panning."
 msgstr ""
-"Te näete kuni %d vea markerit alustades kaardi keskosast. Andke mõni sekund "
-"vea markeritele ilmumiseks peale kaardi liigutamist."
+"あなたが開始点として選択した場所を中心とした地図には、%d 以上のエラーがあります。スクロールした後エラーマーカーが表示されるまで、数分待ってください"
 
 #: report_map.php:196
 #, php-format
 msgid "Site updated at %s"
-msgstr "Leht uuendatud %s"
+msgstr "サイト更新日 %s"
 
 #: points.php:114
 msgid "node"
-msgstr "punkt"
+msgstr "ノード"
 
 #: points.php:114
 msgid "way"
-msgstr "joon"
+msgstr "ウェイ"
 
 #: points.php:114
 msgid "relation"
-msgstr "relatsioon"
+msgstr "リレーション"
 
 #. full message: "edit in JOSM / Potlatch"
 #: myText.js:237
 msgid "edit in"
-msgstr "muuda:"
+msgstr "編集ツール"
 
 #: myText.js:237
 msgid "JOSM"
@@ -1278,9 +1170,7 @@ msgstr "JOSM"
 msgid ""
 "JOSM must be running and JOSM's remote control plugin must be enabled for "
 "this to work!"
-msgstr ""
-"JOSM peab töötama ja JOSM'i kaugkontrolli (remote control) pistikprogramm "
-"peab olema lubatud, et see oleks võimalik!"
+msgstr "この作業をするには、JOSM が動作していて JOSM のリモートコントロールプラグインが有効になっていなければなりません"
 
 #: myText.js:239
 msgid "Potlatch"
@@ -1292,48 +1182,48 @@ msgstr ""
 
 #: myText.js:244
 msgid "keep this error open"
-msgstr "jäta see viga avatuks"
+msgstr "このエラーを公開したままにする"
 
 #: myText.js:246
 msgid "ignore temporarily (error corrected)"
-msgstr "ignoreerti ajutiselt (viga parandatud)"
+msgstr "一時的に無視(エラー修正済み)"
 
 #: myText.js:248
 msgid "ignore (false-positive)"
-msgstr "ignoreeri (vale-positiivne)"
+msgstr "無視(誤検出)"
 
 #: myText.js:252
 msgid "save"
-msgstr "salvesta"
+msgstr "保存"
 
 #: myText.js:253
 msgid "cancel"
-msgstr "loobu"
+msgstr "キャンセル"
 
 #: myText.js:254
 msgid "please click on the icon to fixate the bubble"
-msgstr "palun vajuta ikoonile fikseerimaks mulli"
+msgstr "アイコンをクリックするとポップアップが固定されます"
 
 #: myText.js:255
 msgid "link to here: error #"
-msgstr "viit siia: viga #"
+msgstr "ここへのリンク: エラー番号"
 
 #. full message: "last edit of this node: 2009-04-01 5:22"
 #: myText.js:255
 msgid "last edit of this"
-msgstr ""
+msgstr "対象の最終更新"
 
 #: interfacing.php:4
 msgid "interfacing KeepRight"
-msgstr "KeepRight'i liidestamine"
+msgstr "KeepRight のインターフェイス"
 
 #: interfacing.php:11
 msgid "Interfacing with KeepRight"
-msgstr "Liidestamine KeepRight&apos;ga"
+msgstr "KeepRight とインターフェイスをとる"
 
 #: interfacing.php:13
 msgid "You may use KeepRight&apos;s results in a number of ways:"
-msgstr "Sa võid kasutada KeepRight&apos;i tulemusi mitmel viisil:"
+msgstr "あなたは、KeepRight の結果をいろいろな方法で利用しても良い"
 
 #: interfacing.php:17
 #, php-format
@@ -1343,25 +1233,25 @@ msgstr ""
 #: interfacing.php:18
 #, php-format
 msgid "exporting %sGPX waypoints%s"
-msgstr ""
+msgstr "%s GPX ウェイポイント %s をエクスポートしています"
 
 #: interfacing.php:19
 #, php-format
 msgid "exporting new errors as %sRSS feed%s"
-msgstr "uute vigade eksportimine %sRSS voona%s"
+msgstr "新しいエラーを %sRSS feed%s としてエクスポートしています"
 
 #: interfacing.php:20
 #, php-format
 msgid "getting the whole errors %sdump file%s"
-msgstr "kõikide vigade %sdump faili%s saamine"
+msgstr ""
 
 #: interfacing.php:24
 msgid "exporting GPX waypoints"
-msgstr ""
+msgstr "GPX ウェイポイントをエクスポートしています"
 
 #: interfacing.php:25 interfacing.php:35 interfacing.php:47
 msgid "Purpose"
-msgstr "Eesmärk"
+msgstr "目的"
 
 #: interfacing.php:26
 msgid ""
@@ -1371,7 +1261,7 @@ msgstr ""
 
 #: interfacing.php:28 interfacing.php:38 interfacing.php:50
 msgid "URL format"
-msgstr "URL formaat"
+msgstr "URL 形式"
 
 #: interfacing.php:30
 msgid ""
@@ -1385,16 +1275,14 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
-"Kaardilehe all vaskus nurgas on link GPX teenusele, mis sisaldab alati "
-"parasjagu valitud vigasid ja kaardiala."
 
 #: interfacing.php:34
 msgid "exporting new errors as RSS feed"
-msgstr "uute vigade eksportimine RSS voona"
+msgstr "新しいエラーを RSS feed としてエクスポートしています"
 
 #: interfacing.php:36
 msgid "Watching a section of the map for newly found errors"
-msgstr "Jälgida uusi leitud vigu kaardi sektsioonil"
+msgstr ""
 
 #: interfacing.php:41
 msgid ""
@@ -1402,9 +1290,6 @@ msgid ""
 "different. The RSS feed will include error entries that were first found "
 "within the last three weeks."
 msgstr ""
-"URL formaat on sama, mis GPX ekspordil, lihtsalt formaadi parameeter on "
-"erinev. RSS voog sisaldab vigade kirjeid, mis esmaleiti eelneva kolme nädala "
-"jooksul."
 
 #: interfacing.php:42
 msgid ""
@@ -1412,12 +1297,10 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
-"Kaardi vasakus alumises nurgas on link RSS teenusele, mis sisaldab alati "
-"parasjagu valitud veatüüpe ja vaadet kaardil."
 
 #: interfacing.php:46
 msgid "getting the whole dump-file"
-msgstr "terve dump faili saamine"
+msgstr "ダンプファイル全体を取得中"
 
 #: interfacing.php:48
 msgid "Doing something completely different with 25 millions of errors..."
@@ -1431,7 +1314,7 @@ msgstr ""
 
 #: interfacing.php:56
 msgid "Table layout"
-msgstr "Tabeli kujundus"
+msgstr "テーブルレイアウト"
 
 #: interfacing.php:59
 #, php-format
@@ -1441,17 +1324,12 @@ msgid ""
 "roughly equally sized dump files. Consider the schema as a prefix for the "
 "error_id."
 msgstr ""
-"Schema on planeedi mingi regiooni identifikaator. %sPlaneedi jagamise "
-"kaardi%s järgi jagatakse planeet nelinurkseteks tükkideks, saamaks enam-"
-"vähem võrdse suurusega dump faile. Võta schema't kui error_id prefiksit."
 
 #: interfacing.php:60
 msgid ""
 "A number identifying errors, starting from 1 for each schema. An error_id is "
 "worth nothing if you don&apos;t know the schema!"
 msgstr ""
-"Number, mis identifitseerib vigasid, algab ühest iga schema puhul. error_id "
-"ei ole väärt midagi, kui sa ei tea schema&apos;t!"
 
 #: interfacing.php:61
 msgid ""
@@ -1459,9 +1337,6 @@ msgid ""
 "blocks of 10s (20, 30, 40...). They correspond with the name of the script "
 "file doing the checking."
 msgstr ""
-"Vea tüübi numbriline esitus. Vea tüübid on omistatud kümmnestes blokkides "
-"(20, 30, 40...). Need on vastavasuses kontrolli teostava skripti faili "
-"nimega."
 
 #: interfacing.php:62
 msgid ""
@@ -1482,11 +1357,11 @@ msgstr ""
 
 #: interfacing.php:65
 msgid "one of node/way/relation"
-msgstr ""
+msgstr "ノード/ウェイ/リレーション のひとつ"
 
 #: interfacing.php:66
 msgid "an OSM node_id, way_id or relation_id"
-msgstr "OSM&apos;i node_id, way_id või relation_id"
+msgstr "OSMのnode_id, way_id または relation_id"
 
 #: interfacing.php:67
 msgid ""
@@ -1525,34 +1400,28 @@ msgstr ""
 
 #: interfacing.php:70
 msgid "find the GNU gettext template file here:"
-msgstr "siit leiad GNU gettext mall faili:"
+msgstr "GNU gettext テンプレートファイルはこちら:"
 
 #: interfacing.php:71
 msgid ""
 "These bits of text are the contents that have to be inserted in the error "
 "message after translation. txt1 will replace $1, etc."
 msgstr ""
-"Need teksti tükid sisestatakse peale tõlkimist vea teadetesse. txt1 asendab "
-"$1, jne."
 
 #: interfacing.php:72
 msgid "Timestamp (MESZ) of when this error was found the first time"
-msgstr "Ajatempel(MESZ) selle kohta, millal see viga esmakordselt leiti"
+msgstr ""
 
 #: interfacing.php:73
 msgid ""
 "Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
 msgstr ""
-"Ajatempel(MESZ) selle kohta, millal seda viga kontrolliti scriptide poolt "
-"(uuesti) üle"
 
 #: interfacing.php:74
 msgid ""
 "Timestamp of the object that was used when checking, as found in the "
 "official planet file."
 msgstr ""
-"Ajatempel objektist, mida kasutati kontrollimisel, mis leiti ametlikust "
-"planeedi failist."
 
 #: interfacing.php:76
 msgid ""
@@ -1560,18 +1429,14 @@ msgid ""
 "found in the official planet file. Please note that numbers are displayed as "
 "int values. To convert back to real lon/lat you have to divide by 10^7"
 msgstr ""
-"Asukoht planeedil. Kordinaadid on antud samas projektsioonis nagu ametlikus "
-"planeedi failis. Märkus: numbreid kuvatakse kui täisarvulisi väärtusi. "
-"Konverteerimaks tagasi reaalseteks pikkus ja laiuskraadideks pead sa jagama "
-"arvuga 10^7"
 
 #: interfacing.php:77
 msgid "User-comment (if any)"
-msgstr "Kasutaja kommentaar (kui on mõni)"
+msgstr "ユーザのコメント(あれば)"
 
 #: interfacing.php:78
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
-msgstr "Ajatempel(MESZ) selle kohta, millal kommentaar anti (kui on mõni)"
+msgstr "コメントの投稿タイムスタンプ(あれば)"
 
 #: interfacing.php:89
 msgid "User name of the user that last edited the given object."
@@ -1579,25 +1444,24 @@ msgstr ""
 
 #: interfacing.php:82
 msgid "loading the errors table"
-msgstr "vigade tabeli laadimine"
+msgstr "エラーテーブルを読み込んでいます"
 
 #: interfacing.php:85
 msgid "This is the schema definition for use with MySQL databases:"
-msgstr "See on MySQL andmebaasi schema definitsioon"
+msgstr ""
 
 #: interfacing.php:108
 msgid ""
 "Please note that <em>schema</em> is a reserved word in MySQL, so you always "
 "have to quote it like this: `schema`"
 msgstr ""
-"Märkus: <em>schema</em> on reserveeritud sõna MySQL'is, seega pead sa alati "
-"panema selle ülakomade vahele nii: `schema`"
+"<em>schema</em> は MySQL の予約語なので、`schema` のようにクォートしなければならないことに注意してください"
 
 #: interfacing.php:110
 msgid ""
 "There are two primary keys in this table: a natural one and an artificial "
 "one:"
-msgstr "Tabelis on kaks primaarvõtit: üks loomulik ja üks tehislik:"
+msgstr ""
 
 #: interfacing.php:112
 msgid ""
@@ -1605,9 +1469,8 @@ msgid ""
 "lon. That means one type of error may be found on multiple spots belonging "
 "to one single object (eg. self-intersections of ways)."
 msgstr ""
-"Loomulik primaarvõti koosneb veergudest error_type, object_type, object_id, "
-"lat, lon. See tähendab, et samale objektile kuuluvaid üht tüüpi vigu "
-"võidakse leida erinevates kohtades (nt. joonte endaga ristumised)."
+"自然キーはerror_type、object_type、object_id、lat（緯度）、lon（経度）で構成されます。これは、ある１種類のエラーが、一"
+"つのオブジェクトに属している複数のスポットで発生するおそれがあることを意味します（例: 道路が自己交差している）。"
 
 #: interfacing.php:114
 msgid ""
@@ -1615,8 +1478,6 @@ msgid ""
 "for simplicity of referencing individual error instances and it is "
 "completely redundant."
 msgstr ""
-"Tehislik primaarvõti koosneb veergudest schema ja error_id. Seda kasutakakse "
-"erinevatele vigadele viitamise lihtsuse pärast ja see on täiesti liigne."
 
 #: interfacing.php:139
 msgid "querying node counts"

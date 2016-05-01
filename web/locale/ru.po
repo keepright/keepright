@@ -8,22 +8,22 @@ msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-11-29 02:04+0000\n"
+"PO-Revision-Date: 2013-08-20 20:16+0000\n"
 "Last-Translator: e9625163 <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-12-01 20:40+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2014-04-04 19:48+0000\n"
+"X-Generator: Launchpad (build 16976)\n"
 
 msgid "This way is not connected to the rest of the map"
-msgstr "Эта линия не соединена с остальной картой"
+msgstr "Эта линия не связана с остальной частью карты"
 
 msgid ""
 "There are ways in different layers coming together in this railway crossing"
 msgstr ""
-"Линии на разных уровнях соединяются в этой точке, обозначенной как переход "
+"Линии на разных уровнях соединяются в точке, обозначенной как переход "
 "(railway=crossing)"
 
 msgid ""
@@ -35,7 +35,7 @@ msgstr ""
 
 #. full message: "This highway overlaps the waterway #17..."
 msgid "This $1 overlaps the $2 #$3"
-msgstr "$1 перекрывает $2 #$3"
+msgstr "$1 перекрывает $2 №$3"
 
 msgid ""
 "This way contains more than one node at least twice. Nodes are $1. This may "
@@ -45,7 +45,7 @@ msgstr ""
 "допустимо, но, возможно, это ошибка."
 
 msgid "The key of this way's tag is 'key': $2"
-msgstr "Линия имеет тег со значением: $2"
+msgstr "Линия имеет тег с ключом: $2"
 
 #: index.php:77
 msgid ""
@@ -73,34 +73,34 @@ msgstr "Эта линия с тегами '$1=$2' должна быть замк
 msgid ""
 "The first node (id $1) of this one-way is not connected to any other way"
 msgstr ""
-"Первая точка (id $1) этого одностороннего пути не входит в другую линию"
+"Первая точка (id $1) этой односторонней дороги не входит в другую линию"
 
 msgid ""
 "The last node (id $1) of this one-way is not connected to any other way"
 msgstr ""
-"Последняя точка (id $1) этого одностороннего пути не входит в другую линию"
+"Последняя точка (id $1) этой односторонней дороги не входит в другую линию"
 
 msgid ""
 "This node cannot be reached, because one-ways only lead away from here"
 msgstr ""
 "В эту точку движение не возможно, т.к. только линия с односторонним "
-"движением ведет из этой точки"
+"движением ведёт из этой точки"
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
 msgstr ""
 "Из этой точки движение не возможно, т.к. только линия с односторонним "
-"движением ведет в эту точку"
+"движением ведёт в эту точку"
 
 msgid "This node is very close but not connected to way #$1"
 msgstr "Эта точка находится очень близко, но не входит в линию #$1"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct."
 msgid "This $1 uses deprecated tag $2 = $3"
-msgstr "$1 имеет двойные теги $2 = $3"
+msgstr "$1 имеет устаревший тег $2 = $3"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
 msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
-msgstr "$1 имеет двойные теги $2 = $3. Пожалуйста, используйте $4!"
+msgstr "$1 имеет устаревший тег $2 = $3. Пожалуйста, используйте $4!"
 
 #. full mesage: "This way has an empty tag: name="
 msgid "This $1 has an empty tag: $2"
@@ -109,26 +109,28 @@ msgstr "$1 имеет пустой тег: $2"
 msgid "This way has no tags"
 msgstr "Эта линия не имеет тегов"
 
+msgid "This node is not member of any way and does not have any tags"
+msgstr "Эта точка не входит в какую-либо линию и не имеет никаких тегов"
+
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
 "tag"
 msgstr ""
-"Эта линия имеет тег motorway и должна быть дополнена тегами ref, nat_ref или "
-"int_ref"
+"Эта линия отмечена как автомагистраль и потому должна меть номер (тег ref=*, "
+"nat_ref=* или int_ref=*)"
 
 msgid ""
 "This $1 is tagged as place of worship and therefore needs a religion tag"
 msgstr ""
-"$1, обозначенное как религиозное место и должно иметь теги, указывающие "
-"религию"
+"$1 имеет отметку места поклонения, но не указана религия (religion=*)"
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
-msgstr "Эта точка обозначена как $1 и должна быть дополнена тегом name"
+msgstr "Эта точка обозначена как $1 и должна иметь название (name=*)"
 
 msgid ""
 "This node is tagged as $1 and therefore needs a name tag or an operator tag"
 msgstr ""
-"Эта точка обозначена как $1 и должна быть дополнена тегом name или operator"
+"Эта точка обозначена как $1 и должна иметь название (name=* или operator=*)"
 
 msgid "This way has no nodes"
 msgstr "Эта линия не содержит точек"
@@ -140,27 +142,28 @@ msgid ""
 "This crossing of a highway and a railway needs to be tagged as "
 "railway=crossing or railway=level_crossing"
 msgstr ""
-"Точка пересечения дороги и железной дороги должна иметь теги перехода "
-"(railway=crossing) или переезда (railway=level_crossing)"
+"Точка пересечения дороги и железной дороги должна отмечаться как переход "
+"(railway=crossing) или как переезд (railway=level_crossing)"
 
 #. full mesage: "This way is fixme-tagged: fixme=yes"
 msgid "This $1 is fixme-tagged: $2"
-msgstr "$1 помечена тегом fixme: $2"
+msgstr "Элемент \"$1\"  требует проверки:  $2"
 
 msgid "This relation has no type tag, which is mandatory for relations"
-msgstr "Это отношение не имеет обязательного тега, определяющего его тип"
+msgstr ""
+"Это отношение не имеет обязательного тега \"type=*\", определяющего его тип"
 
 #. full message: "This highway intersects the waterway #17..."
 msgid "This $1 intersects the $2 #$3 but there is no junction node"
-msgstr "$1 пересекает $2 #$3, но не имеет с ним общей точки"
+msgstr "$1 пересекает $2 №$3, но не имеет с ним общей точки"
 
 #. full message: "This highway intersects the waterway #17"
 msgid "This $1 intersects the $2 #$3"
-msgstr "$1 пересекает $2 #$3"
+msgstr "$1 пересекает $2 №$3"
 
 msgid "This way contains node #$1 $2 times. This may or may not be an error"
 msgstr ""
-"Эта линия содержит точку #$1 $2 раз(а). Это допустимо, но, возможно, это "
+"Эта линия содержит точку №$1 $2 раз(а). Это допустимо, но, возможно, это "
 "ошибка."
 
 msgid ""
@@ -170,14 +173,14 @@ msgstr ""
 "несколько раз"
 
 msgid "The key of this node's tag is 'key': $2"
-msgstr "Точка имеет тег со значением: $2"
+msgstr "Точка имеет тег с ключом: $2"
 
 msgid "The key of this relation's tag is 'key': $2"
-msgstr "Отношение имеет тег со значением: $2"
+msgstr "Отношение имеет тег с ключом: $2"
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
-msgstr "$1 обозначено как, '$2=$3', где $4 похоже на $5"
+msgstr "Элемент \"$1\" обозначен как, \"$2=$3\", где \"$4\" похоже на \"$5\""
 
 #. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
 msgid "This node is a junction of ways on different layers: $1"
@@ -187,30 +190,38 @@ msgid ""
 "If this mini roundabout is in a country with left-hand traffic then it "
 "should have a tag 'direction=clockwise'"
 msgstr ""
-"Этот перекресток с круговым движением, находится в стране с левосторонним "
-"движением, и поэтому должен иметь тег 'direction=clockwise'"
+"Если этот перекресток с круговым движением без внутреннего кольца находится "
+"в стране с левосторонним движением, и поэтому должен иметь тег "
+"'direction=clockwise'"
 
 msgid ""
 "If this mini roundabout is in a country with right-hand traffic then it "
 "should not have a tag 'direction=clockwise'"
 msgstr ""
-"Этот перекресток с круговым движением, находится в стране с правосторонним "
-"движением, и поэтому не должен иметь тег 'direction=clockwise'"
+"Если этот перекресток с круговым движением без внутреннего кольца находится "
+"в стране с правосторонним движением, и поэтому не должен иметь тег "
+"'direction=clockwise'"
 
 msgid ""
 "This $1 is tagged with layer $2. This need not be an error, but it looks "
 "strange"
 msgstr ""
-"$1 обозначен тегом уровень $2. Возможно это не ошибка, но выглядит странно."
+"Элемент \"$1\" обозначен тегом уровня $2. Возможно это не ошибка, но "
+"выглядит странно."
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
 "motorway_link, trunk, rest_area or construction. Service or unclassified is "
 "only valid if it has access=no/private or if it is a service=parking_aisle."
 msgstr ""
+"В этой точке соединяются линии с тегом highway=motorway и highway=* со "
+"значением отличным от motorway, motorway_link, trunk, rest_area или "
+"construction. Линии со значениями тегов Service или Unclassified, возможны "
+"только при присутствии тегов access=no/private. Также возможны линии "
+"обозначенные тегами service=parking_aisle."
 
 msgid "This boundary has no name"
-msgstr "Эта граница не имет обязательного тега name"
+msgstr "Эта граница не имеет названия (name=*)"
 
 msgid "The boundary of $1 has no admin_level"
 msgstr "Граница $1 не имеет обязательного тега admin_level"
@@ -248,17 +259,34 @@ msgstr "Это ограничение поворота имеет неизвес
 
 msgid "A turn-restriction needs exactly one $1 member. This one has $2"
 msgstr ""
-"Для запрета поворота нужен только один $1 участник. Этот запрет имеет $2"
+"Для запрета поворота нужен только один участник  $1. Этот запрет имеет $2"
 
 msgid "From- and To-members of turn restrictions need to be ways. $1"
-msgstr "Участники From и To для запрета поворота должны быть линиями. $1"
+msgstr "Участники From и To для ограничения поворота должны быть линиями. $1"
 
 msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
 msgstr "Участники From, Via и To для запрета поворота должны быть соеденены"
 
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+
+msgid ""
+"restriction type is $1, but angle is $2 degrees. Maybe the restriction type "
+"is not appropriate?"
+msgstr ""
+
+msgid "wrong direction of to way $1"
+msgstr ""
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr ""
+
 msgid "missing maxspeed tag"
-msgstr "пропущен тег maxspeed"
+msgstr "пропущен тег ограничения скорости (maxspeed=*)"
 
 msgid ""
 "This way is part of a roundabout but is not closed-loop. (split carriageways "
@@ -295,6 +323,15 @@ msgstr ""
 "Этот мост не имеет общих тегов с окружающими линиями, показывающими "
 "назначение этого моста. Это должен быть один из следующих тегов: $1"
 
+msgid "The URL ($1) cannot be opened (HTTP status code $2)"
+msgstr "Страница ($1) не может быть открыта (HTTP ошибка $2)"
+
+msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
+msgstr "Possible domain squatting: $1. Подозрительный текст: \"$2\""
+
+msgid "Content of the URL ($1) did not contain these keywords: ($2)"
+msgstr "Содержимое URL ($1) не содержит этих ключевых слов: ($2)"
+
 #. translations for error type names
 #. please keep this as short as possible
 msgid "multiple nodes on the same spot"
@@ -305,7 +342,7 @@ msgid ""
 "0.5 meters are considered zero"
 msgstr ""
 "Попробуйте найти слишком близко расположенные точки. Расстояние между "
-"точками менее пол метра считается нулевым"
+"точками менее половины метра считается нулевым"
 
 #. please keep this as short as possible
 msgid "non-closed areas"
@@ -318,13 +355,13 @@ msgid ""
 "map! The standard.xml file is used to determine which key-value-combinations "
 "are drawn as areas; any instance of these has to be closed-loop."
 msgstr ""
-"По правилам, линии со специальными комбинациями тегов и их значений "
+"По правилам, линии со специальными комбинациями ключей и их значений "
 "рассматриваются как области, и отображаются на карте соответствующим "
 "образом. Поэтому важно, чтобы такие линии были замкнуты и не имели "
 "самопересечений. Незамкнутые области не отображаются на карте. Стандартный "
-".xml файл используется для определения комбинации тег—значение для объектов, "
-"отображаемых как области. Любые такие объекты должны быть замкнуты и не "
-"иметь самопересечений."
+".xml файл используется для определения комбинации ключ—значение для "
+"объектов, отображаемых как области. Любые такие объекты должны быть замкнуты "
+"и не иметь самопересечений."
 
 #. please keep this as short as possible
 msgid "dead-ended one-ways"
@@ -371,7 +408,7 @@ msgstr ""
 "показаны теги, которые были заменены на новые. Это уведомление, а не ошибка. "
 "Термин «deprecated» означает устаревший. Вы вправе использовать любые теги, "
 "которые вам понравятся, в не зависимости от того, устарели они или нет. Это "
-"уведомление — лишь намек на то, чтобы вы использовали новые теги."
+"уведомление — лишь предложение того, чтобы вы использовали новые теги."
 
 #. please keep this as short as possible
 msgid "missing tags"
@@ -386,35 +423,36 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "motorways without ref"
-msgstr "магистрали без тега ref"
+msgstr "автомагистрали без номера (ref=*)"
 
 msgid ""
 "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
 "mandatory as they are very important information"
 msgstr ""
 "Тег ref описывает номер магистрали (например, «A 10»). Это обязательный тег "
-"(для motorways), т.к. это информация очень важна."
+"автомагистралей, т.к. это информация очень важна."
 
 #. please keep this as short as possible
 msgid "places of worship without religion"
-msgstr "культовые места без указания религии"
+msgstr "место поклонения без указания религии"
 
 msgid ""
 "Churches, mosques and synagogues etc. need an extra religion tag giving info "
 "about the religion"
 msgstr ""
-"Церкви, мечети, синагоги и т.д. должны быть дополнены тегом указания религии"
+"Церкви, мечети, синагоги и т.п. должны быть дополнены тегом религии "
+"(religion=*)"
 
 #. please keep this as short as possible
 msgid "point of interest without name"
-msgstr "точка интереса без тега name"
+msgstr "точка интереса без названия (name=*)"
 
 msgid ""
 "The name tag should be specified for every point of interest as its content "
 "gets rendered in the map next to the POI symbol"
 msgstr ""
-"Каждая точка интереса должна иметь тег name. Это имя отображается на карте "
-"вместе с символом точки интереса."
+"Каждая точка интереса должна иметь название (name=*). Название отображается "
+"на карте вместе с иконкой точки интереса."
 
 #. please keep this as short as possible
 msgid "ways without nodes"
@@ -458,7 +496,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "wrongly used railway crossing tag"
-msgstr "неправильны тег пересечения с железнодорожными путями"
+msgstr "не правильно указан ж/д переход"
 
 msgid ""
 "Ways that take part in level-crossings of railways and highways have to be "
@@ -480,15 +518,15 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "relations without type"
-msgstr "отношения без типа"
+msgstr "тип отношения отсутствует"
 
 msgid ""
 "Find any relation that has no type tag, wich is mandatory for relations."
-msgstr "Поиск по отношениям без обязательного тега, определяющего тип."
+msgstr "Находит любое отношение без обязательного указания его типа"
 
 #. please keep this as short as possible
 msgid "intersections without junctions"
-msgstr "пересечения без общих точек"
+msgstr "пересечения без общей точки"
 
 msgid ""
 "Streets that graphically intersect need a common node that represents the "
@@ -596,7 +634,7 @@ msgstr "пересечение объектов на разных уровнях
 
 #. please keep this as short as possible
 msgid "strange layers"
-msgstr "незнакомые уровни"
+msgstr "странные уровни"
 
 #. please keep this as short as possible
 msgid "motorways connected directly"
@@ -632,15 +670,15 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "missing name"
-msgstr "отсутствует тег name"
+msgstr "нет названия"
 
 #. please keep this as short as possible
 msgid "missing admin_level"
-msgstr "отсутствует тег admin_level"
+msgstr "нет admin_level"
 
 #. please keep this as short as possible
 msgid "not closed loop"
-msgstr "незамкнутый контур"
+msgstr "не замкнута"
 
 #. please keep this as short as possible
 msgid "splitting boundary"
@@ -711,7 +749,7 @@ msgstr "неправильное направление"
 
 #. please keep this as short as possible
 msgid "faintly connected"
-msgstr ""
+msgstr "слабо связаны"
 
 #. please keep this as short as possible
 msgid "*_link-connections"
@@ -743,7 +781,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "language unknown"
-msgstr ""
+msgstr "Неизвестный язык"
 
 msgid ""
 "To help applications choose the best matching language they should know the "
@@ -751,12 +789,170 @@ msgid ""
 "name:XX tag with the same content as found in the name tag where XX "
 "specifies the language used for the name tag."
 msgstr ""
+"Чтобы помочь приложениям выбрать наиболее подходящий язык, в теге name "
+"должна быть заложена информация об языке. Для этого необходимо использовать "
+"тег name:XX с тем же значением, что и в теге name, где XX указывает язык, "
+"используемый в теге. Например, тег name:RU будет символизировать, что "
+"название дано на русском языке."
 
 #. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
 msgid ""
 "It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
 "shows the language of its name ''$2''."
 msgstr ""
+"Будет лучше если $1 будет иметь дополнительно тег ''name:XX=$2'', где XX "
+"указывает язык внесённого названия ''$2''."
+
+#. this is about points of interest drawn inside a building of the same name
+#. please keep this as short as possible
+msgid "doubled places"
+msgstr "дублирование POI"
+
+msgid ""
+"a node inside of an area that is tagged with same name and representing the "
+"same physical entity leads to wrong statistics and doubled labels on the map"
+msgstr ""
+"точка внутри полигона с тем же именем и представляющая тот же физический "
+"объект приведёт к неправильной статистике и дублированию тегов на карте"
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 and seems to be "
+"redundand"
+msgstr ""
+"Эта точка имеет одинаковые теги с окружающей её линией #$1 и они кажутся "
+"избыточными"
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 (including the "
+"name '$2') and seems to be redundand"
+msgstr ""
+"Эта точка имеет одинаковые теги с окружающей её линией #$1 (включая название "
+"\"$2\") и они кажутся избыточными"
+
+#. please keep this as short as possible
+msgid "non-physical use of sport-tag"
+msgstr "вид спорта без объекта"
+
+msgid ""
+"&apos;sports&apos; is a non-physical tag that needs to be bound to some "
+"physical structure like for example a leisure-item or an amenity. Ways "
+"tagged with &apos;sports&apos; solely will be invisible on the map"
+msgstr ""
+"Тег \"sports\" самостоятельно не обозначает какой-либо объект на карте, а "
+"придаёт лишь некоторое свойство объектам отмеченным с помощью \"leisure\" "
+"или \"amenity\".  Линии с одним лишь тегом \"sports\" не будут видимы на "
+"карте"
+
+#. full message: "This way is tagged sport=tennis but has no physical tag like e.g. leisure, building, amenity or highway"
+msgid ""
+"This way is tagged $1 but has no physical tag like e.g. leisure, building, "
+"amenity or highway"
+msgstr ""
+"Эта линия отмечена как  $1 , но не имеет тега описывающнго тип сооружения"
+
+#. please keep this as short as possible
+msgid "missing tracktype"
+msgstr "пропущен тег  tracktype"
+
+msgid ""
+"highway=track ways should be added with more detail about the tracktype "
+"(grade1..grade5). The tracktype is included in rendering rules and makes "
+"maps more expressive"
+msgstr ""
+"Дороги \"highway=track\" следует дополнять характеристиками "
+"(\"grade1..grade5\"). \"tracktype\" рендерится по специальным правилам и "
+"делает карты более выразительными"
+
+msgid "This track doesn't have a tracktype"
+msgstr "Этота просёлочная дорога не имеет \"tracktype\""
+
+#. please keep this as short as possible
+msgid "geometry glitches"
+msgstr "ошибки геометрии"
+
+msgid ""
+"looks for impossible sharp angles on highways and junctions. These may be "
+"caused by missing turn restrictions on junctions or glitches along the "
+"linestring of ways"
+msgstr ""
+"слишком острый угол пересечения дорог. Возможно тут ошибка или не указано "
+"ограничение для поворота"
+
+#. please keep this as short as possible
+msgid "missing turn restriction"
+msgstr "нет ограничений поворотов"
+
+#. please keep this as short as possible
+msgid "impossible angles"
+msgstr "странный угол"
+
+msgid "this way bends in a very sharp angle here"
+msgstr "эта линия изгибается здесь под очень острым углом"
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $2 to $1"
+msgstr ""
+"линии $1 и $2 сходятся под очень острым углом и нет ограничения поворота или "
+"не указана односторонняя дорога, что ограничило бы поворот с линии $2 на $1"
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $1 to $2"
+msgstr ""
+"линии $1 и $2 сходятся под очень острым углом и нет ограничения поворота или "
+"не указана односторонняя дорога, что ограничило бы поворот с линии $1 на $2"
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning"
+msgstr ""
+"линии $1 и $2 сходятся под очень острым углом и нет ограничения поворота или "
+"не указана односторонняя дорога"
+
+#. please keep this as short as possible
+msgid "website"
+msgstr "веб-сайт"
+
+#. please keep this as short as possible
+msgid "http error"
+msgstr "ошибка http"
+
+#. please keep this as short as possible
+msgid "domain hijacking"
+msgstr "домен захвачен"
+
+#. please keep this as short as possible
+msgid "non-match"
+msgstr "не совпадает"
+
+msgid ""
+"calls websites and tries to match website content with key tags from the osm "
+"element"
+msgstr ""
+"вызывает веб-сайты и пытается сопоставить содержание веб-сайтов с ключом "
+"тега элемента OSM"
+
+#. full message: "The URL (http://www.belgian-beer-cafe.com.au/heritage) cannot be opened (HTTP status code 404)"
+msgid ""
+"The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP "
+"status code $2)"
+msgstr ""
+"Ссылка (<a target=\"_blank\" href=\"$1\">$1</a>) не открывается (HTTP ошибка "
+"№ $2)"
+
+msgid ""
+"Possible domain squatting: <a target=\"_blank\" href=\"$1\">$1</a>. "
+"Suspicious text is: \"$2\""
+msgstr ""
+
+#. full message: "Content of the URL (http://www.yha.com.au) did not contain these keywords: (*Bondi Beachouse YHA*Bondi)"
+msgid ""
+"Content of the URL (<a target=\"_blank\" href=\"$1\">$1</a>) did not contain "
+"these keywords: ($2)"
+msgstr ""
+"Содержимое страницы (<a target=\"_blank\" href=\"$1\">$1</a>) не имеет таких "
+"слов: ($2)"
 
 #. translations for the web pages
 #: index.php:9
@@ -765,7 +961,7 @@ msgstr "проверка соответствия данных для OSM"
 
 #: index.php:11
 msgid "keep-right logo"
-msgstr "keep-right логотип"
+msgstr "логотип keep-right"
 
 #: index.php:13
 #, php-format
@@ -786,8 +982,8 @@ msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
 msgstr "Проверка данных для Европы%s (Начальная точка Вена, Австрия)"
 
 #: index.php:27
-msgid "Australian KeepRight partner site"
-msgstr "Австралийский  сайт дружественный KeepRight"
+msgid "Data Checks for Australia%s (Starting point Sydney)"
+msgstr "роверка данных для Австралии%s (Начальная точка Сидней)"
 
 #: index.php:30
 #, php-format
@@ -849,6 +1045,74 @@ msgid ""
 msgstr ""
 "Если вы хотите экспортировать ошибки из KeepRight, вам стоит взглянуть на  "
 "%sруководство пользователя%s"
+
+#, php-format
+msgid ""
+"Today I fixed the annoying OpenLayers-damaged-bubbles-issues. The bubbles "
+"look OK now and I made the switch to OL2.12. Empty your browser&apos;s cache "
+"(try any combination of Ctrl, Shift, Alt plus &apos;R&apos; as well as "
+"&apos;F5&apos;) if the site doesn&apos;t work for you."
+msgstr ""
+"Сегодня я исправил раздражающий OpenLayers-damaged-bubbles-issues. Всё "
+"выглядит ОК и теперь я сделал переход к OL2.12. Очистите кэш браузера "
+"(попробуйте любую комбинацию Ctrl/Shift/Alt + 'R' или 'F5'), если сайт не "
+"работает у вас."
+
+#, php-format
+msgid ""
+"To all consumers of KeepRight error dump files: The file format is going to "
+"change: I will drop the &quot;description&quot;-column. It is redundant, you "
+"can recreate it from &quot;msgid&quot; plus &quot;txt1&quot;-"
+"&quot;txt5&quot; <br>Second: there is a new column in the file including the "
+"user name of the last editor of the object containing the error.<br>This "
+"change will take full effect during this week as all parts of the planet are "
+"going to be reprocessed"
+msgstr ""
+
+#, php-format
+msgid ""
+"Australia is back online again!<br>KeepRight's Australia partner site is "
+"closed by now, error checks for Australia are run on the main site. I'm very "
+"sorry I could not rescue all the comments and ignore-states on errors. The "
+"remote database is not accessible any more so any comments and states are "
+"reset and we are starting from scratch.<br>Anyway, thank you, Peter, for "
+"providing that service for more than three years!"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new, great document that describes recipes for fixing errors "
+"reported by KeepRight. It was written by user Popei82. Thank you very "
+"much!<br>Find the document in the OSM <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>wiki</a>."
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check calles &apos;geometry glitches&apos;: This one looks "
+"for spikes in ways and makes guesses about missing turn restrictions: "
+"Highways joining in a very sharp angle should have some sort of turn "
+"restriction (explicit or implicit by means of oneway tags) that prohibits "
+"turing around the sharp angle"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check called &apos;doubled places&apos; that looks for nodes "
+"placed inside of a closed-loop way (usually a building) where the node and "
+"the way have some tags in common. Such situations lead to doubled labels on "
+"the map and wrong statistics (counting amenities doesn't work)"
+msgstr ""
+
+#, php-format
+msgid ""
+"KeepRight now has its own domain name! You may now access KeepRight using "
+"the short URL <b><a href='http://keepright.at/'>http://keepright.at/</a></b>"
+msgstr ""
+"Теперь у KeepRight есть собственное доменное имя! Вы можете получить доступ "
+"к KeepRight по короткому URL <b><a "
+"href='http://keepright.at/'>http://keepright.at/</a></b>"
 
 #, php-format
 msgid ""
@@ -1112,6 +1376,10 @@ msgstr ""
 msgid "Potlatch"
 msgstr "Potlatch"
 
+#: myText.js:239
+msgid "iD"
+msgstr ""
+
 #: myText.js:244
 msgid "keep this error open"
 msgstr "оставить эту ошибку неисправленной"
@@ -1201,12 +1469,8 @@ msgstr "Формат URL"
 #: interfacing.php:30
 msgid ""
 "You can specify a list of error types you want to have in the file as well "
-"as a bounding box on the map. This export will return up to 100 waypoints. "
-"This limit could be increased, in case there is demand."
+"as a bounding box on the map. This export will return up to 10000 waypoints. "
 msgstr ""
-"В списке вы можете указать типы ошибок, которые следует искать на карте. В "
-"данный момент отображается до 100 ошибок. Этот лимит может быть увеличен, "
-"если будет необходимость одновременного отображения большего числа ошибок."
 
 #: interfacing.php:31
 msgid ""
@@ -1249,16 +1513,14 @@ msgid "getting the whole dump-file"
 msgstr "загрузка всего дамп-файла"
 
 #: interfacing.php:48
-msgid "Doing something completely different with 10 millions of errors..."
-msgstr "Сделать что-то очень оригинальное с 10 миллионами ошибок..."
+msgid "Doing something completely different with 25 millions of errors..."
+msgstr ""
 
 #: interfacing.php:53
 msgid ""
 "This tab-separated file contains all errors currently open for the whole "
-"planet (currently >200MB). It is being updated daily."
+"planet (currently >500MB). It is being updated daily."
 msgstr ""
-"Этот файл с разделителями (табуляция) содержит все ошибки для всей планеты "
-"(в настоящее время >200 МБ). С недавнего времени, обновляется ежедневно."
 
 #: interfacing.php:59
 #, php-format
@@ -1423,6 +1685,10 @@ msgstr "Комментарий пользователя (если есть)"
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
 msgstr "Время (MESZ), когда был добавлен комментарий (если есть)"
 
+#: interfacing.php:89
+msgid "User name of the user that last edited the given object."
+msgstr "Имя пользователя, последним редактировавшего данный объект."
+
 #: interfacing.php:82
 msgid "loading the errors table"
 msgstr "загрузка таблицы ошибок"
@@ -1468,14 +1734,19 @@ msgstr ""
 "Искусственный ключ состоит из schema и error_id. Он используется лишь для "
 "упрощения описания ошибки, и является избыточным ключом."
 
-#~ msgid ""
-#~ "This node is a junction of a motorway and a highway other than motorway, "
-#~ "motorway_link, trunk, services, rest_area or construction. Service or "
-#~ "unclassified is only valid if it has a access=no/private or if it is a "
-#~ "service=parking_aisle."
-#~ msgstr ""
-#~ "В этой точке соединяются линии с тегом highway=motorway и highway=* со "
-#~ "значением отличным от motorway, motorway_link, trunk, services, rest_area "
-#~ "или construction. Линии со значениями тегов Service или Unclassified, "
-#~ "возможны только при присутствии тегов access=no/private. Также возможны "
-#~ "линии обозначенные тегами service=parking_aisle."
+#: interfacing.php:139
+msgid "querying node counts"
+msgstr ""
+
+#: interfacing.php:141
+msgid ""
+"As a waste-product the scripts create a file that contains the numer of "
+"nodes per square degree found in the planet file. Resolution is 0.1 degrees. "
+"You may download the file here:"
+msgstr ""
+
+#: interfacing.php:144
+msgid ""
+"This dump file can be useful for statistics if you want to calculate an "
+"`errors per node` measure"
+msgstr ""
