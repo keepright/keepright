@@ -45,7 +45,7 @@ list($subtyped, $nonsubtyped) = get_subtyped_error_types($db1, $ch);
 // (exclude) all ten errors together. subtyped errors selected individually.
 $where="(10*floor(error_type/10) IN ($nonsubtyped) OR error_type IN ($subtyped))";
 
-// this is an additional restriction for errors around the map center +/- 0.1 degree that helps the database because it needn't calculate that much distance values
+// this is an additional restriction for errors around the map center +/- 0.3 degree that helps the database because it needn't calculate that much distance values
 $where.=' AND lat >= ' . ($lat-3e6) . ' AND lat <= ' . ($lat+3e6);
 $where.=' AND lon >= ' . ($lon-3e6) . ' AND lon <= ' . ($lon+3e6);
 
@@ -78,7 +78,7 @@ if (!$show_tmpign) $sql.=' AND (c.state IS NULL OR c.state<>"ignore_temporarily"
 
 $sql .= " ORDER BY POWER(lat-$lat,2)+POWER(lon-$lon,2)";
 //$sql .= " ORDER BY RAND()";
-$sql .= ' LIMIT 100';
+$sql .= ' LIMIT 350';
 
 
 
