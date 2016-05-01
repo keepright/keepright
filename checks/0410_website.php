@@ -82,7 +82,10 @@ $keys_to_search_regex = array(
 // insert URLs pointing to public transport companies or retailers/food companies
 // running multiple stores/restaurants and the URL doesn't point to an individual store
 $whitelist = array(
-	'.pdf$',							// PDF matching not useful... yet
+	'.pdf$',		// PDF matching not useful... yet
+	'^http://File:',	// special case for wikimedia commons images: you will
+	'^File:',		// get a response in any case, even if the (image) doesn't exist.
+				// checking ist therefore not useful
 	'^http://a2wtrail.org/',
 	'^http://ancien-geodesie.ign.fr/',
 	'^http://caravanclub.se/',
@@ -445,7 +448,8 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 		$obj=array(
 			'id'=>$row1[$object_type . '_id'],
 			'object_type'=>$object_type,
-			'check_content'=>true
+			'check_content'=>true,
+			'tags'=>array()
 		);
 
 		// second: find all tags of those objects
@@ -453,7 +457,7 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 			WHERE {$object_type}_id=" . $row1[$object_type . '_id'], $db2, false);
 
 		while ($row2=pg_fetch_array($result2, NULL, PGSQL_ASSOC)) {
-			$obj[$row2['k']]=$row2['v'];
+			$obj['tags'][$row2['k']]=$row2['v'];
 			if (in_array($row2['k'], $check_accessibility_only)) $obj['check_content']=false;
 		}
 		pg_free_result($result2);
@@ -513,6 +517,7 @@ function run_standalone() {
 	$reader = new XMLReader();
 	$reader->open($planet_file);	// Would be nice to stream bz2 or pbf files here
 	$element = array();
+	$element['tags']=array();
 
 	$rc = new RollingCurl("run_standalone_callback");
 	$rc->options = $curlopt;
@@ -529,7 +534,7 @@ function run_standalone() {
 					$element['id']=$reader->getAttribute("id");
 					break;
 				case "tag":
-					$element[$reader->getAttribute("k")]=$reader->getAttribute("v");
+					$element['tags'][$reader->getAttribute("k")]=$reader->getAttribute("v");
 					$element['check_content']=!(in_array($reader->getAttribute("k"), $check_accessibility_only));
 					break;
 				}
@@ -548,12 +553,12 @@ function run_standalone() {
 
 					// Process element
 					foreach( $checkable_tags as $tag ) {
-						if( isset($element[$tag]) ) {
-							if(whitelisted($element[$tag])) {
-								echo "skipping whitelisted URL {$element[$tag]} on ID $element[id]\n";
+						if( isset($element['tags'][$tag]) ) {
+							if(whitelisted($element['tags'][$tag])) {
+								echo "skipping whitelisted URL " . $element['tags'][$tag] . " on ID $element[id]\n";
 							} else {
-								echo "queueing URL " . $element[$tag] . "\n";
-								queueURL($rc, $element, $element[$tag]);
+								echo "queueing URL " . $element['tags'][$tag] . "\n";
+								queueURL($rc, $element, $element['tags'][$tag]);
 								$urls_queued++;
 							}
 						}
@@ -567,19 +572,6 @@ function run_standalone() {
 	if ($urls_queued)           $rc->execute();
 	if (sizeof($rc->requests))  $rc->execute(); // In case new items got queued
 	return 0;
-}
-
-
-
-// returns true if the given URL is whitelisted
-function whitelisted($URL) {
-	global $whitelist;
-
-	foreach ($whitelist as $pattern) {
-		if (preg_match('@' . $pattern . '@i', $URL)) return true;
-	}
-
-	return false;
 }
 
 //escape non-ASCII characters in URL using punycode
@@ -610,6 +602,18 @@ function convert_to_ascii($url)
 
 
 
+// returns true if the given URL is whitelisted
+function whitelisted($URL) {
+	global $whitelist;
+
+	foreach ($whitelist as $pattern) {
+		if (preg_match('@' . $pattern . '@i', $URL)) return true;
+	}
+
+	return false;
+}
+
+
 // push an element onto the request queue
 function queueURL(&$rc, $element, $url) {
 
@@ -618,12 +622,10 @@ function queueURL(&$rc, $element, $url) {
 	if(!preg_match("|.*?://|i",$url)) {
 		$url = "http://".$url;
 	}
-
 	//Take care of URLs containing non-ASCII characters (IDN)
 	$url = convert_to_ascii($url);
 	// Queue for later
 	//print "Queue $url on ID $element[id]\n";
-	
 	$request = new RollingCurlRequest($url);
 	$request->callback_data = $element;
 	$rc->add($request);
@@ -635,8 +637,6 @@ function queueURL(&$rc, $element, $url) {
 function run_standalone_callback($response, $info, $request) {
 	echo "Callback on $request->url\n";
 	$obj = $request->callback_data;
-echo "x " . $obj['check_content'] . "\n";
-print_r($obj);	
 	if ($obj['check_content'])			// makes no sense on an image
 		$response=fix_charset($response);
 
@@ -673,7 +673,7 @@ function run_keepright_callback($response, $info, $request) {
 
 		$error_count++;
 		$txt1=pg_escape_string($db2, $request->url);
-		$txt2=quote($db2, $info['http_code']);
+		$txt2=pg_escape_string($db2, $info['http_code']);
 		query("
 			INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, last_checked)
 			VALUES ($error_type + 1, '" . $obj['object_type'] . "', " . $obj['id'] . ", 'The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP status code $2)', '$txt1', '$txt2', NOW())
@@ -764,7 +764,7 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	//
 	$temp = join($squat_strings,'|');
 	if(preg_match("/$temp/", $response, $matches)) {
-		return(array('type'=>2, 'Possible domain squatting: <a target=\"_blank\" href="$1">$1</a>. Suspicious text is: "$2"', $http_eurl, $matches[0]));
+		return(array('type'=>2, 'Possible domain squatting: <a target="_blank" href="$1">$1</a>. Suspicious text is: "$2"', $http_eurl, $matches[0]));
 	}
 
 	//
@@ -774,21 +774,21 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 	//
 	$searchedfor='';
 	foreach($keys_to_search_fixed as $key) {
-		if(isset($osm_element[$key])) {
-			$result = match($response, $osm_element[$key]);
-			//echo " searching $key=" . $osm_element[$key] . " results $searchedfor\n";
+		if(isset($osm_element['tags'][$key])) {
+			$result = match($response, $osm_element['tags'][$key]);
+			//echo " searching $key=" . $osm_element['tags'][$key] . " results $searchedfor\n";
 			if ($result===null) return null; else $searchedfor .= $result;
 		}
 	}
 	// do the same with regex-searchstrings
-	$keylist = array_keys($osm_element);
+	$keylist = array_keys($osm_element['tags']);
 	foreach($keys_to_search_regex as $key) {
 
 		foreach($keylist as $current_key) {		// match regex with every key of $element
 
 			if (preg_match('@' . $key . '@i', $current_key)) {
-				$result = match($response, $osm_element[$current_key]);
-				//echo " searching $current_key=" . $osm_element[$current_key] . " results $searchedfor\n";
+				$result = match($response, $osm_element['tags'][$current_key]);
+				//echo " searching $current_key=" . $osm_element['tags'][$current_key] . " results $searchedfor\n";
 				if ($result===null) return null; else $searchedfor .= $result;			}
 		}
 	}
@@ -798,7 +798,7 @@ function fuzzy_compare($response, $osm_element, $http_eurl) {
 
 
 	// Fall through with failure to match
-	return array('type'=>3, 'Content of the URL (<a target=\"_blank\" href="$1">$1</a>) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
+	return array('type'=>3, 'Content of the URL (<a target="_blank" href="$1">$1</a>) did not contain these keywords: ($2)', $http_eurl, $searchedfor);
 }
 
 // Requeue pages which simply refrence another page:
