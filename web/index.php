@@ -6,7 +6,7 @@ require('webconfig.inc.php');
 require('helpers.inc.php');
 
 
-echo "<head><title>" . T_gettext('data consistency checks for OSM') . "</title>";
+echo "<head><meta http-equiv='content-type' content='text/html; charset=utf-8'><title>" . T_gettext('data consistency checks for OSM') . "</title>";
 echo '<script type="text/javascript" src="keepright.js"></script></head><body>';
 echo "<img src='keepright.png' alt='" . T_gettext('keep-right logo') . "'>";
 

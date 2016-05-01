@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <meta http-equiv='content-type' content='text/html; charset=utf-8'>
     <title>data consistency checks for OSM</title>
     <script type="text/javascript" src="keepright.js"></script>
   </head>

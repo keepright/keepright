@@ -67,7 +67,7 @@ if ($cookie) $checks_to_hide = split(',', $cookie[3]); else $checks_to_hide=arra
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>keep right!</title>
+<html><head><meta http-equiv='content-type' content='text/html; charset=utf-8'><title>keep right!</title>
 
 <!-- <link rel="alternate" type="application/rss+xml"
    title="RSS" href="export.php" /> -->
