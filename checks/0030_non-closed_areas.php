@@ -67,15 +67,12 @@ foreach ($xml->xpath('//rule/area') as $area) {
 // in some key values you have some values explicitly named
 // and all others are catched with "*". That doesn't bother here,
 // so delete all explicitly called values as they are included with "*"
-$result=query("SELECT DISTINCT k FROM _tmp_way_tags WHERE v='*'", $db1, false);
-while ($row=pg_fetch_array($result)) {
-	query("
-		DELETE FROM _tmp_way_tags
-		WHERE k='" . $row['k'] . "'
-		AND v<>'*'
-	", $db2, false);
-}
-pg_free_result($result);
+
+query("
+	DELETE FROM _tmp_way_tags
+	WHERE k IN (SELECT DISTINCT k FROM _tmp_way_tags WHERE v='*')
+	AND v<>'*'
+", $db1, false);
 
 
 

@@ -181,6 +181,8 @@ foreach (array('from', 'to') as $type) {
 
 
 // report restrictions where angle do not correspond with restriction
+// this one assumes that via is the first or last node of from/to
+// so exclude relations with error 295 here
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, lat, lon, msgid, txt1, txt2, last_checked)
 	SELECT $error_type+6, CAST('relation' AS type_object_type),
@@ -224,7 +226,14 @@ WHERE
 		WHEN (ii.v = 'only_left_turn' OR ii.v = 'no_left_turn') AND ii.d < -5 THEN 0
 		WHEN ii.v = 'no_u_turn' AND (ii.d < -95 or ii.d > 179.99) THEN 0
 		ELSE 1
-	END = 1 AND ii.d IS NOT NULL
+	END = 1 AND ii.d IS NOT NULL AND
+	NOT EXISTS (
+		SELECT 1
+		FROM tmp_errors e
+		WHERE e.object_id=ii.relation_id AND
+			e.error_type=$error_type+5
+
+	)
 ", $db1);
 
 // TODO: in the above check change no_u_turn angles to <-179.99 AND > -95 for right side
