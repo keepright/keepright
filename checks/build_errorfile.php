@@ -14,7 +14,7 @@ $results=$config['results_dir'];
 
 // update and download the comments file from the web server
 system ('php webUpdateClient.php --remote --export_comments');
-system ('wget -O ' . $results . 'comments.txt.bz2 "http://keepright.ipax.at/comments.txt.bz2"');
+file_put_contents($results . 'comments.txt.bz2', file_get_contents('http://keepright.ipax.at/comments.txt.bz2'));
 system ('bunzip2 -f ' . $results . 'comments.txt.bz2');
 
 
