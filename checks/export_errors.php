@@ -81,6 +81,9 @@ function export_errors($schema) {
 		}
 		pg_free_result($result);
 		fclose($f);
+		
+//Generate error statistics and save in database
+    query("INSERT INTO error_statistics (schema,error_type,count,date) SELECT schema, error_type, COUNT(1),  extract(epoch from now()) FROM error_view e WHERE schema = '$schema' GROUP BY e.schema, e.error_type ORDER BY e.error_type",$db1);
 
 		system("bzip2 -k \"$fname\"");
 

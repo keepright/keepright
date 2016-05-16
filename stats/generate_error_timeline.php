@@ -28,15 +28,26 @@ if (array_key_exists('f',$opt)) {
   foreach ($schemas as $k => $v) {
     print "Checking Schema $k\n";
     print "Now included in export_errors\n";
-    //query("INSERT INTO error_statistics (schema,error_type,count,date) SELECT schema, error_type, COUNT(1),  extract(epoch from now()) FROM error_view e WHERE schema = '$k' GROUP BY e.schema, e.error_type ORDER BY e.error_type",$db1);
-
+    print "INSERT INTO error_statistics (schema,error_type,count,date) SELECT schema, error_type, COUNT(1),  extract(epoch from now()) FROM error_view e WHERE schema = '$k' GROUP BY e.schema, e.error_type ORDER BY e.error_type\n";
+  
     }
   }
 else { 
-
-
-    //pg_free_result($result);
-  
+  print "<html><body><table border='1'><tr><th>Schema<th>Errors<th>Change<th>LastRun<th>RunBefore\n";
+  foreach ($schemas as $k => $v) {
+    $result = query("SELECT schema, date, SUM(count) as errcount FROM error_statistics WHERE schema='$k' GROUP BY date, schema ORDER BY date DESC LIMIT 2;",$db1,false);
+    $now=pg_fetch_assoc($result);
+    $was=pg_fetch_assoc($result);
+    
+    print "<tr><td>$k";
+    print "<td>".$now["errcount"];
+    printf("<td>%.2f%%",(($now["errcount"] - $was["errcount"])/$now["errcount"]*100));
+    print "<td>".date("Y/m/d H:i",$now["date"]);
+    print "<td>".date("Y/m/d H:i",$was["date"])." (".$was['errcount'].")\n";
+    
+    pg_free_result($result);
+    }
+  print "</table></body></html>";
   }
 
 
