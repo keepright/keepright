@@ -146,7 +146,7 @@ function language_selector() {
 
 	echo '<select name="lang" onchange="setLang(document.myform.lang.value); submit();">';
 
-	$languages=array('cs', 'da', 'de', 'es', 'en', 'et', 'fa', 'fi', 'fr', 'hu', 'it', 'lt', 'nb', 'nl', 'pl', 'pt_BR', 'ru', 'sl', 'sv', 'uk');
+	$languages=array('ast', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'fa', 'fi', 'fr', 'hu', 'id', 'it', 'ja', 'lt', 'nb', 'nl', 'pl', 'pt_BR', 'ru', 'sk', 'sl', 'sv', 'uk', 'zh_TW');
 
 	foreach ($languages as $lang) {
 		echo "<option value='$lang' " . ($locale==$lang ? 'selected' : '') . ">$lang</option>";

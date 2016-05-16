@@ -8,56 +8,66 @@ msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-10-07 03:11+0000\n"
-"Last-Translator: e9625163 <Unknown>\n"
+"PO-Revision-Date: 2013-03-18 21:07+0000\n"
+"Last-Translator: denahl <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-12-01 20:40+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2014-04-04 19:48+0000\n"
+"X-Generator: Launchpad (build 16976)\n"
 
 msgid "There is more than one node in this spot. Offending node IDs: $1"
-msgstr ""
+msgstr "Det finns mer än en nod på denna punkt. Felande nod-IDn: $1"
 
 msgid "This coastline-way is not part of a closed-loop"
-msgstr ""
+msgstr "Den här kustlinjen ingår inte i en cirkulär väg"
 
 msgid "This way is tagged with '$1=$2' and should be closed-loop."
-msgstr ""
+msgstr "Den här  vägen är taggad med '$1=$2' och ska vara en cirkulär väg"
 
 msgid ""
 "The first node (id $1) of this one-way is not connected to any other way"
 msgstr ""
+"Den första noden (id $1) på denna enkelriktade väg är inte ansluten till "
+"någon annan väg"
 
 msgid ""
 "The last node (id $1) of this one-way is not connected to any other way"
 msgstr ""
+"Den sista noden (id $1) på denna enkelriktade väg är inte ansluten till "
+"någon annan väg"
 
 msgid ""
 "This node cannot be reached, because one-ways only lead away from here"
 msgstr ""
+"Den här noden kan inte nås eftersom enkelriktade vägar endast leder härifrån"
 
 msgid "You cannot escape from this node, because one-ways only lead to here"
 msgstr ""
+"Du kan inte lämna den här noden eftersom enkelriktade vägar endast leder hit"
 
 msgid "This node is very close but not connected to way #$1"
 msgstr ""
+"Den här noden befinner sig mycket nära men är ej ansluten till väg #$1"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct."
 msgid "This $1 uses deprecated tag $2 = $3"
-msgstr ""
+msgstr "Denna $1 använder den föråldrade taggen $2 = $3"
 
 #. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
 msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
-msgstr ""
+msgstr "Denna $1 använder den föråldrade taggen $2 = $3. Använd $4 istället!"
 
 #. full mesage: "This way has an empty tag: name="
 msgid "This $1 has an empty tag: $2"
-msgstr "Denna $1 har en tom tag: $2"
+msgstr "Denna $1 har en tom tagg: $2"
 
 msgid "This way has no tags"
-msgstr "Denna väg har inga tags."
+msgstr "Denna väg har inga taggar."
+
+msgid "This node is not member of any way and does not have any tags"
+msgstr "Den här noden är inte medlem av någon väg och har inga taggar"
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
@@ -69,187 +79,258 @@ msgstr ""
 msgid ""
 "This $1 is tagged as place of worship and therefore needs a religion tag"
 msgstr ""
+"Denna $1 är taggad som en plats för tillbedjan och behöver därför en "
+"religion-tagg"
 
 msgid "This node is tagged as $1 and therefore needs a name tag"
-msgstr ""
+msgstr "Den här noden är taggad som $1 och behöver därför en name-tagg"
 
 msgid ""
 "This node is tagged as $1 and therefore needs a name tag or an operator tag"
 msgstr ""
+"Den här noden är taggad som $1 och behöver därför en name- eller operator-"
+"tagg"
 
 msgid "This way has no nodes"
-msgstr ""
+msgstr "Den här vägen saknar noder"
 
 msgid "This way has just one single node"
-msgstr ""
+msgstr "Den här vägen har bara en enda nod"
 
 msgid "This way is not connected to the rest of the map"
-msgstr ""
+msgstr "Den här vägen är inte ansluten till resten av kartan"
 
 msgid ""
 "This crossing of a highway and a railway needs to be tagged as "
 "railway=crossing or railway=level_crossing"
 msgstr ""
+"Den här korsningen mellan en väg och en järnväg behöver taggas som "
+"railway=crossing eller railway=level_crossing"
 
 msgid ""
 "There are ways in different layers coming together in this railway crossing"
-msgstr ""
+msgstr "Vägar från olika lager ansluter till denna järnvägsövergång"
 
 msgid ""
 "There are ways tagged as tunnel or bridge coming together in this railway "
 "crossing"
 msgstr ""
+"Vägar taggade som tunnel eller bro ansluter till denna järnvägsövergång"
 
 #. full mesage: "This way is fixme-tagged: fixme=yes"
 msgid "This $1 is fixme-tagged: $2"
-msgstr ""
+msgstr "Denna $1 är fixme-taggad: $2"
 
 msgid "This relation has no type tag, which is mandatory for relations"
 msgstr ""
+"Den här relationen saknar type-tagg, vilken är obligatorisk för relationer"
 
 #. full message: "This highway intersects the waterway #17..."
 msgid "This $1 intersects the $2 #$3 but there is no junction node"
-msgstr ""
+msgstr "Denna $1 korsar $2 #$3 men det finns inte någon förbindelsenod"
 
 #. full message: "This highway intersects the waterway #17"
 msgid "This $1 intersects the $2 #$3"
-msgstr ""
+msgstr "Denna $1 korsar $2 #$3"
 
 #. full message: "This highway overlaps the waterway #17..."
 msgid "This $1 overlaps the $2 #$3"
-msgstr ""
+msgstr "Denna $1 överlappar $2 #$3"
 
 msgid "This way contains node #$1 $2 times. This may or may not be an error"
 msgstr ""
+"Den här vägen innehåller noderna #$1 $2 gånger. Detta kan vara, men behöver "
+"inte vara, ett fel"
 
 msgid ""
 "This way contains more than one node at least twice. Nodes are $1. This may "
 "or may not be an error"
 msgstr ""
+"Den här vägen innehåller mer än en nod åtminstone två gånger. Noderna är $1. "
+"Detta kan vara, men behöver inte vara, ett fel"
 
 msgid ""
 "This way has only two different nodes and contains one of them more than once"
 msgstr ""
+"Den här vägen har bara två olika noder och innehåller en av dem mer än en "
+"gång"
 
 msgid "The key of this node's tag is 'key': $2"
-msgstr ""
+msgstr "Nyckeln till den här nodens tagg är 'key': $2"
 
 msgid "The key of this way's tag is 'key': $2"
-msgstr ""
+msgstr "Nyckeln till den här vägens tagg är 'key': $2"
 
 msgid "The key of this relation's tag is 'key': $2"
-msgstr ""
+msgstr "Nyckeln till den här relationens tagg är 'key': $2"
 
 #. full mesage: "This way is tagged 'name=Autria' where Autria looks like Austria"
 msgid "This $1 is tagged '$2=$3' where $4 looks like $5"
-msgstr ""
+msgstr "Denna $1 är taggad '$2=$3' där $4 liknar $5"
 
 #. full message: "This node is a junction of ways on different layers: 30387892(0),#30388524(-1)"
 msgid "This node is a junction of ways on different layers: $1"
-msgstr ""
+msgstr "Den här noden är en knutpunkt för vägar på olika lager: $1"
 
 msgid ""
 "If this mini roundabout is in a country with left-hand traffic then it "
 "should have a tag 'direction=clockwise'"
 msgstr ""
+"Om denna minicirkulationsplats finns i ett land med vänstertrafik bör den ha "
+"taggen 'direction=clockwise'"
 
 msgid ""
 "If this mini roundabout is in a country with right-hand traffic then it "
 "should not have a tag 'direction=clockwise'"
 msgstr ""
+"Om denna minicirkulationsplats finns i ett land med högertrafik bör den inte "
+"ha taggen 'direction=clockwise'"
 
 msgid ""
 "This $1 is tagged with layer $2. This need not be an error, but it looks "
 "strange"
 msgstr ""
+"Denna $1 är taggad med lager $2. Det behöver inte vara fel, men det ser "
+"konstigt ut"
 
 msgid ""
 "This node is a junction of a motorway and a highway other than motorway, "
 "motorway_link, trunk, rest_area or construction. Service or unclassified is "
 "only valid if it has access=no/private or if it is a service=parking_aisle."
 msgstr ""
+"Den här noden förbinder en motorway och en highway annan än motorway, "
+"motorway_link, trunk, rest_area eller construction. Service eller "
+"unclassified är bara giltig om den har access=no/private eller om det är en "
+"service=parking_aisle."
 
 msgid "This boundary has no name"
-msgstr ""
+msgstr "Den här gränsen saknar namn"
 
 msgid "The boundary of $1 has no admin_level"
-msgstr ""
+msgstr "Gränsen till $1 saknar admin_level"
 
 msgid ""
 "The boundary of $1 has no valid numeric admin_level. Please do not use admin "
 "levels like for example 6;7. Always tag the lowest admin_level of all "
 "boundaries."
 msgstr ""
+"Gränsen till $1 saknar giltig numerisk admin_level. Använd inte admin levels "
+"såsom exempelvis 6;7. Tagga alltid med alla gränsers lägsta admin_level"
 
 msgid "The boundary of $1 is not closed-loop"
-msgstr ""
+msgstr "Gränsen till $1 är inte en cirkulär väg"
 
 msgid "The boundary of $1 splits here"
-msgstr ""
+msgstr "Gränsen till $1 delar sig här"
 
 msgid ""
 "This boundary-way has admin_level $1 but belongs to a relation with lower "
 "admin_level (higher priority); it should have the lowest admin_level of all "
 "relations"
 msgstr ""
+"Den här gränsvägen har admin_level $1 men tillhör en relation med lägre "
+"admin_level (högre prioritet); den bör ha alla relationers lägsta admin_level"
 
 msgid "This turn-restriction has no restriction type"
-msgstr ""
+msgstr "Detta förbud mot sväng i korsning saknar restriction-typ"
 
 msgid "This turn-restriction has no known restriction type"
-msgstr ""
+msgstr "Detta förbud mot sväng i korsning saknar känd restriction-typ"
 
 msgid "A turn-restriction needs exactly one $1 member. This one has $2"
 msgstr ""
+"Ett förbud mot sväng i korsning behöver exakt en $1-medlem. Detta har $2"
 
 msgid "From- and To-members of turn restrictions need to be ways. $1"
 msgstr ""
+"From- och To-medlemmar i ett förbud mot sväng i korsning måste vara vägar. $1"
 
 msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
 msgstr ""
+"from-, via- och to-medlemmar i ett förbud mot sväng i korsning måste vara "
+"förbundna"
+
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+
+msgid ""
+"restriction type is $1, but angle is $2 degrees. Maybe the restriction type "
+"is not appropriate?"
+msgstr ""
+
+msgid "wrong direction of to way $1"
+msgstr ""
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr ""
 
 msgid "missing maxspeed tag"
-msgstr ""
+msgstr "maxspeed-tagg saknas"
 
 msgid ""
 "This way is part of a roundabout but is not closed-loop. (split carriageways "
 "approaching a roundabout should not be tagged as roundabout)"
 msgstr ""
+"Den här vägen ingår i en cirkulationsplats men är inte en cirkulär väg. "
+"(uppdelade körbanor som ansluter till en cirkulationsplats ska inte taggas "
+"som cirkulationsplats)"
 
 msgid ""
 "If this roundabout is in a country with right-hand traffic then its "
 "orientation goes the wrong way around"
 msgstr ""
+"Om den här rondellen finns i ett land med högertrafik går riktningen åt fel "
+"håll"
 
 msgid ""
 "If this roundabout is in a country with left-hand traffic then its "
 "orientation goes the wrong way around"
 msgstr ""
+"Om den här rondellen finns i ett land med vänstertrafik går riktningen åt "
+"fel håll"
 
 msgid ""
 "This way is tagged as highway=$1_link but doesn't have a connection to any "
 "other $1 or $1_link"
 msgstr ""
+"Den här vägen är taggad som highway=$1_link men saknar förbindelse med någon "
+"annan $1 eller $1_link"
 
 msgid ""
 "This bridge does not have a tag in common with its surrounding ways that "
 "shows the purpose of this bridge. There should be one of these tags: $1"
 msgstr ""
+"Den här bron saknar gemensam tagg med någon av dess omgivande vägar som "
+"visar syftet med bron. Det ska finnas en av dessa taggar: $1"
+
+msgid "The URL ($1) cannot be opened (HTTP status code $2)"
+msgstr "URLen ($1) kan inte öppnas (HTTP-statuskod $2)"
+
+msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
+msgstr ""
+
+msgid "Content of the URL ($1) did not contain these keywords: ($2)"
+msgstr ""
 
 #. translations for error type names
 #. please keep this as short as possible
 msgid "multiple nodes on the same spot"
-msgstr ""
+msgstr "flera noder på samma punkt"
 
 msgid ""
 "Try to find nodes that are (almost) on the same spot. Distances less than +/-"
 "0.5 meters are considered zero"
 msgstr ""
+"Försök hitta noder som är (nästan) på samma punkt. Avstånd mindre än +/-0,5 "
+"meter betraktas som noll"
 
 #. please keep this as short as possible
 msgid "non-closed areas"
-msgstr ""
+msgstr "öppna områden"
 
 msgid ""
 "By convention ways tagged with special combinations of key and value pairs "
@@ -258,10 +339,15 @@ msgid ""
 "map! The standard.xml file is used to determine which key-value-combinations "
 "are drawn as areas; any instance of these has to be closed-loop."
 msgstr ""
+"Av hävd betraktas vägar taggade med vissa kombinationer av nyckel- och "
+"värdepar som områden och ritas som sådana i kartan. Därför är det nödvändigt "
+"att de bildar cirkulära vägar. Icke-stängda områden är osynliga på kartan. "
+"Filen standard.xml används för att avgöra vilka nyckel-/värdekombinationer "
+"som ritas som områden; varje förekomst av dessa måste vara en cirkulär väg."
 
 #. please keep this as short as possible
 msgid "dead-ended one-ways"
-msgstr ""
+msgstr "enkelriktade blindvägar"
 
 msgid ""
 "Streets tagged as one-way must not be dead-ended (where should all the cars "
@@ -269,20 +355,28 @@ msgid ""
 "end) cannot be reached (escaped from). Please note that motorways and "
 "motorway_links are considered one-way implicitly, so this check applies."
 msgstr ""
+"Vägar taggade som enkelriktade får inte vara utan återvändo (vart ska alla "
+"bilar ta vägen i slutet på vägen?). Noder där endast enkelriktade vägar "
+"börjar (eller slutar) kan inte nås (eller lämnas). Lägg märke till att "
+"motorways och motorway_links underförstått betraktas som enkelriktade, så "
+"denna kontroll tillämpas."
 
 #. please keep this as short as possible
 msgid "almost-junctions"
-msgstr ""
+msgstr "Nästan förbindelse"
 
 msgid ""
 "Streets that have (at least) one unconnected end are examined here. If such "
 "an end-node is very close to any other way an error is reported. Unconnected "
 "end-nodes should probably be connected to adjacent ways."
 msgstr ""
+"Vägar som har (åtminstone) en oansluten ände undersöks här. Om en sådan "
+"ändnod är mycket nära en annan väg rapporteras ett fel. Oanslutna ändnoder "
+"ska antagligen vara förbundna med angränsande vägar."
 
 #. please keep this as short as possible
 msgid "deprecated tags"
-msgstr ""
+msgstr "föråldrade taggar"
 
 msgid ""
 "As shown in http://wiki.openstreetmap.org/index.php/Deprecated_features some "
@@ -291,55 +385,71 @@ msgid ""
 "free to tag anything the way you like. This is just a hint for new tagging "
 "conventions that have evolved in the meantime."
 msgstr ""
+"Så som visas på http://wiki.openstreetmap.org/index.php/Deprecated_features "
+"blir några taggar ersatta av andra vartefter taggningskonventionerna "
+"utvecklas. Betrakta detta som ett meddelande, inte som ett fel. Termen "
+"'deprecated' är förådrad; du får tagga vad som helst på det sätt du själv "
+"önskar. Detta är bara ett tips om nya taggningskonventioner som utvecklats "
+"med tiden."
 
 #. please keep this as short as possible
 msgid "missing tags"
-msgstr ""
+msgstr "taggar saknas"
 
 msgid ""
 "Ways, nodes and relations should in most cases have at least one tag "
 "(besides created_by)"
 msgstr ""
+"Vägar, noder och relationer ska i de flesta fall ha åtminstone en tagg "
+"(utöver created_by)"
 
 #. please keep this as short as possible
 msgid "motorways without ref"
-msgstr ""
+msgstr "motorvägar utan ref"
 
 msgid ""
 "The ref-tag documents the reference (e.g. 'A 10') for motorways. These are "
 "mandatory as they are very important information"
 msgstr ""
+"ref-taggen dokumenterar referensen (exempelvis 'E 4') för motorvägar. Denna "
+"är obligatorisk eftersom det är mycket viktig information"
 
 #. please keep this as short as possible
 msgid "places of worship without religion"
-msgstr ""
+msgstr "plats för tillbedjan utan religion"
 
 msgid ""
 "Churches, mosques and synagogues etc. need an extra religion tag giving info "
 "about the religion"
 msgstr ""
+"Kyrkor, moskéer och synagogor etc behöver en extra religion-tagg som anger "
+"information om religionen"
 
 #. please keep this as short as possible
 msgid "point of interest without name"
-msgstr ""
+msgstr "intressant plats utan namn"
 
 msgid ""
 "The name tag should be specified for every point of interest as its content "
 "gets rendered in the map next to the POI symbol"
 msgstr ""
+"name-taggen bör anges för varje intressant plats eftersom dess innehåll "
+"visas på kartan bredvid POI-symbolen"
 
 #. please keep this as short as possible
 msgid "ways without nodes"
-msgstr ""
+msgstr "vägar utan noder"
 
 msgid ""
 "Ways that don't consist of at least two nodes don't make much sense as they "
 "won't get rendered."
 msgstr ""
+"Vägar som inte består av minst två noder tillför inget eftersom de inte blir "
+"återgivna"
 
 #. please keep this as short as possible
 msgid "floating islands"
-msgstr ""
+msgstr "flytande öar"
 
 msgid ""
 "Any highways drawn on the map should be accessible by car starting anywhere "
@@ -347,10 +457,14 @@ msgid ""
 "this check, so almost any island in the sea should be reachable starting "
 "from the mainland."
 msgstr ""
+"Alla vägar som återges på kartan bör vara nåbara med en bil som startar vart "
+"som helst i världen. Färjor och vägar (även järnvägsplattformar) ingår i "
+"denna kontroll, så nästan vilken ö som helst i havet bör vara nåbar med "
+"utgångspunkt från fastlandet."
 
 #. please keep this as short as possible
 msgid "railway crossings without tag"
-msgstr ""
+msgstr "järnvägsövergång utan tagg"
 
 msgid ""
 "(Level)-Crossings of railways and highways should have a common node as "
@@ -358,36 +472,44 @@ msgid ""
 "where larger vehicles can cross or with 'railway=crossing' if it is a "
 "crossing just for pedestrians"
 msgstr ""
+"(Plan-)korsningar mellan järnväg och väg bör ha en gemensam förbindelsenod "
+"som är taggad med 'railway=level_crossing' om det är en korsning där större "
+"fordon kan korsa eller med 'railway=crossing' om det är en korsning enbart "
+"för fotgängare"
 
 #. please keep this as short as possible
 msgid "wrongly used railway crossing tag"
-msgstr ""
+msgstr "felanvänd tagg för järnvägsövergång"
 
 msgid ""
 "Ways that take part in level-crossings of railways and highways have to be "
 "on the same layer and should in the normal case be not tagged as bridge or "
 "tunnel"
 msgstr ""
+"Vägar som ingår i en plankorsning mellan järnväg och väg måste vara på samma "
+"lager och ska i normalfallet inte vara taggade som bro eller tunnel"
 
 #. please keep this as short as possible
 msgid "fixme-tagged items"
-msgstr ""
+msgstr "fixme-taggade objekt"
 
 msgid ""
 "Nodes, ways or relations that are tagged with FIXME should be reviewed..."
-msgstr ""
+msgstr "Noder, vägar och relationer som är taggade med FIXME bör granskas..."
 
 #. please keep this as short as possible
 msgid "relations without type"
-msgstr ""
+msgstr "relationer utan typ"
 
 msgid ""
 "Find any relation that has no type tag, wich is mandatory for relations."
 msgstr ""
+"Hitta relationer som saknar type-tagg, vilken är obligatoriskt för "
+"relationer."
 
 #. please keep this as short as possible
 msgid "intersections without junctions"
-msgstr ""
+msgstr "korsningar utan förbindelse"
 
 msgid ""
 "Streets that graphically intersect need a common node that represents the "
@@ -395,71 +517,83 @@ msgid ""
 "bridges or tunnels). Intersections of streets with other objects like "
 "waterways or riverbanks should be avoided"
 msgstr ""
+"Vägar som skär varandra grafiskt behöver en gemensam nod som representerar "
+"korsningen. Enda undantaget är skärningar mellan olika lager (dvs broar och "
+"tunnlar). Korsningar mellan vägar och andra objekt så som vattenvägar och "
+"flodbankar bör undvikas"
 
 #. please keep this as short as possible
 msgid "highway-highway"
-msgstr ""
+msgstr "väg-väg"
 
 #. please keep this as short as possible
 msgid "highway-waterway"
-msgstr ""
+msgstr "väg-vattenväg"
 
 #. please keep this as short as possible
 msgid "highway-riverbank"
-msgstr ""
+msgstr "väg-flodbank"
 
 #. please keep this as short as possible
 msgid "waterway-waterway"
-msgstr ""
+msgstr "vattenväg-vattenväg"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-cyclew/footp"
-msgstr ""
+msgstr "cykelväg/gångbana-cykelväg/gångbana"
 
 #. please keep this as short as possible
 msgid "highway-cyclew/footp"
-msgstr ""
+msgstr "väg-cykelväg/gångbana"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-waterway"
-msgstr ""
+msgstr "cykelväg/gångbana-vattenväg"
 
 #. please keep this as short as possible
 msgid "cyclew/footp-riverbank"
-msgstr ""
+msgstr "cykelväg/gångbana-flodbank"
 
 #. please keep this as short as possible
 msgid "overlapping ways"
-msgstr ""
+msgstr "överlappande vägar"
 
 msgid ""
 "Segments of ways that lie on top of each other (the same nodes connected by "
 "different ways in the same order) are a problem for routing software. They "
 "happen accidently and are hard to find."
 msgstr ""
+"Vägsegment som ligger ovanpå varandra (samma noder förbundna av olika vägar "
+"i samma ordning) är ett problem för routing-program. De tillkommer av "
+"misstag och är svåra att hitta."
 
 #. please keep this as short as possible
 msgid "loopings"
-msgstr ""
+msgstr "loopar"
 
 msgid ""
 "Any way that contains any single node more than twice is considered an "
 "error. Any way may contain just one node twice. If more than one node is "
 "found twice it is considered an error."
 msgstr ""
+"Alla vägar som innehåller samma nod mer än två gånger betraktas som "
+"felaktiga. Alla vägar kan innehålla enbart en nod två gånger. Om mer än en "
+"nod hittas två gånger betraktas det som ett fel."
 
 #. please keep this as short as possible
 msgid "misspelled tags"
-msgstr ""
+msgstr "felstavade taggar"
 
 msgid ""
 "Tags that are used very seldom and almost look like very common tags (only "
 "one character difference) are reported as a warning."
 msgstr ""
+"Taggar som används mycket sällan och nästan ser ut som mycket vanliga taggar "
+"(endast en bokstav skiljer) rapporteras som en varning."
 
 #. please keep this as short as possible
 msgid "layer conflicts"
-msgstr ""
+msgstr "lagerkonflikter"
 
 msgid ""
 "Connected ways should be on the same layer. Crossings on intermediate nodes "
@@ -469,18 +603,24 @@ msgid ""
 "note that bridges are set to layer +1, and tunnels to -1, anything else to "
 "layer 0 implicitly if no layer tag is present."
 msgstr ""
+"Förbundna vägar ska vara på samma lager. Korsningar på mellanliggande noder "
+"mellan vägar på olika lager är uppenbarligen fel.Förbindelser på ändnoder "
+"mellan vägar på olika lager är föråldrat, men vanlig praxis. Så du kan "
+"ignorera denna del av kontrollen och stänga av dem separat. Notera att "
+"underförstått sätts broar till lager +1, tunnlar till -1, och allt övrigt "
+"till lager 0 om ingen layer-tagg finns."
 
 #. please keep this as short as possible
 msgid "mixed layers intersections"
-msgstr ""
+msgstr "blandade lager-korsningar"
 
 #. please keep this as short as possible
 msgid "strange layers"
-msgstr ""
+msgstr "konstiga lager"
 
 #. please keep this as short as possible
 msgid "motorways connected directly"
-msgstr ""
+msgstr "motorvägar direktanslutna"
 
 msgid ""
 "Motorways should only be connected to other motorways or motorway_links. "
@@ -489,10 +629,16 @@ msgid ""
 "positives on motorways ending in cities but it can be a valuable tool for "
 "looking up unwanted connections of motorways and other roads."
 msgstr ""
+"Motorvägar ska normalt vara förbundna med andra motorvägar eller "
+"motorway_links. De ska framför allt inte vara direktanslutna till vägar av "
+"typen highway=primary eller highway=residential. Notera: Den här kontrollen "
+"kan skapa falska positiva på motorvägar som slutar i städer, men kan vara "
+"ett värdefullt verktyg för att hitta oönskade förbindelser mellan motorvägar "
+"och andra vägar."
 
 #. please keep this as short as possible
 msgid "boundaries"
-msgstr ""
+msgstr "gränser"
 
 msgid ""
 "Administrative Boundaries can be expressed either by tagging ways or by "
@@ -500,30 +646,34 @@ msgid ""
 "they must not self-intersect or split and they must have a name and an "
 "admin_level."
 msgstr ""
+"Administrativa gränser kan anges antingen med hjälp av taggade vägar eller "
+"genom att lägga till dem till en relation. De ska vara cirkulära "
+"vägsekvenser, de får inte korsa sig själva eller förgrenas och de måste ha "
+"en name- och en admin_level-tagg."
 
 #. please keep this as short as possible
 msgid "missing name"
-msgstr ""
+msgstr "namn saknas"
 
 #. please keep this as short as possible
 msgid "missing admin_level"
-msgstr ""
+msgstr "admin_level saknas"
 
 #. please keep this as short as possible
 msgid "not closed loop"
-msgstr ""
+msgstr "icke-cirkulär väg"
 
 #. please keep this as short as possible
 msgid "splitting boundary"
-msgstr ""
+msgstr "förgrenad gräns"
 
 #. please keep this as short as possible
 msgid "admin_level too high"
-msgstr ""
+msgstr "admin_level för hög"
 
 #. please keep this as short as possible
 msgid "restrictions"
-msgstr ""
+msgstr "förbud"
 
 msgid ""
 "This check is about turn restrictions defined by relations. A turn "
@@ -531,22 +681,27 @@ msgid ""
 "another way as 'to' member and optionally one or more ways or nodes as via "
 "members that need to be connected to 'from' and 'to'"
 msgstr ""
+"Den här kontrollen avser förbud mot sväng i korsning definierad av "
+"relationer. En relation för ett förbud mot sväng i korsning behöver ett "
+"giltigt type-attribut, en väg som 'from'-medlem, en annan väg som 'to'-"
+"medlem samt eventuellt en eller flera vägar eller noder som 'via'-medlemmar "
+"vilka behöver vara förbundna med 'from' och 'to'"
 
 #. please keep this as short as possible
 msgid "missing type"
-msgstr ""
+msgstr "typ saknas"
 
 #. please keep this as short as possible
 msgid "missing from way"
-msgstr ""
+msgstr "från-väg saknas"
 
 #. please keep this as short as possible
 msgid "missing to way"
-msgstr ""
+msgstr "till-väg saknas"
 
 #. please keep this as short as possible
 msgid "missing maxspeed"
-msgstr ""
+msgstr "hastighetsbegränsning saknas"
 
 msgid ""
 "maxspeed tags are not mandatory but they are very helpful for successful "
@@ -554,37 +709,46 @@ msgid ""
 "tag. Please only add maxspeed tags if the allowed maxspeed differs from the "
 "default speed for the given highway!"
 msgstr ""
+"maxspeed-taggar är inte obligatoriska men de är till stor hjälp för lyckad "
+"routing. Denna kontroll ska hjälpa användare att hitta vägar som saknar "
+"maxspeed-tagg. Lägg bara till maxspeed-tagg om hastighetsbegränsningen "
+"skiljer sig från standardhastigheten på den valda vägtypen!"
 
 #. please keep this as short as possible
 msgid "roundabouts"
-msgstr ""
+msgstr "cirkulationsplatser"
 
 msgid ""
 "roundabout are always one-way streets directed counter-clockwise in right-"
 "hand driving countries or clockwise in left-hand driving countries."
 msgstr ""
+"cirkulationplatser är alltid enkelriktade vägar som går moturs i "
+"högertrafikländer och medurs i vänstertrafikländer."
 
 #. please keep this as short as possible
 msgid "wrong direction"
-msgstr ""
+msgstr "fel riktning"
 
 #. please keep this as short as possible
 msgid "faintly connected"
-msgstr ""
+msgstr "vagt ansluten"
 
 #. please keep this as short as possible
 msgid "*_link-connections"
-msgstr ""
+msgstr "*_link-förbindelser"
 
 msgid ""
 "Any highway tagged as (motorway|trunk|primary|secondary)_link should have at "
 "least one connection to a (motorway|trunk|primary|secondary) highway or a "
 "_link highway of the same type"
 msgstr ""
+"Alla vägar taggade som (motorway|trunk|primary|secondary)_link ska ha "
+"åtminstone en förbindelse till en (motorway|trunk|primary|secondary) highway "
+"eller _link highway av samma sort"
 
 #. please keep this as short as possible
 msgid "bridge-tags"
-msgstr ""
+msgstr "bro-taggar"
 
 msgid ""
 "Someone draws a bridge and forgets to tag it as highway... A bridge should "
@@ -592,10 +756,14 @@ msgid ""
 "Currently these are: highway, railway, cycleway, waterway, footway, piste, "
 "aerialway, pipeline, building, via_ferrata"
 msgstr ""
+"Någon ritar en bro och glömmer att tagga den som highway... En bro ska "
+"alltid ha en av de 'huvudtaggar' som dess närmsta granne har. För närvarande "
+"är dessa: highway, railway, cycleway, waterway, footway, piste, aerialway, "
+"pipeline, building, via_ferrata"
 
 #. please keep this as short as possible
 msgid "language unknown"
-msgstr ""
+msgstr "språk okänt"
 
 msgid ""
 "To help applications choose the best matching language they should know the "
@@ -603,56 +771,189 @@ msgid ""
 "name:XX tag with the same content as found in the name tag where XX "
 "specifies the language used for the name tag."
 msgstr ""
+"För att hjälpa applikationer att välja det bäst passande språket bör de veta "
+"språket som används för name-taggen. Det är därför nödvändigt att ha en "
+"name:XX-tagg med samma innehåll som name-taggen, där XX anger språket använt "
+"i name-taggen"
 
 #. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
 msgid ""
 "It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
 "shows the language of its name ''$2''."
 msgstr ""
+"Det vore trevligt om denna $1 hade ytterligare en tagg ''name:XX=$2'' där XX "
+"visar språket för dess namn ''$2''."
+
+#. this is about points of interest drawn inside a building of the same name
+#. please keep this as short as possible
+msgid "doubled places"
+msgstr ""
+
+msgid ""
+"a node inside of an area that is tagged with same name and representing the "
+"same physical entity leads to wrong statistics and doubled labels on the map"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 and seems to be "
+"redundand"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 (including the "
+"name '$2') and seems to be redundand"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-physical use of sport-tag"
+msgstr ""
+
+msgid ""
+"&apos;sports&apos; is a non-physical tag that needs to be bound to some "
+"physical structure like for example a leisure-item or an amenity. Ways "
+"tagged with &apos;sports&apos; solely will be invisible on the map"
+msgstr ""
+
+#. full message: "This way is tagged sport=tennis but has no physical tag like e.g. leisure, building, amenity or highway"
+msgid ""
+"This way is tagged $1 but has no physical tag like e.g. leisure, building, "
+"amenity or highway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing tracktype"
+msgstr ""
+
+msgid ""
+"highway=track ways should be added with more detail about the tracktype "
+"(grade1..grade5). The tracktype is included in rendering rules and makes "
+"maps more expressive"
+msgstr ""
+
+msgid "This track doesn't have a tracktype"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "geometry glitches"
+msgstr ""
+
+msgid ""
+"looks for impossible sharp angles on highways and junctions. These may be "
+"caused by missing turn restrictions on junctions or glitches along the "
+"linestring of ways"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing turn restriction"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "impossible angles"
+msgstr "omöjliga vinklar"
+
+msgid "this way bends in a very sharp angle here"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $2 to $1"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $1 to $2"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "website"
+msgstr "webbsida"
+
+#. please keep this as short as possible
+msgid "http error"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "domain hijacking"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-match"
+msgstr ""
+
+msgid ""
+"calls websites and tries to match website content with key tags from the osm "
+"element"
+msgstr ""
+
+#. full message: "The URL (http://www.belgian-beer-cafe.com.au/heritage) cannot be opened (HTTP status code 404)"
+msgid ""
+"The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP "
+"status code $2)"
+msgstr ""
+"Webbadressen (<a target=\"_blank\" href=\"$1\">$1</a>) kan inte öppnas (HTTP-"
+"statuskod $2)"
+
+msgid ""
+"Possible domain squatting: <a target=\"_blank\" href=\"$1\">$1</a>. "
+"Suspicious text is: \"$2\""
+msgstr ""
+
+#. full message: "Content of the URL (http://www.yha.com.au) did not contain these keywords: (*Bondi Beachouse YHA*Bondi)"
+msgid ""
+"Content of the URL (<a target=\"_blank\" href=\"$1\">$1</a>) did not contain "
+"these keywords: ($2)"
+msgstr ""
 
 #. translations for the web pages
 #: index.php:9
 msgid "data consistency checks for OSM"
-msgstr ""
+msgstr "datakonsistenskontroller för OSM"
 
 #: index.php:11
 msgid "keep-right logo"
-msgstr ""
+msgstr "keep-right-logga"
 
 #: index.php:13
 #, php-format
 msgid "data consistency checks for %sOSM%s"
-msgstr ""
+msgstr "datakonsistenskontroller för %sOSM%s"
 
 #: index.php:20
 msgid ""
 "These pages show checks that are run on a local excerpt database filled with "
 "OSM data."
 msgstr ""
+"De här sidorna visar kontroller som körs på en lokal databas fylld med "
+"utdrag av OSM-data"
 
 #: index.php:23
 #, php-format
 msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
-msgstr ""
+msgstr "Datakontroller för Europa%s (Utgångspunkt Wien, Österrike)"
 
 #: index.php:27
-msgid "Australian KeepRight partner site"
+msgid "Data Checks for Australia%s (Starting point Sydney)"
 msgstr ""
 
 #: index.php:30
 #, php-format
 msgid "Data Checks for Africa%s (Starting point Cairo, Egypt)"
-msgstr ""
+msgstr "Datakontroller för Afrika%s (Utgångspunkt Kairo, Egypten)"
 
 #: index.php:33
 #, php-format
 msgid "Data Checks for Canada%s (Starting point Québec)"
-msgstr ""
+msgstr "Datakontroller för Kanada%s (Utgångspunkt Quebec)"
 
 #: index.php:36
 #, php-format
 msgid "Data Checks for USA%s (Starting point Philadelphia, PA)"
-msgstr ""
+msgstr "Datakontroller för USA%s (Utgångspunkt Philadelphia, PA)"
 
 #: index.php:39
 #, php-format
@@ -660,20 +961,22 @@ msgid ""
 "Data Checks for Central America%s (Starting point Santo Domingo, Republica "
 "Dominicana)"
 msgstr ""
+"Datakontroller för Centralamerika%s (Utgångspunkt Santo Domingo, "
+"Dominikanska republiken)"
 
 #: index.php:42
 #, php-format
 msgid "Data Checks for South America%s (Starting point São Paulo, Brazil)"
-msgstr ""
+msgstr "Datakontroller för Sydamerika%s (Utgångspunkt São Paulo, Brasilien)"
 
 #: index.php:45
 #, php-format
 msgid "Data Checks for Asia%s (Starting point Tokio, Japan)"
-msgstr ""
+msgstr "Datakontroller för Asien%s (Utgångspunkt Tokyo, Japan)"
 
 #: index.php:47
 msgid "Europe Data Checks as ugly list"
-msgstr ""
+msgstr "Europeisk datakontroll som fullista"
 
 #: index.php:49
 #, php-format
@@ -681,16 +984,81 @@ msgid ""
 "Developers have a look at the %sSourceForge%s site providing svn access to "
 "the sources."
 msgstr ""
+"Utvecklare, ta en titt på %sSourceForge%s-sajten som har svn-åtkomst till "
+"källkoden."
 
 #: index.php:52
 msgid "logfile"
-msgstr ""
+msgstr "loggfil"
 
 #: index.php:56
 #, php-format
 msgid ""
 "If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
+msgstr ""
+"Om du önskar exportera fel från KeepRight så ska du ta en titt på "
+"%sgränssnittsguiden%s"
+
+#, php-format
+msgid ""
+"Today I fixed the annoying OpenLayers-damaged-bubbles-issues. The bubbles "
+"look OK now and I made the switch to OL2.12. Empty your browser&apos;s cache "
+"(try any combination of Ctrl, Shift, Alt plus &apos;R&apos; as well as "
+"&apos;F5&apos;) if the site doesn&apos;t work for you."
+msgstr ""
+
+#, php-format
+msgid ""
+"To all consumers of KeepRight error dump files: The file format is going to "
+"change: I will drop the &quot;description&quot;-column. It is redundant, you "
+"can recreate it from &quot;msgid&quot; plus &quot;txt1&quot;-"
+"&quot;txt5&quot; <br>Second: there is a new column in the file including the "
+"user name of the last editor of the object containing the error.<br>This "
+"change will take full effect during this week as all parts of the planet are "
+"going to be reprocessed"
+msgstr ""
+
+#, php-format
+msgid ""
+"Australia is back online again!<br>KeepRight's Australia partner site is "
+"closed by now, error checks for Australia are run on the main site. I'm very "
+"sorry I could not rescue all the comments and ignore-states on errors. The "
+"remote database is not accessible any more so any comments and states are "
+"reset and we are starting from scratch.<br>Anyway, thank you, Peter, for "
+"providing that service for more than three years!"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new, great document that describes recipes for fixing errors "
+"reported by KeepRight. It was written by user Popei82. Thank you very "
+"much!<br>Find the document in the OSM <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>wiki</a>."
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check calles &apos;geometry glitches&apos;: This one looks "
+"for spikes in ways and makes guesses about missing turn restrictions: "
+"Highways joining in a very sharp angle should have some sort of turn "
+"restriction (explicit or implicit by means of oneway tags) that prohibits "
+"turing around the sharp angle"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check called &apos;doubled places&apos; that looks for nodes "
+"placed inside of a closed-loop way (usually a building) where the node and "
+"the way have some tags in common. Such situations lead to doubled labels on "
+"the map and wrong statistics (counting amenities doesn't work)"
+msgstr ""
+
+#, php-format
+msgid ""
+"KeepRight now has its own domain name! You may now access KeepRight using "
+"the short URL <b><a href='http://keepright.at/'>http://keepright.at/</a></b>"
 msgstr ""
 
 #, php-format
@@ -711,12 +1079,31 @@ msgid ""
 "different and should not be used on ways. Thank you, Johan, for making me "
 "think about the problem again!"
 msgstr ""
+"Du kommer att lägga märke till att några förbättringar på två kontroller "
+"samt en helt ny kontroll dyker upp de närmaste dagarna:<br> <em>vagt "
+"anslutna cirkulationsplatser</em> är en ny sub-kontroll för "
+"cirkulationsplatser som kommer att klaga på cirkulationsplatser med mindre "
+"än tre förbindelser till andra vägar. Detta behöver inte vare ett fel, med "
+"det är åtminstone diskutabelt vad vagt anslutna rondeller är byggda för.<br> "
+"<em>språk okänt</em> är en ny kontroll av varnings-typ som försöker "
+"förbättra lokalanpassning genom att klaga på name-taggar där språket inte "
+"kan bestämmas med hjälp av andra taggar. Tack Ed, för idén!<br>Kontrollen "
+"<em>motorvägar direktanslutna</em> hade många falska positiva vid "
+"rastplatser (dessa är servicevägar som avsiktligen saknar inskränkningar för "
+"användning). Jag har tagit bort dem med hjälp av en heuristisk metod: "
+"servicevägar är OK om de leder till en parkeringsplats, en bensinstation, en "
+"toalett eller en restaurang. Och förresten: highway=services är något helt "
+"annat och ska inte användas på vägar. Tack Johan, för att du fått mig att "
+"tänka på problemet igen!"
 
 #: index.php:56
 msgid ""
 "There are a few more languages in the select box now. You can help "
 "translating KeepRight on the %slaunchpad site%s. Thanks to all who helped!"
 msgstr ""
+"Det finns ytterligare några språk i flervalslistan nu. Du kan hjälpa till "
+"att översätta KeepRight på %slaunchpad-sajten%s. Tack till alla som hjälpt "
+"till!"
 
 #: index.php:56
 #, php-format
@@ -728,6 +1115,12 @@ msgid ""
 "service=parking_aisle.<br>I hope you agree that this inconvenience is "
 "necessary. Thank you, Nathan, for telling me about this!"
 msgstr ""
+"För att undvika routingfel såsom %sdetta%s har jag förändrat kontrollen "
+"'motorvägar direktanslutna'. Den kommer nu att klaga på "
+"motorvägsförbindelser med highway=service eller highway=unclassified om den "
+"saknar taggarna access=no eller access=private eller om det inte är en "
+"service=parking_aisle.<br>Jag hoppas du håller med om att denna olägenhet är "
+"nödvändig. Tack Nathan, för att du berättade detta för mig!"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -737,6 +1130,8 @@ msgid ""
 "KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
 "se tornou multilíngue!"
 msgstr ""
+"KeepRight becomes multilingual! - KeepRight wird mehrsprachig! - O KeepRight "
+"se tornou multilíngue! - KeepRight blir flerspråkig!"
 
 #. this will be the news item announcing i18n-capabilities for KeepRight.
 #. this section should appear in all three languages regardless what language
@@ -754,10 +1149,23 @@ msgid ""
 "vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
 "Agradecimentos especiais para o usuário Rodrigo, por esta grande ideia!"
 msgstr ""
+"As a start KeepRight may be used in english, german and brazilian portugese. "
+"New translations are welcome! The gettext template file is $1right here$2. "
+"Special thanks go to Rodrigo for this great idea!<br><br>Zunächst gibt es "
+"KeepRight auf deutsch, englisch und brasilianischem Portugiesisch. Weitere "
+"Sprachen sind willkommen! Das gettext-Template gibt es $1hier$2. Vielen Dank "
+"an Rodrigo für diese großartige Idee!<br><br>Como início, o KeepRight pode "
+"ser usado em inglês, alemão e Portuguẽs Brasileiro. Novas traduções são bem "
+"vindas! O arquivo com o modelo para gettext está  $1bem aqui$2. "
+"Agradecimentos especiais para o usuário Rodrigo, por esta grande "
+"ideia!<br><br>Till att börja med kan KeepRight användas på engelska, tyska "
+"samt brasiliansk portugisiska. Nya översättningar är välkomna! Mallfilen "
+"till gettext finns $1här$2. Ett speciellt tack går till Rodrigo för denna "
+"strålande idé!"
 
 #: index.php:59
 msgid "Getting rid of the evil db-parameter"
-msgstr ""
+msgstr "Bort med den dumma db-parametern"
 
 #: index.php:60
 msgid ""
@@ -767,6 +1175,11 @@ msgid ""
 "current position.<br>This is over now! The db-parameter is gone. So have fun "
 "panning around the whole world and fixing errors easier than ever!"
 msgstr ""
+"Du kanske har lagt märke till att du inte kunde panorera runt hela världen i "
+"Keep Right som så du önskade. Det fanns osynliga gränser och du var alltid "
+"tvungen att bry dig om att db-parametern i URLen var lämplig för aktuell "
+"position.<br>Det är över nu! db-parametern är försvunnen! Så ha kul och "
+"panorera runt hela världen och fixa fel lättare än någonsin!"
 
 #: index.php:63
 msgid ""
@@ -775,6 +1188,10 @@ msgid ""
 "about ways that don&apos;t have a single connection with any other way(!). "
 "Sometimes it takes months until you see the most obvious things..."
 msgstr ""
+"Under de kommande uppdateringarna kommer du att få se ett ökat antal fel "
+"gällande flytande öar. Det beror på att fram till nu klagade kontrollrutinen "
+"inte på vägar som helt saknade förbindelse med någon annan väg(!). Ibland "
+"tar det månader att upptäcka det mest uppenbara..."
 
 #: index.php:66
 #, php-format
@@ -783,15 +1200,18 @@ msgid ""
 "the error types you selected when you left the site last time (how could "
 "you?). Just open %s without any parameters!"
 msgstr ""
+"Det här är min FOSSGIS-present till dig: KeepRight kommer att komma ihåg "
+"positionen och de feltyper du valde senast du lämnade sajten (hur kunde "
+"du?). Öppna bara %s utan några parametrar!"
 
 #: index.php:70
 #, php-format
 msgid "For archeologists: %sOld log entries%s have moved."
-msgstr ""
+msgstr "För arkeologer: %sGamla logginlägg%s har flyttat."
 
 #: index.php:73
 msgid "a few words on the new comment feature"
-msgstr ""
+msgstr "några ord om den nya kommentarsfunktionen"
 
 #: index.php:74
 msgid ""
@@ -799,6 +1219,10 @@ msgid ""
 "false-positive. Don't confuse the comment box with an editing feature. This "
 "is not Potlatch! You cannot add missing tags via KeepRight!"
 msgstr ""
+"Var vänlig och lämna en kommentar som hjälper mig att förbättra "
+"kontrollrutinerna om du hittar en falsk positiv. Förväxla inte "
+"kommentarsboxen med en redigeringsfunktion. Det här är inte Potlatch! Du kan "
+"inte lägga till saknade taggar via KeepRight!"
 
 #: index.php:77
 msgid ""
@@ -806,66 +1230,76 @@ msgid ""
 "running when you hit the JOSM-link. Furthermore you have to enable the "
 "&apos;remote control&apos;-plugin in JOSMs options."
 msgstr ""
+"Lägg märke till att för att JOSM-länken ska fungera måste JOSM redan köra då "
+"du väljer JOSM-länken. Dessutom måste du aktivera insticksprogrammet för "
+"fjärrstyrning i JOSM-inställningarna."
 
 #: index.php:79
 msgid "Currently the following checking procedures are implemented"
-msgstr ""
+msgstr "För närvarande finns följande kontroller"
 
 #: index.php:102
 msgid ""
 "If you find an error in my errors lists I would definitely like to hear "
 "about it!"
 msgstr ""
+"Om du hittar ett fel i min fellista så vill jag verkligen få reda på det!"
 
 #: index.php:104
 msgid "Impressum"
-msgstr ""
+msgstr "Utgivare"
 
 #: index.php:105
 msgid ""
 "This work is done without commercial background, just for my personal "
 "pleasure. I would be very happy if it was helpful for the OSM Project."
 msgstr ""
+"Det här alstret är gjort utan affärsmässiga syften, bara för mitt eget höga "
+"nöjes skull. Jag blir glad om det är till nytta för OSM-projektet."
 
 #: index.php:106
 msgid ""
 "If you like to contact me, my mailbox at the austrian server of gmx is "
 "labelled KeepRight."
 msgstr ""
+"Om du önskar kontakta mig heter min mejlbox KeepRight på gmx österrikiska "
+"server."
 
 #: index.php:106
 msgid ""
 "Please understand that I will not always be able to immediately respond to "
 "your mail on weekdays."
 msgstr ""
+"Snälla, ha förståelse för att jag inte alltid kan svara omeddelbart på ditt "
+"mejl under vardagar."
 
 #: report_map.php:155
 msgid "errors"
-msgstr ""
+msgstr "fel"
 
 #: report_map.php:155
 msgid "warnings"
-msgstr ""
+msgstr "varningar"
 
 #: report_map.php:182
 msgid "all"
-msgstr ""
+msgstr "alla"
 
 #: report_map.php:183
 msgid "none"
-msgstr ""
+msgstr "inga"
 
 #: report_map.php:185
 msgid "show ignored errors"
-msgstr ""
+msgstr "visa ignorerade fel"
 
 #: report_map.php:187
 msgid "show temp. ignored errors"
-msgstr ""
+msgstr "visa tillfälligt ignorerade fel"
 
 #: report_map.php:189
 msgid "Edit in Potlatch"
-msgstr ""
+msgstr "Editera i Potlatch"
 
 #: report_map.php:194
 #, php-format
@@ -873,131 +1307,140 @@ msgid ""
 "You will see up to %d error markers starting in the center of the map. "
 "Please allow a few seconds for the error markers to appear after panning."
 msgstr ""
+"Du får se max %d fel med utgångspunkt från kartans mitt. Det tar några "
+"sekunder för felmarkörerna att dyka upp efter att du panorerat."
 
 #: report_map.php:196
 #, php-format
 msgid "Site updated at %s"
-msgstr ""
+msgstr "Sajten uppdaterad %s"
 
 #: points.php:114
 msgid "node"
-msgstr ""
+msgstr "nod"
 
 #: points.php:114
 msgid "way"
-msgstr ""
+msgstr "väg"
 
 #: points.php:114
 msgid "relation"
-msgstr ""
+msgstr "relation"
 
 #. full message: "edit in JOSM / Potlatch"
 #: myText.js:237
 msgid "edit in"
-msgstr ""
+msgstr "redigera i"
 
 #: myText.js:237
 msgid "JOSM"
-msgstr ""
+msgstr "JOSM"
 
 #: myText.js:237
 msgid ""
 "JOSM must be running and JOSM's remote control plugin must be enabled for "
 "this to work!"
 msgstr ""
+"JOSM måste köra och JOSMs insticksprogram för fjärrkontroll måste vara "
+"aktiverat för att detta ska fungera!"
 
 #: myText.js:239
 msgid "Potlatch"
+msgstr "Potlatch"
+
+#: myText.js:239
+msgid "iD"
 msgstr ""
 
 #: myText.js:244
 msgid "keep this error open"
-msgstr ""
+msgstr "behåll felet öppet"
 
 #: myText.js:246
 msgid "ignore temporarily (error corrected)"
-msgstr ""
+msgstr "ignorera tillfälligt (felet rättat)"
 
 #: myText.js:248
 msgid "ignore (false-positive)"
-msgstr ""
+msgstr "ignorera (falsk positiv)"
 
 #: myText.js:252
 msgid "save"
-msgstr ""
+msgstr "spara"
 
 #: myText.js:253
 msgid "cancel"
-msgstr ""
+msgstr "avbryt"
 
 #: myText.js:254
 msgid "please click on the icon to fixate the bubble"
-msgstr ""
+msgstr "klicka på ikonen för att fixera bubblan"
 
 #: myText.js:255
 msgid "link to here: error #"
-msgstr ""
+msgstr "länka hit: fel #"
 
 #. full message: "last edit of this node: 2009-04-01 5:22"
 #: myText.js:255
 msgid "last edit of this"
-msgstr ""
+msgstr "senaste ändring av denna"
 
 #: interfacing.php:4
 msgid "interfacing KeepRight"
-msgstr ""
+msgstr "gränssnitt mot KeepRight"
 
 #: interfacing.php:11
 msgid "Interfacing with KeepRight"
-msgstr ""
+msgstr "Gränssnitt mot KeepRight"
 
 #: interfacing.php:13
 msgid "You may use KeepRight&apos;s results in a number of ways:"
-msgstr ""
+msgstr "Du kan använda KeepRights resultat på ett antal olika sätt:"
 
 #: interfacing.php:17
 #, php-format
 msgid "by means of the %smap web page%s"
-msgstr ""
+msgstr "med hjälp av %skartans webbsida%s"
 
 #: interfacing.php:18
 #, php-format
 msgid "exporting %sGPX waypoints%s"
-msgstr ""
+msgstr "exportera %sGPX-waypoints%s"
 
 #: interfacing.php:19
 #, php-format
 msgid "exporting new errors as %sRSS feed%s"
-msgstr ""
+msgstr "exportera nya fel som %sRSS flöde%s"
 
 #: interfacing.php:20
 #, php-format
 msgid "getting the whole errors %sdump file%s"
-msgstr ""
+msgstr "hämta hela %sfildumpen%s med fel"
 
 #: interfacing.php:24
 msgid "exporting GPX waypoints"
-msgstr ""
+msgstr "exportera GPX-waypoints"
 
 #: interfacing.php:25 interfacing.php:35 interfacing.php:47
 msgid "Purpose"
-msgstr ""
+msgstr "Syfte"
 
 #: interfacing.php:26
 msgid ""
 "Exporting a section of the map into a GPX-styled list of waypoints for use "
 "with GPS units"
 msgstr ""
+"Exportera ett utsnitt av kartan till en waypointlista i GPX-format för bruk "
+"med GPSer"
 
 #: interfacing.php:28 interfacing.php:38 interfacing.php:50
 msgid "URL format"
-msgstr ""
+msgstr "URL-format"
 
 #: interfacing.php:30
 msgid ""
 "You can specify a list of error types you want to have in the file as well "
-"as a bounding box on the map. This export will return up to 100 waypoints. "
-"This limit could be increased, in case there is demand."
+"as a bounding box on the map. This export will return up to 10000 waypoints. "
 msgstr ""
 
 #: interfacing.php:31
@@ -1006,14 +1449,17 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
+"Det finns en länk i kartsidans nedre vänstra hörn som pekar på GPX-tjänsten "
+"och som alltid innehåller de för tillfället valda feltyperna samt vyn från "
+"kartan."
 
 #: interfacing.php:34
 msgid "exporting new errors as RSS feed"
-msgstr ""
+msgstr "exportera nya fel som RSS-flöde"
 
 #: interfacing.php:36
 msgid "Watching a section of the map for newly found errors"
-msgstr ""
+msgstr "Bevaka ett avsnitt av kartan för nyfunna fel"
 
 #: interfacing.php:41
 msgid ""
@@ -1021,6 +1467,9 @@ msgid ""
 "different. The RSS feed will include error entries that were first found "
 "within the last three weeks."
 msgstr ""
+"URL-formatet är det samma som för GPX-exporter, endast formatparametern är "
+"annorlunda. RSS-flödet kommer omfatta felposter som hittats för första "
+"gången de senaste tre veckorna."
 
 #: interfacing.php:42
 msgid ""
@@ -1028,24 +1477,27 @@ msgid ""
 "service that always includes the current error type selection and view from "
 "the map."
 msgstr ""
+"Det finns en länk i kartsidans nedre vänstra hörn som pekar på RSS-tjänsten "
+"och som alltid innehåller de för tillfället valda feltyperna samt vyn från "
+"kartan."
 
 #: interfacing.php:46
 msgid "getting the whole dump-file"
-msgstr ""
+msgstr "hämta hela fildumpen"
 
 #: interfacing.php:48
-msgid "Doing something completely different with 10 millions of errors..."
+msgid "Doing something completely different with 25 millions of errors..."
 msgstr ""
 
 #: interfacing.php:53
 msgid ""
 "This tab-separated file contains all errors currently open for the whole "
-"planet (currently >200MB). It is being updated daily."
+"planet (currently >500MB). It is being updated daily."
 msgstr ""
 
 #: interfacing.php:56
 msgid "Table layout"
-msgstr ""
+msgstr "Tabellayout"
 
 #: interfacing.php:59
 #, php-format
@@ -1055,12 +1507,18 @@ msgid ""
 "roughly equally sized dump files. Consider the schema as a prefix for the "
 "error_id."
 msgstr ""
+"Schemat är en identifierare som namnger ett område på planeten. Enligt "
+"%splanetdelningskartan%s är planeten uppdelad i rektangulära delar för att "
+"få ungefär lika stora fildumpar. Betrakta schemat som ett prefix för "
+"error_id."
 
 #: interfacing.php:60
 msgid ""
 "A number identifying errors, starting from 1 for each schema. An error_id is "
 "worth nothing if you don&apos;t know the schema!"
 msgstr ""
+"Ett nummer som identifierar fel, med början på 1 för varje schema. Ett "
+"error_id är värdelöst om du inte känner till schemat!"
 
 #: interfacing.php:61
 msgid ""
@@ -1068,6 +1526,9 @@ msgid ""
 "blocks of 10s (20, 30, 40...). They correspond with the name of the script "
 "file doing the checking."
 msgstr ""
+"numerisk representation av feltypen. Feltyper är tilldelade i block om 10 "
+"(20, 30, 40...). De överensstämmer med namnet på den skriptfil som gör "
+"kontrollen."
 
 #: interfacing.php:62
 msgid ""
@@ -1078,6 +1539,11 @@ msgid ""
 "boundaries]&quot;). Subtyped error types are rendered as groups that may be "
 "collapsed on the web site."
 msgstr ""
+"Feltyper kan vara subtypade (281, 282 etc.). Subtypade felkontroller testar "
+"olika aspekter i förhållande till ett enskilt ämne. (till exempel betyder "
+"280 &quot;gränser&quot;, 281 betyder &quot;saknat namn[ för gränser]&quot; "
+"och 282 betyder &quot;saknad administrativ nivå[ för gränser]&quot;). "
+"Suptypade fel visas som hopfällbara grupper på webbplatsen."
 
 #: interfacing.php:64
 msgid ""
@@ -1085,14 +1551,16 @@ msgid ""
 "types you may want to prepend the error_name that belongs to the main number "
 "to make the name complete."
 msgstr ""
+"textrepresentation (kortnamn) av feltypen. På subtypade fel kan du vilja "
+"addera huvudnumrets error_name framför för att göra namnet komplett."
 
 #: interfacing.php:65
 msgid "one of node/way/relation"
-msgstr ""
+msgstr "en av node/way/relation"
 
 #: interfacing.php:66
 msgid "an OSM node_id, way_id or relation_id"
-msgstr ""
+msgstr "ett OSM-node_id, -way_id eller -relation_id"
 
 #: interfacing.php:67
 msgid ""
@@ -1105,6 +1573,14 @@ msgid ""
 "never come back just because KeepRight is wrong and this exception cannot be "
 "included in the ruleset."
 msgstr ""
+"en av new, reopened, ignore_temporarily, ignore. Du kommer inte se några "
+"&apos;cleared&apos;-fel eftersom dumpen enbart innehåller aktiva fel. "
+"Tillfälligt ignorerade fel är problem fixade av en användare som verkligen "
+"hoppas ha fixat det. Tillfälligt ignorerade fel kommer att hoppa till "
+"&apos;new&apos;-status vid nästa uppdatering om felet verkligen inte är "
+"fixat. Ignorerade fel är problem som helt enkelt är falska positiva och "
+"aldrig mer ska komma tillbaka enbart därför att KeepRight har fel och detta "
+"undantag inte kan infogas i regelverket."
 
 #: interfacing.php:68
 msgid ""
@@ -1113,12 +1589,18 @@ msgid ""
 "runtime-errors in the scripts. So you may just consider <em>new</em> and "
 "<em>reopened</em> the same."
 msgstr ""
+"Fel som en gång blivit avklarade och kommer tillbaka vid något tillfälle "
+"senare får state <em>reopened</em> . Notera att detta kan hända på grund av "
+"fel under körningen av skripten. Så du kan betrakta <em>new</em> och "
+"<em>reopened</em> som likvärdiga."
 
 #: interfacing.php:69
 msgid ""
 "The verbose error message that comes out of the checking routine in English "
 "language. For translating the messages use the next columns"
 msgstr ""
+"Det utförliga felmeddelandet som kommer från kontrollrutinen på engelska "
+"språket. För översättning av meddelandet använd de följande kolumnerna"
 
 #: interfacing.php:70
 msgid ""
@@ -1128,31 +1610,40 @@ msgid ""
 "translated. GNU gettext requires  a .po file that holds original and "
 "translated strings. You may use existing .po files from here: "
 msgstr ""
+"Detta är skelettet för felmeddelandet där platshållaren (\"$i\") står "
+"istället för det specifika felets infogade faktiska värde. Du kan placera "
+"detta skelett inuti en GNU gettext()-funktion för att få den översatt. GNU "
+"gettext kräver en .po-fil som innehåller original- och översatta strängar. "
+"Du kan använda existerande .po-filer härifrån: "
 
 #: interfacing.php:70
 msgid "find the GNU gettext template file here:"
-msgstr ""
+msgstr "hitta GNU gettext-mallen här:"
 
 #: interfacing.php:71
 msgid ""
 "These bits of text are the contents that have to be inserted in the error "
 "message after translation. txt1 will replace $1, etc."
 msgstr ""
+"Dessa textensnuttar utgör innehållet som måste infogas i felmeddelandet "
+"efter översättning. txt1 kommer att ersätta $1, etc."
 
 #: interfacing.php:72
 msgid "Timestamp (MESZ) of when this error was found the first time"
-msgstr ""
+msgstr "Tidsstämpel (MESZ) då detta fel hittades för första gången"
 
 #: interfacing.php:73
 msgid ""
 "Timestamp (MESZ) of last time this error was (re-)checked by the scripts"
-msgstr ""
+msgstr "Tidsstämpel (MESZ) då detta fel blev (åter-)kontrollerat av skripten"
 
 #: interfacing.php:74
 msgid ""
 "Timestamp of the object that was used when checking, as found in the "
 "official planet file."
 msgstr ""
+"Tidsstämpel från objektet som användes vid kontrollen, så som det ser ut i "
+"den officiella planetfilen."
 
 #: interfacing.php:76
 msgid ""
@@ -1160,34 +1651,44 @@ msgid ""
 "found in the official planet file. Please note that numbers are displayed as "
 "int values. To convert back to real lon/lat you have to divide by 10^7"
 msgstr ""
+"Läge på planeten. Koordinater är givna i samma projektion som i den "
+"officiella planetfilen. Var vänlig notera att tal visas som heltalsvärden. "
+"För att konvertera tillbaka till verklig lon/lat måste du dividera med 10^7"
 
 #: interfacing.php:77
 msgid "User-comment (if any)"
-msgstr ""
+msgstr "Användarkommentar (om någon)"
 
 #: interfacing.php:78
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
+msgstr "Tidsstämpel (MESZ) då kommentaren gavs (om någon)"
+
+#: interfacing.php:89
+msgid "User name of the user that last edited the given object."
 msgstr ""
 
 #: interfacing.php:82
 msgid "loading the errors table"
-msgstr ""
+msgstr "laddar feltabellen"
 
 #: interfacing.php:85
 msgid "This is the schema definition for use with MySQL databases:"
-msgstr ""
+msgstr "Detta är schemadefinitionen för användning med MySQL-databases:"
 
 #: interfacing.php:108
 msgid ""
 "Please note that <em>schema</em> is a reserved word in MySQL, so you always "
 "have to quote it like this: `schema`"
 msgstr ""
+"Notera att <em>schema</em> är ett reserverat ord i MySQL, så du måste alltid "
+"citera det så här: `schema`"
 
 #: interfacing.php:110
 msgid ""
 "There are two primary keys in this table: a natural one and an artificial "
 "one:"
 msgstr ""
+"Det finns två primära nycklar i denna tabell: en naturlig och en artificiell:"
 
 #: interfacing.php:112
 msgid ""
@@ -1195,10 +1696,33 @@ msgid ""
 "lon. That means one type of error may be found on multiple spots belonging "
 "to one single object (eg. self-intersections of ways)."
 msgstr ""
+"Den naturliga primära nyckeln består av error_type, object_type, object_id, "
+"lat, lon. Det innebär att en typ av fel kan hittas på flera olika punkter "
+"som tillhör samma objekt (exempelvis vägar som korsar sig själva)."
 
 #: interfacing.php:114
 msgid ""
 "The artificial primary key consists of schema and error_id. It is used just "
 "for simplicity of referencing individual error instances and it is "
 "completely redundant."
+msgstr ""
+"Den artificiella primära nyckeln består av schema och error_id. Den används "
+"bara för enkelhetens skull som referens till enskilda fel och är "
+"fullständigt redundant."
+
+#: interfacing.php:139
+msgid "querying node counts"
+msgstr ""
+
+#: interfacing.php:141
+msgid ""
+"As a waste-product the scripts create a file that contains the numer of "
+"nodes per square degree found in the planet file. Resolution is 0.1 degrees. "
+"You may download the file here:"
+msgstr ""
+
+#: interfacing.php:144
+msgid ""
+"This dump file can be useful for statistics if you want to calculate an "
+"`errors per node` measure"
 msgstr ""

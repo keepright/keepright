@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: keepright\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-11-29 02:03+0000\n"
+"PO-Revision-Date: 2013-08-20 20:17+0000\n"
 "Last-Translator: e9625163 <Unknown>\n"
 "Language-Team: Norwegian Bokmal <nb@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-12-01 20:40+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2014-04-04 19:48+0000\n"
+"X-Generator: Launchpad (build 16976)\n"
 
 msgid "There is more than one node in this spot. Offending node IDs: $1"
 msgstr ""
@@ -65,6 +65,9 @@ msgstr "Denne $1 har et tomt merke: $2"
 
 msgid "This way has no tags"
 msgstr "Denne veien har ingen merker"
+
+msgid "This node is not member of any way and does not have any tags"
+msgstr ""
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
@@ -236,6 +239,23 @@ msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
 msgstr ""
 
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+
+msgid ""
+"restriction type is $1, but angle is $2 degrees. Maybe the restriction type "
+"is not appropriate?"
+msgstr ""
+
+msgid "wrong direction of to way $1"
+msgstr ""
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr ""
+
 msgid "missing maxspeed tag"
 msgstr "Mangler maxspeed merke"
 
@@ -270,6 +290,15 @@ msgstr ""
 msgid ""
 "This bridge does not have a tag in common with its surrounding ways that "
 "shows the purpose of this bridge. There should be one of these tags: $1"
+msgstr ""
+
+msgid "The URL ($1) cannot be opened (HTTP status code $2)"
+msgstr ""
+
+msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
+msgstr ""
+
+msgid "Content of the URL ($1) did not contain these keywords: ($2)"
 msgstr ""
 
 #. translations for error type names
@@ -664,6 +693,129 @@ msgid ""
 "shows the language of its name ''$2''."
 msgstr ""
 
+#. this is about points of interest drawn inside a building of the same name
+#. please keep this as short as possible
+msgid "doubled places"
+msgstr ""
+
+msgid ""
+"a node inside of an area that is tagged with same name and representing the "
+"same physical entity leads to wrong statistics and doubled labels on the map"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 and seems to be "
+"redundand"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 (including the "
+"name '$2') and seems to be redundand"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-physical use of sport-tag"
+msgstr ""
+
+msgid ""
+"&apos;sports&apos; is a non-physical tag that needs to be bound to some "
+"physical structure like for example a leisure-item or an amenity. Ways "
+"tagged with &apos;sports&apos; solely will be invisible on the map"
+msgstr ""
+
+#. full message: "This way is tagged sport=tennis but has no physical tag like e.g. leisure, building, amenity or highway"
+msgid ""
+"This way is tagged $1 but has no physical tag like e.g. leisure, building, "
+"amenity or highway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing tracktype"
+msgstr ""
+
+msgid ""
+"highway=track ways should be added with more detail about the tracktype "
+"(grade1..grade5). The tracktype is included in rendering rules and makes "
+"maps more expressive"
+msgstr ""
+
+msgid "This track doesn't have a tracktype"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "geometry glitches"
+msgstr ""
+
+msgid ""
+"looks for impossible sharp angles on highways and junctions. These may be "
+"caused by missing turn restrictions on junctions or glitches along the "
+"linestring of ways"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing turn restriction"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "impossible angles"
+msgstr ""
+
+msgid "this way bends in a very sharp angle here"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $2 to $1"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $1 to $2"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "website"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "http error"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "domain hijacking"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-match"
+msgstr ""
+
+msgid ""
+"calls websites and tries to match website content with key tags from the osm "
+"element"
+msgstr ""
+
+#. full message: "The URL (http://www.belgian-beer-cafe.com.au/heritage) cannot be opened (HTTP status code 404)"
+msgid ""
+"The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP "
+"status code $2)"
+msgstr ""
+
+msgid ""
+"Possible domain squatting: <a target=\"_blank\" href=\"$1\">$1</a>. "
+"Suspicious text is: \"$2\""
+msgstr ""
+
+#. full message: "Content of the URL (http://www.yha.com.au) did not contain these keywords: (*Bondi Beachouse YHA*Bondi)"
+msgid ""
+"Content of the URL (<a target=\"_blank\" href=\"$1\">$1</a>) did not contain "
+"these keywords: ($2)"
+msgstr ""
+
 #. translations for the web pages
 #: index.php:9
 msgid "data consistency checks for OSM"
@@ -690,8 +842,8 @@ msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
 msgstr "Datasjekker for Europa%s (Startpunkt Vien, Østerike)"
 
 #: index.php:27
-msgid "Australian KeepRight partner site"
-msgstr "KeepRight Australske partner-side"
+msgid "Data Checks for Australia%s (Starting point Sydney)"
+msgstr ""
 
 #: index.php:30
 #, php-format
@@ -747,6 +899,67 @@ msgstr "loggfil"
 msgid ""
 "If you want to export errors from KeepRight you will want to have a look at "
 "the %sinterfacing guide%s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Today I fixed the annoying OpenLayers-damaged-bubbles-issues. The bubbles "
+"look OK now and I made the switch to OL2.12. Empty your browser&apos;s cache "
+"(try any combination of Ctrl, Shift, Alt plus &apos;R&apos; as well as "
+"&apos;F5&apos;) if the site doesn&apos;t work for you."
+msgstr ""
+
+#, php-format
+msgid ""
+"To all consumers of KeepRight error dump files: The file format is going to "
+"change: I will drop the &quot;description&quot;-column. It is redundant, you "
+"can recreate it from &quot;msgid&quot; plus &quot;txt1&quot;-"
+"&quot;txt5&quot; <br>Second: there is a new column in the file including the "
+"user name of the last editor of the object containing the error.<br>This "
+"change will take full effect during this week as all parts of the planet are "
+"going to be reprocessed"
+msgstr ""
+
+#, php-format
+msgid ""
+"Australia is back online again!<br>KeepRight's Australia partner site is "
+"closed by now, error checks for Australia are run on the main site. I'm very "
+"sorry I could not rescue all the comments and ignore-states on errors. The "
+"remote database is not accessible any more so any comments and states are "
+"reset and we are starting from scratch.<br>Anyway, thank you, Peter, for "
+"providing that service for more than three years!"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new, great document that describes recipes for fixing errors "
+"reported by KeepRight. It was written by user Popei82. Thank you very "
+"much!<br>Find the document in the OSM <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>wiki</a>."
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check calles &apos;geometry glitches&apos;: This one looks "
+"for spikes in ways and makes guesses about missing turn restrictions: "
+"Highways joining in a very sharp angle should have some sort of turn "
+"restriction (explicit or implicit by means of oneway tags) that prohibits "
+"turing around the sharp angle"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check called &apos;doubled places&apos; that looks for nodes "
+"placed inside of a closed-loop way (usually a building) where the node and "
+"the way have some tags in common. Such situations lead to doubled labels on "
+"the map and wrong statistics (counting amenities doesn't work)"
+msgstr ""
+
+#, php-format
+msgid ""
+"KeepRight now has its own domain name! You may now access KeepRight using "
+"the short URL <b><a href='http://keepright.at/'>http://keepright.at/</a></b>"
 msgstr ""
 
 #, php-format
@@ -970,6 +1183,10 @@ msgstr ""
 msgid "Potlatch"
 msgstr "Potlatch"
 
+#: myText.js:239
+msgid "iD"
+msgstr ""
+
 #: myText.js:244
 msgid "keep this error open"
 msgstr "hold denne feilen åpen"
@@ -1056,8 +1273,7 @@ msgstr "URL format"
 #: interfacing.php:30
 msgid ""
 "You can specify a list of error types you want to have in the file as well "
-"as a bounding box on the map. This export will return up to 100 waypoints. "
-"This limit could be increased, in case there is demand."
+"as a bounding box on the map. This export will return up to 10000 waypoints. "
 msgstr ""
 
 #: interfacing.php:31
@@ -1094,13 +1310,13 @@ msgid "getting the whole dump-file"
 msgstr ""
 
 #: interfacing.php:48
-msgid "Doing something completely different with 10 millions of errors..."
+msgid "Doing something completely different with 25 millions of errors..."
 msgstr ""
 
 #: interfacing.php:53
 msgid ""
 "This tab-separated file contains all errors currently open for the whole "
-"planet (currently >200MB). It is being updated daily."
+"planet (currently >500MB). It is being updated daily."
 msgstr ""
 
 #: interfacing.php:56
@@ -1229,6 +1445,10 @@ msgstr "Brukerkommentar (om noen)"
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
 msgstr ""
 
+#: interfacing.php:89
+msgid "User name of the user that last edited the given object."
+msgstr ""
+
 #: interfacing.php:82
 msgid "loading the errors table"
 msgstr "laster inn feil-tabell"
@@ -1263,9 +1483,19 @@ msgid ""
 "completely redundant."
 msgstr ""
 
-#~ msgid ""
-#~ "This node is a junction of a motorway and a highway other than motorway, "
-#~ "motorway_link, trunk, service, unclassified or construction"
-#~ msgstr ""
-#~ "Denne noden er et kryss med en motorvei og en annen vei som ikke er "
-#~ "motorway, motoway_link, trunk, service, unclassified eller construction"
+#: interfacing.php:139
+msgid "querying node counts"
+msgstr ""
+
+#: interfacing.php:141
+msgid ""
+"As a waste-product the scripts create a file that contains the numer of "
+"nodes per square degree found in the planet file. Resolution is 0.1 degrees. "
+"You may download the file here:"
+msgstr ""
+
+#: interfacing.php:144
+msgid ""
+"This dump file can be useful for statistics if you want to calculate an "
+"`errors per node` measure"
+msgstr ""

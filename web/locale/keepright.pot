@@ -649,13 +649,13 @@ msgid ""
 "same physical entity leads to wrong statistics and doubled labels on the map"
 msgstr ""
 
-msgid "This node has tags in common with the surrounding way #$1 and seems to be redundant"
+msgid "This node has tags in common with the surrounding way #$1 and seems to be redundand"
 msgstr ""
 
 
 msgid ""
 "This node has tags in common with the surrounding way #$1 (including the name "
-"'$2') and seems to be redundant"
+"'$2') and seems to be redundand"
 msgstr ""
 
 

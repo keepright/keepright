@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: KeepRight 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-11-29 02:02+0000\n"
+"PO-Revision-Date: 2013-08-20 20:17+0000\n"
 "Last-Translator: e9625163 <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-12-01 20:40+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2014-04-04 19:48+0000\n"
+"X-Generator: Launchpad (build 16976)\n"
 
 # translations for error messages
 msgid "There is more than one node in this spot. Offending node IDs: $1"
@@ -66,6 +66,9 @@ msgstr "Šis $1 turi tuščią žymę $2"
 
 msgid "This way has no tags"
 msgstr "Šis kelias neturi žymių"
+
+msgid "This node is not member of any way and does not have any tags"
+msgstr ""
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
@@ -193,6 +196,10 @@ msgid ""
 "motorway_link, trunk, rest_area or construction. Service or unclassified is "
 "only valid if it has access=no/private or if it is a service=parking_aisle."
 msgstr ""
+"Šiame taške susijungia motorway svarbos kelias ir kelias, kitoks nei "
+"motorway, motorway_link, trunk, rest_area arba construction. Service ir "
+"unclassified yra tinkami tik jei jie turi access=no/private žymę arba yra "
+"pažymėti kaip service=parking_aisle."
 
 msgid "This boundary has no name"
 msgstr "Ši riba neturi pavadinimo"
@@ -241,6 +248,23 @@ msgid ""
 "from- via- and to- members of a turn resctriction need to be connected"
 msgstr "from, via ir to nariai posūkių ribojimo sąryšyje turi jungtis"
 
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+
+msgid ""
+"restriction type is $1, but angle is $2 degrees. Maybe the restriction type "
+"is not appropriate?"
+msgstr ""
+
+msgid "wrong direction of to way $1"
+msgstr ""
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr ""
+
 msgid "missing maxspeed tag"
 msgstr "praleista maxspeed žymė"
 
@@ -279,6 +303,15 @@ msgid ""
 msgstr ""
 "Šis tiltas neturi bendrų žymių su aplinkiniais keliais, kurie parodytų šio "
 "tilto tikslą. Turėtų būti bent viena iš šių žymių: $1"
+
+msgid "The URL ($1) cannot be opened (HTTP status code $2)"
+msgstr ""
+
+msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
+msgstr ""
+
+msgid "Content of the URL ($1) did not contain these keywords: ($2)"
+msgstr ""
 
 #. translations for error type names
 #. please keep this as short as possible
@@ -691,7 +724,7 @@ msgstr "neteisinga kryptis"
 
 #. please keep this as short as possible
 msgid "faintly connected"
-msgstr ""
+msgstr "menkai prijungtos"
 
 #. please keep this as short as possible
 msgid "*_link-connections"
@@ -723,7 +756,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "language unknown"
-msgstr ""
+msgstr "nežinoma kalba"
 
 msgid ""
 "To help applications choose the best matching language they should know the "
@@ -731,11 +764,140 @@ msgid ""
 "name:XX tag with the same content as found in the name tag where XX "
 "specifies the language used for the name tag."
 msgstr ""
+"Kad programos galėtų pasirinkti geriausiai tinkančią kalbą, jos turi žinoti, "
+"kuri kalba buvo naudojama name žymai. Todėl reikėtų pateikti name:XX žymę su "
+"tuo pačiu turiniu, koks randamas name žymoje; čia XX nurodo kalbą, naudotą "
+"name žymoje."
 
 #. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
 msgid ""
 "It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
 "shows the language of its name ''$2''."
+msgstr ""
+"Būtų gerai, jei $1 turėtų papildomą žymą „name:XX=$2“, kur XX parodo kalbą "
+"pavadinimo „$2“."
+
+#. this is about points of interest drawn inside a building of the same name
+#. please keep this as short as possible
+msgid "doubled places"
+msgstr ""
+
+msgid ""
+"a node inside of an area that is tagged with same name and representing the "
+"same physical entity leads to wrong statistics and doubled labels on the map"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 and seems to be "
+"redundand"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 (including the "
+"name '$2') and seems to be redundand"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-physical use of sport-tag"
+msgstr ""
+
+msgid ""
+"&apos;sports&apos; is a non-physical tag that needs to be bound to some "
+"physical structure like for example a leisure-item or an amenity. Ways "
+"tagged with &apos;sports&apos; solely will be invisible on the map"
+msgstr ""
+
+#. full message: "This way is tagged sport=tennis but has no physical tag like e.g. leisure, building, amenity or highway"
+msgid ""
+"This way is tagged $1 but has no physical tag like e.g. leisure, building, "
+"amenity or highway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing tracktype"
+msgstr ""
+
+msgid ""
+"highway=track ways should be added with more detail about the tracktype "
+"(grade1..grade5). The tracktype is included in rendering rules and makes "
+"maps more expressive"
+msgstr ""
+
+msgid "This track doesn't have a tracktype"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "geometry glitches"
+msgstr ""
+
+msgid ""
+"looks for impossible sharp angles on highways and junctions. These may be "
+"caused by missing turn restrictions on junctions or glitches along the "
+"linestring of ways"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing turn restriction"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "impossible angles"
+msgstr ""
+
+msgid "this way bends in a very sharp angle here"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $2 to $1"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $1 to $2"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "website"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "http error"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "domain hijacking"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-match"
+msgstr ""
+
+msgid ""
+"calls websites and tries to match website content with key tags from the osm "
+"element"
+msgstr ""
+
+#. full message: "The URL (http://www.belgian-beer-cafe.com.au/heritage) cannot be opened (HTTP status code 404)"
+msgid ""
+"The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP "
+"status code $2)"
+msgstr ""
+
+msgid ""
+"Possible domain squatting: <a target=\"_blank\" href=\"$1\">$1</a>. "
+"Suspicious text is: \"$2\""
+msgstr ""
+
+#. full message: "Content of the URL (http://www.yha.com.au) did not contain these keywords: (*Bondi Beachouse YHA*Bondi)"
+msgid ""
+"Content of the URL (<a target=\"_blank\" href=\"$1\">$1</a>) did not contain "
+"these keywords: ($2)"
 msgstr ""
 
 #. translations for the web pages
@@ -763,11 +925,11 @@ msgstr ""
 #: index.php:23
 #, php-format
 msgid "Data Checks for Europe%s (Starting point Vienna, Austria)"
-msgstr "Duomenų patikrinimas Europai%s (Pradinis taškas Viena, Ausrija)"
+msgstr "Duomenų patikrinimas Europai%s (Pradinis taškas Viena, Austrija)"
 
 #: index.php:27
-msgid "Australian KeepRight partner site"
-msgstr "Australijos KeepRight partneriai"
+msgid "Data Checks for Australia%s (Starting point Sydney)"
+msgstr ""
 
 #: index.php:30
 #, php-format
@@ -828,7 +990,68 @@ msgid ""
 "the %sinterfacing guide%s"
 msgstr ""
 "Jei norite eksportuoti klaidas iš KeepRight, tikriausiai jus sudomins "
-"%sąveikos vadovas%s"
+"%ssąveikos vadovas%s"
+
+#, php-format
+msgid ""
+"Today I fixed the annoying OpenLayers-damaged-bubbles-issues. The bubbles "
+"look OK now and I made the switch to OL2.12. Empty your browser&apos;s cache "
+"(try any combination of Ctrl, Shift, Alt plus &apos;R&apos; as well as "
+"&apos;F5&apos;) if the site doesn&apos;t work for you."
+msgstr ""
+
+#, php-format
+msgid ""
+"To all consumers of KeepRight error dump files: The file format is going to "
+"change: I will drop the &quot;description&quot;-column. It is redundant, you "
+"can recreate it from &quot;msgid&quot; plus &quot;txt1&quot;-"
+"&quot;txt5&quot; <br>Second: there is a new column in the file including the "
+"user name of the last editor of the object containing the error.<br>This "
+"change will take full effect during this week as all parts of the planet are "
+"going to be reprocessed"
+msgstr ""
+
+#, php-format
+msgid ""
+"Australia is back online again!<br>KeepRight's Australia partner site is "
+"closed by now, error checks for Australia are run on the main site. I'm very "
+"sorry I could not rescue all the comments and ignore-states on errors. The "
+"remote database is not accessible any more so any comments and states are "
+"reset and we are starting from scratch.<br>Anyway, thank you, Peter, for "
+"providing that service for more than three years!"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new, great document that describes recipes for fixing errors "
+"reported by KeepRight. It was written by user Popei82. Thank you very "
+"much!<br>Find the document in the OSM <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>wiki</a>."
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check calles &apos;geometry glitches&apos;: This one looks "
+"for spikes in ways and makes guesses about missing turn restrictions: "
+"Highways joining in a very sharp angle should have some sort of turn "
+"restriction (explicit or implicit by means of oneway tags) that prohibits "
+"turing around the sharp angle"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check called &apos;doubled places&apos; that looks for nodes "
+"placed inside of a closed-loop way (usually a building) where the node and "
+"the way have some tags in common. Such situations lead to doubled labels on "
+"the map and wrong statistics (counting amenities doesn't work)"
+msgstr ""
+
+#, php-format
+msgid ""
+"KeepRight now has its own domain name! You may now access KeepRight using "
+"the short URL <b><a href='http://keepright.at/'>http://keepright.at/</a></b>"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -848,6 +1071,21 @@ msgid ""
 "different and should not be used on ways. Thank you, Johan, for making me "
 "think about the problem again!"
 msgstr ""
+"Artimiausiomis dienomis jūs pastebėsite kelis patobulinimus ir du naujus "
+"tikrinimus:<br> <em>menkai prijungtos žiedinės sankryžos</em> tai naujas "
+"papildomas tikrinimas, randantis žiedines sankryžas, turinčias mažiau nei "
+"tris prijungimus prie kitų kelių. Tai nebūtinai yra klaida, tačiau kyla "
+"klausimas, kam tokia menkai prijungta žiedinė sankryža buvo skirta<br> "
+"<em>nežinoma kalba</em> yra naujas perspėjimas, kuris siekia pagerinti "
+"lokalizavimą. Jis kabinasi prie name žymų, kur kalbos kodas negali būti "
+"nustatytas iš kitų žymų. Dėkui, Ed'ai, už idėją!<br> <em>tiesiogiai sujungti "
+"greitkeliai</em> &mdash; šis tikrinimas dažnai sudirbdavo be reikalo poilsio "
+"zonose (tai pagalbiniai keliai, kurie specialiai neturėdavo pasiekiamumo "
+"aprobojimų). Aš atmečiau juos naudodamas tokią euristiką: su pagalbiniai "
+"keliais yra viskas gerai, jei jie veda į stovėjimo vietą, kuro kolonėlę, "
+"tuoletą arba restoraną. Tarp kitko, highway=services yra visiškai kitiems "
+"tikslams skirta žyma, kuri neturėtų būti naudojama keliams. Dėkui Johan'ui, "
+"kad privertė mane pagalvoti apie šią problemą dar kartą."
 
 #: index.php:56
 msgid ""
@@ -1098,6 +1336,10 @@ msgstr ""
 msgid "Potlatch"
 msgstr "Potlatch"
 
+#: myText.js:239
+msgid "iD"
+msgstr ""
+
 #: myText.js:244
 msgid "keep this error open"
 msgstr "Palikti šią klaidą atvirą"
@@ -1186,12 +1428,8 @@ msgstr "URL formatas"
 #: interfacing.php:30
 msgid ""
 "You can specify a list of error types you want to have in the file as well "
-"as a bounding box on the map. This export will return up to 100 waypoints. "
-"This limit could be increased, in case there is demand."
+"as a bounding box on the map. This export will return up to 10000 waypoints. "
 msgstr ""
-"Jūs galite nurodyti klaidų, kurias norite gauti faile, tipus, o taip pat "
-"apibrėžiantį žemėlapį stačiakampį. Šis eksportas duos iki 100 žemėlapio "
-"taškų. Ši riba gali būti padidinta, jei bus poreikis."
 
 #: interfacing.php:31
 msgid ""
@@ -1235,16 +1473,14 @@ msgid "getting the whole dump-file"
 msgstr "gaunamas pilnas klaidų failas"
 
 #: interfacing.php:48
-msgid "Doing something completely different with 10 millions of errors..."
-msgstr "Daryti ką nors kitą su 10 milijonų klaidų..."
+msgid "Doing something completely different with 25 millions of errors..."
+msgstr ""
 
 #: interfacing.php:53
 msgid ""
 "This tab-separated file contains all errors currently open for the whole "
-"planet (currently >200MB). It is being updated daily."
+"planet (currently >500MB). It is being updated daily."
 msgstr ""
-"Šis tab-skiriamas failas saugo visas šiuo metu visoje planetoje aptiktas "
-"klaidas (šiuo metu >200MB). Jis yra atnaujinamas kasdien."
 
 #: interfacing.php:56
 msgid "Table layout"
@@ -1414,6 +1650,10 @@ msgstr "Vartotojų komentarai (jei yra)"
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
 msgstr "Komentaro pateikimo laikas (MESZ)"
 
+#: interfacing.php:89
+msgid "User name of the user that last edited the given object."
+msgstr ""
+
 #: interfacing.php:82
 msgid "loading the errors table"
 msgstr "užkraunama klaidų lentelė"
@@ -1456,13 +1696,19 @@ msgstr ""
 "Dirbtinis pirminis raktas susideda iš schema ir error_id. Jis yra naudojamas "
 "norint supaprastinti nuorodas į konkrečias klaidas ir yra visai nebūtinas."
 
-#~ msgid ""
-#~ "This node is a junction of a motorway and a highway other than motorway, "
-#~ "motorway_link, trunk, services, rest_area or construction. Service or "
-#~ "unclassified is only valid if it has a access=no/private or if it is a "
-#~ "service=parking_aisle."
-#~ msgstr ""
-#~ "Šiame taške susijungia motorway svarbos kelias ir kelias, kitoks nei "
-#~ "motorway, motorway_link, trunk, services, rest_area arba construction. "
-#~ "Service ir unclassified yra tinkami tik jei jie turi access=no/private žymę "
-#~ "arba yra pažymėti kaip service=parking_aisle."
+#: interfacing.php:139
+msgid "querying node counts"
+msgstr ""
+
+#: interfacing.php:141
+msgid ""
+"As a waste-product the scripts create a file that contains the numer of "
+"nodes per square degree found in the planet file. Resolution is 0.1 degrees. "
+"You may download the file here:"
+msgstr ""
+
+#: interfacing.php:144
+msgid ""
+"This dump file can be useful for statistics if you want to calculate an "
+"`errors per node` measure"
+msgstr ""

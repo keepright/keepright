@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: keepright 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-08 18:12+0200\n"
-"PO-Revision-Date: 2010-10-07 03:12+0000\n"
+"PO-Revision-Date: 2013-08-20 20:11+0000\n"
 "Last-Translator: Rodrigo de Avila <rodrigo@avila.net.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-12-01 20:40+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2014-04-04 19:48+0000\n"
+"X-Generator: Launchpad (build 16976)\n"
 
 # translations for error messages
 msgid "There is more than one node in this spot. Offending node IDs: $1"
@@ -71,6 +71,9 @@ msgstr "Este $1 tem uma rtiqueta vazia: $2"
 
 msgid "This way has no tags"
 msgstr "Este caminho não possui marcadores."
+
+msgid "This node is not member of any way and does not have any tags"
+msgstr "Este nó não é membro de nenhum caminho e não tem nenhuma etiqueta."
 
 msgid ""
 "This way is tagged as motorway and therefore needs a ref, nat_ref or int_ref "
@@ -204,6 +207,10 @@ msgid ""
 "motorway_link, trunk, rest_area or construction. Service or unclassified is "
 "only valid if it has access=no/private or if it is a service=parking_aisle."
 msgstr ""
+"Este nó é a junção de uma autoestrada com uma via que não é motorway, "
+"motorway_link, trunk, rest_area ou construction. Service ou unclassified é "
+"válido apenas se acompanhados de access=no/private ou de "
+"service=parking_aisle."
 
 msgid "This boundary has no name"
 msgstr "Esta divisa não possui nome"
@@ -256,6 +263,23 @@ msgstr ""
 "Os membros from-, via- e to- de uma restrição de conversão precisam estar "
 "conectados"
 
+msgid "via (node #$1) is not the first or the last member of from (way #$2)"
+msgstr ""
+
+msgid "via (node #$1) is not the first or the last member of to (way #$2)"
+msgstr ""
+
+msgid ""
+"restriction type is $1, but angle is $2 degrees. Maybe the restriction type "
+"is not appropriate?"
+msgstr ""
+
+msgid "wrong direction of to way $1"
+msgstr ""
+
+msgid "entry already prohibited by oneway tag on $1"
+msgstr ""
+
 msgid "missing maxspeed tag"
 msgstr "está faltando a etiqueta maxspeed (velocidade máxima)"
 
@@ -294,6 +318,15 @@ msgstr ""
 "Esta ponte não tem as mesmas etiquetas em comum com os caminhos em torno "
 "dela, que mostre o propósito desta ponte. Deve-se usar uma destas etiquetas: "
 "$1"
+
+msgid "The URL ($1) cannot be opened (HTTP status code $2)"
+msgstr "A URL ($1) não pôde ser aberta (Código de status HTTP $2)"
+
+msgid "Possible domain squatting: $1. Suspicious text is: \"$2\""
+msgstr ""
+
+msgid "Content of the URL ($1) did not contain these keywords: ($2)"
+msgstr "O conteúdo da URL ($1) não contém estas palavras-chave: ($2)"
 
 #. translations for error type names
 #. please keep this as short as possible
@@ -724,7 +757,7 @@ msgstr "direção errada"
 
 #. please keep this as short as possible
 msgid "faintly connected"
-msgstr ""
+msgstr "fracamente ligados"
 
 #. please keep this as short as possible
 msgid "*_link-connections"
@@ -758,7 +791,7 @@ msgstr ""
 
 #. please keep this as short as possible
 msgid "language unknown"
-msgstr ""
+msgstr "idioma desconhecido"
 
 msgid ""
 "To help applications choose the best matching language they should know the "
@@ -766,11 +799,144 @@ msgid ""
 "name:XX tag with the same content as found in the name tag where XX "
 "specifies the language used for the name tag."
 msgstr ""
+"Usa-se este etiqueta para ajudar aplicativos a escolher o idioma que melhor "
+"se aplica a eles. Por isso é necessário prover uma etiqueta com name:XX com "
+"o mesmo conteúdo encontrado na etiqueta name, onde XX especifica o idioma "
+"desta etiqueta de nome."
 
 #. full message: "It would be nice if this node had an additional tag 'name:XX=Austria' where XX shows the language of its name 'Austria'."
 msgid ""
 "It would be nice if this $1 had an additional tag ''name:XX=$2'' where XX "
 "shows the language of its name ''$2''."
+msgstr ""
+"Seria interessante se esta $1 tivesse uma etiqueta adicional ''name:XX=$2'' "
+"onde XX mostra o nome este nome ''$2'' no idioma XX."
+
+#. this is about points of interest drawn inside a building of the same name
+#. please keep this as short as possible
+msgid "doubled places"
+msgstr "local duplicado"
+
+msgid ""
+"a node inside of an area that is tagged with same name and representing the "
+"same physical entity leads to wrong statistics and doubled labels on the map"
+msgstr ""
+"Um nó dentro de uma área que tem etiqueta com o mesmo nome, e representando "
+"o mesmo local físico leva a estatísticas erradas, e duplica etiquetas no mapa"
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 and seems to be "
+"redundand"
+msgstr ""
+
+msgid ""
+"This node has tags in common with the surrounding way #$1 (including the "
+"name '$2') and seems to be redundand"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "non-physical use of sport-tag"
+msgstr ""
+
+msgid ""
+"&apos;sports&apos; is a non-physical tag that needs to be bound to some "
+"physical structure like for example a leisure-item or an amenity. Ways "
+"tagged with &apos;sports&apos; solely will be invisible on the map"
+msgstr ""
+
+#. full message: "This way is tagged sport=tennis but has no physical tag like e.g. leisure, building, amenity or highway"
+msgid ""
+"This way is tagged $1 but has no physical tag like e.g. leisure, building, "
+"amenity or highway"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing tracktype"
+msgstr ""
+
+msgid ""
+"highway=track ways should be added with more detail about the tracktype "
+"(grade1..grade5). The tracktype is included in rendering rules and makes "
+"maps more expressive"
+msgstr ""
+
+msgid "This track doesn't have a tracktype"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "geometry glitches"
+msgstr ""
+
+msgid ""
+"looks for impossible sharp angles on highways and junctions. These may be "
+"caused by missing turn restrictions on junctions or glitches along the "
+"linestring of ways"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "missing turn restriction"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "impossible angles"
+msgstr ""
+
+msgid "this way bends in a very sharp angle here"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $2 to $1"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning from way $1 to $2"
+msgstr ""
+
+msgid ""
+"ways $1 and $2 join in a very sharp angle here and there is no oneway tag or "
+"turn restriction that prevents turning"
+msgstr ""
+
+#. please keep this as short as possible
+msgid "website"
+msgstr "website"
+
+#. please keep this as short as possible
+msgid "http error"
+msgstr "erro http"
+
+#. please keep this as short as possible
+msgid "domain hijacking"
+msgstr "domínio sequestrado"
+
+#. please keep this as short as possible
+msgid "non-match"
+msgstr ""
+
+msgid ""
+"calls websites and tries to match website content with key tags from the osm "
+"element"
+msgstr ""
+
+#. full message: "The URL (http://www.belgian-beer-cafe.com.au/heritage) cannot be opened (HTTP status code 404)"
+msgid ""
+"The URL (<a target=\"_blank\" href=\"$1\">$1</a>) cannot be opened (HTTP "
+"status code $2)"
+msgstr ""
+"A URL (<a target=\"_blank\" href=\"$1\">$1</a>) não pôde ser aberta (Código "
+"de status HTTP $2)"
+
+msgid ""
+"Possible domain squatting: <a target=\"_blank\" href=\"$1\">$1</a>. "
+"Suspicious text is: \"$2\""
+msgstr ""
+
+#. full message: "Content of the URL (http://www.yha.com.au) did not contain these keywords: (*Bondi Beachouse YHA*Bondi)"
+msgid ""
+"Content of the URL (<a target=\"_blank\" href=\"$1\">$1</a>) did not contain "
+"these keywords: ($2)"
 msgstr ""
 
 #. translations for the web pages
@@ -802,8 +968,8 @@ msgstr ""
 "Verificação de dados para a Europa%s (ponto de início em Viena, Áustria)"
 
 #: index.php:27
-msgid "Australian KeepRight partner site"
-msgstr "Site parceiro do KeepRight na Austrália"
+msgid "Data Checks for Australia%s (Starting point Sydney)"
+msgstr "Dados de verificação para Austrália%s (ponto de início: Sydney)"
 
 #: index.php:30
 #, php-format
@@ -873,6 +1039,67 @@ msgstr ""
 
 #, php-format
 msgid ""
+"Today I fixed the annoying OpenLayers-damaged-bubbles-issues. The bubbles "
+"look OK now and I made the switch to OL2.12. Empty your browser&apos;s cache "
+"(try any combination of Ctrl, Shift, Alt plus &apos;R&apos; as well as "
+"&apos;F5&apos;) if the site doesn&apos;t work for you."
+msgstr ""
+
+#, php-format
+msgid ""
+"To all consumers of KeepRight error dump files: The file format is going to "
+"change: I will drop the &quot;description&quot;-column. It is redundant, you "
+"can recreate it from &quot;msgid&quot; plus &quot;txt1&quot;-"
+"&quot;txt5&quot; <br>Second: there is a new column in the file including the "
+"user name of the last editor of the object containing the error.<br>This "
+"change will take full effect during this week as all parts of the planet are "
+"going to be reprocessed"
+msgstr ""
+
+#, php-format
+msgid ""
+"Australia is back online again!<br>KeepRight's Australia partner site is "
+"closed by now, error checks for Australia are run on the main site. I'm very "
+"sorry I could not rescue all the comments and ignore-states on errors. The "
+"remote database is not accessible any more so any comments and states are "
+"reset and we are starting from scratch.<br>Anyway, thank you, Peter, for "
+"providing that service for more than three years!"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new, great document that describes recipes for fixing errors "
+"reported by KeepRight. It was written by user Popei82. Thank you very "
+"much!<br>Find the document in the OSM <a target='_blank' "
+"href='http://wiki.openstreetmap.org/wiki/Fehlerbereinigung_mit_Hilfe_von_keep"
+"right.at'>wiki</a>."
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check calles &apos;geometry glitches&apos;: This one looks "
+"for spikes in ways and makes guesses about missing turn restrictions: "
+"Highways joining in a very sharp angle should have some sort of turn "
+"restriction (explicit or implicit by means of oneway tags) that prohibits "
+"turing around the sharp angle"
+msgstr ""
+
+#, php-format
+msgid ""
+"There is a new check called &apos;doubled places&apos; that looks for nodes "
+"placed inside of a closed-loop way (usually a building) where the node and "
+"the way have some tags in common. Such situations lead to doubled labels on "
+"the map and wrong statistics (counting amenities doesn't work)"
+msgstr ""
+
+#, php-format
+msgid ""
+"KeepRight now has its own domain name! You may now access KeepRight using "
+"the short URL <b><a href='http://keepright.at/'>http://keepright.at/</a></b>"
+msgstr ""
+
+#, php-format
+msgid ""
 "You'll notice some improvements on two checks and one completely new one "
 "coming up during the next days:<br> <em>faintly connected roundabouts</em> "
 "is a new sub-check for the roundabout check that will complain about "
@@ -889,6 +1116,22 @@ msgid ""
 "different and should not be used on ways. Thank you, Johan, for making me "
 "think about the problem again!"
 msgstr ""
+"Você vai notar algumas melhorias em duas verificações, e uma completamente "
+"nova chegando nos próximos dias:<br> <em>rótulas fracamente ligadas</ em> é "
+"uma nova sub-seleção para a verificação de rótulas que irá reclamar de "
+"rótulas com menos de três conexões com outras estradas. Isso não precisa ser "
+"um erro, mas pelo menos uma rótula com fracamente ligada é no mínimo "
+"questionável.<br> <em>língua desconhecida</ em> é uma verificação nova que "
+"tenta melhorar a localização reclamando sobre tags de nome onde o idioma não "
+"pode ser diferenciado de outras tags. Obrigado, Ed, por esta ideia! "
+"<br><em>Autoestradas conectadas diretamente</ em> esta verificação tinha "
+"muitos falso-positivos nas áreas de descanso (são estradas de serviço que, "
+"intencionalmente, não tem uma restrição de acesso). Eu eliminei-os usando "
+"uma heurística: caminhos de serviço estão OK, se levar a uma área de "
+"estacionamento, um posto de gasolina, um banheiro ou um restaurante. De "
+"qualquer forma: highway=services é algo completamente diferente e não deve "
+"ser usado em rodovias. Obrigada, Johan, por me fazer pensar sobre o problema "
+"de novo!"
 
 #: index.php:56
 msgid ""
@@ -1144,6 +1387,10 @@ msgstr ""
 msgid "Potlatch"
 msgstr "Potlatch"
 
+#: myText.js:239
+msgid "iD"
+msgstr ""
+
 #: myText.js:244
 msgid "keep this error open"
 msgstr "manter este erro aberto"
@@ -1232,12 +1479,8 @@ msgstr "Formato da URL"
 #: interfacing.php:30
 msgid ""
 "You can specify a list of error types you want to have in the file as well "
-"as a bounding box on the map. This export will return up to 100 waypoints. "
-"This limit could be increased, in case there is demand."
+"as a bounding box on the map. This export will return up to 10000 waypoints. "
 msgstr ""
-"Você pode especificar uma lista de tipos de erros que você quer no arquivo, "
-"assim como o bounding box do mapa. Este exportador vai retornar no máximo "
-"100 waypoints. Este limite pode ser aumentado, caso haja demanda."
 
 #: interfacing.php:31
 msgid ""
@@ -1281,17 +1524,14 @@ msgid "getting the whole dump-file"
 msgstr "Obtendo o arquivo de saída inteiro"
 
 #: interfacing.php:48
-msgid "Doing something completely different with 10 millions of errors..."
-msgstr "Fazendo algo completamente diferente com 10 milhões de erros..."
+msgid "Doing something completely different with 25 millions of errors..."
+msgstr ""
 
 #: interfacing.php:53
 msgid ""
 "This tab-separated file contains all errors currently open for the whole "
-"planet (currently >200MB). It is being updated daily."
+"planet (currently >500MB). It is being updated daily."
 msgstr ""
-"Este arquivo, separado por tabulações, contém todos os erros atualmente "
-"abertos, para todo o planeta (atualmente > 200MB). Ele está sendo atualizado "
-"todos os dias."
 
 #: interfacing.php:56
 msgid "Table layout"
@@ -1467,6 +1707,10 @@ msgstr "Comentário de usuário (se algum)"
 msgid "Timestamp (MESZ) of when the comment was given (if any)"
 msgstr "Data e hora (MESZ) de quando o comentário foi enviado (se houver)"
 
+#: interfacing.php:89
+msgid "User name of the user that last edited the given object."
+msgstr ""
+
 #: interfacing.php:82
 msgid "loading the errors table"
 msgstr "carregando a tabela de erros"
@@ -1511,163 +1755,19 @@ msgstr ""
 "Ele é usado apenas por simplicidade ao referenciar instâncias de erros "
 "individuais, e é completamente redundante."
 
-#~ msgid ""
-#~ "This node is tagged as place of worship and therefore needs a religion tag"
-#~ msgstr ""
-#~ "Este nó está etiquetado como Local de Adoração, no entanto, ele também "
-#~ "precisa da etiqueta religion"
+#: interfacing.php:139
+msgid "querying node counts"
+msgstr ""
 
-#~ msgid "The key of this $1s tag is 'key': $2"
-#~ msgstr "A chave para esta etiqueta $1 é 'key': $2"
+#: interfacing.php:141
+msgid ""
+"As a waste-product the scripts create a file that contains the numer of "
+"nodes per square degree found in the planet file. Resolution is 0.1 degrees. "
+"You may download the file here:"
+msgstr ""
 
-#~ msgid ""
-#~ "This node is a junction of a motorway and a highway other than motorway, "
-#~ "motorway_link, trunk, service, unclassified or construction"
-#~ msgstr ""
-#~ "Este nó é a junção de uma autoestrada com uma estrada diferente de motorway, "
-#~ "motorway_link, trunk, service, unclassified ou construction"
-
-# Sorry, but I need to explain what is a Flare, because we don't use this term in Brazil. That's why the string was so big.
-#~ msgid ""
-#~ "This way is part of a roundabout but is not closed-loop. (Flares should not "
-#~ "be tagged as roundabout)"
-#~ msgstr ""
-#~ "Este caminho faz parte de uma rotatória, mas ela não é uma área fechada. (os "
-#~ "caminhos que levam à rotatória, conhecidos como Flares,  não devem ser "
-#~ "etiquetadas como rotatórias)"
-
-#~ msgid ""
-#~ "This way is tagged as highway=$1_link but doesnt have a connection to any "
-#~ "other $1 or $1_link"
-#~ msgstr ""
-#~ "Este caminho está etiquetado como highway=$1_link mas ela não tem nenhuma "
-#~ "conexão com qualquer outro $1 ou $1_link"
-
-#~ msgid ""
-#~ "Try to find nodes that are (almost) on the same spot. Distances less than +/-"
-#~ "0.5 Meters are considered zero"
-#~ msgstr ""
-#~ "Tenta encontrar nós que estejam (quase) no mesmo lugar. Distâncias menores "
-#~ "que +/- 0,5 metros são consideradas como zero."
-
-#~ msgid "Australian Keepright partner site"
-#~ msgstr "Site parceiro do Keepright na Austrália"
-
-#, php-format
-#~ msgid ""
-#~ "Developers have a look at the %ssourceforge%s site providing svn access to "
-#~ "the sources."
-#~ msgstr ""
-#~ "Desenvolvedores podem dar uma olhada no site do %ssourceforge%s para obter "
-#~ "acesso svn ao código-fonte."
-
-#, php-format
-#~ msgid ""
-#~ "If you want to export errors from Keepright you will want to have a look at "
-#~ "the %sinterfacing guide%s"
-#~ msgstr ""
-#~ "Se você deseja exportar os erros do Keepright, você deve dar uma olhada no "
-#~ "%sguia de interação%s"
-
-#~ msgid ""
-#~ "You may have noticed that you couldn&apos;t pan around the whole world in "
-#~ "keepright as you liked. There were invisible boundaries and you always had "
-#~ "to take care about the db-parameter in the URLs to be appropriate for the "
-#~ "current position.<br>This is over now! The db-parameter is gone. So have fun "
-#~ "panning around the whole world and fixing errors easier than ever!"
-#~ msgstr ""
-#~ "Você deve ter percebido que não era possível percorrer o mundo inteiro no "
-#~ "keepright como desejava. Isto porque existem fronteiras invisíveis, e você "
-#~ "sempre precisava cuidar de que o parâmetro db na URL fosse apropriado para a "
-#~ "posição atual.<br>Mas isto já era! o parâmetro db se foi. Então, sinta-se à "
-#~ "vontade para percorrer o mundo inteiro e corrigir os erros de forma mais "
-#~ "fácil do que nunca!"
-
-#, php-format
-#~ msgid ""
-#~ "This is my FOSSGIS-present for you: keepright will remember the position and "
-#~ "the error types you selected when you left the site last time (how could "
-#~ "you?). Just open %s without any parameters!"
-#~ msgstr ""
-#~ "este é meu presente do FOSSGIS para você: agora, o keepright lembra a "
-#~ "posição, e os tipos de erros que você selecionou quando saiu do site pela "
-#~ "última vez (como pôde sair?!). Apenas abra %s sem nenhum parâmetro!"
-
-#~ msgid ""
-#~ "Please give a comment that helps me improve the check routines if you find a "
-#~ "false-positive. Don't confuse the comment box with an editing feature. This "
-#~ "is not potlatch! You cannot add missing tags via keepright!"
-#~ msgstr ""
-#~ "Por favor coloque aqui um comentário que ajude-me a melhorar as rotinas de "
-#~ "verificação se você encontrou um falso-positivo. Não confunda esta caixa de "
-#~ "comentário com uma função de edição. Este não é o Potlatch! Você não vai "
-#~ "conseguir adicionar etiquetas faltantes via keepright!"
-
-#~ msgid ""
-#~ "If you like to contact me, my mailbox at the austrian server of gmx is "
-#~ "labelled keepright."
-#~ msgstr ""
-#~ "Se você quiser entrar em contato comigo, minha caixa de correio fica no "
-#~ "servidor austríaco do gmx, e está etiquetado como keepright."
-
-#~ msgid "Doing something completely different with 10 Millions of errors..."
-#~ msgstr "Fazendo algo completamente diferente com 10 milhões de erros..."
-
-#~ msgid "schema"
-#~ msgstr "schema"
-
-#~ msgid "error_id"
-#~ msgstr "error_id"
-
-#~ msgid "error_type"
-#~ msgstr "error_type"
-
-#~ msgid "error_name"
-#~ msgstr "error_name"
-
-#~ msgid "object_type"
-#~ msgstr "object_type"
-
-#~ msgid "object_id"
-#~ msgstr "object_id"
-
-#~ msgid "state"
-#~ msgstr "state"
-
-#~ msgid "description"
-#~ msgstr "description"
-
-#~ msgid "msgid"
-#~ msgstr "msgid"
-
-#~ msgid "first_occurrence"
-#~ msgstr "first_occurrence"
-
-#~ msgid "last_checked"
-#~ msgstr "last_checked"
-
-#~ msgid "object_timestamp"
-#~ msgstr "object_timestamp"
-
-#~ msgid "lat"
-#~ msgstr "lat"
-
-#~ msgid "lon"
-#~ msgstr "lon"
-
-#~ msgid "comment"
-#~ msgstr "comment"
-
-#~ msgid "comment_timestamp"
-#~ msgstr "comment_timestamp"
-
-#~ msgid ""
-#~ "This node is a junction of a motorway and a highway other than motorway, "
-#~ "motorway_link, trunk, services, rest_area or construction. Service or "
-#~ "unclassified is only valid if it has a access=no/private or if it is a "
-#~ "service=parking_aisle."
-#~ msgstr ""
-#~ "Este nó é a junção de uma rodovia e uma estrada que não é uma motorway, "
-#~ "motorway_link, trunk, services, rest_area ou construction. Service ou "
-#~ "unclassified são válidos apenas se tiverem as tags access=no/private ou se "
-#~ "forem service=parking_aisle."
+#: interfacing.php:144
+msgid ""
+"This dump file can be useful for statistics if you want to calculate an "
+"`errors per node` measure"
+msgstr ""
