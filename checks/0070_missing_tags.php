@@ -14,7 +14,7 @@ foreach ($tables as $object_type=>$table) {
 
 	query("
 		INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2,   last_checked)
-		SELECT $error_type, '$object_type', {$object_type}_id, 'This $1 has an empty tag: $2', '$object_type', htmlspecialchars(array_to_string(array(
+		SELECT $error_type+4, '$object_type', {$object_type}_id, 'This $1 has an empty tag: $2', '$object_type', htmlspecialchars(array_to_string(array(
 			SELECT '\"' || COALESCE(k,'') || '=' || COALESCE(v,'') || '\"'
 			FROM $table AS tmp
 			WHERE tmp.{$object_type}_id=t.{$object_type}_id AND (tmp.k IS NULL or LENGTH(TRIM(tmp.k))=0 OR tmp.v IS NULL or LENGTH(TRIM(tmp.v))=0)
@@ -92,5 +92,22 @@ query("
 	)
 ", $db1);
 
+//Some more specialized checks
+//tracktype, but no highway
+query("
+  INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
+  SELECT 3+$error_type, 'way', way_id,
+    'This way has a tracktype but no highway tag', NOW()
+  FROM way_tags wt
+  WHERE wt.k IN ('tracktype', 'lanes')
+  AND NOT EXISTS (
+    SELECT 1
+    FROM way_tags w
+    WHERE wt.way_id=w.way_id  AND w.k = 'highway'
+  )
+", $db1);
+
+
+//error type 74 already used (see top of file)
 
 ?>
