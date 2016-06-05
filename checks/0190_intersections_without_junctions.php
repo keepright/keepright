@@ -38,7 +38,7 @@ query("
 		SELECT wt.v
 		FROM way_tags wt
 		WHERE wt.k = 'highway'
-		AND wt.v NOT IN ('cycleway', 'footpath', 'proposed', 'preproposed', 'construction', 'services', 'rest_area', 'ford', 'razed')
+		AND wt.v NOT IN ('cycleway', 'footway', 'path', 'bridleway', 'track', 'proposed', 'preproposed', 'construction', 'services', 'rest_area', 'ford', 'razed')
 		AND wt.way_id = ways.id
 	)
 	AND NOT EXISTS (
@@ -52,7 +52,7 @@ query("
 query("ALTER TABLE _tmp_ways ADD PRIMARY KEY (way_id);", $db1);
 query("ANALYZE _tmp_ways", $db1);
 
-// find any cycleway/footpaths
+// find any cycleway/footpaths and minor tracks
 // exclude ford=*
 query("
 	INSERT INTO _tmp_ways (way_id, geom, way_type)
@@ -62,7 +62,7 @@ query("
 		SELECT wt.v
 		FROM way_tags wt
 		WHERE wt.k = 'highway'
-		AND wt.v IN ('cycleway', 'footpath')
+		AND wt.v IN ('cycleway', 'footway', 'path', 'bridleway', 'track')
 		AND wt.way_id = ways.id
 	)
 	AND NOT EXISTS (
@@ -87,7 +87,7 @@ query("
 	WHERE geom IS NOT NULL AND EXISTS (
 		SELECT wt.v
 		FROM way_tags wt
-		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock', 'boatyard', 'weir') AND wt.way_id=ways.id
+		WHERE wt.k = 'waterway' AND wt.v NOT IN ('riverbank', 'dock', 'boatyard', 'weir', 'dam') AND wt.way_id=ways.id
 	)
 	AND NOT EXISTS (
 		SELECT id
@@ -190,7 +190,9 @@ $result = query("
 		w1.way_id<w2.way_id AND NOT (
 			(w1.way_type='waterway' AND w2.way_type='riverbank') OR
 			(w1.way_type='riverbank' AND w2.way_type='waterway') OR
-			(w1.way_type='riverbank' AND w2.way_type='riverbank')
+			(w1.way_type='riverbank' AND w2.way_type='riverbank') OR
+      (w1.way_type='cycleway/footpath' AND w2.way_type='waterway') OR
+      (w1.way_type='waterway' AND w2.way_type='cycleway/footpath')
 		) AND (ST_crosses(w1.geom, w2.geom) OR ST_overlaps(w1.geom, w2.geom))
 ", $db1);
 while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
