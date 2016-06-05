@@ -205,4 +205,25 @@ query("
 
 ", $db1);
 
+
+//////////////////////////////////////////////////////////
+// this is something completely different:
+// check for waterways that are not in a tunnel but have layer=-1
+//waterway=* layer=-1 -tunnel=* -culvert=yes -covered=yes -pipeline=yes -location=underground nodes:4-
+query("
+  INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
+  SELECT $error_type + 3, 'way', wt.way_id, 'This waterway has layer=-1 but no tag indicating that it actually is underground. Consider using culvert=yes, tunnel=*, pipeline=* or location=underground', NOW()
+  FROM way_tags wt INNER JOIN ways wa ON wt.way_id=wa.id
+  WHERE wt.k = 'waterway'
+  AND wa.node_count >= 4
+  AND     EXISTS (SELECT 1  FROM way_tags w  WHERE wt.way_id=w.way_id  AND w.k = 'layer'    AND w.v in ('-1', '-2', '-3', '-4', '-5'))
+  AND NOT EXISTS (SELECT 1  FROM way_tags w  WHERE wt.way_id=w.way_id  AND w.k = 'tunnel'   AND w.v NOT in ('no','false','0'))
+  AND NOT EXISTS (SELECT 1  FROM way_tags w  WHERE wt.way_id=w.way_id  AND w.k = 'culvert'  AND w.v = 'yes')
+  AND NOT EXISTS (SELECT 1  FROM way_tags w  WHERE wt.way_id=w.way_id  AND w.k = 'covered'  AND w.v IN ('yes','true','1'))
+  AND NOT EXISTS (SELECT 1  FROM way_tags w  WHERE wt.way_id=w.way_id  AND w.k = 'pipeline' AND w.v IN ('yes','true','1'))
+  AND NOT EXISTS (SELECT 1  FROM way_tags w  WHERE wt.way_id=w.way_id  AND w.k = 'location' AND w.v = 'underground')
+  
+", $db1);
+
+
 ?>
