@@ -29,7 +29,7 @@ foreach ($tables as $object_type) {
     SELECT $curtype, '{$object_type}', {$object_type}_id, 'This $1 is tagged $2=$3 which seems to not use the correct number format. The unit should be meter, kilometer, miles or feet/inch. A space should be added between number and unit', '{$object_type}', b.k, b.v, NOW()
     FROM {$object_type}_tags b
     WHERE b.k IN ('height','maxheight','min_height','width','maxwidth','distance','length','maxlength') 
-          AND b.v ~ '\d' AND b.v !~ '^[+-]?\d+(\.\d+)?(\s(m|km|mi))?$' AND b.v !~ '^\d+''\d+\\\"$' 
+          AND b.v ~ '\d' AND b.v !~ '^[+-]?\d+(\.\d+)?(\s(m|km|mi|nmi))?$' AND b.v !~ '^\d+''\d+\\\"$' 
   ", $db1);
 
 
