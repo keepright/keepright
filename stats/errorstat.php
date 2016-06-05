@@ -6,17 +6,6 @@
 $opt = getopt("t::");
 
 error_reporting(E_ALL ^ E_NOTICE);
-/*
-$nodes=array();
-$stats=array();
-$error_types=array();
-echo "Preparing array\n";
-for($x=-180;$x<=180;$x++) {
-  for($y=-90;$y<=90;$y++) {
-    $nodes[$y][$x] = 0;
-    $stats[$y][$x] = 0;
-    }
-  }*/
 
 // read number of nodes per square degree
 echo "Reading node files\n";
@@ -25,7 +14,7 @@ foreach(glob("../results/nodes*.txt") as $file) {
   $fin = fopen($file, "r");
   while(!feof($fin)) {
     $l = fscanf($fin,"%u %f %f %u");
-    $nodes[($l[1])*10][($l[2])*10] += $l[3];
+    $nodes[($l[1])*10+900][($l[2])*10+1800] += $l[3];
     }
 
   fclose($fin);
@@ -33,35 +22,39 @@ foreach(glob("../results/nodes*.txt") as $file) {
 
 
 // read number of errors per error_type and square degree
-foreach(glob("../results/error_view*.txt") as $file) {
+foreach(glob("../results/error_view_*.txt") as $file) {
   print("Reading $file\n");
 
   $f=fopen($file, 'r');
   if ($f) {
     while (!feof($f)) {
       $buffer = explode("\t", fgets($f));
-      $stats[$buffer[2]][round($buffer[11]/1e6)][round($buffer[12]/1e6)]++;
+      $stats[$buffer[2]][round(($buffer[11]+90e7)/5e5)][round(($buffer[12]+180e7)/5e5)]++;
       $error_types[$buffer[2]]=$buffer[3];
       }
     fclose($f);
     }
   }
 
+if(!array_key_exists('t',$opt)){$opt['t']=1;}
+
+$pid_arr = array();
 
 foreach ($stats as $error_type=>$s) {
-  if(array_key_exists('t',$opt) && $opt['t']>0)  {
-    $p = pcntl_fork();
+  while(count($pid_arr) >= $opt['t']) {
+    $s=-1;
+    pcntl_waitpid(0,$s);
+    array_pop($pid_arr);  //just pop an entry - doesn't matter which one
     }
-  else {
-    $p = -1;
-    }
-  if($p<=0) {
+  $p = pcntl_fork();
+  if(!$p) {
+    print "Doing ".$error_type."\n";
     $f=fopen('../tmp/' . $error_type . '.txt', 'w');
     if ($f) {
-      for($lat=-900;$lat<=900;$lat++) {
-        for($lon=-1800;$lon<=1800;$lon++) {
-          if ($nodes[$lat][$lon]>0) {
-            $value=$s[$lat][$lon]/$nodes[$lat][$lon];
+      for($lat=0;$lat<=900*2*2;$lat++) {
+        for($lon=0;$lon<=1800*2*2;$lon++) {
+          if ($nodes[round($lat/2)][round($lon/2)]>0) {
+            $value=$s[$lat][$lon]/$nodes[round($lat/2)][round($lon/2)]/2;
             if ($value>1) $value=1;
             $value=log($value, 10.0);
             } 
@@ -73,7 +66,6 @@ foreach ($stats as $error_type=>$s) {
         }
 
       fclose($f);
-//      system("echo \"set pm3d map; set key off; set palette rgbformulae 21,22,23 negative;set terminal png size 2300,1500;set output 'content/$error_type.png';splot '../tmp/$error_type.txt';\" | gnuplot");
       system("echo \"
 set pm3d map;
 set key off; 
@@ -83,13 +75,15 @@ set rmargin at screen 0.90;
 set tmargin at screen 0.99;
 set bmargin at screen 0.05;
 set palette defined (-10.1 'black', -10 'white', -8 '#000088', -7 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 'black'); 
-set terminal png size 2300,1500;
+set terminal png size 4600,3000;
 set output 'content/$error_type.png';
 splot '../tmp/$error_type.txt';\" | gnuplot");
-//     fwrite($html, "<h3>$error_type - $error_types[$error_type]</h3><img src='../tmp/$error_type.png'><br>\n");
       }
-    if($p==0)
-      exit();
+    exit(0);
+    }
+  else {
+    print "Push ".$error_type."\n";
+    array_push($pid_arr,$p);
     }
   }
 
