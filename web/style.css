@@ -1,4 +1,7 @@
-
+body {
+ font-family:sans-serif;
+ font-size: 14px; 
+}
 
 .p1 { margin:0px; margin-right:13px; border-style:solid; border-width:thin; border-color:#800000; background-color:#FF8080; }
 
@@ -23,16 +26,7 @@
 
 .outline li {
 	cursor: auto;
-	margin: 0 0 0 3px;
-	padding: 0px;
-}
-
-.outline li input {
-	margin: 0px 0px 0px 3px;
-}
-
-h3 {
-	margin-bottom:0px;
+	margin-left: 0px;
 }
 
 .olink {
