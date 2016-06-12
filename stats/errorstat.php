@@ -53,29 +53,39 @@ foreach ($stats as $error_type=>$s) {
     if ($f) {
       for($lat=0;$lat<=900*2*2;$lat++) {
         for($lon=0;$lon<=1800*2*2;$lon++) {
-          if ($nodes[round($lat/2)][round($lon/2)]>0) {
-            $value=$s[$lat][$lon]/$nodes[round($lat/2)][round($lon/2)]/2;
-            if ($value>1) $value=1;
+          if ($nodes[round($lat/2)][round($lon/2)] <= 10) {
+            $value=0.1; 
+            }
+          else if ($s[$lat][$lon] == 0) {
+            $value = -9;
+            }
+          else {
+            $value=$s[$lat][$lon]/($nodes[round($lat/2)][round($lon/2)]/4);
             $value=log($value, 10.0);
-            } 
-          else
-            $value=1;
-          fwrite($f, "$lon\t$lat\t$value\n");
+            if($value > 0) $value = 0;
+            }
+//           $str = sprintf("%i\t%i\t%.1f\n",$lon,$lat,$value);
+          fwrite($f, "$value\n");
           }
         fwrite($f, "\n");
         }
 
       fclose($f);
+$palette = "(-10.1 'black', -10 'white', -8 '#000088', -7 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 'black')";
+$palette = "(-10.1 'black', -10 'white', -9.5 '#000088', -9 'blue', -8 'green', -6 'yellow', -4 'red', 0 '#ff66ff', 0.1 'black')";
       system("echo \"
-set pm3d map;
+set pm3d corners2color c1 map;
 set key off; 
-set cbrange [-8:0]; 
+set xrange [0:7200];
+set yrange [0:3600];
+set cbrange [-9:1]; 
+set zrange [-9:0.11];
 set lmargin at screen 0.05;
 set rmargin at screen 0.90;
 set tmargin at screen 0.99;
 set bmargin at screen 0.05;
-set palette defined (-10.1 'black', -10 'white', -8 '#000088', -7 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 'black'); 
-set terminal png size 4600,3000;
+set palette defined (-9 'white', -8.99 '#6666ff', -7.5 'blue', -6 'green', -4 'yellow', -2 'red', 0 '#ff66ff', 0.1 '#dddddd', 1 '#dddddd'); 
+set terminal png size 8280,3816;
 set output 'content/$error_type.png';
 splot '../tmp/$error_type.txt';\" | gnuplot");
       }
