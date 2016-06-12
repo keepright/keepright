@@ -107,7 +107,33 @@ query("
   )
 ", $db1);
 
-
 //error type 74 already used (see top of file)
+
+
+//name, but no other tag
+query("
+  INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
+  SELECT 5+$error_type, 'way', way_id,
+    'This way has a name ($1) but no other tag', wt.v, NOW()
+  FROM way_tags wt
+  WHERE wt.k = 'name'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM way_tags w
+    WHERE wt.way_id=w.way_id  AND w.k != 'name'
+  )
+", $db1);
+query("
+  INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
+  SELECT 5+$error_type, 'node', node_id,
+    'This node has a name ($1) but no other tag', nt.v, NOW()
+  FROM node_tags nt
+  WHERE nt.k = 'name'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM node_tags n
+    WHERE nt.node_id=n.node_id  AND n.k != 'name'
+  )
+", $db1);
 
 ?>
