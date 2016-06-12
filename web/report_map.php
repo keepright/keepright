@@ -248,19 +248,20 @@ function mkurl($ch, $label, $lat, $lon, $zoom, $show_ign, $show_tmpign, $filenam
 // draws a checkbox with icon and label for a given error type and error name
 // checks the checkbox if applicable
 function mkcheckbox($et, $en, $ch, $draw_checkbox=true, $subgroup_counter=0, $class='error') {
-	global $checks_selected, $checks_to_hide;
-	echo "\n\t<img border=0 height=12 src='img/zap" . 10*floor($et/10) . ".png' alt='error marker $et'>\n\t"; 			// use icon 190 for types 191-199
+  global $checks_selected, $checks_to_hide;
 
-	if ($draw_checkbox) {
-		echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
+  if ($draw_checkbox) {
+    echo "\n\t<img border=0 height=12 style=\"margin-left:18px;\" src='img/zap" . 10*floor($et/10) . ".png' alt='error marker $et'>\n\t";       // use icon 190 for types 191-199
+    echo "<input type='checkbox' id='ch$et' name='ch$et' value='1' onclick='javascript:checkbox_click();'";
 
-		if (($ch==='0' && $class==='error' && !in_array($et, $checks_to_hide)) || in_array($et, $checks_selected)) echo ' checked="checked"';
+    if (($ch==='0' && $class==='error' && !in_array($et, $checks_to_hide)) || in_array($et, $checks_selected)) echo ' checked="checked"';
 
-		echo ">\n\t<label for='ch$et'>" . T_gettext($en) . "</label>\n";
+    echo ">\n\t<label for='ch$et'>" . T_gettext($en) . "</label>\n";
 
-	} else {
-		echo "<span id='tristateBox$subgroup_counter' style='cursor: default;'>&nbsp; " . T_gettext($en) . "</span>\n";
-	}
+  } else {
+    echo "\n\t<img border=0 height=12 src='img/zap" . 10*floor($et/10) . ".png' alt='error marker $et'>\n\t";       // use icon 190 for types 191-199
+    echo "<span id='tristateBox$subgroup_counter' style='cursor: default;'>&nbsp; " . T_gettext($en) . "</span>\n";
+  }
 }
 
 ?>
