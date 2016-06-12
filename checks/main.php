@@ -21,9 +21,35 @@ if (check_prerequisites()) exit(1);
 
 // TODO: eliminate every single "echo" statement and replace it with logger()-calls
 
+$lastsuccessfulschema=file_get_contents($config['base_dir'] . 'logs/lastsuccessfulschema');
 
+if ($argc==2) $startschema=$argv[1]; else {	// startschema given on command line
 
-if ($argc==2) $startschema=$argv[1]; else $startschema=0;
+	if ($lastsuccessfulschema!==false && array_key_exists($lastsuccessfulschema, $schemas)) {
+
+		$foundlast=false;		// find the last successfully processed schema of this user and proceed to the next one to find $startschema
+
+		foreach ($schemas as $schema=>$schema_cfg) {
+
+			if (($schema_cfg['user'] == $config['account']['user']) &&
+				$foundlast) {
+
+				$startschema=$schema;		// we are finished
+				break;
+			}
+
+			if (($schema_cfg['user'] == $config['account']['user']) &&
+				$schema==$lastsuccessfulschema) {
+
+				$foundlast=true;		// remember if last successfully processed schema was reached
+			}
+		}
+	}
+	else {
+
+		$startschema=0;			// default: start with the first schema in the list
+	}
+}
 
 $firstrun=true;
 $processed_a_schema=false;
@@ -48,6 +74,9 @@ foreach ($schemas as $schema=>$schema_cfg) {
 		system('php "' . $config['base_dir'] . 'checks/process_schema.php" "' . $schema .
 			'" > "' . $config['base_dir'] . 'logs/' . $schema . '.log" 2>&1');
 
+
+		// remember the schema number of the last successfully processed schema for restart		
+		file_put_contents($config['base_dir'] . 'logs/lastsuccessfulschema', $schema); 
 
 		$firstrun=false;
 		$processed_a_schema=true;
