@@ -10,6 +10,16 @@ openstreetmap.org (OSM) provides a wiki-style means of creating a world-wide str
 This document explains how to run data consistency checks on your own database and set up a webpage presenting the results.
 
 
+
+Online Resources
+----------------
+
+The official instance of keepright can be found at http://keepright.at
+
+The development instance with all the latest changes can be found at http://osm.mueschelsoft.de/keepright
+
+
+
 PREREQUISITES
 -------------
 
