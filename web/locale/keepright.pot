@@ -41,13 +41,13 @@ msgstr ""
 msgid "This node is very close but not connected to way #$1"
 msgstr ""
 
-#. full mesage: "This way uses deprecated tag highway = viaduct."
-msgid "This $1 uses deprecated tag $2 = $3"
+#. full mesage: "This way uses deprecated tag 'highway=viaduct'."
+msgid "This $1 uses deprecated tag '$2=$3'"
 msgstr ""
 
-#. full mesage: "This way uses deprecated tag highway = viaduct. Please use bridge=* instead!"
-msgid "This $1 uses deprecated tag $2 = $3. Please use $4 instead!"
-msgstr ""
+#. full mesage: "This way uses deprecated tag 'highway=viaduct'. Please use "bridge=*" instead!"
+msgid "This $1 uses deprecated tag '$2=$3'. Please use &quot;$4&quot; instead!"
+
 
 #. full mesage: "This way has an empty tag: name="
 msgid "This $1 has an empty tag: $2"

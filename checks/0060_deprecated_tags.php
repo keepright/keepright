@@ -73,10 +73,10 @@ foreach ($replacement_list as $replacement) {
 	$where .= ")";
 
 
-	$msgid='This $1 uses deprecated tag $2 = $3';
-
+  $msgid="This $1 uses deprecated tag ''$2=$3''";
+  
 	if (strlen(trim($replacement[3]))>1) {
-		$msgid .= '. Please use $4 instead!';
+		$msgid .= '. Please use &quot;$4&quot; instead!';
 		$repl = quote($db2, trim($replacement[3]));
 	} else {
 		$repl='';
