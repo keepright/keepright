@@ -6,7 +6,7 @@ Checks numeric values with units for correct use.
 Secondly, lists of values are marked for some keys where they do not make sense.
 */
 
-$tables = array('node', 'way');
+$tables = array('node', 'way', 'relation');
 
 //First type of errors: Numeric values with wrong decimal separator, spaces in wrong places and wrong units
 $curtype=$error_type+1;
@@ -54,5 +54,50 @@ query("
           AND b.v LIKE '%;%' 
   ", $db1);
 
-
+//Yes;no is wrong for sure  
+foreach ($tables as $object_type) {  
+  query("
+      INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, txt3, last_checked)
+      SELECT $curtype, '{$object_type}', {$object_type}_id, 'This $3 is tagged $1=$2. Having yes and no both in the same value seems wrong.', b.k, b.v,'{$object_type}', NOW()
+      FROM {$object_type}_tags b
+      WHERE  b.v ~ '(yes|no)\s*;\s*(yes|no)'
+    ", $db1);
+  }
+  
+$curtype++;  
+//An addr:housename is very unlikely to be numerical.
+query("
+    INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
+    SELECT $curtype, 'way', way_id, 'This way is tagged with $1 and a numeric value. This is rather unusual.', b.k, NOW()
+    FROM way_tags b
+    WHERE b.k = 'addr:housename'
+          AND b.v ~ '^\d+$'
+  ", $db1);
+query("
+    INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
+    SELECT $curtype, 'node', node_id, 'This node is tagged with $1 and a numeric value. This is rather unusual.', b.k, NOW()
+    FROM node_tags b
+    WHERE b.k = 'addr:housename'
+          AND b.v ~ '^\d+$'
+  ", $db1);  
+  
+  
+$curtype++;  
+//Some combination of tags are usually wrong
+$combs = array(array('golf','bunker','natural','beach','natural=sand'));
+foreach ($combs as $t) {
+  foreach ($tables as $object_type) { 
+    query("
+      INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, txt2, txt3, txt4, txt5, last_checked)
+      SELECT $curtype, '{$object_type}', {$object_type}_id, 'This object is tagged $1 = $2 and $3 = $4 which seems wrong. Consider $5.','$t[0]', '$t[1]', '$t[2]', '$t[3]', '$t[4]', NOW()
+      FROM {$object_type}_tags wt
+      WHERE wt.k = '$t[0]' AND wt.v = '$t[1]'
+      AND EXISTS (
+        SELECT 1 FROM {$object_type}_tags w 
+        WHERE wt.{$object_type}_id = w.{$object_type}_id 
+        AND w.k = '$t[2]' and w.v = '$t[3]')
+    ", $db1);
+    }
+  }
+   
 ?>
