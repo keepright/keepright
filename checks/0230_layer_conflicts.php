@@ -212,7 +212,7 @@ query("
 //waterway=* layer=-1 -tunnel=* -culvert=yes -covered=yes -pipeline=yes -location=underground nodes:4-
 query("
   INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
-  SELECT $error_type + 3, 'way', wt.way_id, 'This waterway has layer=-1 but no tag indicating that it actually is underground. Consider using culvert=yes, tunnel=*, pipeline=* or location=underground', NOW()
+  SELECT $error_type + 3, 'way', wt.way_id, 'This waterway has layer=-1 but no tag indicating that it actually is underground. Consider adding a tunnel, culvert or pipeline tag or remove the layer tag.', NOW()
   FROM way_tags wt INNER JOIN ways wa ON wt.way_id=wa.id
   WHERE wt.k = 'waterway'
   AND wa.node_count >= 4

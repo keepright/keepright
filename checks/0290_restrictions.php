@@ -229,7 +229,7 @@ WHERE
 	END = 1 AND ii.d IS NOT NULL AND
 	NOT EXISTS (
 		SELECT 1
-		FROM tmp_errors e
+		FROM _tmp_errors e
 		WHERE e.object_id=ii.relation_id AND
 			e.error_type=$error_type+5
 

@@ -25,7 +25,8 @@ to its other end-node using equal-tagged ways but not the way itself.
 // some exceptions that need not always be areas and thus shouldn't be checked:
 $dontcheck = array(
 	'leisure' => 'track',
-	'religion' => 'christian'
+	'religion' => 'christian',
+	'tourism' => 'attraction'
 );
 
 

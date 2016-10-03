@@ -76,7 +76,7 @@ $false_positives = array(
 	array('height', 'weight'),
 	array('hires', 'wires'),
 	array('hotel', 'hostel', 'motel'),
-	array('hour', 'hours'),
+	array('0 hour', '0 hours'),
 	array('house', 'horse'),
 	array('http', 'https'),
 	array('Iraq', 'Iran'),
@@ -305,7 +305,8 @@ $force_irregular = array(
 	'surface.material',
   'type:=:broad_leaved',
   'type:=:broad_leafed',
-	'vending:=:news_papers'
+	'vending:=:news_papers',
+	'hazard:=:curves'
 );
 $force_regular = array(
 	'access:conditional',
@@ -335,7 +336,8 @@ $force_regular = array(
 	'type:=:broadleaved',
 	'surface:material',
 	'usability:skate:=:excellent',
-	'vending:=:newspapers'
+	'vending:=:newspapers',
+  'hazard:=:curve'
 );
 
 
