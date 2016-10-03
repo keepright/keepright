@@ -94,11 +94,15 @@ for($i=0; $i < count($schema_arr); $i++)  {
   
   //fork and execute next schema
   $pid = pcntl_fork();  
-  include("../config/runtime.php");
+  if($operation != "upload") {
+    include("../config/runtime.php");
+    }
   if(!$pid) { 
     if($schemalist!=0 && !in_array($schema_arr[$i],$schemalist))
       exit($i);
-    include("../config/runtime.php");
+    if($operation != "upload") {
+      include("../config/runtime.php");
+      }
     if($stop)
       exit($i);
     $GLOBALS['schema']=$schema_arr[$i];
@@ -143,7 +147,7 @@ function cut_planet($planetfile,$schema) {
 function processschema($schema,$checkstorun) {
   runupdate($schema);
   runchecks($schema,$checkstorun);
-  //upload($schema);
+  runupload($schema);
   }
 
 function processown($schema) {
@@ -155,8 +159,8 @@ function processown($schema) {
 function runchecks($schema,$checkstorun) {
   logger("Run checks schema".$schema);
   run_checks($schema,$checkstorun);
-
   runexport($schema);
+  runupload($schema);
   } 
 
 //Export errors to file
@@ -168,7 +172,7 @@ function runexport($schema) {
 //Upload errors to server
 function runupload($schema) {
   logger("Uploading schema".$schema);
-  remote_command('--local', '--upload_errors', $schema);
+  remote_command('--remote', '--upload_errors', $schema);
   }
 
 //The function to run update only

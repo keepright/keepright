@@ -65,6 +65,7 @@ $error_types[120]['name']='ways without nodes';
 $error_types[120]['enabled']=true;
 $error_types[120]['source']='0120_ways_without_nodes.php';
 $error_types[120]['description']='Ways that don\'t consist of at least two nodes don\'t make much sense as they won\'t get rendered.';
+$error_types[120]['subtype'][121]='Ways that don\'t consist of at least two nodes don\'t make much sense as they won\'t get rendered.';
 
 $error_types[130]['name']='floating islands';
 $error_types[130]['enabled']=true;
@@ -260,14 +261,15 @@ $error_types[410]['subtype'][411]='http error';
 $error_types[410]['subtype'][412]='domain hijacking';
 $error_types[410]['subtype'][413]='non-match';
 
-$error_types[420]['name']='suspicious values';
+$error_types[420]['name']='suspicious values and tags';
 $error_types[420]['enabled']=true;
 $error_types[420]['source']='0420_suspicious_values.php';
 $error_types[420]['class']='error';
-$error_types[420]['description']='Check for correct units and inappropriate list of values';
-$error_types[421]['subtype'][421]='wrong units';
-$error_types[422]['subtype'][422]='list of values';
-
+$error_types[420]['description']='Check for correct units and inappropriate list of values as well as wrong tag combinations';
+$error_types[420]['subtype'][421]='wrong units';
+$error_types[420]['subtype'][422]='list of values';
+$error_types[420]['subtype'][423]='Tag is unlikely to have numeric value';
+$error_types[420]['subtype'][424]='Tag combination seems wrong';
 
 $error_types[9000]['name']='test';
 $error_types[9000]['enabled']=false;

@@ -9,7 +9,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 // read number of nodes per square degree
 echo "Reading node files\n";
-foreach(glob("../results/nodes*.txt") as $file) {
+foreach(glob("../results/nodes_*.txt") as $file) {
   echo "Reading $file\n";
   $fin = fopen($file, "r");
   while(!feof($fin)) {
@@ -42,8 +42,8 @@ $pid_arr = array();
 
 foreach ($stats as $error_type=>$s) {
   while(count($pid_arr) >= $opt['t']) {
-    $s=-1;
-    pcntl_waitpid(0,$s);
+    $a=-1;
+    pcntl_waitpid(0,$a);
     array_pop($pid_arr);  //just pop an entry - doesn't matter which one
     }
   $p = pcntl_fork();

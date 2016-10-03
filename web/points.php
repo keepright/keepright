@@ -46,8 +46,8 @@ list($subtyped, $nonsubtyped) = get_subtyped_error_types($db1, $ch);
 $where="(10*floor(error_type/10) IN ($nonsubtyped) OR error_type IN ($subtyped))";
 
 // this is an additional restriction for errors around the map center +/- 0.3 degree that helps the database because it needn't calculate that much distance values
-$where.=' AND lat >= ' . ($lat-3e6) . ' AND lat <= ' . ($lat+3e6);
-$where.=' AND lon >= ' . ($lon-3e6) . ' AND lon <= ' . ($lon+3e6);
+$where.=' AND lat >= ' . ($lat-10e6) . ' AND lat <= ' . ($lat+10e6);
+$where.=' AND lon >= ' . ($lon-10e6) . ' AND lon <= ' . ($lon+10e6);
 
 // lookup the schemas that have to be queried for the given coordinates for the center of screen
 $error_view = error_view_subquery($db1, $lon, $lat, $lon, $lat, $where);
@@ -206,7 +206,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 		$row['user_name'] . "\t" .
 		$row['schema'] . "\t" .
 		$row['error_id'] . "\t" .
-		strtr($description, "\t", " ") . "\t" .
+		strtr($description, array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) . "\t" .
 		strtr($row['comment'], array("\t"=>" ", "\r\n"=>"<br>", "\n"=>"<br>")) . "\t" .
 		strtr($row['state'], array("\t"=>" ", 'ignore_temporarily'=>'ignore_t')) .
 		"\timg/zap" . $filenr . ".png".

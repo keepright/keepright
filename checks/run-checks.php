@@ -39,7 +39,14 @@ if (count(get_included_files())<=1) {	// we're running from commandline if not t
 	run_checks($argv[1], $checks_to_run);
 }
 
-
+function query_analyze($q,&$db,$f=true) {
+  query($q,$db,$f);
+//   $result = query("EXPLAIN ANALYZE VERBOSE  ".$q,$db,$f);
+//   while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+//     logger(join(" ",$row));
+//     }
+//   pg_free_result($result);
+  }
 
 
 function run_checks($schema, $checks_to_run=array()) {
@@ -222,7 +229,6 @@ function run_checks($schema, $checks_to_run=array()) {
 	// The workaround is to use 'IS NOT DISTINCT FROM' which will return false
 	// if one value is not null and return true if both are null
 
-
 	query("CREATE INDEX idx_tmp_errors_object_id ON _tmp_errors (object_id)", $db1);
 	query("CREATE INDEX idx_tmp_errors_object_type ON _tmp_errors (object_type)", $db1);
 	query("CREATE INDEX idx_tmp_errors_error_type ON _tmp_errors (error_type)", $db1);
@@ -235,7 +241,7 @@ function run_checks($schema, $checks_to_run=array()) {
 	// set reopened-state for cleared errors that are now found in _tmp_errors again
 	// include schema in update in case of splitting a schema in smaller parts
 	// the schema column needs to be updated
-	query("
+	query_analyze("
 		UPDATE public.errors AS e
 		SET schema='$schema', last_checked=te.last_checked,
 		msgid=te.msgid, txt1=te.txt1, txt2=te.txt2, txt3=te.txt3, txt4=te.txt4, txt5=te.txt5,
@@ -247,7 +253,7 @@ function run_checks($schema, $checks_to_run=array()) {
 
 
 	// set cleared-state for errors that are not found in _tmp_errors any more
-	query("
+	query_analyze("
 		UPDATE public.errors e
 		SET state='cleared', last_checked=NOW()
 		WHERE e.schema='$schema' AND e.state<>'cleared' AND ($checks_executed) AND
@@ -259,7 +265,7 @@ function run_checks($schema, $checks_to_run=array()) {
 	// for the website check newly found errors don't immediately jump into 'new' state
 	// instead they start in 'preliminary' and switch to 'new' only if they occur again
 	// in the next round
-	query("
+	query_analyze("
 		INSERT INTO public.errors (schema, error_type, object_type, object_id, state,  first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT '$schema', e.error_type, e.object_type, e.object_id,
 		CAST(CASE WHEN e.error_type BETWEEN 410 AND 419 THEN 'preliminary' ELSE 'new' END AS type_error_state),
@@ -268,6 +274,7 @@ function run_checks($schema, $checks_to_run=array()) {
 		WHERE public.errors.object_id IS NULL AND ($checks_executed)
 	", $db1);
 
+        query("ANALYZE public.errors", $db1);
 
 	// rebuild the error-view:
 	// error_view looks like errors but has additional information joined in:
@@ -318,7 +325,7 @@ function run_checks($schema, $checks_to_run=array()) {
 			RENAME COLUMN description TO user_name
 		", $db1);
 
-
+        query("ANALYZE public.error_view", $db1);
 	// delete anything from this (sub-)database
 	query("
 		DELETE FROM public.error_view
@@ -331,7 +338,7 @@ function run_checks($schema, $checks_to_run=array()) {
 		INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES)
 	", $db1, false);
 
-	query("
+	query_analyze("
 		INSERT INTO _tmp_ev (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT DISTINCT e.error_id, '$schema', e.error_type, e.object_type, e.object_id, e.state, e.first_occurrence, e.last_checked, 0, 0, e.msgid, e.txt1, e.txt2, e.txt3, e.txt4, e.txt5
 		FROM public.errors e
@@ -341,14 +348,14 @@ function run_checks($schema, $checks_to_run=array()) {
 	query("CREATE INDEX idx_tmp_error_view_latlon ON _tmp_ev (lat,lon)", $db1, false);
 	query("ANALYZE _tmp_ev", $db1, false);
 
-	query("
+	query_analyze("
 		UPDATE _tmp_ev e
 		SET lat=1e7*n.lat, lon=1e7*n.lon
 		FROM relation_members m INNER JOIN nodes n ON m.member_id=n.id
 		WHERE m.relation_id=e.object_id AND m.member_type='N'
 	", $db1);
 
-	query("
+	query_analyze("
 		UPDATE _tmp_ev e
 		SET lat=1e7*wn.lat, lon=1e7*wn.lon
 		FROM relation_members m INNER JOIN way_nodes wn ON m.member_id=wn.way_id
@@ -359,8 +366,7 @@ function run_checks($schema, $checks_to_run=array()) {
 		SELECT e.object_id
 		FROM _tmp_ev e
 		WHERE e.lat=0 AND e.lon=0
-	", $db1, false);
-
+	", $db1, true);
 	while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 		$latlong = locate_relation($row['object_id'], $db3);
 		if ($latlong['lat']<>'0' && $latlong['lon']<>'0') {
@@ -374,12 +380,12 @@ function run_checks($schema, $checks_to_run=array()) {
 	pg_free_result($result);
 	query("INSERT INTO public.error_view SELECT * FROM _tmp_ev", $db1);
 	query("DROP TABLE IF EXISTS _tmp_ev", $db1, false);
-
+        query("ANALYZE public.error_view", $db1);
 
 
 
 	// first insert errors on nodes that don't have lat/lon
-	query("
+	query_analyze("
 		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT e.error_id, '$schema', e.error_type, e.object_type, e.object_id,
 			e.state, e.first_occurrence, e.last_checked,
@@ -390,7 +396,7 @@ function run_checks($schema, $checks_to_run=array()) {
 	", $db1);
 
 	// second insert errors on ways that don't have lat/lon
-	query("
+	query_analyze("
 		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT e.error_id, '$schema', e.error_type, e.object_type, e.object_id,
 			e.state, e.first_occurrence, e.last_checked,
@@ -405,7 +411,7 @@ function run_checks($schema, $checks_to_run=array()) {
 
 
 	// finally insert errors on ways/nodes/relations that do have lat/lon values
-	query("
+	query_analyze("
 		INSERT INTO public.error_view (error_id, schema, error_type, object_type, object_id, state, first_occurrence, last_checked, lat, lon, msgid, txt1, txt2, txt3, txt4, txt5)
 		SELECT DISTINCT e.error_id, e.schema, e.error_type,
 			e.object_type, e.object_id, e.state,

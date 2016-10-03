@@ -4,7 +4,7 @@
 require_once('../checks/helpers.php');
 require_once('../config/config.php');
 require_once("../config/schemas.php");
-
+require_once("../config/error_types.php");
 
 $opt = getopt("fhg");
 
@@ -14,6 +14,10 @@ if (!array_key_exists('f',$opt) && !array_key_exists('g',$opt)) {
   exit;
   }
 
+  $hide = array(70,197,207,285,420);
+
+  $types = array();  
+  
 $db1 = pg_pconnect(connectstring());
 
 if (array_key_exists('f',$opt)) {
@@ -34,18 +38,43 @@ if (array_key_exists('f',$opt)) {
   }
 else { 
 
-  $types = array();
-  print "<html><body><table border='1' style='font-size:10pt;border-collapse:collapse;padding:2px;text-align:center;'><tr><th>Schema<th>Errors<th>LastRun<th>RunBefore\n";
+
+  print "<html>
+  <head>
+  <link rel='stylesheet' type='text/css' href='../../lanes/style.css'>
+  <link rel='stylesheet' type='text/css' href='stats.css'>
+  </head><body>
+  <table><thead><tr><th>Schema<th>Errors<th>LastRun<th>RunBefore";
   $result = query("SELECT error_type, SUM(count) as count FROM error_statistics WHERE TRUE GROUP BY error_type;",$db1,false);
   while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) { 
     if($row['count']) {
       array_push($types,$row['error_type']); 
       }
     }
+  pg_free_result($result);  
   sort($types);
-  foreach ($types as $t) {print "<th>$t<br>";}
+  $nowsum['type'] = array(); $wassum['type'] = array(); 
+  foreach ($types as $t) {
+    $bt = floor($t/10)*10;
+    $wassum['type'][$t] = 0;
+    $nowsum['type'][$t] = 0;
+    if(in_array($t,$hide)) {continue;} 
+    $title = $error_types[$bt]['description'];
+    if($bt != $t) {
+      $title = $error_types[$bt]['subtype'][$t]."\n".$title;
+      }
+    else {
+      $title = $error_types[$t]['name']."\n".$title;
+      }
+    $title = htmlspecialchars($title,ENT_QUOTES);  
+    print "<th title='$title'>$t";
+    }
+  
+  print "</thead>\n<tbody>";
 
+  
   foreach ($schemas as $k => $v) {
+    if($k==0){continue;}
     $result = query("SELECT schema, date, SUM(count) as errcount FROM error_statistics WHERE schema='$k' GROUP BY date, schema ORDER BY date DESC LIMIT 2;",$db1,false);
     $now=pg_fetch_assoc($result);
     $was=pg_fetch_assoc($result);
@@ -54,32 +83,77 @@ else {
     $now['type'] = array(); $was['type'] = array();
 
     $result = query("SELECT count, error_type FROM error_statistics WHERE schema='$k' AND date = '".$now['date']."';",$db1,false);
-    while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) { $now['type'][$row["error_type"]] = $row['count']; }
+    while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) { 
+      $now['type'][$row["error_type"]] = $row['count']; 
+      $nowsum['type'][$row["error_type"]] += $row['count'];
+      }
     pg_free_result($result);
 
     $result = query("SELECT count, error_type FROM error_statistics WHERE schema='$k' AND date = '".$was['date']."';",$db1,false);
-    while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) { $was['type'][$row["error_type"]] = $row['count']; }
+    while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) { 
+      $was['type'][$row["error_type"]] = $row['count']; 
+      $wassum['type'][$row["error_type"]] += $row['count'];
+      }
     pg_free_result($result);
     
-    print "<tr><td>$k";
-    print "<td>".$now["errcount"];
-    printf("<br>%.2f%%",(($now["errcount"] - $was["errcount"])/$was["errcount"]*100));
-    print "<td>".date("Y/m/d H:i",$now["date"]);
-    print "<td>".date("Y/m/d H:i",$was["date"])."<br>(".$was['errcount'].")\n";
-    foreach ($types as $t) {
-      if (!array_key_exists($t,$now['type'])) { $now['type'][$t] = 0; }
-      if (!array_key_exists($t,$was['type'])) { $was['type'][$t] = 0; }
-      print "<td>".$now['type'][$t].'<br>';
-      if ($was['type'][$t])
-        printf("%.2f%%",(($now['type'][$t] - $was['type'][$t])/$was['type'][$t]*100));
-      }
+    printrow($k,$now,$was);
     }
-  print "</table></body></html>";
+  $wassum['errcount'] = array_sum($wassum['type']);  
+  $nowsum['errcount'] = array_sum($nowsum['type']);  
+  printrow("Sum",$nowsum,$wassum);    
+  print "</tbody></table></body></html>";
   }
 
 
 
-pg_close($db1);
 
+function printrow($k,$now,$was) {
+  global $types, $hide;
+  print "<tr><td>$k";
+  print "<td title='".$was['errcount']."'>".$now["errcount"];
+  printf("<br>%.2f%%",(($now["errcount"] - $was["errcount"])/$was["errcount"]*100));
+  print "<td>".date("y/m/d H:i",$now["date"]);
+  print "<td>".date("y/m/d H:i",$was["date"])."\n";
+  foreach ($types as $t) {
+    if(in_array($t,$hide)) {continue;}
+    if (!array_key_exists($t,$now['type'])) { $now['type'][$t] = 0; }
+    if (!array_key_exists($t,$was['type'])) { $was['type'][$t] = 0; }
+    
+    $change = 0;
+    if ($was['type'][$t]) {
+      $change    = ($now['type'][$t] - $was['type'][$t])/$was['type'][$t]*100;
+      }
+    $changeabs = $now['type'][$t] - $was['type'][$t];
+    $color = definecolor($now['type'][$t],$change,$changeabs);
+    
+    print "<td title='$k-$t' style='color:$color;'>".$now['type'][$t].'<br>';
+    if ($was['type'][$t])
+      printf("%.2f%%",$change);
+    }
+  }
 
+function definecolor($val,$change,$changeabs) {
+  $col = 'black';
+  if($val > 50) {
+    if($change > 2  && $changeabs > 100 ) $col = '#d00';
+    if($change < -2 && $changeabs < -100 ) $col = '#040';
+
+    if ($change > 10) $col = "red";
+    if ($change < -10) $col = "#090";
+    
+    }
+  return $col;
+  }
+  
+
+  
+  
+  
+pg_close($db1);  
+  
 ?>
+
+
+
+
+
