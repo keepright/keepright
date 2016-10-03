@@ -74,10 +74,11 @@ query("
 
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND
-			t.v IN ('service', 'unclassified') AND
+			t.v IN ('service', 'unclassified', 'track') AND
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
-				((t.k='access' AND t.v IN ('no', 'private')) OR
+				((t.k='access' AND t.v IN ('no', 'private','emergency')) OR
+				(t.k='vehicle' AND t.v IN ('no', 'private', 'emergency')) OR
 				(t.k='service' AND t.v='parking_aisle'))
 			)
 	)
@@ -97,7 +98,8 @@ query("
 		FROM _tmp_service s INNER JOIN ways w1 ON s.way_id=w1.id,
 			ways w2 INNER JOIN way_tags wt ON w2.id=wt.way_id
 		WHERE ST_DWithin(w1.geom, w2.geom, 100) AND
-			wt.k='amenity' AND wt.v IN ('parking', 'fuel', 'restaurant', 'toilets')
+			((wt.k='amenity' AND wt.v IN ('parking', 'fuel', 'restaurant', 'toilets'))
+			OR (wt.k='highway' AND wt.v IN ('services','rest_area')))
 
 		UNION
 
@@ -105,7 +107,8 @@ query("
 		FROM _tmp_service s INNER JOIN ways w1 ON s.way_id=w1.id,
 			nodes n INNER JOIN node_tags nt ON n.id=nt.node_id
 		WHERE ST_DWithin(w1.geom, n.geom, 100) AND
-			nt.k='amenity' AND nt.v IN ('parking', 'fuel', 'restaurant', 'toilets')
+			((nt.k='amenity' AND nt.v IN ('parking', 'fuel', 'restaurant', 'toilets'))
+      OR (nt.k='highway' AND nt.v IN ('services','rest_area')))
 	)
 ", $db1);
 
@@ -118,21 +121,22 @@ query("
 //	the other way is a service=parking_aisle
 query("
 	INSERT INTO _tmp_errors (error_type, object_type, object_id, msgid, last_checked)
-	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk, rest_area or construction. Service or unclassified is only valid if it has access=no/private or it leads to a motorway service area or if it is a service=parking_aisle.', NOW()
+	SELECT DISTINCT $error_type, CAST('node' AS type_object_type), node_id, 'This node is a junction of a motorway and a highway other than motorway, motorway_link, trunk or construction. Service or unclassified is only valid if it has access=no/private or it leads to a motorway service area or if it is a service=parking_aisle.', NOW()
 	FROM way_nodes wn INNER JOIN _tmp_junctions j USING (node_id)
 	WHERE wn.way_id<>j.way_id AND EXISTS (
 
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND (
 
-			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'preproposed', 'proposed', 'service', 'unclassified', 'rest_area', 'emergency_bay')
+			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'preproposed', 'proposed', 'service', 'unclassified', 'track', 'emergency_bay')
 
 			OR
 
-			t.v IN ('service', 'unclassified') AND
+			t.v IN ('service', 'unclassified','track') AND
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 				((t.k='access' AND t.v IN ('no', 'private', 'emergency')) OR
+				(t.k='vehicle' AND t.v IN ('no', 'private', 'emergency')) OR
 				(t.k='service' AND t.v='parking_aisle'))
 			)
 		)
