@@ -74,7 +74,7 @@ query("
 
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND
-			t.v IN ('service', 'unclassified', 'track') AND
+			t.v IN ('service', 'unclassified', 'track','footway','path') AND
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 				((t.k='access' AND t.v IN ('no', 'private','emergency')) OR
@@ -128,11 +128,11 @@ query("
 		SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 		t.k='highway' AND (
 
-			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'preproposed', 'proposed', 'service', 'unclassified', 'track', 'emergency_bay')
+			t.v NOT IN ('motorway', 'motorway_link', 'trunk', 'construction', 'preproposed', 'proposed', 'service', 'unclassified', 'track', 'emergency_bay','footway','path')
 
 			OR
 
-			t.v IN ('service', 'unclassified','track') AND
+			t.v IN ('service', 'unclassified','track','footway','path') AND
 			NOT EXISTS (
 				SELECT t.k FROM way_tags t WHERE t.way_id=wn.way_id AND
 				((t.k='access' AND t.v IN ('no', 'private', 'emergency')) OR
