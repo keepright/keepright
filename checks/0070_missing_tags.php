@@ -95,15 +95,15 @@ query("
 //Some more specialized checks
 //tracktype, but no highway
 query("
-  INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, last_checked)
+  INSERT INTO _tmp_errors(error_type, object_type, object_id, msgid, txt1, last_checked)
   SELECT 3+$error_type, 'way', way_id,
-    'This way has a tracktype but no highway tag', NOW()
+    'This way has a $1 tag but no highway tag', wt.k, NOW()
   FROM way_tags wt
   WHERE wt.k IN ('tracktype', 'lanes')
   AND NOT EXISTS (
     SELECT 1
     FROM way_tags w
-    WHERE wt.way_id=w.way_id  AND w.k = 'highway'
+    WHERE wt.way_id=w.way_id  AND (w.k = 'highway' OR  (w.k = 'leisure' and w.v = 'track'))
   )
 ", $db1);
 
