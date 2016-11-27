@@ -640,6 +640,18 @@ function find_oneways($db1, $way_table='', $include_node_locations=true) {
 		)
 	", $db1);
 
+	//exclude piste:type=sled and golf=hole, proposed highways and aerialways
+  query("
+    DELETE FROM _tmp_one_ways
+    WHERE way_id IN (
+      SELECT way_id
+      FROM way_tags tmp
+      WHERE (tmp.k='piste:type' AND tmp.v = 'sled') OR
+            (tmp.k='golf' AND tmp.v = 'hole') OR
+            (tmp.k='aerialway') OR
+            (tmp.k='highway' AND tmp.v IN ('proposed','construction','razed'))
+    )
+  ", $db1);	
 
 	query("
 		UPDATE _tmp_one_ways AS c
