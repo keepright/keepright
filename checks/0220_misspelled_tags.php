@@ -200,6 +200,7 @@ $never_complain_about = "
 	prefix LIKE 'IOM_project_DRR:form_number:=%' OR
 	prefix LIKE 'isced:level:=%' OR
 	prefix LIKE 'kern:Comb_Zn:=%' OR
+  prefix LIKE 'level:=%' OR
 	prefix LIKE 'line:=%' OR
 	prefix LIKE 'linz:garmin_type:=%' OR
 	prefix LIKE 'lines:=%' OR
@@ -211,6 +212,7 @@ $never_complain_about = "
 	prefix LIKE 'massgis:SOURCE_MAP:=%' OR
 	prefix LIKE 'maxheight:=%' OR
 	prefix LIKE 'maxwidth:=%' OR
+  prefix LIKE 'maxspeed:%' OR
 	prefix LIKE 'maxspeed:=%' OR
 	prefix LIKE 'maxspeed:conditional:=%' OR
 	prefix LIKE 'maxspeed:lanes:=%' OR
@@ -223,6 +225,7 @@ $never_complain_about = "
 	prefix LIKE 'nhd:fdate:=%' OR
 	prefix LIKE 'network:=%' OR
 	prefix LIKE 'note:=%' OR
+  prefix LIKE 'note:%' OR
 	prefix LIKE 'old_ref:=%' OR
 	prefix LIKE 'opening_hours:=%' OR
 	prefix LIKE 'power_rating:=%' OR
@@ -236,18 +239,23 @@ $never_complain_about = "
 	prefix LIKE 'pcode:=%' OR
 	prefix LIKE 'PFM:garmin_type:=%' OR
 	prefix LIKE 'photo_url:=%' OR
+	(prefix LIKE 'piste:grooming:=%' AND k LIKE 'classic;skating') OR
+  (prefix LIKE 'piste:grooming:=%' AND k LIKE 'classic+skating') OR	
 	prefix LIKE 'ref:%' OR
 	prefix LIKE 'ref:isil:=%' OR
 	prefix LIKE 'ref_catastral:=%' OR
 	prefix LIKE 'ref_no:=%' OR
 	prefix LIKE 'ref_num:=%' OR
 	prefix LIKE 'reg_ref:=%' OR
+  prefix LIKE 'road_ref:=%' OR
 	prefix LIKE 'roof:color:=%' OR
 	prefix LIKE 'roof:colour:=%' OR
 	prefix LIKE 'route_ref:%' OR
 	prefix LIKE 'seats:=%' OR
+  prefix LIKE 'service_times:=%' OR
 	prefix LIKE 'source:=%' OR
   prefix LIKE 'source:%' OR
+  prefix LIKE 'source%' OR
 	(prefix LIKE 'source:name:=%' AND k LIKE 'Orange County plat book%') OR
 	(prefix LIKE 'source:old_name:=%' AND k LIKE 'Orange County plat book%') OR
 	prefix LIKE 'source_ref:=%' OR
@@ -261,10 +269,13 @@ $never_complain_about = "
 	prefix LIKE 'source_ref:maxspeed:advisory:=%' OR
 	prefix LIKE 'sourcedb:id:=%' OR
 	prefix LIKE 'statscan:rbuid:=%' OR
-	prefix LIKE 'strassen-nrw:abs:=%' OR
+	prefix LIKE 'strassen-nrw:abs:=%' OR	
+  prefix LIKE 'symbol:=%' OR
+  prefix LIKE 'symbol:%' OR
 	prefix LIKE 'tiger:cfcc:=%' OR
 	prefix LIKE 'tiger:source:=%' OR
 	prefix LIKE 'tracktype:=%' OR
+  prefix LIKE 'traffic_sign:%' OR
 	prefix LIKE 'traffic_sign:=%' OR
 	prefix LIKE 'ts_codigo:=%' OR
 	prefix LIKE 'turn:lanes:=%' OR
@@ -320,6 +331,7 @@ $force_regular = array(
 	'building:=:apartments',
 	'building:=:hangar',
 	'building:=:hotel',
+  'currency:RUB',
 	'description:=:Private Cemetery',
 	':gauge',
 	'geometry_source_type:=:Walking Papers/Misson GPS',
@@ -346,6 +358,7 @@ $force_regular = array(
 $overrules = array (
 	array('building:=', 'farm_auxcillary', 'building:=', 'farm_auxiliary'),
   array('surface_material', '', 'surface:material', ''),
+  array('surface.material', '', 'surface:material', '')
 );
 
 
@@ -412,7 +425,9 @@ global $error_type, $false_positives, $db1, $db2;
 			v, k_orig, v_orig, COUNT(id) as tag_count
 		FROM (
 			SELECT regexp_replace(k, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '', 'g') AS k,
-			regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '0', 'g') AS v,
+			regexp_replace(
+        regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '0', 'g'),
+        '; ', ';','g') AS v,
 			T.k AS k_orig, T.v as v_orig, ${item}_id AS id
 			FROM ${item}_tags T
 		) AS tags
