@@ -312,7 +312,7 @@ $islands = array(
     'Florida' => 128731499
 	),
 	'south america' => array(
-		'Lima, Peru' => 11985527,
+		'Lima, Peru' => 338546493,
 		'Iquitos, Peru' => 33297573,
 		'Fortaleza, Brazil' => 23340440,
 		'Bogota, Colombia' => 24061680,
