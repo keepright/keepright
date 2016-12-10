@@ -55,7 +55,7 @@ query("
 			SELECT wt.k
 			FROM way_tags wt
 			WHERE wt.way_id=wn.way_id
-				AND wt.k='highway' AND wt.v NOT IN ('construction', 'preproposed', 'proposed')
+				AND wt.k='highway' AND wt.v NOT IN ('construction', 'preproposed', 'proposed', 'service')
 		)
 	)
 	AND NOT EXISTS (
