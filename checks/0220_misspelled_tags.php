@@ -557,7 +557,9 @@ global $never_complain_about, $force_irregular, $force_regular, $overrules;
 			AND NOT ($never_complain_about)
 		) OR prefix IS NULL OR prefix=''
 	", $db1, false);
-
+  $irregulars = array();
+  $regulars = array();
+  
 	while ($row=pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
 
 		if (in_array($row['prefix'] .':'. $row['k'], $force_irregular)) {	// force to irreg?

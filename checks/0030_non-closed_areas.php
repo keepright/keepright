@@ -56,7 +56,7 @@ foreach ($xml->xpath('//rule/area') as $area) {
 		$k=pg_escape_string($db1, (string) $rule['k']);
 		$v=pg_escape_string($db1, (string) $rule['v']);
 		$values=explode('|', $v);
-		foreach ($values as $dontcare=>$vv) if (!array_key_exists($k,$dontcheck) || !($dontcheck[$k]===$vv)) {
+    foreach ($values as $dontcare=>$vv) if (!isset($dontcheck[$k]) || $dontcheck[$k]!==$vv) {
 			query("INSERT INTO _tmp_way_tags(k,v) VALUES ('$k', '$vv');", $db1, false);
 		}
 

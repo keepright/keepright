@@ -372,7 +372,6 @@ $curlopt = array(
 	CURLOPT_MAXREDIRS	=> 50,		// follow up to x http redirects
 
  	CURLOPT_SSL_VERIFYPEER	=> false,	// don't care about missing or outdated ssl certificates
- 	CURLOPT_SSL_VERIFYHOST	=> 1,
 
 	CURLOPT_TIMEOUT		=> 45,          // Returns 0 if it takes too long
 	CURLOPT_ENCODING	=> ""		// "Accept-Encoding" header. An empty string "" means
@@ -403,8 +402,7 @@ for ($i = 0; $i < $cnt; $i++) {
 	$squat_strings[$i] = preg_quote($squat_strings[$i],"/");
 }
 
-
-if ($argc>=2 && is_readable($argv[1])) {
+if (isset($argc) && $argc>=2 && isset($argv) && is_array($argv) && is_readable($argv[1])) {
 
 	exit (run_standalone());
 
@@ -468,8 +466,8 @@ function run_keepright($db1, $db2, $object_type, $table, $curlopt) {
 		foreach ($list as $url) {
 
 			$urls_queued++;
-			$urlstats[$url]++;
-			queueURL($rc, $obj, $url);
+      if (isset($urlstats[$url])) $urlstats[$url]++; else $urlstats[$url]=1;
+      queueURL($rc, $obj, $url);
 		}
 
 	}
