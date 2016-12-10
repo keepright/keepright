@@ -89,6 +89,7 @@ $false_positives = array(
 	array('icn_name', 'lcn_name', 'lwn_name', 'loc_name', 'lock_name', 'ncn_name', 'nwn_name', 'rcn_name', 'rhn_name', 'rwn_name'),
 	array('j-bar', 't-bar'),
 	array('kebab', 'kebap'),
+	array('kW', 'MW'),
 	array('lane', 'lanes'),
 	array('Lecce', 'Lecco'),
 	array('left', 'lift'),
