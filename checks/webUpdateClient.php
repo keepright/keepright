@@ -208,6 +208,10 @@ function ftp_upload($filename) {
 		return;
 	}
 
+	// switch to passive mode (requirement if client sits behind NAT Gateway)
+  ftp_pasv($conn_id, true); 
+
+
 	// change to destination directory
 	if (!ftp_chdir($conn_id, '/' . $config['upload']['ftp_path'])) {
 		echo "Couldn't change directory on ftp server\n";
