@@ -426,7 +426,7 @@ global $error_type, $false_positives, $db1, $db2;
 		FROM (
 			SELECT regexp_replace(k, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '', 'g') AS k,
 			regexp_replace(
-        regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '0', 'g'),
+        regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '#', 'g'),
         '; ', ';','g') AS v,
 			T.k AS k_orig, T.v as v_orig, ${item}_id AS id
 			FROM ${item}_tags T
