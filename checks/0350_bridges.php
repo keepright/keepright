@@ -17,7 +17,7 @@ algorithm:
 
 // special tags that need to be there at the bridge if they are present
 // on one of the neighbour ways
-$way_types="'highway', 'railway', 'cycleway', 'waterway', 'footway', 'piste', 'piste:type', 'aerialway', 'pipeline', 'building', 'via_ferrata', 'public_transport'";
+$way_types="'highway', 'railway', 'cycleway', 'waterway', 'footway', 'piste', 'piste:type', 'aerialway', 'pipeline', 'building', 'via_ferrata', 'public_transport', 'man_made'";
 
 
 
@@ -58,6 +58,12 @@ query("
 	WHERE wt.k IN ($way_types)
 ", $db1);
 query("CREATE INDEX idx_tmp_bridge_tags_way_id ON _tmp_bridge_tags (way_id)", $db1);
+
+// Pipeline bridges are often connected to buildings only - work around: add a building tag to man_made=pipeline
+query("INSERT INTO _tmp_bridge_tags (way_id,k,v)
+  SELECT w.way_id, 'building', ''
+  FROM _tmp_bridge_tags w
+  WHERE w.k = 'man_made' AND w.v = 'pipeline'",$db1);
 
 
 // find tags on the bridge's neighbours ways
