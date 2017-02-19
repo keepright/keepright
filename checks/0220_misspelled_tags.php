@@ -486,7 +486,7 @@ global $error_type, $false_positives, $db1, $db2;
 	query("CREATE INDEX idx_tmp_tags ON _tmp_tags (keylist)", $db1, false);
 
 	// split key names by each colon into an array and append the value as if it belonged to the key
-	// replace any number with 0 (completely remove numbers from keys to make eg. "name2" and "name" the same.
+	// replace any number with 0 (completely remove numbers from keys [including preceding underscores] to make eg. "name2", "name_2" and "name" the same).
 	// Searching for differences on numbers in values makes no sense.
 	// regex matches numbers plus optionally some characters if they are followed by another number
 	// need to remember the key and value as it once was to be able to find the keys later on
@@ -498,9 +498,9 @@ global $error_type, $false_positives, $db1, $db2;
 		SELECT k, regexp_split_to_array(k, ':') || ARRAY['='] || regexp_split_to_array(v, ':') || ARRAY[''],
 			v, k_orig, v_orig, COUNT(id) as tag_count
 		FROM (
-			SELECT regexp_replace(k, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '', 'g') AS k,
+			SELECT regexp_replace(k, \$\$_*[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*\$\$, '', 'g') AS k,
 			regexp_replace(
-        regexp_replace(v, $$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*$$, '#', 'g'),
+        regexp_replace(v, \$\$[0-9]+([ \\.+/\\(\\)-]+[0-9]+)*\$\$, '#', 'g'),
         '; ', ';','g') AS v,
 			T.k AS k_orig, T.v as v_orig, ${item}_id AS id
 			FROM ${item}_tags T
