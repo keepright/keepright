@@ -111,20 +111,17 @@ query("
 	ELSE
 		b2.first_node_id
 	END
+	
+  FROM (
+    SELECT t1.name, t1.admin_level, t1.part, MIN(t1.sequence_id) AS FirstSq, MAX(t1.sequence_id) AS LastSq
+    FROM _tmp_border_ways t1
+    GROUP BY t1.name, t1.admin_level, t1.part
+   
+  ) b
+  INNER JOIN _tmp_border_ways b1 ON b1.name=b.name AND b1.admin_level=b.admin_level AND b1.part=b.part AND b1.sequence_id=b.FirstSq
+  INNER JOIN _tmp_border_ways b2 ON b2.name=b.name AND b2.admin_level=b.admin_level AND b2.part=b.part AND b2.sequence_id=b.LastSq
 
-	FROM _tmp_border_ways b1, _tmp_border_ways b2
-	WHERE b1.name=b2.name AND b1.admin_level=b2.admin_level AND b1.part=b2.part AND
-	b1.sequence_id = (
-		SELECT MIN(t1.sequence_id)
-		FROM _tmp_border_ways t1
-		WHERE t1.name=b2.name AND t1.admin_level=b2.admin_level AND t1.part=b2.part
-	) AND
-
-	b2.sequence_id = (
-		SELECT MAX(t2.sequence_id)
-		FROM _tmp_border_ways t2
-		WHERE t2.name=b2.name AND t2.admin_level=b2.admin_level AND t2.part=b2.part
-	) AND
+ WHERE
 
 	CASE WHEN COALESCE(b1.direction,1)=1 THEN
 		b1.first_node_id
