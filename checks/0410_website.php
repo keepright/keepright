@@ -814,10 +814,11 @@ function check_redirects($response, $osm_element, $http_eurl) {
 
 
 		$url = trim($match[1]);
+		$url = str_replace(array("'", '"'), '', $url);    // remove apos
 
 		if ($url!=='' && $url!=='/') {		// some pages refresh on "/" or on blank urls; this shall not build a loop
 
-			$url = normalize_url($match[1], $http_eurl);
+			$url = normalize_url($url, $http_eurl);
 			//print "Old style http-equiv refresh found $http_eurl $match[1] $url\n";
 
 			// count redirects for this element
