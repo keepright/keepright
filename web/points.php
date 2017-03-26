@@ -46,11 +46,11 @@ list($subtyped, $nonsubtyped) = get_subtyped_error_types($db1, $ch);
 $where="(10*floor(error_type/10) IN ($nonsubtyped) OR error_type IN ($subtyped))";
 
 // this is an additional restriction for errors around the map center +/- 0.3 degree that helps the database because it needn't calculate that much distance values
-$where.=' AND lat >= ' . ($lat-10e6) . ' AND lat <= ' . ($lat+10e6);
-$where.=' AND lon >= ' . ($lon-10e6) . ' AND lon <= ' . ($lon+10e6);
+$where.=' AND lat >= ' . ($lat-15e6) . ' AND lat <= ' . ($lat+15e6);
+$where.=' AND lon >= ' . ($lon-15e6) . ' AND lon <= ' . ($lon+15e6);
 
 // lookup the schemas that have to be queried for the given coordinates for the center of screen
-$error_view = error_view_subquery($db1, $lon, $lat, $lon, $lat, $where);
+$error_view = error_view_subquery($db1, $lon, $lat, $lon, $lat, $where, 1.5);
 
 
 echo "lat\tlon\terror_name\terror_type\tobject_type\tobject_type_EN\tobject_id\tobject_timestamp\tuser_name\tschema\terror_id\tdescription\tcomment\tstate\ticon\ticonSize\ticonOffset\tpartner_objects\n";
@@ -76,7 +76,10 @@ WHERE TRUE";
 if (!$show_ign) $sql.=' AND (c.state IS NULL OR c.state<>"ignore")';
 if (!$show_tmpign) $sql.=' AND (c.state IS NULL OR c.state<>"ignore_temporarily")';
 
-$sql .= " ORDER BY POWER(lat-$lat,2)+POWER(lon-$lon,2)";
+$corr = cos(deg2rad($lat/1e7))**2;
+//$sql .= " ORDER BY POWER(lat-$lat,2)+POWER(lon-$lon,2)";
+$sql .= " ORDER BY POWER(lat-$lat,2)+POWER(lon-$lon,2)*$corr";
+
 //$sql .= " ORDER BY RAND()";
 $sql .= ' LIMIT 350';
 
