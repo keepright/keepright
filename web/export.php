@@ -96,7 +96,7 @@ if ($_GET['format'] == 'rss') {
 		echo "\t\t\t<link>${baseURL}report_map.php?schema=" . $row['schema'] . "&amp;error=" . $row['error_id'] . "</link>\n";
 		echo "\t\t\t<guid>${baseURL}report_map.php?schema=" . $row['schema'] . "&amp;error=" . $row['error_id'] . "</guid>\n";
 
-		echo "\t\t\t<pubDate>" . date(DATE_RFC822, strtotime(get_updated_date($row['schema']))) . "</pubDate>\n";
+		echo "\t\t\t<pubDate>" . date(DATE_RFC2822, strtotime(get_updated_date($row['schema']))) . "</pubDate>\n";
 		echo "\t\t</item>\n";
 
 	}
